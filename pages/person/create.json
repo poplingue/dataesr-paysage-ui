@@ -1,0 +1,43 @@
+[
+  {
+    "form": [
+      {
+        "title": "Identifiants principaux",
+        "position": 0,
+        "content": [
+          {
+            "title": "Wikidata",
+            "type": "text"
+          },
+          {
+            "title": "IdRef",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "title": "Dénomination",
+        "position": 1,
+        "content": [
+          {
+            "title": "Nom",
+            "type": "text"
+          },
+          {
+            "title": "Prénom",
+            "type": "text"
+          },
+          {
+            "title": "Autre dénomination",
+            "type": "text",
+            "infinite": true
+          },
+          {
+            "title": "Genre",
+            "type": "select"
+          }
+        ]
+      }
+    ]
+  }
+]

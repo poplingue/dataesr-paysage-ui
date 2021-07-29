@@ -1,0 +1,27 @@
+[
+  {
+    "form": [
+      {
+        "title": "Localisation",
+        "position": 0,
+        "content": [
+          {
+            "title": "Lier à un ou plusieurs départements",
+            "type": "multiSearch"
+          }
+        ]
+      },
+      {
+        "title": "Informations",
+        "position": 1,
+        "content": [
+          {
+            "title": "État",
+            "type": "radio",
+            "staticValues": ["Ouvert", "Fermé", "Potentiel"]
+          }
+        ]
+      }
+    ]
+  }
+]
