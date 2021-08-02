@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Select } from '@dataesr/react-dsfr';
-
-const getUrl = {
-    'Genre': 'https://fakestoreapi.com/products/1'
-};
+import getUrl from '../../helpers/constants';
 
 export default function CustomSelect({ title, staticValues = [] }) {
     const [options, setOptions] = useState([]);
@@ -11,7 +8,7 @@ export default function CustomSelect({ title, staticValues = [] }) {
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
-            fetch(getUrl[title])
+            fetch(getUrl(title))
                 .then(res => res.json())
                 .then(json => {
                     const obj = ['f', 'm', 'n'].map((s) => {

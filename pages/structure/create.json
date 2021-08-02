@@ -12,6 +12,18 @@
         ]
       },
       {
+        "title": "Catégories",
+        "infinite": true,
+        "position": 2,
+        "content": [
+          {
+            "title": "Type",
+            "type": "select",
+            "staticValues": ["catégorie 1", "catégorie 2"]
+          }
+        ]
+      },
+      {
         "title": "Informations",
         "position": 1,
         "content": [

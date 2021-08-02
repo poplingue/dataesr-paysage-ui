@@ -54,10 +54,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@dataesr/react-dsfr@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.5.3.tgz#ce298fd09921e9e22697c87d798ac9a110419dc4"
-  integrity sha512-RknvluFihmqA840nGWImXzXcCGLsuWsi8lde4hsHwIE2EU9XbVkv/1BrjB6qFdUvG4oEGuiaOtKm7zItwVSyUQ==
+"@dataesr/react-dsfr@0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.5.4.tgz#9fd5641ba2b5dbb8c79a3617cf9e3997943f973c"
+  integrity sha512-WUj8YfcRg2uIRRiLyt5MMyiNpSH50w9eF6hbC5AOZBphxJxFdCFgboGyN89cVYkA31GhoYCqCPAqKa/oUbwVkQ==
   dependencies:
     "@babel/runtime" "^7.14.6"
     "@gouvfr/dsfr" "^1.1.0"

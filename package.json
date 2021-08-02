@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@dataesr/react-dsfr": "0.5.3",
+    "@dataesr/react-dsfr": "0.5.4",
     "@zeit/next-sass": "^1.0.1",
     "next": "11.0.1",
     "react": "17.0.2",

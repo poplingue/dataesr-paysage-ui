@@ -1,5 +1,6 @@
 import CustomInput from '../CustomInput';
 import CustomSelect from '../CustomSelect';
+import CustomRadio from '../CustomRadio';
 import MultiSearch from '../MultiSearch';
 
 export default function Switch({ type, title, infinite, staticValues }) {
@@ -11,6 +12,8 @@ export default function Switch({ type, title, infinite, staticValues }) {
                 return <CustomSelect title={title} staticValues={staticValues}/>;
             case 'multiSearch':
                 return <MultiSearch title={title}/>;
+            case 'radio':
+                return <CustomRadio title={title} staticValues={staticValues}/>;
             default:
                 return null;
         }

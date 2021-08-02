@@ -1,7 +1,7 @@
-import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
+import { Icon } from '@dataesr/react-dsfr';
 import CreateStructure from './create.json';
 import Layout from '../../components/Layout';
-import Switch from '../../components/Switch';
+import CreateForm from '../../components/CreateForm';
 
 export default function Create() {
     return (
@@ -12,24 +12,7 @@ export default function Create() {
                     size="1x">
                     <h1>Create 1 Person</h1>
                 </Icon>
-                <Accordion keepOpen>
-                    {CreateStructure[0].form.map((section, i) => {
-                        return <AccordionItem initExpand key={i} title={section.title}>
-                            <div>
-                                {section.content.map((field, j) => {
-                                    const { type, title, infinite } = field;
-                                    return <div key={j}>
-                                        <Switch
-                                            type={type}
-                                            title={title}
-                                            infinite={infinite}
-                                        />
-                                    </div>;
-                                })}
-                            </div>
-                        </AccordionItem>;
-                    })}
-                </Accordion>
+                <CreateForm jsonForm={CreateStructure[0]}/>
             </div>
         </Layout>
     );
