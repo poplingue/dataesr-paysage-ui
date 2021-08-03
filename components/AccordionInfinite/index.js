@@ -1,42 +1,49 @@
 import cleanString from '../../helpers/utils';
 import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import Switch from '../Switch';
-import { v4 as uuidv4 } from 'uuid';
-import { useMemo, createRef } from 'react';
+import { useState, useMemo, createRef, useEffect } from 'react';
 
-export default function AccordionInfinite({ nb, title, type, content, updateSection }) {
-    const handleDeleteSection = (sectionDataItem, sectionDataPosition, sectionType, index) => {
-        inputRefs[index].current.removeChild(inputRefs[index].current.children[0]);
-        updateSection(cleanString(sectionType), nb - 1);
+export default function AccordionInfinite({ title, content }) {
+    const [sections, setSections] = useState({});
+    const type = cleanString(title);
+    const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);
+    const updateSection = (type, nb) => {
+        setSections((prev) => ({ ...prev, [type]: nb }));
     };
-    const inputRefs = useMemo(() => Array(nb).fill(0).map(i => createRef()), [nb]);
+    const deleteSection = (sectionType, index) => {
+        // DOM remove
+        sectionRefs[index].current.removeChild(sectionRefs[index].current.children[0]);
+        // state remove
+        updateSection(sectionType, sections[type] - 1);
+
+    };
     return <>
-        {Array.apply(null, { length: nb }).map((v, i) => {
+        {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
+            if (!sections[type]) {
+                updateSection(type, 1);
+            }
             const newTitle = `${title} #${i}`;
-            const sectionDataItem = `accordion-item-${cleanString(type)}`;
-            const sectionDataPosition = `accordion-item-${cleanString(type)}-${i}`;
-            return <div key={uuidv4()}
-                        data-item={sectionDataItem}
-                        data-position={sectionDataPosition}
-                        ref={inputRefs[i]}>
-                {<Accordion keepOpen>
+            return <section
+                key={newTitle}
+                data-item={i}
+                ref={sectionRefs[i]}>
+                <Accordion keepOpen>
                     <AccordionItem
                         initExpand
-                        className="p-relative"
-                        key={uuidv4()}
+                        key={i}
                         title={newTitle}>
                         {content.map((field, j) => {
                             const { type: currentType, title: currentTitle, infinite, staticValues } = field;
                             return <div key={j}>
                                 <Container>
                                     <Row alignItems="middle">
-                                        <Col n="12">
+                                        {(sections[type] - 1 === i && i !== 0) && <Col n="12">
                                             <Button
                                                 size="sm"
-                                                onClick={() => handleDeleteSection(sectionDataItem, sectionDataPosition, type, i)}>
+                                                onClick={() => deleteSection(type, i)}>
                                                 Delete {newTitle}
                                             </Button>
-                                        </Col>
+                                        </Col>}
                                         <Col n="12">
                                             <Switch
                                                 type={currentType}
@@ -47,15 +54,14 @@ export default function AccordionInfinite({ nb, title, type, content, updateSect
                                         </Col>
                                     </Row>
                                 </Container>
-                            </div>
+                            </div>;
                         })}
                     </AccordionItem>
-                </Accordion>}
-            </div>;
+                </Accordion>
+            </section>;
         })}
         <Button
-            className="p-absolute"
-            onClick={() => updateSection(type, nb + 1)}>
+            onClick={() => updateSection(type, sections[type] + 1)}>
             Add 1 {title}</Button>
     </>;
 }
