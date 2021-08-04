@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Select } from '@dataesr/react-dsfr';
-import getUrl from '../../helpers/constants';
+import { getUrl } from '../../helpers/constants';
 
 export default function CustomSelect({ title, staticValues = [] }) {
     const [options, setOptions] = useState([]);

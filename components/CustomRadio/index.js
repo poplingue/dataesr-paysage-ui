@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Radio, RadioGroup, Container, Row, Col } from '@dataesr/react-dsfr';
-import getUrl from '../../helpers/constants';
+import { getUrl } from '../../helpers/constants';
 
 function CustomRadio({ title, staticValues = [] }) {
     const [radioValues, setRadioValues] = useState([]);

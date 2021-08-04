@@ -1,5 +1,6 @@
 const ACTIONS = {
     UPDATE_FORM: 'UPDATE_FORM',
+    UPDATE_RESULT_DB: 'UPDATE_RESULT_DB',
 };
 export default ACTIONS;
 
