@@ -10,7 +10,7 @@ export default function Create() {
                 <Icon
                     name="ri-bubble-chart-line"
                     size="1x">
-                    <h1>Create 1 Person</h1>
+                    <h1>Create 1 Structure</h1>
                 </Icon>
                 <CreateForm jsonForm={CreateStructure[0]}/>
             </div>
