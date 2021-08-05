@@ -44,8 +44,30 @@ const DBService = {
             };
         };
     },
-    async get(uuid) {
+    async getAll(name, cb) {
+        let DBOpenRequest = await this.getDB(), db, resultData = [];
 
+        DBOpenRequest.onsuccess = (event) => {
+            db = DBOpenRequest.result;
+            const txn = event.target.result.transaction(name, 'readonly');
+            const objectStore = txn.objectStore(name);
+
+            objectStore.openCursor().onsuccess = (event) => {
+                let cursor = event.target.result;
+                if (cursor) {
+                    let contact = cursor.value;
+                    resultData.push(contact);
+                    cb(contact);
+                    // continue next record
+                    cursor.continue();
+                }
+            };
+            // close the database connection
+            txn.oncomplete = function () {
+                db.close();
+            };
+        };
+        return resultData;
     }
 };
 

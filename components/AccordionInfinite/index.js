@@ -1,4 +1,4 @@
-import cleanString from '../../helpers/utils';
+import { cleanString } from '../../helpers/utils';
 import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import Switch from '../Switch';
 import { useState, useMemo, createRef, useEffect } from 'react';

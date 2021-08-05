@@ -1,4 +1,4 @@
-import cleanString from './utils';
+import { cleanString } from './utils';
 
 export function getUrl(key) {
     const urls = {
