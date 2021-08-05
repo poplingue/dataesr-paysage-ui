@@ -14,6 +14,13 @@ const reducers = (state, action) => {
                     person: { ...state.forms.person, [dataAtt]: value }
                 },
             };
+        case ACTIONS.UPDATE_CURRENT_OBJECT_STORE:
+            return {
+                ...state,
+                objectStoreName: action.payload.objectStoreName
+            };
+        case ACTIONS.UPDATE_INDB_STORE_OBJECTS:
+            return { ...state, storeObjects: [...action.payload.storeObjects] };
         default:
             break;
     }

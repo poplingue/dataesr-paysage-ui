@@ -4,22 +4,34 @@ import Layout from '../../components/Layout';
 import styles from '../../styles/Person.module.scss';
 import CreateForm from '../../components/CreateForm';
 import DBService from '../../services/DBService';
-import { useEffect, useCallback, useState, useMemo } from 'react';
-import { containsObject } from '../../helpers/utils';
+import { useEffect, useCallback, useState, useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
 
 export default function Create() {
-    const [fields, setFields] = useState([]);
+    const [fieldIds, setFieldIds] = useState([]);
+    const { state, dispatch } = useContext(AppContext);
+
     const getField = useCallback((field) => {
-        if (!containsObject(field, fields)) {
-            setFields((prev) => [...prev, field]);
+        const { value, uid, } = field;
+        if (fieldIds.indexOf(uid) === -1) {
+            setFieldIds((prev) => [...prev, field.uid]);
+            dispatch({ type: 'UPDATE_FORM', payload: { value, uid, name: state.objectStoreName, dataAtt: field.uid } });
         }
-    }, []);
+    }, [fieldIds, dispatch, state.objectStoreName]);
+
+    useEffect(() => {
+        dispatch({ type: 'UPDATE_CURRENT_OBJECT_STORE', payload: { objectStoreName: 'person' } });
+    }, [dispatch]);
+
     useEffect(() => {
         const getIndexDBData = async () => {
-            await DBService.getAll('Person', getField);
+            if (state.objectStoreName) {
+                await DBService.getAll(state.objectStoreName, getField, state.storeObjects.indexOf('person') > -1);
+            }
         };
         getIndexDBData();
-    }, [getField]);
+    }, [getField, state.objectStoreName, state.storeObjects]);
+
     return (
         <Layout>
             <div className={styles.test}>
