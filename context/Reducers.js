@@ -5,13 +5,13 @@ const reducers = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM:
             const { value, dataAtt, name, uid } = action.payload;
-            DBService.set({ value: action.payload.value, uid }, name);
+            DBService.set({ value: action.payload.value, uid }, name, state.storeObjects.indexOf(name) > -1);
             // TODO install Immutable.js ??
             return {
                 ...state,
                 forms: {
                     ...state.forms,
-                    person: { ...state.forms.person, [dataAtt]: value }
+                    [name]: { ...state.forms[name], [dataAtt]: value }
                 },
             };
         case ACTIONS.UPDATE_CURRENT_OBJECT_STORE:

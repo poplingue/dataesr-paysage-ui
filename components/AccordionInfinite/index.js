@@ -1,9 +1,10 @@
 import { cleanString } from '../../helpers/utils';
 import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import Switch from '../Switch';
-import { useState, useMemo, createRef, useEffect } from 'react';
+import { useState, useMemo, createRef } from 'react';
 
 export default function AccordionInfinite({ title, content }) {
+    // TODO manage with IndexDB
     const [sections, setSections] = useState({});
     const type = cleanString(title);
     const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);

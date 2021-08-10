@@ -2,6 +2,24 @@
   {
     "form": [
       {
+        "title": "Informations",
+        "position": 0,
+        "content": [
+          {
+            "title": "Siret",
+            "type": "text"
+          },
+          {
+            "title": "Wikidata",
+            "type": "text"
+          },
+          {
+            "title": "RNSR",
+            "type": "text"
+          }
+        ]
+      },
+      {
         "title": "Localisation",
         "position": 0,
         "content": [

@@ -16,39 +16,50 @@ const DBService = {
         };
 
         DBOpenRequest.onsuccess = (event) => {
-            cb(event.target.result.objectStoreNames);
+            if (cb) {
+                cb(event.target.result.objectStoreNames);
+            }
+        };
+
+        DBOpenRequest.onerror = (event) => {
+            console.error('==== onerror ==== ', event);
         };
     },
-    async set(val, name) {
+    async set(val, name, objectStoreChecked) {
         let DBOpenRequest = await this.getDB(), db;
 
         DBOpenRequest.onsuccess = (event) => {
             db = DBOpenRequest.result;
 
-            // create a new transaction
-            const txn = event.target.result.transaction(name, 'readwrite');
+            if (objectStoreChecked) {
+                // create a new transaction
+                const txn = event.target.result.transaction(name, 'readwrite');
 
-            // get the object store
-            const store = txn.objectStore(name);
+                // get the object store
+                const store = txn.objectStore(name);
 
-            // set the value
-            let query = store.put({ ...val });
+                // set the value
+                let query = store.put({ ...val });
 
-            query.onsuccess = function (event) {
-                // TODO handle popup success
-                // console.log(event);
-            };
+                query.onsuccess = function (event) {
+                    // TODO handle popup success
+                    // console.log(event);
+                    // event.target.result.close();
+                };
 
-            query.onerror = function (event) {
-                // TODO handle popup error
-                console.log(event.target.errorCode);
-            };
+                query.onerror = function (event) {
+                    // TODO handle popup error
+                    console.log(event.target.errorCode);
+                };
 
-            // close the database once the
-            // transaction completes
-            txn.oncomplete = function () {
-                db.close();
-            };
+                // close the database once the
+                // transaction completes
+                txn.oncomplete = function () {
+                    db.close();
+                };
+            } else {
+                console.log('==== New IndexDB version needed ==== ');
+            }
         };
     },
     async getAll(name, cb, objectStoreChecked) {
@@ -75,8 +86,6 @@ const DBService = {
                 txn.oncomplete = function () {
                     db.close();
                 };
-            } else {
-                // this.init([name]);
             }
         };
         DBOpenRequest.onerror = (event) => {

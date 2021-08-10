@@ -10,14 +10,14 @@ export const DataProvider = ({ children }) => {
         darkTheme: false,
         storeObjects: [],
         objectStoreName: '',
-        forms: { 'person': {}, 'structure': {} }
+        forms: { 'person/create': {}, 'structure/create': {} }
     };
     const [state, dispatch] = useReducer(reducers, initialState);
     const cbInit = (storeObjects) => {
         dispatch({ type: 'UPDATE_INDB_STORE_OBJECTS', payload: { storeObjects } });
     };
     useEffect(() => {
-        DBService.init(['person', 'structure'], cbInit);
+        DBService.init(['person/create', 'structure/create'], cbInit);
     }, []);
     return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
 };
