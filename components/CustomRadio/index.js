@@ -5,14 +5,14 @@ import { getFormName, getUniqueId } from '../../helpers/utils';
 import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
 
-function CustomRadio({ title, staticValues = [] }) {
+function CustomRadio({ title, staticValues = [], parentSection }) {
     const [radioValues, setRadioValues] = useState([]);
     const { state, dispatch } = useContext(AppContext);
     const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, title, 0);
+    const uniqueId = getUniqueId(router.pathname, parentSection, title, 0);
     const onRadioChange = (e) => {
         dispatch({
-            type: 'UPDATE_FORM',
+            type: 'UPDATE_FORM_FIELD',
             payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
         });
     };
@@ -38,7 +38,7 @@ function CustomRadio({ title, staticValues = [] }) {
         <section className="wrapper-input py-10">
             <Row>
                 <Col>
-                    <RadioGroup legend={title} isInline>
+                    <RadioGroup legend={title} isInline data-field={uniqueId}>
                         {radioValues.map((radio, i) => {
                             return <Radio
                                 key={i}

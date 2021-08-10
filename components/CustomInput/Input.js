@@ -5,17 +5,18 @@ import { useContext } from 'react';
 import { getFormName, getUniqueId } from '../../helpers/utils';
 import { useRouter } from 'next/router';
 
-function Input({ label, keyNumber }) {
+function Input({ label, keyNumber, parentSection }) {
     const { state, dispatch } = useContext(AppContext);
     const inputRef = useRef(null);
     const router = useRouter();
     // TODO dynamic
-    const uniqueId = getUniqueId(router.pathname, label, keyNumber);
+    const uniqueId = getUniqueId(router.pathname, parentSection, label, keyNumber);
     const [textValue, setTextValue] = useState('');
     const saveValue = (e) => {
         // TODO dataAtt needed??
+        // TODO manage if value=''
         dispatch({
-            type: 'UPDATE_FORM',
+            type: 'UPDATE_FORM_FIELD',
             payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
         });
         setTextValue(e.target.value);

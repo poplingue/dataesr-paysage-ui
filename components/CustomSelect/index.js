@@ -5,15 +5,16 @@ import { useRouter } from 'next/router';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, getUniqueId } from '../../helpers/utils';
 
-export default function CustomSelect({ title, staticValues = [] }) {
+export default function CustomSelect({ title, staticValues = [], keyNumber, parentSection }) {
     const { state, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
     const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, title, 0);
+    const uniqueId = getUniqueId(router.pathname, parentSection, title, keyNumber || 0);
     const onSelectChange = (e) => {
+        // TODO manage if value=''
         dispatch({
-            type: 'UPDATE_FORM',
+            type: 'UPDATE_FORM_FIELD',
             payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
         });
         setSelectValue(e.target.value);
@@ -39,14 +40,14 @@ export default function CustomSelect({ title, staticValues = [] }) {
             setOptions(staticValues.map((value) => {
                 return { 'value': value, 'label': value };
             }));
+            setOptions(prev => [...prev, { value: '', label: 'Select an option', disabled: true }]);
         }
     }, [options, setOptions, staticValues, title]);
     return (
         <section className="wrapper-select py-10">
             <Select
-                onChange={(e) => {
-                    onSelectChange(e);
-                }}
+                data-field={uniqueId}
+                onChange={(e) => onSelectChange(e)}
                 selected={selectValue}
                 label={title}
                 options={options}

@@ -62,6 +62,24 @@ const DBService = {
             }
         };
     },
+    async delete(uid, name, objectStoreChecked) {
+        let DBOpenRequest = await this.getDB(), db;
+
+        DBOpenRequest.onsuccess = (event) => {
+
+            db = DBOpenRequest.result;
+
+            if (objectStoreChecked) {
+                // create a new transaction
+                const txn = event.target.result.transaction(name, 'readwrite');
+
+                // get the object store
+                const store = txn.objectStore(name);
+                store.delete(uid)
+            }
+        };
+
+    },
     async getAll(name, cb, objectStoreChecked) {
         let DBOpenRequest = await this.getDB(), db, resultData = [];
 
