@@ -6,12 +6,13 @@ function CustomInput({ title, infinite, parentSection }) {
     return (<Container fluid>
         <section className="wrapper-input py-10">
             <Row alignItems="bottom" gutters>
-                {infinite ? <InfiniteField title={title}>
+                {infinite ? <InfiniteField title={title} parentSection={parentSection}>
                     <Input
-                        label={title}
+                        title={title}
                         parentSection={parentSection}/>
                 </InfiniteField> : <Col>
                     <Input
+                        title={title}
                         label={title}
                         keyNumber={0}
                         parentSection={parentSection}/>

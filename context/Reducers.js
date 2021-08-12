@@ -1,26 +1,31 @@
 import ACTIONS from './Actions';
 import DBService from '../services/DBService';
-import { getUniqueId, removeKey } from '../helpers/utils';
+import { removeKey } from '../helpers/utils';
 
 const reducers = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
-            const { value, dataAtt, name, uid } = action.payload;
+            const { value, formName, uid, dbUpdate = true } = action.payload;
             // TODO DBService outside from Reducer
-            DBService.set({ value: action.payload.value, uid }, name, state.storeObjects.indexOf(name) > -1);
+            if (dbUpdate) {
+                DBService.set({
+                    value: action.payload.value,
+                    uid
+                }, formName, state.storeObjects.indexOf(formName) > -1);
+            }
             // TODO install Immutable.js ??
             return {
                 ...state,
                 forms: {
                     ...state.forms,
-                    [name]: { ...state.forms[name], [dataAtt]: value }
+                    [formName]: { ...state.forms[formName], [uid]: value }
                 },
             };
         }
         case ACTIONS.DELETE_FORM_FIELD: {
             const { formName, uid } = action.payload;
             // TODO DBService outside from Reducer
-            DBService.delete(uid, name, state.storeObjects.indexOf(formName) > -1);
+            DBService.delete(uid, formName, state.storeObjects.indexOf(formName) > -1);
 
             return {
                 ...state,
@@ -31,9 +36,10 @@ const reducers = (state, action) => {
             const { formName, section, fieldsNumber } = action.payload;
             const currentForm = state.forms[formName];
 
+            // Through right number of fields
             Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
 
-                // Get fields of the section
+                // Retrieve fields key of the section
                 const filteredFields = Object.entries(currentForm).filter((field) => {
                     const fieldKey = field[0];
                     return fieldKey.startsWith(section);

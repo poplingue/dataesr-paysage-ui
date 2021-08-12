@@ -12,12 +12,18 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
     const router = useRouter();
     const uniqueId = getUniqueId(router.pathname, parentSection, title, keyNumber || 0);
     const onSelectChange = (e) => {
-        // TODO manage if value=''
-        dispatch({
-            type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
-        });
-        setSelectValue(e.target.value);
+        const value = e.target.value;
+        const payload = {
+            value,
+            uid: uniqueId,
+            formName: getFormName(router.pathname)
+        };
+        if (e.target.value) {
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+        } else {
+            dispatch({ type: 'DELETE_FORM_FIELD', payload });
+        }
+        setSelectValue(value);
     };
     useEffect(() => {
         if (state.objectStoreName && !selectValue && state.forms[state.objectStoreName]) {
@@ -40,7 +46,7 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
             setOptions(staticValues.map((value) => {
                 return { 'value': value, 'label': value };
             }));
-            setOptions(prev => [...prev, { value: '', label: 'Select an option', disabled: true }]);
+            setOptions(prev => [...prev, { value: '', label: 'Select an option' }]);
         }
     }, [options, setOptions, staticValues, title]);
     return (

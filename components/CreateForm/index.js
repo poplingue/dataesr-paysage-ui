@@ -16,7 +16,7 @@ const CreateForm = ({ jsonForm }) => {
         const { value, uid, } = field;
         if (fieldIds.indexOf(uid) === -1) {
             setFieldIds((prev) => [...prev, field.uid]);
-            dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, name: state.objectStoreName, dataAtt: field.uid } });
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName: state.objectStoreName } });
         }
     }, [fieldIds, dispatch, state.objectStoreName]);
 

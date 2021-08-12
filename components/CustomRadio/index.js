@@ -13,7 +13,7 @@ function CustomRadio({ title, staticValues = [], parentSection }) {
     const onRadioChange = (e) => {
         dispatch({
             type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
+            payload: { value: e.target.value, uid: uniqueId, formName: getFormName(router.pathname) }
         });
     };
     useEffect(() => {

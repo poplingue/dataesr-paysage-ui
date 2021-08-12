@@ -5,27 +5,28 @@ import { useContext } from 'react';
 import { getFormName, getUniqueId } from '../../helpers/utils';
 import { useRouter } from 'next/router';
 
-function Input({ label, keyNumber, parentSection }) {
+function Input({ label, keyNumber, title, parentSection, value = '' }) {
     const { state, dispatch } = useContext(AppContext);
     const inputRef = useRef(null);
     const router = useRouter();
     // TODO dynamic
-    const uniqueId = getUniqueId(router.pathname, parentSection, label, keyNumber);
-    const [textValue, setTextValue] = useState('');
+    const uniqueId = getUniqueId(router.pathname, parentSection, title, keyNumber);
+    const [textValue, setTextValue] = useState(value);
     const saveValue = (e) => {
-        // TODO dataAtt needed??
-        // TODO manage if value=''
-        dispatch({
-            type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
-        });
-        setTextValue(e.target.value);
+        const value = e.target.value;
+        const payload = {
+            value,
+            uid: uniqueId,
+            formName: getFormName(router.pathname)
+        };
+        setTextValue(value);
+        dispatch({ type: 'UPDATE_FORM_FIELD', payload });
     };
     useEffect(() => {
-        if (state.objectStoreName && !textValue && state.forms[state.objectStoreName]) {
+        if (state.objectStoreName && state.forms[state.objectStoreName]) {
             setTextValue(state.forms[state.objectStoreName][uniqueId]);
         }
-    }, [state.forms, state.objectStoreName, textValue, uniqueId]);
+    }, [state.forms, state.objectStoreName, textValue, uniqueId, title, keyNumber]);
     return (
         <>
             <TextInput
@@ -35,7 +36,6 @@ function Input({ label, keyNumber, parentSection }) {
                 value={textValue || ''}
                 label={label}
             />
-            {/*// TODO Button delete field*/}
         </>
     );
 

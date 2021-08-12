@@ -35,7 +35,7 @@ export function containsObject(obj, array) {
  * @returns {string} format form@section#i/field-index
  */
 export function getUniqueId(pathname, section = '', name = '', key) {
-    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}-${key}`;
+    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}#${key}`;
     if (!key && key !== 0) {
         r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}`;
     }
@@ -69,12 +69,13 @@ export function removeKey(obj, keyToDelete) {
  *
  * @param min
  * @param max
+ * @param string
  * @returns {unknown[]}
  */
-export function range(min, max) {
+export function range(min, max, string) {
     return Array(max - min + 1)
         .fill(0)
-        .map((_, i) => i + min);
+        .map((_, i) => string ? (i + min).toString() : (i + min));
 }
 
 export function uniqueOnlyFilter(value, index, self) {

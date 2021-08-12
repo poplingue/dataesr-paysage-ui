@@ -34,7 +34,6 @@ export default function InfiniteAccordion({ title, content }) {
     };
     useEffect(() => {
         const currentForm = Object.keys(state.forms[getFormName(router.pathname)]);
-
         const formSections = currentForm.map((c) => c.split('/').slice(0, 2).join('/'));
         const initInfinite = formSections.filter(uniqueOnlyFilter).filter((k) => {
             return k.startsWith(getUniqueId(router.pathname, type));

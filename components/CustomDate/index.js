@@ -1,41 +1,37 @@
-import { Select } from '@dataesr/react-dsfr';
-import { getFormName, getUniqueId, range } from '../../helpers/utils';
-import { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { AppContext } from '../../context/GlobalState';
+import { Container, Row, Col } from '@dataesr/react-dsfr';
+import { range } from '../../helpers/utils';
+import CustomSelect from '../CustomSelect';
 
 export default function CustomDate({ title, parentSection, keyNumber }) {
-    const { state, dispatch } = useContext(AppContext);
-    const [day, setDay] = useState('');
-    const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, parentSection, title, keyNumber || 0);
-    const days = range(1, 31);
-    const months = range(1, 12);
-    const years = range(1900, 2021);
+    const days = range(1, 31, true);
+    const months = range(1, 12, true);
+    const years = range(1900, 2021, true);
 
-    const onDayChange = (e) => {
-        // TODO manage if value=''
-        dispatch({
-            type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, name: getFormName(router.pathname), dataAtt: uniqueId }
-        });
-        setDay(e.target.value);
-    };
-    useEffect(() => {
-        if (state.objectStoreName && !day && state.forms[state.objectStoreName]) {
-            setDay(state.forms[state.objectStoreName][uniqueId]);
-        }
-    }, [state.forms, state.objectStoreName, day, uniqueId]);
-    const daysOptions = days.map((day) => {
-        return { label: day.toString(), value: day.toString() };
-    });
+    const dateData = [{
+        options: days,
+        title: `${title} day`
+    }, {
+        options: months,
+        title: `${title} month`
+    }, {
+        options: years,
+        title: `${title} year`
+    }];
+
     return <section className="wrapper-select py-10">
-        <Select
-            data-field={uniqueId}
-            onChange={(e) => onDayChange(e)}
-            selected={day}
-            label={`${title} day`}
-            options={[...daysOptions, { value: '', label: 'Select a day', disabled: true }]}
-        />
+        <Container fluid>
+            <Row gutters>
+                {dateData.map((select) => {
+                    return <Col n="12 md-4" key={select.title}>
+                        <CustomSelect
+                            parentSection={parentSection}
+                            keyNumber={keyNumber}
+                            title={select.title}
+                            staticValues={select.options}
+                        />
+                    </Col>;
+                })}
+            </Row>
+        </Container>
     </section>;
 }
