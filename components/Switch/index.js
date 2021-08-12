@@ -2,6 +2,7 @@ import CustomInput from '../CustomInput';
 import CustomSelect from '../CustomSelect';
 import CustomRadio from '../CustomRadio';
 import MultiSearch from '../MultiSearch';
+import CustomDate from '../CustomDate';
 
 export default function Switch({ type, title, infinite, staticValues, keyNumber, section }) {
     const renderSwitch = (type) => {
@@ -32,6 +33,12 @@ export default function Switch({ type, title, infinite, staticValues, keyNumber,
                     staticValues={staticValues}
                     keyNumber={keyNumber}
                     parentSection={section}
+                />;
+            case 'date':
+                return <CustomDate
+                    title={title}
+                    parentSection={section}
+                    keyNumber={keyNumber}
                 />;
             default:
                 return null;

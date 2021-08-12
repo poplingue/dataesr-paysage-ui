@@ -37,7 +37,14 @@
           {
             "title": "Type",
             "type": "select",
-            "staticValues": ["catégorie 1", "catégorie 2"]
+            "staticValues": [
+              "catégorie 1",
+              "catégorie 2"
+            ]
+          },
+          {
+            "title": "Start",
+            "type": "date"
           }
         ]
       },
@@ -48,7 +55,11 @@
           {
             "title": "État",
             "type": "radio",
-            "staticValues": ["Ouvert", "Fermé", "Potentiel"]
+            "staticValues": [
+              "Ouvert",
+              "Fermé",
+              "Potentiel"
+            ]
           }
         ]
       }

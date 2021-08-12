@@ -32,12 +32,15 @@ export function containsObject(obj, array) {
  * @param name
  * @param key
  * @param section
- * @returns {string}
+ * @returns {string} format form@section#i/field-index
  */
 export function getUniqueId(pathname, section = '', name = '', key) {
-    let r = `${pathname.substring(1)}@${cleanString(section)}-${cleanString(name)}-${key}`;
+    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}-${key}`;
     if (!key && key !== 0) {
-        r = `${pathname.substring(1)}@${cleanString(section)}-${cleanString(name)}`;
+        r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}`;
+    }
+    if (!name) {
+        r = `${pathname.substring(1)}@${cleanString(section)}`;
     }
     return r;
 }
@@ -52,7 +55,7 @@ export function getFormName(pathname) {
 }
 
 /**
- * 
+ *
  * @param obj
  * @param keyToDelete
  * @returns {Pick<*, Exclude<keyof *, never>>}
@@ -60,4 +63,20 @@ export function getFormName(pathname) {
 export function removeKey(obj, keyToDelete) {
     const { [keyToDelete]: deleted, ...objectWithoutDeletedKey } = obj;
     return objectWithoutDeletedKey;
+}
+
+/**
+ *
+ * @param min
+ * @param max
+ * @returns {unknown[]}
+ */
+export function range(min, max) {
+    return Array(max - min + 1)
+        .fill(0)
+        .map((_, i) => i + min);
+}
+
+export function uniqueOnlyFilter(value, index, self) {
+    return self.indexOf(value) === index;
 }

@@ -5,6 +5,7 @@ import styles from './MultiSearch.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 
 function MultiSearch({ title }) {
+    // TODO manage indexDB
     const [selectedValues, setSelectedvalues] = useState([]);
     const [textValue, setTextValue] = useState('');
     const options = DEPARTEMENTS.map((departement) => ({ value: departement, label: departement }));

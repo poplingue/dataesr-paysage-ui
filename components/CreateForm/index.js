@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem, Container, Col, Row } from '@dataesr/react-dsfr';
 import Switch from '../Switch';
-import AccordionInfinite from '../AccordionInfinite';
+import InfiniteAccordion from '../InfiniteAccordion';
 import { useRouter } from 'next/router';
 import { AppContext } from '../../context/GlobalState';
 import DBService from '../../services/DBService';
@@ -35,7 +35,7 @@ const CreateForm = ({ jsonForm }) => {
         {jsonForm.form.map((section, i) => {
             const { title: sectionTitle, content, infinite } = section;
 
-            return infinite ? <AccordionInfinite
+            return infinite ? <InfiniteAccordion
                 title={sectionTitle}
                 content={content}
                 key={i}/> : <Accordion key={i} keepOpen>
