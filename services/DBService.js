@@ -1,9 +1,28 @@
 import { getVal } from '../helpers/constants';
+import { openDB, deleteDB, wrap, unwrap } from 'idb';
 
 const DBService = {
     async getDB() {
         return window.indexedDB.open(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
     },
+
+    async asyncOpenDB(name, version) {
+        return await openDB(name, version, {
+            upgrade(db, oldVersion, newVersion, transaction) {
+                console.debug('==== upgrade ==== ');
+            },
+            blocked() {
+                console.debug('==== blocked ==== ');
+            },
+            blocking() {
+                console.debug('==== blocking ==== ');
+            },
+            terminated() {
+                console.debug('==== terminated ==== ');
+            },
+        });
+    },
+
     async init(objectStores, cb) {
         const DBOpenRequest = await this.getDB();
         DBOpenRequest.onupgradeneeded = (event) => {
@@ -75,42 +94,22 @@ const DBService = {
 
                 // get the object store
                 const store = txn.objectStore(name);
-                store.delete(uid)
+                store.delete(uid);
             }
         };
 
     },
-    async getAll(name, cb, objectStoreChecked) {
-        let DBOpenRequest = await this.getDB(), db, resultData = [];
 
-        DBOpenRequest.onsuccess = (event) => {
-            db = DBOpenRequest.result;
+    async getAll(name, objectStoreChecked) {
+        // TODO refacto
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
 
-            if (objectStoreChecked) {
-                const txn = event.target.result.transaction(name, 'readonly');
-                const objectStore = txn.objectStore(name);
-
-                objectStore.openCursor().onsuccess = (event) => {
-                    let cursor = event.target.result;
-                    if (cursor) {
-                        let contact = cursor.value;
-                        resultData.push(contact);
-                        cb(contact);
-                        // continue next record
-                        cursor.continue();
-                    }
-                };
-                // close the database connection
-                txn.oncomplete = function () {
-                    db.close();
-                };
-            }
-        };
-        DBOpenRequest.onerror = (event) => {
-            // TODO manage error popup
-            console.error('==== ERR ==== ', event);
-        };
-        return resultData;
+        if (objectStoreChecked && db) {
+            const store = db.transaction(name).objectStore(name);
+            return await store.getAll();
+        } else {
+            return [];
+        }
     }
 };
 

@@ -1,19 +1,19 @@
 import { useState, useEffect, useContext } from 'react';
 import { Radio, RadioGroup, Container, Row, Col } from '@dataesr/react-dsfr';
 import { getUrl } from '../../helpers/constants';
-import { getFormName, getUniqueId } from '../../helpers/utils';
+import { getUniqueId } from '../../helpers/utils';
 import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
 
 function CustomRadio({ title, staticValues = [], parentSection }) {
     const [radioValues, setRadioValues] = useState([]);
-    const { state, dispatch } = useContext(AppContext);
+    const { state: { forms, formName, objectStoreName }, dispatch } = useContext(AppContext);
     const router = useRouter();
     const uniqueId = getUniqueId(router.pathname, parentSection, title, 0);
     const onRadioChange = (e) => {
         dispatch({
             type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, formName: getFormName(router.pathname) }
+            payload: { value: e.target.value, uid: uniqueId, formName }
         });
     };
     useEffect(() => {
@@ -44,7 +44,7 @@ function CustomRadio({ title, staticValues = [], parentSection }) {
                                 key={i}
                                 label={radio.label}
                                 value={radio.value}
-                                isChecked={radio.label === state.forms[state.objectStoreName][uniqueId]}
+                                isChecked={objectStoreName ? radio.label === forms[objectStoreName][uniqueId] : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}

@@ -1,47 +1,51 @@
-import { cleanString, uniqueOnlyFilter, getFormName, getUniqueId } from '../../helpers/utils';
+import { cleanString, uniqueOnlyFilter, getUniqueId } from '../../helpers/utils';
 import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import Switch from '../Switch';
-import { useState, useMemo, createRef, useContext, useEffect } from 'react';
+import { useState, useMemo, createRef, useContext, useEffect, useCallback } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
+import FieldButton from '../FieldButton';
 
 export default function InfiniteAccordion({ title, content }) {
-    // TODO manage with IndexDB
-    const { state, dispatch } = useContext(AppContext);
-    const router = useRouter();
+    const { state: { forms, formName }, dispatch } = useContext(AppContext);
+    const { pathname } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);
     const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);
-    const updateSection = (type, nb) => {
+    const sectionName = useMemo(() => getUniqueId(pathname, type), [pathname, type]);
+    const currentForm = useCallback(() => formName ? Object.keys(forms[formName]) : [], [formName, forms]);
+    const formSections = useCallback(() => currentForm().map((c) => c.split('/').slice(0, 2).join('/')), [currentForm]);
+
+    const updateSection = useCallback((type, nb) => {
+        // TODO add loader when indexDB sync
         setSections((prev) => ({ ...prev, [type]: nb }));
-    };
+    }, []);
+
     const deleteSection = (sectionType, index, fieldType, newTitle) => {
         // DOM remove
         sectionRefs[index].current.removeChild(sectionRefs[index].current.children[0]);
-
-        // local state remove
-        updateSection(sectionType, sections[type] - 1);
 
         // indexDB & global state remove
         dispatch({
             type: 'DELETE_FORM_SECTION',
             payload: {
-                section: getUniqueId(router.pathname, newTitle),
-                formName: getFormName(router.pathname),
+                section: getUniqueId(pathname, newTitle),
+                formName: formName,
                 fieldsNumber: sections[type]
             }
         });
+
+        // local state remove
+        updateSection(sectionType, sections[type] - 1);
     };
+
     useEffect(() => {
-        const currentForm = Object.keys(state.forms[getFormName(router.pathname)]);
-        const formSections = currentForm.map((c) => c.split('/').slice(0, 2).join('/'));
-        const initInfinite = formSections.filter(uniqueOnlyFilter).filter((k) => {
-            return k.startsWith(getUniqueId(router.pathname, type));
+        const sectionFields = formSections().filter(uniqueOnlyFilter).filter((k) => {
+            return k.startsWith(sectionName);
         });
+        updateSection(type, sectionFields.length);
 
-        updateSection(type, initInfinite.length);
-
-    }, [state.forms, router.pathname, title, type]);
+    }, [formSections, sectionName, type, updateSection]);
     return <>
         {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
             if (!sections[type]) {
@@ -74,11 +78,11 @@ export default function InfiniteAccordion({ title, content }) {
                                         </Col>
                                         {(sections[type] - 1 === i && i !== 0 && j === content.length - 1) &&
                                         <Col n="4">
-                                            <Button
-                                                size="sm"
-                                                onClick={() => deleteSection(type, i, fieldTitle, newTitle)}>
-                                                Delete {newTitle}
-                                            </Button>
+                                            <FieldButton
+                                                onClick={() => deleteSection(type, i, fieldTitle, newTitle)}
+                                                title={`Delete ${newTitle}`}
+                                            >
+                                            </FieldButton>
                                         </Col>}
                                     </Row>
                                 </Container>

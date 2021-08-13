@@ -35,6 +35,7 @@ const reducers = (state, action) => {
         case ACTIONS.DELETE_FORM_SECTION: {
             const { formName, section, fieldsNumber } = action.payload;
             const currentForm = state.forms[formName];
+            let newForm = Object.assign({}, state.forms);
 
             // Through right number of fields
             Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
@@ -49,11 +50,12 @@ const reducers = (state, action) => {
                     // Delete in indexDB
                     DBService.delete(currentFieldKey, formName, state.storeObjects.indexOf(formName) > -1);
                     // Delete in global state
-                    state.forms = { ...state.forms, [formName]: removeKey(currentForm, currentFieldKey) };
+                    newForm = { ...newForm, [formName]: removeKey(newForm[formName], currentFieldKey) };
                 }
             });
             return {
                 ...state,
+                forms: newForm
             };
 
         }

@@ -35,6 +35,7 @@ export function containsObject(obj, array) {
  * @returns {string} format form@section#i/field-index
  */
 export function getUniqueId(pathname, section = '', name = '', key) {
+    // TODO standardize this shit
     let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}#${key}`;
     if (!key && key !== 0) {
         r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}`;

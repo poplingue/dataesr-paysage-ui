@@ -3,10 +3,10 @@ import { Select } from '@dataesr/react-dsfr';
 import { getUrl } from '../../helpers/constants';
 import { useRouter } from 'next/router';
 import { AppContext } from '../../context/GlobalState';
-import { getFormName, getUniqueId } from '../../helpers/utils';
+import { getUniqueId } from '../../helpers/utils';
 
 export default function CustomSelect({ title, staticValues = [], keyNumber, parentSection }) {
-    const { state, dispatch } = useContext(AppContext);
+    const { state: { formName, forms, objectStoreName }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
     const router = useRouter();
@@ -16,7 +16,7 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
         const payload = {
             value,
             uid: uniqueId,
-            formName: getFormName(router.pathname)
+            formName
         };
         if (e.target.value) {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
@@ -26,16 +26,16 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
         setSelectValue(value);
     };
     useEffect(() => {
-        if (state.objectStoreName && !selectValue && state.forms[state.objectStoreName]) {
-            setSelectValue(state.forms[state.objectStoreName][uniqueId]);
+        if (objectStoreName && !selectValue && forms[objectStoreName]) {
+            setSelectValue(forms[objectStoreName][uniqueId]);
         }
-    }, [state.forms, state.objectStoreName, selectValue, uniqueId]);
+    }, [forms, objectStoreName, selectValue, uniqueId]);
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
             fetch(getUrl(title))
                 .then(res => res.json())
-                .then(json => {
+                .then(() => {
                     // fake data
                     const obj = ['f', 'm', 'n'].map((s) => {
                         return { value: s, label: s };
