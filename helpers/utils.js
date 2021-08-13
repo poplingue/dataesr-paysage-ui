@@ -79,6 +79,23 @@ export function range(min, max, string) {
         .map((_, i) => string ? (i + min).toString() : (i + min));
 }
 
+/**
+ *
+ * @param value
+ * @param index
+ * @param self
+ * @returns {boolean}
+ */
 export function uniqueOnlyFilter(value, index, self) {
     return self.indexOf(value) === index;
+}
+
+/**
+ *
+ * @param title
+ * @param contentNumber
+ * @returns {string}
+ */
+export function sectionUniqueId(title, contentNumber) {
+    return `${cleanString(title)}-${contentNumber}`;
 }

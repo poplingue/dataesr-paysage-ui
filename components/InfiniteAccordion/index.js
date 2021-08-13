@@ -6,7 +6,7 @@ import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
 import FieldButton from '../FieldButton';
 
-export default function InfiniteAccordion({ title, content }) {
+export default function InfiniteAccordion({ title, content,  dataAttSection }) {
     const { state: { forms, formName }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const [sections, setSections] = useState({});
@@ -53,8 +53,8 @@ export default function InfiniteAccordion({ title, content }) {
             }
             const newTitle = `${title}#${i}`;
             return <section
+                data-section={dataAttSection}
                 key={newTitle}
-                data-item={i}
                 ref={sectionRefs[i]}>
                 <Accordion keepOpen>
                     <AccordionItem

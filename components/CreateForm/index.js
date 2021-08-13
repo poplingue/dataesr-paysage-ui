@@ -3,10 +3,11 @@ import Switch from '../Switch';
 import InfiniteAccordion from '../InfiniteAccordion';
 import { AppContext } from '../../context/GlobalState';
 import DBService from '../../services/DBService';
-import { useEffect, useContext, useCallback, useState } from 'react';
+import { useEffect, useContext, useCallback, useState, forwardRef, createRef } from 'react';
 import NotifService from '../../services/NotifService';
+import { cleanString, sectionUniqueId } from '../../helpers/utils';
 
-const CreateForm = ({ jsonForm, data }) => {
+const CreateForm = ({ jsonForm }) => {
     const { state: { formName, storeObjects, objectStoreName }, dispatch } = useContext(AppContext);
     const [fieldIds, setFieldIds] = useState([]);
 
@@ -32,14 +33,17 @@ const CreateForm = ({ jsonForm, data }) => {
         };
         getIndexDBData();
     }, [getField, formName, objectStoreName, storeObjects]);
+
     return <>
         {jsonForm.form.map((section, i) => {
             const { title: sectionTitle, content, infinite } = section;
+            const dataSection = sectionUniqueId(sectionTitle, content.length);
 
             return infinite ? <InfiniteAccordion
+                dataAttSection={dataSection}
                 title={sectionTitle}
                 content={content}
-                key={i}/> : <Accordion key={i} keepOpen>
+                key={i}/> : <Accordion keepOpen key={i} data-section={dataSection}>
                 <AccordionItem
                     initExpand
                     title={sectionTitle}>
