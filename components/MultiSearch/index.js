@@ -1,20 +1,52 @@
 import { Checkbox, TextInput, Col, Container, Row } from '@dataesr/react-dsfr';
-import { useState } from 'react';
-import DEPARTEMENTS from './DEPARTEMENTS';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import styles from './MultiSearch.module.scss';
 import { v4 as uuidv4 } from 'uuid';
+import { AppContext } from '../../context/GlobalState';
+import { getUniqueId } from '../../helpers/utils';
+import { useRouter } from 'next/router';
 
-function MultiSearch({ title }) {
+function MultiSearch({ title, parentSection }) {
     // TODO manage indexDB
-    const [selectedValues, setSelectedvalues] = useState([]);
     const [textValue, setTextValue] = useState('');
-    const options = DEPARTEMENTS.map((departement) => ({ value: departement, label: departement }));
-    const filter = (
+    const { state: { departments, formName, forms }, dispatch } = useContext(AppContext);
+    const { pathname } = useRouter();
+    const uid = getUniqueId(pathname, parentSection, title, 0);
+    const [selectedValues, setSelectedvalues] = useState([]);
+    const currentForm = useCallback(() => forms && formName ? forms[formName] : null, [forms, formName]);
+    const options = departments.map((departement) => ({
+        value: departement.nom,
+        label: `${departement.codeRegion} - ${departement.nom}`
+    }));
+    const filterSearch = (
         internalValue,
         option,
     ) => option.label.toLowerCase().includes(internalValue.toLowerCase());
+    const filteredOptions = options.filter((option, index, arr) => filterSearch(textValue, option, index, arr));
 
-    const filteredOptions = options.filter((option, index, arr) => filter(textValue, option, index, arr));
+    const onSelectChange = (e) => {
+        const { value } = e.target;
+        let newValue = selectedValues.filter((item) => item !== value);
+        if (selectedValues.indexOf(value) === -1) {
+            newValue = [...selectedValues, value];
+        }
+
+        dispatch({
+            type: 'UPDATE_FORM_FIELD',
+            payload: {
+                value: newValue,
+                uid,
+                formName
+            }
+        });
+
+    };
+    useEffect(() => {
+        if (uid && currentForm() && currentForm()[uid]) {
+            setSelectedvalues(currentForm()[uid]);
+        }
+    }, [currentForm, selectedValues, uid]);
+
     return (
         <section className="wrapper-multi-search py-10">
             <TextInput
@@ -26,19 +58,15 @@ function MultiSearch({ title }) {
                 <Row>
                     <Col n="6">
                         <ul className="max-200">
-                            {filteredOptions.map((departement) => {
+                            {filteredOptions.map((option) => {
                                 return <li key={uuidv4()} className={`${styles.listElement} py-10`}>
                                     <Checkbox
-                                        label={departement.label}
+                                        label={option.label}
                                         onChange={(e) => {
-                                            if (selectedValues.indexOf(e.target.value) === -1) {
-                                                setSelectedvalues((prev) => [...prev, e.target.value]);
-                                            } else {
-                                                setSelectedvalues(selectedValues.filter((item) => item !== e.target.value));
-                                            }
+                                            onSelectChange(e);
                                         }}
-                                        defaultChecked={selectedValues.indexOf(departement.value) > -1}
-                                        value={departement.value}
+                                        defaultChecked={selectedValues.indexOf(option.value) > -1}
+                                        value={option.value}
                                     />
                                 </li>;
                             })}

@@ -1,5 +1,6 @@
 import { getVal } from '../helpers/constants';
-import { openDB, deleteDB, wrap, unwrap } from 'idb';
+import { openDB } from 'idb';
+import NotifService from './NotifService';
 
 const DBService = {
     async getDB() {
@@ -100,9 +101,9 @@ const DBService = {
 
     },
 
-    async getAll(name, objectStoreChecked) {
+    async getAllObjects(name, objectStoreChecked) {
         // TODO refacto
-        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+        const db = await NotifService.fetching(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB connection ok');
 
         if (objectStoreChecked && db) {
             const store = db.transaction(name).objectStore(name);

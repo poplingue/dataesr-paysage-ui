@@ -30,7 +30,7 @@ export default function InfiniteAccordion({ title, content }) {
             type: 'DELETE_FORM_SECTION',
             payload: {
                 section: getUniqueId(pathname, newTitle),
-                formName: formName,
+                formName,
                 fieldsNumber: sections[type]
             }
         });

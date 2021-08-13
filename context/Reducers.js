@@ -67,6 +67,11 @@ const reducers = (state, action) => {
         }
         case ACTIONS.UPDATE_INDB_STORE_OBJECTS:
             return { ...state, storeObjects: [...action.payload.storeObjects] };
+
+        case ACTIONS.UPDATE_DEPARTMENTS: {
+            return { ...state, departments: action.payload };
+        }
+
         default:
             break;
     }

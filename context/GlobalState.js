@@ -14,6 +14,7 @@ export const DataProvider = ({ children }) => {
         darkTheme: false,
         storeObjects: [],
         objectStoreName: '',
+        departments: [],
         formName: '',
         forms: { 'person/create': {}, 'structure/create': {} }
     };

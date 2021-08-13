@@ -4,15 +4,16 @@ import InfiniteAccordion from '../InfiniteAccordion';
 import { AppContext } from '../../context/GlobalState';
 import DBService from '../../services/DBService';
 import { useEffect, useContext, useCallback, useState } from 'react';
+import NotifService from '../../services/NotifService';
 
-const CreateForm = ({ jsonForm }) => {
+const CreateForm = ({ jsonForm, data }) => {
     const { state: { formName, storeObjects, objectStoreName }, dispatch } = useContext(AppContext);
     const [fieldIds, setFieldIds] = useState([]);
 
     const getField = useCallback((field) => {
         const { value, uid, } = field;
         setFieldIds((prev) => [...prev, field.uid]);
-        dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName: formName } });
+        dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName } });
     }, [dispatch, formName]);
 
     useEffect(() => {
@@ -21,10 +22,9 @@ const CreateForm = ({ jsonForm }) => {
     }, [dispatch, formName]);
 
     useEffect(() => {
-        console.debug('==== DEBUG ==== ', formName);
         const getIndexDBData = async () => {
             if (objectStoreName) {
-                const indexDBData = await DBService.getAll(objectStoreName, storeObjects.indexOf(formName) > -1);
+                const indexDBData = await NotifService.fetching(DBService.getAllObjects(objectStoreName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
                 indexDBData.forEach((elm) => {
                     getField(elm);
                 });

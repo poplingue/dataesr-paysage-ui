@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
-
+import { Toaster } from 'react-hot-toast';
 export default function Layout({ children }) {
+    //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     return (
         <>
             <Head>
@@ -10,6 +11,7 @@ export default function Layout({ children }) {
             </Head>
             <Link href="/">Go Home</Link>
             {children}
+            <Toaster/>
         </>
     );
 }

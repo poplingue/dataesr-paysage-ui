@@ -2,8 +2,18 @@ import { Icon } from '@dataesr/react-dsfr';
 import CreateStructure from './create.json';
 import Layout from '../../components/Layout';
 import CreateForm from '../../components/CreateForm';
+import { useEffect } from 'react';
+import { useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
 
-export default function Create() {
+export default function Create({ data }) {
+    const { state, dispatch } = useContext(AppContext);
+
+    useEffect(() => {
+        if (data && !state.departments.length) {
+            dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
+        }
+    });
     return (
         <Layout>
             <div>
@@ -16,4 +26,14 @@ export default function Create() {
             </div>
         </Layout>
     );
+}
+
+export async function getStaticProps() {
+    const res = await fetch(`https://geo.api.gouv.fr/departements?fields=nom,code,codeRegion`);
+    const data = await res.json();
+
+    if (!data) {
+        return { notFound: true };
+    }
+    return { props: { data } };
 }
