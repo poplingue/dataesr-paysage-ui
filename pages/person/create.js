@@ -7,7 +7,7 @@ import SideNavigation from '../../components/SideNavigation';
 
 export default function Create() {
     return (
-        <Layout>
+        <Layout mainTitle="Create a person">
             <div className={styles.test}>
                 <Icon
                     name="ri-bubble-chart-line"

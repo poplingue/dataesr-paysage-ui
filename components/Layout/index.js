@@ -5,10 +5,10 @@ import { Toaster } from 'react-hot-toast';
 import {
     Header,
     HeaderBody,
-    HeaderOperator,
     Logo,
     Service,
     Tool,
+    Link as DSLink,
     ToolItemGroup,
     ToolItem,
     HeaderNav,
@@ -17,6 +17,7 @@ import {
     SwitchTheme,
 } from '@dataesr/react-dsfr';
 import { AppContext } from '../../context/GlobalState';
+import NavLink from '../NavLink';
 
 export default function Layout({ children, mainTitle }) {
     // const theme = useTheme();
@@ -63,17 +64,17 @@ export default function Layout({ children, mainTitle }) {
                     </Tool>
                 </HeaderBody>
                 <HeaderNav path={path}>
-                    <NavItem title="Accueil" link="/"/>
+                    <NavItem title="Accueil" asLink={<NavLink href="/">Accueil</NavLink>}/>
                     <NavItem title="Je contribue">
                         <NavSubItem
                             current={path.startsWith('/structure/create')}
                             title="Ajouter une structure"
-                            asLink={<Link href="/structure/create"/>}
+                            asLink={<NavLink href="/structure/create"/>}
                         />
                         <NavSubItem
                             current={path.startsWith('/structure/create')}
                             title="Ajouter une personne"
-                            asLink={<Link href="/person/create"/>}
+                            asLink={<NavLink href="/person/create"/>}
                         />
                         <NavSubItem title="Ressource #3" link="/path-to-resources-3"/>
                     </NavItem>
