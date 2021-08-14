@@ -3,6 +3,7 @@ import CreatePerson from './create.json';
 import Layout from '../../components/Layout';
 import styles from '../../styles/Person.module.scss';
 import CreateForm from '../../components/CreateForm';
+import SideNavigation from '../../components/SideNavigation';
 
 export default function Create() {
     return (
@@ -13,7 +14,9 @@ export default function Create() {
                     size="1x">
                     <h1>Create 1 Person</h1>
                 </Icon>
-                <CreateForm jsonForm={CreatePerson[0]}/>
+                <SideNavigation items={CreatePerson[0].form}>
+                    <CreateForm jsonForm={CreatePerson[0]}/>
+                </SideNavigation>
             </div>
         </Layout>
     );
