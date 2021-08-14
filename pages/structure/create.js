@@ -1,4 +1,3 @@
-import { Icon } from '@dataesr/react-dsfr';
 import CreateStructure from './create.json';
 import Layout from '../../components/Layout';
 import CreateForm from '../../components/CreateForm';
@@ -17,11 +16,6 @@ export default function Create({ data }) {
     return (
         <Layout mainTitle="Create a structure">
             <div>
-                <Icon
-                    name="ri-bubble-chart-line"
-                    size="1x">
-                    <h1>Create 1 Structure</h1>
-                </Icon>
                 <SideNavigation items={CreateStructure[0].form}>
                     <CreateForm jsonForm={CreateStructure[0]}/>
                 </SideNavigation>

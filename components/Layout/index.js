@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import {
@@ -8,7 +7,6 @@ import {
     Logo,
     Service,
     Tool,
-    Link as DSLink,
     ToolItemGroup,
     ToolItem,
     HeaderNav,
@@ -16,21 +14,21 @@ import {
     NavSubItem,
     SwitchTheme,
 } from '@dataesr/react-dsfr';
-import { AppContext } from '../../context/GlobalState';
+import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
+import { useRouter } from 'next/router';
 
 export default function Layout({ children, mainTitle }) {
-    // const theme = useTheme();
-    const { state: { pathname } } = useContext(AppContext);
-    const [path, setPath] = useState(() => pathname || '');
-    const [h, setH] = useState(false);
+    const { pathname } = useRouter();
+    const [waitWindow, setWaitWindow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        if (!h) {
-            setH(true);
+        if (!waitWindow) {
+            setWaitWindow(true);
         }
-    }, [h]);
+    }, [waitWindow]);
+
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     return (
         <>
@@ -39,7 +37,7 @@ export default function Layout({ children, mainTitle }) {
                 <link rel="icon" href="/favicon/favicon.ico"/>
                 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet"/>
             </Head>
-            {h && <><Header>
+            {waitWindow && <><Header>
                 <HeaderBody>
                     <Logo splitCharacter={10}>{`Ministère le l'enseignement supérieur et de la recherche`}</Logo>
                     <Service
@@ -63,16 +61,16 @@ export default function Layout({ children, mainTitle }) {
                         </ToolItemGroup>
                     </Tool>
                 </HeaderBody>
-                <HeaderNav path={path}>
+                <HeaderNav path={pathname}>
                     <NavItem title="Accueil" asLink={<NavLink href="/">Accueil</NavLink>}/>
                     <NavItem title="Je contribue">
                         <NavSubItem
-                            current={path.startsWith('/structure/create')}
+                            current={pathname.startsWith('/structure/create')}
                             title="Ajouter une structure"
                             asLink={<NavLink href="/structure/create"/>}
                         />
                         <NavSubItem
-                            current={path.startsWith('/structure/create')}
+                            current={pathname.startsWith('/person/create')}
                             title="Ajouter une personne"
                             asLink={<NavLink href="/person/create"/>}
                         />
@@ -91,6 +89,7 @@ export default function Layout({ children, mainTitle }) {
                     <NavItem title="Aide" link="/"/>
                 </HeaderNav>
             </Header><SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/></>}
+            <DynamicBreadcrumb/>
             {children}
             <Toaster/>
         </>
