@@ -10,12 +10,14 @@ function CustomRadio({ title, staticValues = [], parentSection }) {
     const { state: { forms, formName, objectStoreName }, dispatch } = useContext(AppContext);
     const router = useRouter();
     const uniqueId = getUniqueId(router.pathname, parentSection, title, 0);
+
     const onRadioChange = (e) => {
         dispatch({
             type: 'UPDATE_FORM_FIELD',
             payload: { value: e.target.value, uid: uniqueId, formName }
         });
     };
+
     useEffect(() => {
         if (!staticValues.length && !radioValues.length) {
             // case no static values
@@ -44,7 +46,7 @@ function CustomRadio({ title, staticValues = [], parentSection }) {
                                 key={i}
                                 label={radio.label}
                                 value={radio.value}
-                                isChecked={objectStoreName ? radio.label === forms[objectStoreName][uniqueId] : false}
+                                isChecked={objectStoreName ? radio.value === forms[objectStoreName][uniqueId] : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}

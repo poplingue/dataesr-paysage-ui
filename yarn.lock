@@ -61,10 +61,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@dataesr/react-dsfr@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.6.0.tgz#6b44255828478b178c2925ec45bda914a49ada1b"
-  integrity sha512-yZhXDbqqoq04Jh7JxVWsdeFU5frZcSqY+9bkYeYtWRyAmzK5Yt3Uk8Rbs1nMUNQz03Lmo+SdrYlpTSzC3/6lUg==
+"@dataesr/react-dsfr@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.6.1.tgz#7b1fa85d5598f753cb3df538287dfe438e4d3c8b"
+  integrity sha512-u5mC/Ls1NbZOWBSCuv8QYHFNuOPdF3NN0rck1/qBzqpfZ52gbHhwRL6JIrxbRBkwlGqAREQbHVMft0/086PUfA==
   dependencies:
     "@babel/runtime" "^7.15.3"
     "@gouvfr/dsfr" "^1.1.0"

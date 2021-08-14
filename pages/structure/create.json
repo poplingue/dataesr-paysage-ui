@@ -2,6 +2,16 @@
   {
     "form": [
       {
+        "title": "État",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Test",
+            "type": "toggle"
+          }
+        ]
+      },
+      {
         "title": "Informations",
         "content": [
           {

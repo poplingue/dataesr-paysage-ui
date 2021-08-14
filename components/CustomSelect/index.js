@@ -9,8 +9,9 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
     const { state: { formName, forms, objectStoreName }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
-    const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, parentSection, title, keyNumber || 0);
+    const { pathname } = useRouter();
+    const uniqueId = getUniqueId(pathname, parentSection, title, keyNumber || 0);
+
     const onSelectChange = (e) => {
         const value = e.target.value;
         const payload = {
@@ -25,11 +26,13 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
         }
         setSelectValue(value);
     };
+
     useEffect(() => {
         if (objectStoreName && !selectValue && forms[objectStoreName]) {
             setSelectValue(forms[objectStoreName][uniqueId]);
         }
     }, [forms, objectStoreName, selectValue, uniqueId]);
+
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
@@ -49,6 +52,7 @@ export default function CustomSelect({ title, staticValues = [], keyNumber, pare
             setOptions(prev => [...prev, { value: '', label: 'Select an option' }]);
         }
     }, [options, setOptions, staticValues, title]);
+
     return (
         <section className="wrapper-select py-10">
             <Select
