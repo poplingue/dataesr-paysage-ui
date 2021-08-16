@@ -31,6 +31,7 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
         <>
             <TextInput
                 data-field={uniqueId}
+                data-testid={title}
                 ref={inputRef}
                 onChange={(e) => saveValue(e, inputRef)}
                 value={textValue || ''}

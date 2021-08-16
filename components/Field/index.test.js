@@ -25,7 +25,7 @@ describe('Field component', () => {
         ><p>Test</p></Field>);
     });
 
-    it('should render the Remove button', () => {
-        expect(screen.getByTestId('btn-remove')).toBeVisible();
+    it('should render the Delete field button', () => {
+        expect(screen.getByTestId('btn-delete')).toBeVisible();
     });
 });

@@ -12,7 +12,6 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
     const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
 
     useEffect(() => {
-        // TODO refacto forms ===> []
         if (formName && Object.keys(forms).length > 0 && !init) {
             if (Object.keys(forms[formName]).length > 0) {
                 setCheched(forms[formName][uniqueId]);

@@ -2,7 +2,7 @@ import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { Children, cloneElement } from 'react';
 import FieldButton from '../FieldButton';
 
-export default function Index({ title, label, index, parentsection, deleteField, children, value }) {
+export default function Field({ title, label, index, parentsection, deleteField, children, value }) {
     // TODO do it with useRef??
     return <Container fluid>
         <Row alignItems="middle" gutters>
@@ -20,7 +20,7 @@ export default function Index({ title, label, index, parentsection, deleteField,
                 )}
             </Col>
             {index > 0 && <Col n="4">
-                <FieldButton dataTestId='btn-remove' title={`Remove ${label}`} onClick={() => deleteField(index)}/>
+                <FieldButton datatestid="btn-delete" title={`Remove ${label}`} onClick={() => deleteField(index)}/>
             </Col>}
         </Row>
     </Container>;

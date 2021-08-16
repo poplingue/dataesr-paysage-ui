@@ -18,9 +18,11 @@ const Providers = ({ children }) => {
                     'person/create@section/infinite#2': 'test 3'
                 }, 'structure/create': {}
             }
+        },
+        dispatch: () => {
         }
-
-    }}>{children}</AppContext.Provider>;
+    }
+    }>{children}</AppContext.Provider>;
 };
 const customRender = (ui, options = {}) =>
     render(ui, { wrapper: Providers, ...options });

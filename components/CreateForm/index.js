@@ -3,7 +3,7 @@ import Switch from '../Switch';
 import InfiniteAccordion from '../InfiniteAccordion';
 import { AppContext } from '../../context/GlobalState';
 import DBService from '../../services/DBService';
-import { useEffect, useContext, useCallback, useState, forwardRef, createRef } from 'react';
+import { useEffect, useContext, useCallback, useState } from 'react';
 import NotifService from '../../services/NotifService';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
 

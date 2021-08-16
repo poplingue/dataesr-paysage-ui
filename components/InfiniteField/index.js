@@ -64,7 +64,7 @@ function InfiniteField({ children, title, parentsection }) {
                 }
             )}
             <Col className="py-10">
-                <FieldButton dataTestId='btn-add' onClick={() => setNumber(number + 1)} title={`Add 1 ${title}`}/>
+                <FieldButton datatestid='btn-add' onClick={() => setNumber(number + 1)} title={`Add 1 ${title}`}/>
             </Col>
         </Col>
     );

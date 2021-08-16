@@ -9,7 +9,7 @@ export const AppContext = createContext();
 
 export const DataProvider = ({ children }) => {
     const { pathname } = useRouter();
-
+    // TODO refacto state.forms ===> []
     const initialState = {
         darkTheme: false,
         storeObjects: [],
