@@ -5,11 +5,11 @@ import { getUniqueId } from '../../helpers/utils';
 import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
 
-function CustomRadio({ title, staticValues = [], parentSection }) {
+function CustomRadio({ title, staticValues = [], parentsection }) {
     const [radioValues, setRadioValues] = useState([]);
     const { state: { forms, formName, objectStoreName }, dispatch } = useContext(AppContext);
     const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, parentSection, title, 0);
+    const uniqueId = getUniqueId(router.pathname, parentsection, title, 0);
 
     const onRadioChange = (e) => {
         dispatch({

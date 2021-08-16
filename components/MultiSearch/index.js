@@ -6,12 +6,12 @@ import { AppContext } from '../../context/GlobalState';
 import { getUniqueId } from '../../helpers/utils';
 import { useRouter } from 'next/router';
 
-function MultiSearch({ title, parentSection }) {
+function MultiSearch({ title, parentsection }) {
     // TODO manage indexDB
     const [textValue, setTextValue] = useState('');
     const { state: { departments, formName, forms }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
-    const uid = getUniqueId(pathname, parentSection, title, 0);
+    const uid = getUniqueId(pathname, parentsection, title, 0);
     const [selectedValues, setSelectedvalues] = useState([]);
     const currentForm = useCallback(() => forms && formName ? forms[formName] : null, [forms, formName]);
     const options = departments.map((departement) => ({

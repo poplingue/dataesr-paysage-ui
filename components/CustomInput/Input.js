@@ -5,12 +5,12 @@ import { useContext } from 'react';
 import { getUniqueId } from '../../helpers/utils';
 import { useRouter } from 'next/router';
 
-function Input({ label, keyNumber, title, parentSection, value = '' }) {
+function Input({ label, keynumber, title, parentsection, value = '' }) {
     const { state: { forms, objectStoreName, formName }, dispatch } = useContext(AppContext);
     const inputRef = useRef(null);
     const { pathname } = useRouter();
     // TODO dynamic
-    const uniqueId = getUniqueId(pathname, parentSection, title, keyNumber);
+    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
     const [textValue, setTextValue] = useState(value);
     const saveValue = (e) => {
         const value = e.target.value;
@@ -26,7 +26,7 @@ function Input({ label, keyNumber, title, parentSection, value = '' }) {
         if (objectStoreName && forms[objectStoreName]) {
             setTextValue(forms[objectStoreName][uniqueId]);
         }
-    }, [forms, objectStoreName, textValue, uniqueId, title, keyNumber]);
+    }, [forms, objectStoreName, textValue, uniqueId, title, keynumber]);
     return (
         <>
             <TextInput

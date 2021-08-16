@@ -2,7 +2,7 @@ import { Container, Row, Col } from '@dataesr/react-dsfr';
 import { range } from '../../helpers/utils';
 import CustomSelect from '../CustomSelect';
 
-export default function CustomDate({ title, parentSection, keyNumber }) {
+export default function CustomDate({ title, parentsection, keynumber }) {
     const days = range(1, 31, true);
     const months = range(1, 12, true);
     const years = range(1900, 2021, true);
@@ -24,8 +24,8 @@ export default function CustomDate({ title, parentSection, keyNumber }) {
                 {dateData.map((select) => {
                     return <Col n="12 md-4" key={select.title}>
                         <CustomSelect
-                            parentSection={parentSection}
-                            keyNumber={keyNumber}
+                            parentsection={parentsection}
+                            keynumber={keynumber}
                             title={select.title}
                             staticValues={select.options}
                         />

@@ -5,12 +5,12 @@ import { useRouter } from 'next/router';
 import { AppContext } from '../../context/GlobalState';
 import { getUniqueId } from '../../helpers/utils';
 
-export default function CustomSelect({ title, staticValues = [], keyNumber, parentSection }) {
+export default function CustomSelect({ title, staticValues = [], keynumber, parentsection }) {
     const { state: { formName, forms, objectStoreName }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
     const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentSection, title, keyNumber || 0);
+    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber || 0);
 
     const onSelectChange = (e) => {
         const value = e.target.value;

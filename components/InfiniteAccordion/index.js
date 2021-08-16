@@ -69,7 +69,7 @@ export default function InfiniteAccordion({ title, content,  dataAttSection }) {
                                         <Col n="8">
                                             <Switch
                                                 section={newTitle}
-                                                keyNumber={i}
+                                                keynumber={i}
                                                 type={fieldType}
                                                 title={fieldTitle}
                                                 infinite={infinite}

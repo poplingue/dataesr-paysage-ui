@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import { getUniqueId } from '../../helpers/utils';
 import { AppContext } from '../../context/GlobalState';
 
-export default function CustomToggle({ keyNumber, parentSection, title }) {
+export default function CustomToggle({ keynumber, parentsection, title }) {
     const { state: { formName, forms = {} }, dispatch } = useContext(AppContext);
     const [checked, setCheched] = useState('none');
     const [init, setInit] = useState(true);
     const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentSection, title, keyNumber);
+    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
 
     useEffect(() => {
         // TODO refacto forms ===> []

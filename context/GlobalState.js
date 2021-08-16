@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useState } from 'react';
 import reducers from './Reducers';
 import DBService from '../services/DBService';
-import { useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { getFormName } from '../helpers/utils';
 import { useRouter } from 'next/router';
 

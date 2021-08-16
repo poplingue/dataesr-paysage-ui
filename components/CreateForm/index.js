@@ -54,7 +54,7 @@ const CreateForm = ({ jsonForm }) => {
                                 <Row alignItems="middle">
                                     <Col>
                                         <Switch
-                                            keyNumber={i}
+                                            keynumber={i}
                                             section={sectionTitle}
                                             type={type}
                                             title={title}

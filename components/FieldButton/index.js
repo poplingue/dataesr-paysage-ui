@@ -1,7 +1,7 @@
 import { Button } from '@dataesr/react-dsfr';
 
-export default function FieldButton({ title, onClick }) {
+export default function FieldButton({ title, onClick, dataTestId }) {
     return (
-        <Button size="sm" onClick={onClick}>{title}</Button>
+        <Button data-testid={dataTestId} size="sm" onClick={onClick}>{title}</Button>
     );
 }
