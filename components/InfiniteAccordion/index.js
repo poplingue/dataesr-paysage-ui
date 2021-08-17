@@ -79,6 +79,7 @@ export default function InfiniteAccordion({ title, content,  dataAttSection }) {
                                         {(sections[type] - 1 === i && i !== 0 && j === content.length - 1) &&
                                         <Col n="4">
                                             <FieldButton
+                                                datatestid={`btn-delete-${cleanString(newTitle)}`}
                                                 onClick={() => deleteSection(type, i, fieldTitle, newTitle)}
                                                 title={`Delete ${newTitle}`}
                                             >
@@ -93,6 +94,7 @@ export default function InfiniteAccordion({ title, content,  dataAttSection }) {
             </section>;
         })}
         <Button
+            data-testid={`btn-add-${cleanString(type)}`}
             onClick={() => updateSection(type, sections[type] + 1)}>
             Add 1 {title}</Button>
     </>;

@@ -52,6 +52,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
     };
     return <Toggle
         data-field={uniqueId}
+        data-cy={uniqueId}
         onChange={(e) => onToggleChange(e)}
         isChecked={checked === 'true'}
         label={title}

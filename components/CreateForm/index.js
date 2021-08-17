@@ -5,7 +5,7 @@ import { AppContext } from '../../context/GlobalState';
 import DBService from '../../services/DBService';
 import { useEffect, useContext, useCallback, useState } from 'react';
 import NotifService from '../../services/NotifService';
-import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import { sectionUniqueId } from '../../helpers/utils';
 
 const CreateForm = ({ jsonForm }) => {
     const { state: { formName, storeObjects, objectStoreName }, dispatch } = useContext(AppContext);

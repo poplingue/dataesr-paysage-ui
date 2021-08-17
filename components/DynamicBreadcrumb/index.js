@@ -13,7 +13,7 @@ export default function DynamicBreadcrumb() {
         <Breadcrumb>
             <BreadcrumbItem href="/" asLink={<NavLink href="/">Accueil</NavLink>}>Accueil</BreadcrumbItem>
             {obj[router.asPath].map((elm, i) => {
-                return <BreadcrumbItem key={elm}>
+                return <BreadcrumbItem key={elm} data-cy='current-page'>
                     {elm}
                 </BreadcrumbItem>;
             })}

@@ -57,6 +57,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
         <section className="wrapper-select py-10">
             <Select
                 data-field={uniqueId}
+                data-testid={uniqueId}
                 onChange={(e) => onSelectChange(e)}
                 selected={selectValue}
                 label={title}

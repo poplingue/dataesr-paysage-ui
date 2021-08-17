@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --env=jsdom --watch"
+    "test": "jest --env=jsdom --watchAll",
+    "cy:run-rec": "yarn cy:run-only --record --key 27e5d3f3-7cbb-4ff6-8ffd-8851e432d76a",
+    "cy:open-only": "cypress open",
+    "cy:run-only": "cypress run",
+    "cy:open": "start-server-and-test dev 3000 cy:open-only",
+    "cy:run": "start-server-and-test dev 3000 cy:run-only"
   },
   "dependencies": {
     "@dataesr/react-dsfr": "0.6.1",
@@ -22,6 +27,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
+    "cypress": "^8.2.0",
     "enzyme": "^3.11.0",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",
@@ -29,6 +35,7 @@
     "jest": "^27.0.6",
     "jest-enzyme": "^7.1.2",
     "jest-styled-components": "^7.0.5",
+    "start-server-and-test": "^1.13.1",
     "webpack": "^5.50.0",
     "webpack-dev-server": "^3.11.2"
   }

@@ -42,11 +42,13 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                 <Col>
                     <RadioGroup legend={title} isInline data-field={uniqueId}>
                         {radioValues.map((radio, i) => {
+                            const { value, label } = radio;
                             return <Radio
+                                data-cy={value}
                                 key={i}
-                                label={radio.label}
-                                value={radio.value}
-                                isChecked={objectStoreName ? radio.value === forms[objectStoreName][uniqueId] : false}
+                                label={label}
+                                value={value}
+                                isChecked={objectStoreName ? value === forms[objectStoreName][uniqueId] : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}
