@@ -29,11 +29,18 @@ const DBService = {
 
         DBOpenRequest.onupgradeneeded = (event) => {
             let names = [];
+
             objectStores.map((name) => {
+                if (event.target.result.objectStoreNames.contains(name)) {
+                    event.target.result.deleteObjectStore(name);
+                }
+
                 event.target.result.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
                 names.push(name);
             });
+
             cb(names);
+            NotifService.info(`IndexDB version upgraded from ${event.oldVersion} to ${event.newVersion}`);
         };
 
         DBOpenRequest.onsuccess = (event) => {
@@ -103,7 +110,6 @@ const DBService = {
     },
 
     async getAllObjects(name, objectStoreChecked) {
-        console.log('==== getAllObjects ==== ', );
         // TODO refacto
         const db = await NotifService.fetching(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB connection ok');
 

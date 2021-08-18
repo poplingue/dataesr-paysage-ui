@@ -6,94 +6,59 @@ const reducers = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
             const { value, formName, uid, dbUpdate = true } = action.payload;
+            const checkStoreObject = state.storeObjects.indexOf(formName) > -1;
+
 
             // TODO DBService outside from Reducer
-            if (dbUpdate && state.storeObjects.length > 0) {
+            if (dbUpdate && checkStoreObject) {
                 DBService.set({
-                    value: action.payload.value,
+                    value,
                     uid
-                }, formName, state.storeObjects.indexOf(formName) > -1);
+                }, formName, checkStoreObject);
             }
 
-            let formsInd;
-            let f = state.forms.find((f, i) => {
-                if (Object.keys(f)[0] === formName) {
-                    formsInd = i;
+            // TODO replace findIndex()?
+            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
+            const newForm = getForm(state.forms, formName);
 
-                    return true;
-                }
-            });
+            if (newForm) {
+                const fieldIndex = newForm.findIndex(field => field.uid === uid);
 
-            if (f[formName].length) {
-                const exist = f[formName].findIndex(item => item.uid === uid);
-
-                if (exist >= 0) {
-                    // replace object value at uid OR do it with index
-                    f[formName].forEach((ob) => {
-                        if (ob.uid === uid) {
-                            ob.value = value;
-                        }
-                    });
+                if (fieldIndex > -1) {
+                    // replace object field at formIndex
+                    newForm[fieldIndex] = { value, uid };
                 } else {
-                    f[formName].push({ value, uid });
+                    newForm.push({ value, uid });
                 }
-
-            } else {
-                f[formName].push({ value, uid });
             }
-
-            const x = {
-                ...state.forms.map((form) => {
-                    if (Object.keys(form)[0] === formName) {
-                        if (!form[formName].length) {
-                            form[formName].push({ value, uid });
-                        } else {
-
-                            form[formName].map((field) => {
-
-                                if (field.uid === uid) {
-                                    return { value, uid };
-                                }
-
-                                return field;
-                            });
-                        }
-                    }
-
-                    return form;
-                })
-            };
 
             return {
                 ...state,
                 forms: [
-                    ...state.forms.slice(0, formsInd), // everything before current post
-                    { ...state.forms[formsInd], ...f },
-                    ...state.forms.slice(formsInd + 1), // everything after current post
+                    ...state.forms.slice(0, formIndex), // everything before current field
+                    { ...state.forms[formIndex], ...{ [formName]: newForm } },
+                    ...state.forms.slice(formIndex + 1), // everything after current field
                 ]
             };
         }
 
         case ACTIONS.DELETE_FORM_FIELD: {
             const { formName, uid } = action.payload;
+
             // TODO DBService outside from Reducer
             DBService.delete(uid, formName, state.storeObjects.indexOf(formName) > -1);
-            const currentForm = getForm(state.forms, formName);
-            const newForm = currentForm.filter((field) => {
-                return field.uid !== uid;
-            });
+
+            const currentForm = getForm(state.forms, formName) || [];
+            const newForm = currentForm.filter((field) => field.uid !== uid);
+            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
 
             return {
                 ...state,
-                forms: {
-                    ...state.forms.map((form) => {
-                        if (Object.keys(form)[0] === formName) {
-                            return { [formName]: newForm };
-                        }
-
-                        return form;
-                    })
-                },
+                forms: [
+                    ...state.forms.slice(0, formIndex), // everything before current field
+                    { ...state.forms[formIndex], ...{ [formName]: newForm } },
+                    ...state.forms.slice(formIndex + 1), // everything after current field
+                ]
             };
         }
 
@@ -134,9 +99,9 @@ const reducers = (state, action) => {
             return {
                 ...state,
                 forms: [
-                    ...state.forms.slice(0, formsInd), // everything before current post
+                    ...state.forms.slice(0, formsInd), // everything before current field
                     { ...state.forms[formsInd], ...{ [formName]: newForm } },
-                    ...state.forms.slice(formsInd + 1), // everything after current post
+                    ...state.forms.slice(formsInd + 1), // everything after current field
                 ]
             };
 

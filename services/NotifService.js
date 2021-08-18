@@ -11,11 +11,13 @@ const NotifService = {
                 duration: 8000,
                 icon: '☀️',
                 style: {
+                    fontSize: 14,
                     background: 'rgba(197, 230, 216, 0.6)',
                 },
             },
             loading: {
                 style: {
+                    fontSize: 14,
                     background: 'rgba(213, 219, 239, 0.6)',
                 },
             },
@@ -23,6 +25,7 @@ const NotifService = {
                 icon: '🔴',
                 duration: 100000,
                 style: {
+                    fontSize: 14,
                     background: 'rgba(247, 191, 195, 0.6)',
                 },
             },
@@ -34,6 +37,16 @@ const NotifService = {
                 'aria-live': message,
             },
         });
+    },
+    info(message) {
+        return toast(message, {
+            position: 'top-right',
+            icon: '👾',
+            duration: 100000,
+            style: {
+                fontSize: 14,
+                background: 'rgba(198, 255, 237, 0.6)',
+            }, });
     }
 };
 

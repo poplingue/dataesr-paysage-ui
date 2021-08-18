@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem, Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';

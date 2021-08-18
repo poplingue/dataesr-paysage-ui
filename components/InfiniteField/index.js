@@ -30,7 +30,7 @@ function InfiniteField({ children, title, parentsection }) {
                 if (i === number) {
                     const payload = {
                         uid: getUniqueId(pathname, parentsection, title, i - 1),
-                        formName,
+                        formName
                     };
                     dispatch({ type: 'DELETE_FORM_FIELD', payload });
                 }
@@ -40,7 +40,12 @@ function InfiniteField({ children, title, parentsection }) {
                 uid: getUniqueId(pathname, parentsection, title, index),
                 formName,
             };
-            dispatch({ type: 'DELETE_FORM_FIELD', payload });
+            dispatch({
+                type: 'DELETE_FORM_FIELD', payload: {
+                    uid: getUniqueId(pathname, parentsection, title, index),
+                    formName,
+                }
+            });
         }
 
         setNumber(number - 1);
