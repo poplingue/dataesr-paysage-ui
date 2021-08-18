@@ -1,4 +1,4 @@
-import { Col, SideMenu, SideMenuLink, Row, Container } from '@dataesr/react-dsfr';
+import { Col, Container, Row, SideMenu, SideMenuLink } from '@dataesr/react-dsfr';
 import { sectionUniqueId } from '../../helpers/utils';
 
 export default function SideNavigation({ children, items }) {
@@ -7,6 +7,7 @@ export default function SideNavigation({ children, items }) {
         const { left, top } = section.getBoundingClientRect();
         window.scrollTo(left, top + window.scrollY);
     };
+
     return (<Container>
         <Row>
             <Col n="12 md-3">
@@ -16,6 +17,7 @@ export default function SideNavigation({ children, items }) {
                     className="fr-sidemenu--sticky">
                     {items.map((section) => {
                         const { title, content } = section;
+
                         return <SideMenuLink
                             onClick={(e) => goToSection(e, sectionUniqueId(title, content.length))}
                             href="/"

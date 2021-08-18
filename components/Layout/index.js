@@ -1,6 +1,3 @@
-import Head from 'next/head';
-import { useContext, useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import {
     Header,
     HeaderBody,
@@ -14,9 +11,12 @@ import {
     NavSubItem,
     SwitchTheme,
 } from '@dataesr/react-dsfr';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
-import { useRouter } from 'next/router';
 
 export default function Layout({ children, mainTitle }) {
     const { pathname } = useRouter();

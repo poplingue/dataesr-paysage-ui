@@ -8,7 +8,6 @@ const Providers = ({ children }) => {
         state: {
             darkTheme: false,
             storeObjects: ['person/create'],
-            objectStoreName: 'person/create',
             departments: [],
             formName: 'person/create',
             forms: {

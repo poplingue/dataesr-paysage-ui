@@ -1,9 +1,9 @@
-import CustomInput from '../CustomInput';
-import CustomSelect from '../CustomSelect';
-import CustomRadio from '../CustomRadio';
-import MultiSearch from '../MultiSearch';
 import CustomDate from '../CustomDate';
+import CustomInput from '../CustomInput';
+import CustomRadio from '../CustomRadio';
+import CustomSelect from '../CustomSelect';
 import CustomToggle from '../CustomToggle';
+import MultiSearch from '../MultiSearch';
 
 export default function Switch({ type, title, infinite, staticValues, keynumber, section }) {
     const renderSwitch = (type) => {
@@ -51,5 +51,6 @@ export default function Switch({ type, title, infinite, staticValues, keynumber,
                 return null;
         }
     };
+
     return renderSwitch(type);
 }

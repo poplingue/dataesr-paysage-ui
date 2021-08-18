@@ -28,7 +28,7 @@ const NotifService = {
             },
             icon: '👾',
             duration: 5000,
-            position: 'top-right',
+            position: 'bottom-right',
             ariaProps: {
                 role: 'status',
                 'aria-live': message,

@@ -1,15 +1,16 @@
-import { useState, useEffect, useContext } from 'react';
-import { Radio, RadioGroup, Container, Row, Col } from '@dataesr/react-dsfr';
-import { getUrl } from '../../helpers/constants';
-import { getUniqueId } from '../../helpers/utils';
-import { AppContext } from '../../context/GlobalState';
+import { Col, Container, Radio, RadioGroup, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getUrl } from '../../helpers/constants';
+import { getField, getFormName, getUniqueId } from '../../helpers/utils';
 
 function CustomRadio({ title, staticValues = [], parentsection }) {
     const [radioValues, setRadioValues] = useState([]);
-    const { state: { forms, formName, objectStoreName }, dispatch } = useContext(AppContext);
-    const router = useRouter();
-    const uniqueId = getUniqueId(router.pathname, parentsection, title, 0);
+    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { pathname } = useRouter();
+    const uniqueId = getUniqueId(pathname, parentsection, title, 0);
+    const formName = getFormName(pathname);
 
     const onRadioChange = (e) => {
         dispatch({
@@ -36,6 +37,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
             }));
         }
     }, [radioValues, setRadioValues, staticValues, title]);
+
     return (<Container fluid>
         <section className="wrapper-input py-10">
             <Row>
@@ -43,12 +45,13 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                     <RadioGroup legend={title} isInline data-field={uniqueId}>
                         {radioValues.map((radio, i) => {
                             const { value, label } = radio;
+
                             return <Radio
                                 data-cy={value}
                                 key={i}
                                 label={label}
                                 value={value}
-                                isChecked={objectStoreName ? value === forms[objectStoreName][uniqueId] : false}
+                                isChecked={formName ? value === getField(forms, formName, uniqueId) : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}

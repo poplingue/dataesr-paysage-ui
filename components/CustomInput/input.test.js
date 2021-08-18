@@ -1,8 +1,8 @@
+import * as nextRouter from 'next/router';
 import React from 'react';
+import { getUniqueId } from '../../helpers/utils';
 import { render, screen, fireEvent } from '../../test/test-utils';
 import Input from './Input';
-import * as nextRouter from 'next/router';
-import { getUniqueId } from '../../helpers/utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({ route: '/person/create', pathname: '/person/create' }));

@@ -1,37 +1,42 @@
-import { useContext, useEffect, useState } from 'react';
 import { Select } from '@dataesr/react-dsfr';
-import { getUrl } from '../../helpers/constants';
 import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getUniqueId } from '../../helpers/utils';
+import { getUrl } from '../../helpers/constants';
+import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 
 export default function CustomSelect({ title, staticValues = [], keynumber, parentsection }) {
-    const { state: { formName, forms, objectStoreName }, dispatch } = useContext(AppContext);
+    const { state: { forms }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
     const { pathname } = useRouter();
     const uniqueId = getUniqueId(pathname, parentsection, title, keynumber || 0);
+    const formName = getFormName(pathname);
 
     const onSelectChange = (e) => {
         const value = e.target.value;
         const payload = {
             value,
             uid: uniqueId,
-            formName
+            formName,
         };
+
         if (e.target.value) {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
         } else {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
         }
+
         setSelectValue(value);
     };
 
     useEffect(() => {
-        if (objectStoreName && !selectValue && forms[objectStoreName]) {
-            setSelectValue(forms[objectStoreName][uniqueId]);
+        // TODO refacto same elsewhere
+
+        if (formName && !selectValue && getForm(forms, formName)) {
+            setSelectValue(getField(forms, formName, uniqueId));
         }
-    }, [forms, objectStoreName, selectValue, uniqueId]);
+    }, [formName, forms, selectValue, uniqueId]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {

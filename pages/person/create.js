@@ -1,8 +1,8 @@
-import CreatePerson from './create.json';
-import Layout from '../../components/Layout';
-import styles from '../../styles/Person.module.scss';
 import CreateForm from '../../components/CreateForm';
+import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
+import styles from '../../styles/Person.module.scss';
+import CreatePerson from './create.json';
 
 export default function Create() {
     return (

@@ -1,4 +1,34 @@
 {
+  "plugins": [
+    "eslint-plugin-import-order-alphabetical"
+  ],
+  "rules": {
+    "newline-before-return": "error",
+    "padding-line-between-statements": [
+      "warn",
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "block"
+      },
+      {
+        "blankLine": "always",
+        "prev": "block",
+        "next": "*"
+      },
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "block-like"
+      },
+      {
+        "blankLine": "always",
+        "prev": "block-like",
+        "next": "*"
+      }
+    ],
+    "import-order-alphabetical/order": "error"
+  },
   "extends": [
     "next",
     "next/core-web-vitals"

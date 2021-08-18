@@ -1,10 +1,10 @@
-import CreateStructure from './create.json';
-import Layout from '../../components/Layout';
-import CreateForm from '../../components/CreateForm';
 import { useEffect } from 'react';
 import { useContext } from 'react';
-import { AppContext } from '../../context/GlobalState';
+import CreateForm from '../../components/CreateForm';
+import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
+import { AppContext } from '../../context/GlobalState';
+import CreateStructure from './create.json';
 
 export default function Create({ data }) {
     const { state, dispatch } = useContext(AppContext);
@@ -13,7 +13,8 @@ export default function Create({ data }) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
         }
     });
-    return (
+    
+return (
         <Layout mainTitle="Create a structure">
             <div>
                 <SideNavigation items={CreateStructure[0].form}>
@@ -31,5 +32,7 @@ export async function getStaticProps() {
     if (!data) {
         return { notFound: true };
     }
-    return { props: { data } };
+
+    
+return { props: { data } };
 }

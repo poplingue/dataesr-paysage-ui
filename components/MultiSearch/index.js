@@ -1,19 +1,19 @@
 import { Checkbox, TextInput, Col, Container, Row } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
-import styles from './MultiSearch.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
-import { getUniqueId } from '../../helpers/utils';
-import { useRouter } from 'next/router';
+import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, parentsection }) {
-    // TODO manage indexDB
-    const [textValue, setTextValue] = useState('');
-    const { state: { departments, formName, forms }, dispatch } = useContext(AppContext);
+    const { state: { departments, forms }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
+    const formName = getFormName(pathname);
     const uid = getUniqueId(pathname, parentsection, title, 0);
+    const [textValue, setTextValue] = useState('');
+    const currentForm = useCallback(() => forms && formName ? getForm(forms, formName) : null, [forms, pathname]);
     const [selectedValues, setSelectedvalues] = useState([]);
-    const currentForm = useCallback(() => forms && formName ? forms[formName] : null, [forms, formName]);
     const options = departments.map((departement) => ({
         value: departement.nom,
         label: `${departement.codeRegion} - ${departement.nom}`
@@ -27,6 +27,7 @@ function MultiSearch({ title, parentsection }) {
     const onSelectChange = (e) => {
         const { value } = e.target;
         let newValue = selectedValues.filter((item) => item !== value);
+
         if (selectedValues.indexOf(value) === -1) {
             newValue = [...selectedValues, value];
         }
@@ -36,16 +37,16 @@ function MultiSearch({ title, parentsection }) {
             payload: {
                 value: newValue,
                 uid,
-                formName
+                formName,
             }
         });
-
     };
+
     useEffect(() => {
-        if (uid && currentForm() && currentForm()[uid]) {
-            setSelectedvalues(currentForm()[uid]);
+        if (uid && getForm(forms, formName)) {
+            setSelectedvalues(getField(forms, formName, uid));
         }
-    }, [currentForm, selectedValues, uid]);
+    }, [currentForm, formName, forms, selectedValues, uid]);
 
     return (
         <section className="wrapper-multi-search py-10">

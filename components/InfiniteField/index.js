@@ -1,24 +1,27 @@
-import FieldButton from '../FieldButton';
 import { Col } from '@dataesr/react-dsfr';
-import { useState, useContext, useEffect } from 'react';
-import { AppContext } from '../../context/GlobalState';
-import { getUniqueId } from '../../helpers/utils';
 import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import Field from '../Field';
+import FieldButton from '../FieldButton';
 
 function InfiniteField({ children, title, parentsection }) {
-    const { state: { forms, formName }, dispatch } = useContext(AppContext);
+    const { state: { forms }, dispatch } = useContext(AppContext);
     const [number, setNumber] = useState(0);
     const { pathname } = useRouter();
+    const formName = getFormName(pathname);
+
     const deleteField = (index) => {
         if (number > 2) {
             // TODO refacto??
             for (let i = 0; i <= number; i = i + 1) {
                 if (i > index && i < number) {
+                    //TODO REFACTO getUniqueID
                     dispatch({
                         type: 'UPDATE_FORM_FIELD', payload: {
                             formName,
-                            value: forms[formName][getUniqueId(pathname, parentsection, title, i)],
+                            value: getField(forms, formName, getUniqueId(pathname, parentsection, title, i)),
                             uid: getUniqueId(pathname, parentsection, title, i - 1)
                         }
                     });
@@ -42,16 +45,21 @@ function InfiniteField({ children, title, parentsection }) {
 
         setNumber(number - 1);
     };
+
     useEffect(() => {
-        if (formName) {
-            const initInfinite = Object.entries(forms[formName]).filter(([k]) => k.startsWith(getUniqueId(pathname, parentsection, title)));
+        const currentForm = getForm(forms, formName);
+
+        if (currentForm) {
+            const initInfinite = currentForm.filter((field) => field.uid.startsWith(getUniqueId(pathname, parentsection, title)));
             setNumber(initInfinite.length || 1);
         }
-    }, [forms, title, parentsection, formName, pathname]);
+    }, [forms, title, parentsection, formName]);
+
     return (<Col n="12">
             {Array.apply(null, { length: number }).map((v, i) => {
-                    const value = forms[formName] ? forms[formName][getUniqueId(pathname, parentsection, title, i)] : null;
+                    const value = getForm(forms, formName) ? getForm(forms, formName)[getUniqueId(pathname, parentsection, title, i)] : null;
                     const newTitle = `${title}#${i}`;
+
                     return <Field
                         key={getUniqueId(pathname, '', title, i)}
                         value={value}
@@ -64,7 +72,7 @@ function InfiniteField({ children, title, parentsection }) {
                 }
             )}
             <Col className="py-10">
-                <FieldButton datatestid='btn-add' onClick={() => setNumber(number + 1)} title={`Add 1 ${title}`}/>
+                <FieldButton datatestid="btn-add" onClick={() => setNumber(number + 1)} title={`Add 1 ${title}`}/>
             </Col>
         </Col>
     );

@@ -5,13 +5,15 @@ export function getUrl(key) {
         'genre': 'https://jsonplaceholder.typicode.com/todos',
         'etat': 'https://jsonplaceholder.typicode.com/todos'
     };
+
     return urls[cleanString(key)];
 }
 
 export function getVal(key) {
     const data = {
         IDB_DATABASE_NAME: 'SERVICE_FORMS',
-        IDB_DATABASE_VERSION: 7,
+        IDB_DATABASE_VERSION: 6,
     };
+
     return data[key];
 }

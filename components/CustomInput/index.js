@@ -1,6 +1,6 @@
-import Input from './Input';
 import { Container, Row, Col } from '@dataesr/react-dsfr';
 import InfiniteField from '../InfiniteField';
+import Input from './Input';
 
 function CustomInput({ title, infinite, parentsection }) {
     return (<Container fluid>

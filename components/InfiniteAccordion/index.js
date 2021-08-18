@@ -1,23 +1,23 @@
-import { cleanString, uniqueOnlyFilter, getUniqueId } from '../../helpers/utils';
 import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/react-dsfr';
-import Switch from '../Switch';
-import { useState, useMemo, createRef, useContext, useEffect, useCallback } from 'react';
-import { AppContext } from '../../context/GlobalState';
 import { useRouter } from 'next/router';
+import { createRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
 import FieldButton from '../FieldButton';
+import Switch from '../Switch';
 
-export default function InfiniteAccordion({ title, content,  dataAttSection }) {
-    const { state: { forms, formName }, dispatch } = useContext(AppContext);
+export default function InfiniteAccordion({ title, content, dataAttSection }) {
+    const { state: { forms }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);
+    const formName = getFormName(pathname);
     const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);
     const sectionName = useMemo(() => getUniqueId(pathname, type), [pathname, type]);
-    const currentForm = useCallback(() => formName ? Object.keys(forms[formName]) : [], [formName, forms]);
-    const formSections = useCallback(() => currentForm().map((c) => c.split('/').slice(0, 2).join('/')), [currentForm]);
+    const currentForm = useCallback(() => getForm(forms, formName) || [], [formName, forms]);
+    const formSections = useCallback(() => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')), [currentForm]);
 
     const updateSection = useCallback((type, nb) => {
-        // TODO add loader when indexDB sync
         setSections((prev) => ({ ...prev, [type]: nb }));
     }, []);
 
@@ -46,12 +46,15 @@ export default function InfiniteAccordion({ title, content,  dataAttSection }) {
         updateSection(type, sectionFields.length);
 
     }, [formSections, sectionName, type, updateSection]);
+
     return <>
         {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
             if (!sections[type]) {
                 updateSection(type, 1);
             }
+
             const newTitle = `${title}#${i}`;
+
             return <section
                 data-section={dataAttSection}
                 key={newTitle}
@@ -63,6 +66,7 @@ export default function InfiniteAccordion({ title, content,  dataAttSection }) {
                         title={newTitle}>
                         {content.map((field, j) => {
                             const { type: fieldType, title: fieldTitle, infinite, staticValues } = field;
+
                             return <div key={j}>
                                 <Container>
                                     <Row alignItems="middle" gutters>

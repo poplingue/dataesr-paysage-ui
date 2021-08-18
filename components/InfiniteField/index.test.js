@@ -1,9 +1,9 @@
+import * as nextRouter from 'next/router';
 import React from 'react';
 // Using render and screen from test-utils.js instead of
 // @testing-library/react
 import { render, screen } from '../../test/test-utils';
 import InfiniteField from './index';
-import * as nextRouter from 'next/router';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({ route: '/person/create', pathname: '/person/create' }));

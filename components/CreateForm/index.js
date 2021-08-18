@@ -1,38 +1,36 @@
-import { Accordion, AccordionItem, Container, Col, Row } from '@dataesr/react-dsfr';
-import Switch from '../Switch';
-import InfiniteAccordion from '../InfiniteAccordion';
+import { Accordion, AccordionItem, Col, Container, Row } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import { getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
-import { useEffect, useContext, useCallback, useState } from 'react';
 import NotifService from '../../services/NotifService';
-import { sectionUniqueId } from '../../helpers/utils';
+import InfiniteAccordion from '../InfiniteAccordion';
+import Switch from '../Switch';
 
 const CreateForm = ({ jsonForm }) => {
-    const { state: { formName, storeObjects, objectStoreName }, dispatch } = useContext(AppContext);
-    const [fieldIds, setFieldIds] = useState([]);
+    const { state: { storeObjects }, dispatch } = useContext(AppContext);
+    const { pathname } = useRouter();
+    const formName = getFormName(pathname);
 
     const getField = useCallback((field) => {
         const { value, uid, } = field;
-        setFieldIds((prev) => [...prev, field.uid]);
         dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName } });
     }, [dispatch, formName]);
 
     useEffect(() => {
-        // TODO refacto objectStoreName===formName??
-        dispatch({ type: 'UPDATE_CURRENT_OBJECT_STORE', payload: { objectStoreName: formName } });
-    }, [dispatch, formName]);
 
-    useEffect(() => {
         const getIndexDBData = async () => {
-            if (objectStoreName) {
-                const indexDBData = await NotifService.fetching(DBService.getAllObjects(objectStoreName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
+            if (storeObjects.indexOf(formName) > -1 && formName) {
+                const indexDBData = await NotifService.fetching(DBService.getAllObjects(formName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
                 indexDBData.forEach((elm) => {
                     getField(elm);
                 });
             }
         };
+
         getIndexDBData();
-    }, [getField, formName, objectStoreName, storeObjects]);
+    }, [getField, storeObjects, formName]);
 
     return <>
         {jsonForm.form.map((section, i) => {
@@ -49,6 +47,7 @@ const CreateForm = ({ jsonForm }) => {
                     title={sectionTitle}>
                     {content.map((field, j) => {
                         const { type, title, infinite, staticValues } = field;
+
                         return <div key={j}>
                             <Container>
                                 <Row alignItems="middle">

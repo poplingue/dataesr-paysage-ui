@@ -1,5 +1,5 @@
-import { getVal } from '../helpers/constants';
 import { openDB } from 'idb';
+import { getVal } from '../helpers/constants';
 import NotifService from './NotifService';
 
 const DBService = {
@@ -10,22 +10,23 @@ const DBService = {
     async asyncOpenDB(name, version) {
         return await openDB(name, version, {
             upgrade(db, oldVersion, newVersion, transaction) {
-                console.debug('==== upgrade ==== ');
+                console.debug('==== upgrade ==== ', db);
             },
-            blocked() {
-                console.debug('==== blocked ==== ');
+            blocked(e) {
+                console.debug('==== blocked ==== ', e);
             },
-            blocking() {
-                console.debug('==== blocking ==== ');
+            blocking(e) {
+                console.debug('==== blocking ==== ', e);
             },
-            terminated() {
-                console.debug('==== terminated ==== ');
+            terminated(e) {
+                console.debug('==== terminated ==== ', e);
             },
         });
     },
 
     async init(objectStores, cb) {
         const DBOpenRequest = await this.getDB();
+
         DBOpenRequest.onupgradeneeded = (event) => {
             let names = [];
             objectStores.map((name) => {
@@ -102,11 +103,13 @@ const DBService = {
     },
 
     async getAllObjects(name, objectStoreChecked) {
+        console.log('==== getAllObjects ==== ', );
         // TODO refacto
         const db = await NotifService.fetching(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB connection ok');
 
         if (objectStoreChecked && db) {
             const store = db.transaction(name).objectStore(name);
+
             return await store.getAll();
         } else {
             return [];
