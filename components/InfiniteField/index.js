@@ -2,7 +2,7 @@ import { Col } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 
@@ -12,41 +12,39 @@ function InfiniteField({ children, title, parentsection }) {
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
 
-    const deleteField = (index) => {
-        if (number > 2) {
-            // TODO refacto??
-            for (let i = 0; i <= number; i = i + 1) {
-                if (i > index && i < number) {
-                    //TODO REFACTO getUniqueID
-                    dispatch({
-                        type: 'UPDATE_FORM_FIELD', payload: {
-                            formName,
-                            value: getField(forms, formName, getUniqueId(pathname, parentsection, title, i)),
-                            uid: getUniqueId(pathname, parentsection, title, i - 1)
-                        }
-                    });
-                }
+    const deleteField = (ref) => {
+        const element = ref.childNodes[0];
+        const uid = element.getAttribute('data-field');
+        const indexRef = parseFloat(uid.charAt(uid.length - 1));
 
-                if (i === number) {
-                    const payload = {
-                        uid: getUniqueId(pathname, parentsection, title, i - 1),
-                        formName
-                    };
-                    dispatch({ type: 'DELETE_FORM_FIELD', payload });
-                }
+        // Reassign fields values
+        for (let i = 1; i < number; i = i + 1) {
+
+            // all field after the delete one
+            if (i > indexRef) {
+
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD', payload: {
+                        formName,
+                        value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
+                        uid: getUniqueId(pathname, parentsection, title, i - 1)
+                    }
+                });
             }
-        } else {
-            const payload = {
-                uid: getUniqueId(pathname, parentsection, title, index),
-                formName,
-            };
-            dispatch({
-                type: 'DELETE_FORM_FIELD', payload: {
-                    uid: getUniqueId(pathname, parentsection, title, index),
-                    formName,
-                }
-            });
         }
+
+        // delete field
+        let key = number - indexRef;
+
+        if (indexRef === (number - 1) || indexRef === number) {
+            key = number - 1;
+        }
+
+        const payload = {
+            uid: getUniqueId(pathname, parentsection, title, key),
+            formName
+        };
+        dispatch({ type: 'DELETE_FORM_FIELD', payload });
 
         setNumber(number - 1);
     };
@@ -58,11 +56,11 @@ function InfiniteField({ children, title, parentsection }) {
             const initInfinite = currentForm.filter((field) => field.uid.startsWith(getUniqueId(pathname, parentsection, title)));
             setNumber(initInfinite.length || 1);
         }
-    }, [forms, title, parentsection, formName]);
+    }, [forms, title, parentsection, formName, pathname]);
 
     return (<Col n="12">
             {Array.apply(null, { length: number }).map((v, i) => {
-                    const value = getForm(forms, formName) ? getForm(forms, formName)[getUniqueId(pathname, parentsection, title, i)] : null;
+                    const value = getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)) || null;
                     const newTitle = `${title}#${i}`;
 
                     return <Field

@@ -13,7 +13,7 @@ const CreateForm = ({ jsonForm }) => {
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
 
-    const getField = useCallback((field) => {
+    const retrieveField = useCallback((field) => {
         const { value, uid, } = field;
         dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName } });
     }, [dispatch, formName]);
@@ -24,13 +24,13 @@ const CreateForm = ({ jsonForm }) => {
             if (storeObjects.indexOf(formName) > -1 && formName) {
                 const indexDBData = await NotifService.fetching(DBService.getAllObjects(formName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
                 indexDBData.forEach((elm) => {
-                    getField(elm);
+                    retrieveField(elm);
                 });
             }
         };
 
         getIndexDBData();
-    }, [getField, storeObjects, formName]);
+    }, [retrieveField, storeObjects, formName]);
 
     return <>
         {jsonForm.form.map((section, i) => {

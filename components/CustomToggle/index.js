@@ -2,7 +2,7 @@ import { Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 
 export default function CustomToggle({ keynumber, parentsection, title }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
@@ -17,8 +17,8 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
 
         // TODO refacto
         if (getForm(forms, formName) && init) {
-            if (getField(forms, formName, uniqueId)) {
-                v = getField(forms, formName, uniqueId);
+            if (getFieldValue(forms, formName, uniqueId)) {
+                v = getFieldValue(forms, formName, uniqueId);
             }
 
             const payload = {
@@ -34,8 +34,8 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
 
     useEffect(() => {
         if (!init) {
-            if (getField(forms, formName, uniqueId)) {
-                setCheched(getField(forms, formName, uniqueId));
+            if (getFieldValue(forms, formName, uniqueId)) {
+                setCheched(getFieldValue(forms, formName, uniqueId));
             }
         }
     }, [formName, forms, init, uniqueId]);

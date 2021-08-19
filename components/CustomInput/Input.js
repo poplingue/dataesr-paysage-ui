@@ -2,7 +2,7 @@ import { TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getField, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 
 function Input({ label, keynumber, title, parentsection, value = '' }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
@@ -25,8 +25,8 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
     };
 
     useEffect(() => {
-        if (getField(forms, formName, uniqueId)) {
-            setTextValue(getField(forms, formName, uniqueId));
+        if (getFieldValue(forms, formName, uniqueId)) {
+            setTextValue(getFieldValue(forms, formName, uniqueId));
         }
     }, [forms, textValue, uniqueId, title, keynumber]);
 

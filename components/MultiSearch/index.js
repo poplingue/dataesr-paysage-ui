@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useContext, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
-import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, parentsection }) {
@@ -44,7 +44,7 @@ function MultiSearch({ title, parentsection }) {
 
     useEffect(() => {
         if (uid && getForm(forms, formName)) {
-            setSelectedvalues(getField(forms, formName, uid));
+            setSelectedvalues(getFieldValue(forms, formName, uid));
         }
     }, [currentForm, formName, forms, selectedValues, uid]);
 

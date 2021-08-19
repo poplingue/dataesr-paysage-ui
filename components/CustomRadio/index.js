@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
-import { getField, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 
 function CustomRadio({ title, staticValues = [], parentsection }) {
     const [radioValues, setRadioValues] = useState([]);
@@ -51,7 +51,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                                 key={i}
                                 label={label}
                                 value={value}
-                                isChecked={formName ? value === getField(forms, formName, uniqueId) : false}
+                                isChecked={formName ? value === getFieldValue(forms, formName, uniqueId) : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}

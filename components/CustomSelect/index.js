@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
-import { getField, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 
 export default function CustomSelect({ title, staticValues = [], keynumber, parentsection }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
@@ -34,7 +34,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
         // TODO refacto same elsewhere
 
         if (formName && !selectValue && getForm(forms, formName)) {
-            setSelectValue(getField(forms, formName, uniqueId));
+            setSelectValue(getFieldValue(forms, formName, uniqueId));
         }
     }, [formName, forms, selectValue, uniqueId]);
 

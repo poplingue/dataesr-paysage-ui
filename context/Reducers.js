@@ -9,6 +9,7 @@ const reducers = (state, action) => {
             const checkStoreObject = state.storeObjects.indexOf(formName) > -1;
 
 
+
             // TODO DBService outside from Reducer
             if (dbUpdate && checkStoreObject) {
                 DBService.set({
@@ -25,7 +26,7 @@ const reducers = (state, action) => {
                 const fieldIndex = newForm.findIndex(field => field.uid === uid);
 
                 if (fieldIndex > -1) {
-                    // replace object field at formIndex
+                    // replace object field at fieldIndex
                     newForm[fieldIndex] = { value, uid };
                 } else {
                     newForm.push({ value, uid });

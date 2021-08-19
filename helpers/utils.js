@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router';
-
 /**
  *
  * @param str
@@ -137,13 +135,14 @@ export function getForm(forms, name) {
  * @param id
  * @returns {string}
  */
-export function getField(forms, name, id) {
-    let result = '';
+export function getFieldValue(forms, name, id) {
+    let fieldValue = '';
+
     if (getForm(forms, name) && id) {
-        result = getForm(forms, name).find((field) => {
+        fieldValue = getForm(forms, name).find((field) => {
             return field.uid === id;
         });
     }
 
-    return result ? result.value : '';
+    return fieldValue ? fieldValue.value : '';
 }

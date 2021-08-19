@@ -20,19 +20,50 @@ context('Person form page', () => {
         cy.get('[data-testid="btn-add"]').click();
 
         cy.get('[data-field="person/create@denomination/autre-denomination#1"]').should('exist');
-        cy.get('[data-testid="btn-delete"]').should('exist');
+        cy.get('[data-testid="btn-delete-autre-denomination#1"]').should('exist');
 
     });
 
-    it('should delete infinite input field Autre dénomination#1', () => {
+    it('should delete infinite input field', () => {
         cy.clearIndexDB();
 
         cy.get('[data-testid="Autre dénomination"]').find('input').type('Maggie Smith');
         cy.get('[data-testid="btn-add"]').click();
 
-        cy.get('[data-testid="btn-delete"]').click();
+        cy.get('[data-testid="btn-delete-autre-denomination#1"]').click();
         cy.get('[data-field="person/create@denomination/autre-denomination#1"]').should('not.exist');
-        cy.get('[data-testid="btn-delete"]').should('not.exist');
+        cy.get('[data-testid="btn-delete-autre-denomination#1"]').should('not.exist');
     });
 
+    it('should create multiple infinite input field', () => {
+        cy.get('[data-field="person/create@denomination/autre-denomination#0"]').find('input').type('Il n\'y a de divinité');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#1"]').find('input').type('qu\'Allah');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#2"]').find('input').type('et Mahomet est');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#3"]').find('input').type('son messager');
+
+        cy.get('[data-field="person/create@denomination/autre-denomination#0"]').find('input').should('have.value', 'Il n\'y a de divinité');
+        cy.get('[data-field="person/create@denomination/autre-denomination#1"]').find('input').should('have.value', 'qu\'Allah');
+        cy.get('[data-field="person/create@denomination/autre-denomination#2"]').find('input').should('have.value', 'et Mahomet est');
+        cy.get('[data-field="person/create@denomination/autre-denomination#3"]').find('input').should('have.value', 'son messager');
+    });
+
+    it('should delete one of multiple infinite input field', () => {
+        cy.clearIndexDB();
+        cy.get('[data-field="person/create@denomination/autre-denomination#0"]').find('input').type('Il n\'y a de divinité');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#1"]').find('input').type('qu\'Allah');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#2"]').find('input').type('et Mahomet est');
+        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-field="person/create@denomination/autre-denomination#3"]').find('input').type('son messager');
+
+        cy.get('[data-testid="btn-delete-autre-denomination#1"]').click();
+
+        cy.get('[data-field="person/create@denomination/autre-denomination#0"]').find('input').should('have.value', 'Il n\'y a de divinité');
+        cy.get('[data-field="person/create@denomination/autre-denomination#1"]').find('input').should('have.value', 'et Mahomet est');
+        cy.get('[data-field="person/create@denomination/autre-denomination#2"]').find('input').should('have.value', 'son messager');
+    })
 });
