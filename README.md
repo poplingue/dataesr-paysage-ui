@@ -1,12 +1,7 @@
 # dataesr-paysage
 
-## IndexDB
+Frontend application of new Paysage project.
 
-IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.
-
-:warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
-
----
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -49,6 +44,13 @@ yarn dev
 yarn cy:run-rec
 ```
 
+## IndexDB
+
+IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.
+
+:warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
+
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -71,3 +73,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 * button to reset data from current form
 * button to close all sections of the form at once (and reverse)
+* manage boundaries error
