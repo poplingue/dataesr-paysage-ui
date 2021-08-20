@@ -1,9 +1,11 @@
 # dataesr-paysage
 
-Frontend application of new Paysage project.
+> Frontend application of new Paysage project.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@dataesr/react-dsfr)
 
 ## Getting Started
 
@@ -74,3 +76,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * button to reset data from current form
 * button to close all sections of the form at once (and reverse)
 * manage boundaries error
+* add unit tests for complex components

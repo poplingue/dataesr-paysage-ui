@@ -11,18 +11,19 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
     const { pathname } = useRouter();
     const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
     const formName = getFormName(pathname);
+    const toggleValue = getFieldValue(forms, formName, uniqueId)
 
     useEffect(() => {
-        let v = 'false';
+        let defaultValue = 'false';
 
-        // TODO refacto
-        if (getForm(forms, formName) && init) {
-            if (getFieldValue(forms, formName, uniqueId)) {
-                v = getFieldValue(forms, formName, uniqueId);
+        if (init && getForm(forms, formName)) {
+
+            if (toggleValue) {
+                defaultValue = toggleValue;
             }
 
             const payload = {
-                value: v,
+                value: defaultValue,
                 uid: uniqueId,
                 formName,
             };
@@ -30,15 +31,15 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
             setInit(false);
         }
-    }, [forms, uniqueId, init, dispatch]);
+    }, [dispatch, formName, forms, init, toggleValue, uniqueId]);
 
     useEffect(() => {
         if (!init) {
-            if (getFieldValue(forms, formName, uniqueId)) {
-                setCheched(getFieldValue(forms, formName, uniqueId));
+            if (toggleValue) {
+                setCheched(toggleValue);
             }
         }
-    }, [formName, forms, init, uniqueId]);
+    }, [init, toggleValue]);
 
     const onToggleChange = (e) => {
         const payload = {

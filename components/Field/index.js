@@ -4,7 +4,6 @@ import { cleanString } from '../../helpers/utils';
 import FieldButton from '../FieldButton';
 
 export default function Field({ title, label, index, parentsection, deleteField, children, value }) {
-    // TODO do it with useRef??
     const ref = useRef(null);
 
     const deleteCurrentField = () => {

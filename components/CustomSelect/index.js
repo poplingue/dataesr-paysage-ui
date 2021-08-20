@@ -31,8 +31,6 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
     };
 
     useEffect(() => {
-        // TODO refacto same elsewhere
-
         if (formName && !selectValue && getForm(forms, formName)) {
             setSelectValue(getFieldValue(forms, formName, uniqueId));
         }

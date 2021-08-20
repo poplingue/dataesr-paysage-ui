@@ -8,8 +8,6 @@ const reducers = (state, action) => {
             const { value, formName, uid, dbUpdate = true } = action.payload;
             const checkStoreObject = state.storeObjects.indexOf(formName) > -1;
 
-
-
             // TODO DBService outside from Reducer
             if (dbUpdate && checkStoreObject) {
                 DBService.set({
@@ -18,7 +16,6 @@ const reducers = (state, action) => {
                 }, formName, checkStoreObject);
             }
 
-            // TODO replace findIndex()?
             const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
             const newForm = getForm(state.forms, formName);
 

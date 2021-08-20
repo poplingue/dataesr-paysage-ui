@@ -6,12 +6,12 @@ import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 
 function Input({ label, keynumber, title, parentsection, value = '' }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
+    const [textValue, setTextValue] = useState(value);
     const inputRef = useRef(null);
     const { pathname } = useRouter();
-    // TODO dynamic
     const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
-    const [textValue, setTextValue] = useState(value);
     const formName = getFormName(pathname);
+    const inputValue = getFieldValue(forms, formName, uniqueId)
 
     const saveValue = (e) => {
         const value = e.target.value;
@@ -25,10 +25,10 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
     };
 
     useEffect(() => {
-        if (getFieldValue(forms, formName, uniqueId)) {
-            setTextValue(getFieldValue(forms, formName, uniqueId));
+        if (inputValue) {
+            setTextValue(inputValue);
         }
-    }, [forms, textValue, uniqueId, title, keynumber]);
+    }, [inputValue]);
 
     return (
         <>
