@@ -1,16 +1,39 @@
-import { openDB } from 'idb';
+import { deleteDB, openDB } from 'idb';
 import { getVal } from '../helpers/constants';
 import NotifService from './NotifService';
 
 const DBService = {
+
     async getDB() {
         return window.indexedDB.open(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
     },
 
-    async asyncOpenDB(name, version) {
-        return await openDB(name, version, {
+    async asyncDeleteDB(name) {
+        await NotifService.fetching(deleteDB(name), 'IndexDB deleted');
+    },
+
+    async getDBNames() {
+        return await window.indexedDB.databases();
+    },
+
+    async asyncOpenDB(dbName, version, objectStores, cb) {
+        return await openDB(dbName, version, {
             upgrade(db, oldVersion, newVersion, transaction) {
-                console.debug('==== upgrade ==== ', db);
+                NotifService.info(`IndexDB version ${db.version} upgraded`);
+
+                if (objectStores) {
+                    let names = [];
+
+                    objectStores.map((name) => {
+                        if (db.objectStoreNames.contains(name)) {
+                            db.deleteObjectStore(name);
+                        }
+
+                        db.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
+                    });
+
+                    cb(names);
+                }
             },
             blocked(e) {
                 console.debug('==== blocked ==== ', e);
@@ -25,35 +48,17 @@ const DBService = {
     },
 
     async init(objectStores, cb) {
-        const DBOpenRequest = await this.getDB();
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStores, cb);
 
-        DBOpenRequest.onupgradeneeded = (event) => {
-            let names = [];
+        if (cb) {
+            cb(db.objectStoreNames, db.version);
+        }
 
-            objectStores.map((name) => {
-                if (event.target.result.objectStoreNames.contains(name)) {
-                    event.target.result.deleteObjectStore(name);
-                }
+        NotifService.info(`IndexDB version ${db.version} connected`);
 
-                event.target.result.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
-                names.push(name);
-            });
-
-            cb(names);
-            NotifService.info(`IndexDB version upgraded from ${event.oldVersion} to ${event.newVersion}`);
-        };
-
-        DBOpenRequest.onsuccess = (event) => {
-            if (cb) {
-                cb(event.target.result.objectStoreNames);
-            }
-        };
-
-        DBOpenRequest.onerror = (event) => {
-            console.error('==== onerror ==== ', event);
-        };
     },
     async set(val, name, objectStoreChecked) {
+        // TODO async
         let DBOpenRequest = await this.getDB(), db;
 
         DBOpenRequest.onsuccess = (event) => {
@@ -91,6 +96,7 @@ const DBService = {
         };
     },
     async delete(uid, name, objectStoreChecked) {
+        // TODO async
         let DBOpenRequest = await this.getDB(), db;
 
         DBOpenRequest.onsuccess = (event) => {
@@ -110,8 +116,7 @@ const DBService = {
     },
 
     async getAllObjects(name, objectStoreChecked) {
-        // TODO refacto
-        const db = await NotifService.fetching(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB connection ok');
+        const db = await NotifService.fetching(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB getAllObjects connection ok');
 
         if (objectStoreChecked && db) {
             const store = db.transaction(name).objectStore(name);

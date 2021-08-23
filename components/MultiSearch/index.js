@@ -1,9 +1,9 @@
-import { Checkbox, TextInput, Col, Container, Row } from '@dataesr/react-dsfr';
+import { Checkbox, Col, Container, Row, TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useState, useContext, useEffect, useCallback } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
-import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import { cleanString, getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, parentsection }) {
@@ -26,8 +26,11 @@ function MultiSearch({ title, parentsection }) {
 
     const onSelectChange = (e) => {
         const { value } = e.target;
-        let newValue = selectedValues.filter((item) => item !== value);
 
+        // Remove value if exists
+        let newValue = selectedValues && selectedValues.filter((item) => item !== value);
+
+        // Add value is does not exist
         if (selectedValues.indexOf(value) === -1) {
             newValue = [...selectedValues, value];
         }
@@ -59,8 +62,10 @@ function MultiSearch({ title, parentsection }) {
                 <Row>
                     <Col n="6">
                         <ul className="max-200">
-                            {filteredOptions.map((option) => {
-                                return <li key={uuidv4()} className={`${styles.listElement} py-10`}>
+                            {filteredOptions.map((option, i) => {
+                                return <li
+                                    data-cy={`${cleanString(option.value)}-${i}`}
+                                    key={uuidv4()} className={`${styles.listElement} py-10`}>
                                     <Checkbox
                                         label={option.label}
                                         onChange={(e) => {

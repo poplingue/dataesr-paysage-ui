@@ -52,7 +52,6 @@ IndexDB is used to store data from forms. On each change value is updated in SER
 
 :warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
 
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

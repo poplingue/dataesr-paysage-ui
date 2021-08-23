@@ -1,4 +1,4 @@
-import { Col } from '@dataesr/react-dsfr';
+import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -13,7 +13,8 @@ function InfiniteField({ children, title, parentsection }) {
     const formName = getFormName(pathname);
 
     const deleteField = (ref) => {
-        const element = ref.childNodes[0];
+        // TODO check better
+        const element = ref.childNodes[0].childNodes[0].childNodes[0].childNodes[0];
         const uid = element.getAttribute('data-field');
         const indexRef = parseFloat(uid.charAt(uid.length - 1));
 
@@ -59,24 +60,34 @@ function InfiniteField({ children, title, parentsection }) {
     }, [forms, title, parentsection, formName, pathname]);
 
     return (<Col n="12">
-            {Array.apply(null, { length: number }).map((v, i) => {
-                    const value = getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)) || null;
-                    const newTitle = `${title}#${i}`;
+            <Container fluid>
+                <Row>
+                    <Col n="12">
+                        {Array.apply(null, { length: number }).map((v, i) => {
+                                const value = getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)) || null;
+                                const newTitle = `${title}#${i}`;
 
-                    return <Field
-                        key={getUniqueId(pathname, '', title, i)}
-                        value={value}
-                        index={i}
-                        pathname={pathname}
-                        title={title}
-                        label={newTitle}
-                        deleteField={deleteField}
-                        parentsection={parentsection}>{children}</Field>;
-                }
-            )}
-            <Col className="py-10">
-                <FieldButton datatestid="btn-add" onClick={() => setNumber(number + 1)} title={`Add 1 ${title}`}/>
-            </Col>
+                                return <Field
+                                    key={getUniqueId(pathname, '', title, i)}
+                                    value={value}
+                                    index={i}
+                                    pathname={pathname}
+                                    title={title}
+                                    label={newTitle}
+                                    deleteField={deleteField}
+                                    parentsection={parentsection}>{children}</Field>;
+                            }
+                        )}
+                    </Col>
+                    <Col>
+                        <FieldButton
+                            icon="ri-add-line"
+                            datatestid="btn-add"
+                            onClick={() => setNumber(number + 1)}
+                            title={`${title}`}/>
+                    </Col>
+                </Row>
+            </Container>
         </Col>
     );
 

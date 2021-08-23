@@ -5,6 +5,7 @@ import { AppContext } from '../../context/GlobalState';
 import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
 import FieldButton from '../FieldButton';
 import Switch from '../Switch';
+import styles from './InfiniteAcordion.module.scss';
 
 export default function InfiniteAccordion({ title, content, dataAttSection }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
@@ -21,7 +22,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         setSections((prev) => ({ ...prev, [type]: nb }));
     }, []);
 
-    const deleteSection = (sectionType, index, fieldType, newTitle) => {
+    const deleteSection = (sectionType, index, newTitle) => {
         // DOM remove
         sectionRefs[index].current.removeChild(sectionRefs[index].current.children[0]);
 
@@ -48,58 +49,87 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
     }, [formSections, sectionName, type, updateSection]);
 
     return <>
-        {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
-            if (!sections[type]) {
-                updateSection(type, 1);
-            }
+        <ul>
+            {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
+                if (!sections[type]) {
+                    updateSection(type, 1);
+                }
 
-            const newTitle = `${title}#${i}`;
+                const newTitle = `${title}#${i}`;
+                const deletable = (sections[type] - 1 === i && i !== 0);
+                let fieldTitle = '';
 
-            return <section
-                data-section={dataAttSection}
-                key={newTitle}
-                ref={sectionRefs[i]}>
-                <Accordion keepOpen>
-                    <AccordionItem
-                        initExpand
-                        key={i}
-                        title={newTitle}>
-                        {content.map((field, j) => {
-                            const { type: fieldType, title: fieldTitle, infinite, staticValues } = field;
+                return <li className={styles.Accordion} key={newTitle}>
+                    <section
+                        data-sub-section={`${dataAttSection}#${i}`}
+                        ref={sectionRefs[i]}>
+                        <Container fluid>
+                            <Row gutters>
+                                <Col n={deletable ? '10' : '12'}>
+                                    <Accordion keepOpen>
+                                        <AccordionItem
+                                            initExpand
+                                            className={styles.Item}
+                                            key={newTitle}
+                                            title={newTitle}>
+                                            {content.map((field) => {
+                                                const {
+                                                    type: fieldType,
+                                                    infinite,
+                                                    staticValues
+                                                } = field;
 
-                            return <div key={j}>
-                                <Container>
-                                    <Row alignItems="middle" gutters>
-                                        <Col n="8">
-                                            <Switch
-                                                section={newTitle}
-                                                keynumber={i}
-                                                type={fieldType}
-                                                title={fieldTitle}
-                                                infinite={infinite}
-                                                staticValues={staticValues}
-                                            />
-                                        </Col>
-                                        {(sections[type] - 1 === i && i !== 0 && j === content.length - 1) &&
-                                        <Col n="4">
-                                            <FieldButton
-                                                datatestid={`btn-delete-${cleanString(newTitle)}`}
-                                                onClick={() => deleteSection(type, i, fieldTitle, newTitle)}
-                                                title={`Delete ${newTitle}`}
-                                            >
-                                            </FieldButton>
-                                        </Col>}
-                                    </Row>
-                                </Container>
-                            </div>;
-                        })}
-                    </AccordionItem>
-                </Accordion>
-            </section>;
-        })}
-        <Button
-            data-testid={`btn-add-${cleanString(type)}`}
-            onClick={() => updateSection(type, sections[type] + 1)}>
-            Add 1 {title}</Button>
+                                                fieldTitle = field.title;
+
+                                                return <div key={fieldTitle}>
+                                                    <Container>
+                                                        <Row alignItems="middle" gutters>
+                                                            <Col>
+                                                                <Switch
+                                                                    section={newTitle}
+                                                                    keynumber={i}
+                                                                    type={fieldType}
+                                                                    title={fieldTitle}
+                                                                    infinite={infinite}
+                                                                    staticValues={staticValues}
+                                                                />
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                </div>;
+                                            })}
+                                        </AccordionItem>
+                                    </Accordion>
+                                </Col>
+                                {deletable &&
+                                <Col n="2">
+                                    <FieldButton
+                                        datatestid={`btn-delete-${cleanString(newTitle)}`}
+                                        onClick={() => deleteSection(type, i, fieldTitle, newTitle)}
+                                        title="Supprimer"
+                                    >
+                                    </FieldButton>
+                                </Col>
+                                }
+                            </Row>
+                        </Container>
+                    </section>
+                </li>;
+            })}</ul>
+        <Container fluid>
+            <Row>
+                <Col>
+                    <div className={styles.Button}>
+                        <Button
+                            icon="ri-add-line"
+                            secondary
+                            size="sm"
+                            data-testid={`btn-add-${cleanString(type)}`}
+                            onClick={() => updateSection(type, sections[type] + 1)}>
+                            Add 1 {title}</Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     </>;
 }

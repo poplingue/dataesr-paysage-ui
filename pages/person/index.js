@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Layout from '../../components/Layout';
-import styles from '../../styles/Person.module.scss';
+import styles from './Person.module.scss';
 
 export default function Person() {
     return (

@@ -26,17 +26,17 @@ html {
     position: relative;
 }
 
-.p-absolute {
-    /*position: absolute;*/
-    /*bottom: -50px;*/
-}
-
 /**
     Reset
  */
 li {
     list-style: none;
-    padding: 0;
+    padding: 0 !important;
+}
+
+ul {
+    padding: 0 !important;
+    margin: 0!important;
 }
 
 /**

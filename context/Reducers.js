@@ -65,6 +65,7 @@ const reducers = (state, action) => {
             const currentForm = getForm(state.forms, formName);
             let newForm = [];
             let formsInd;
+            // TODO refacto
             state.forms.find((f, i) => {
                 if (Object.keys(f)[0] === formName) {
                     formsInd = i;
@@ -72,6 +73,7 @@ const reducers = (state, action) => {
                     return true;
                 }
             });
+            debugger; // eslint-disable-line
             // Through right number of fields
             Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
 

@@ -7,6 +7,7 @@ import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 import InfiniteAccordion from '../InfiniteAccordion';
 import Switch from '../Switch';
+import styles from './CreateForm.module.scss';
 
 const CreateForm = ({ jsonForm }) => {
     const { state: { storeObjects }, dispatch } = useContext(AppContext);
@@ -36,37 +37,40 @@ const CreateForm = ({ jsonForm }) => {
         {jsonForm.form.map((section, i) => {
             const { title: sectionTitle, content, infinite } = section;
             const dataSection = sectionUniqueId(sectionTitle, content.length);
+            // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
             return infinite ? <InfiniteAccordion
-                dataAttSection={dataSection}
-                title={sectionTitle}
-                content={content}
-                key={i}/> : <Accordion keepOpen key={i} data-section={dataSection}>
-                <AccordionItem
-                    initExpand
-                    title={sectionTitle}>
-                    {content.map((field, j) => {
-                        const { type, title, infinite, staticValues } = field;
+                    dataAttSection={dataSection}
+                    title={sectionTitle}
+                    content={content}
+                    key={sectionTitle}/> :
+                <Accordion keepOpen className={styles.Accordion} key={dataSection} data-section={dataSection}>
+                    <AccordionItem
+                        initExpand
+                        className={styles.Item}
+                        title={sectionTitle}>
+                        {content.map((field, j) => {
+                            const { type, title, infinite, staticValues } = field;
 
-                        return <div key={j}>
-                            <Container>
-                                <Row alignItems="middle">
-                                    <Col>
-                                        <Switch
-                                            keynumber={i}
-                                            section={sectionTitle}
-                                            type={type}
-                                            title={title}
-                                            infinite={infinite}
-                                            staticValues={staticValues}
-                                        />
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </div>;
-                    })}
-                </AccordionItem>
-            </Accordion>;
+                            return <div key={title}>
+                                <Container fluid>
+                                    <Row alignItems="middle">
+                                        <Col>
+                                            <Switch
+                                                keynumber={i}
+                                                section={sectionTitle}
+                                                type={type}
+                                                title={title}
+                                                infinite={infinite}
+                                                staticValues={staticValues}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Container>
+                            </div>;
+                        })}
+                    </AccordionItem>
+                </Accordion>;
         })}
     </>;
 };
