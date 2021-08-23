@@ -3,51 +3,67 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
+import NotifService from '../../services/NotifService';
 
 function InfiniteField({ children, title, parentsection }) {
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [number, setNumber] = useState(0);
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
 
-    const deleteField = (ref) => {
-        // TODO check better
-        const element = ref.childNodes[0].childNodes[0].childNodes[0].childNodes[0];
-        const uid = element.getAttribute('data-field');
-        const indexRef = parseFloat(uid.charAt(uid.length - 1));
+    const deleteField = async (ref) => {
+        const element = ref.querySelectorAll('[data-field]');
 
-        // Reassign fields values
-        for (let i = 1; i < number; i = i + 1) {
+        if (element && element.length) {
 
-            // all field after the delete one
-            if (i > indexRef) {
+            const uid = element[0].getAttribute('data-field');
+            const indexRef = parseFloat(uid.charAt(uid.length - 1));
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-                dispatch({
-                    type: 'UPDATE_FORM_FIELD', payload: {
-                        formName,
-                        value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
-                        uid: getUniqueId(pathname, parentsection, title, i - 1)
+            // Reassign fields values
+            for (let i = 1; i < number; i = i + 1) {
+
+                // all field after the delete one
+                if (i > indexRef) {
+                    dispatch({
+                        type: 'UPDATE_FORM_FIELD', payload: {
+                            formName,
+                            value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
+                            uid: getUniqueId(pathname, parentsection, title, i - 1)
+                        }
+                    });
+
+                    if (checkStoreObject) {
+                        // TODO refacto getFieldValue
+                        await DBService.set({
+                            value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
+                            uid
+                        }, formName);
                     }
-                });
+                }
             }
+
+            // delete field
+            let key = number - indexRef;
+
+            if (indexRef === (number - 1) || indexRef === number) {
+                key = number - 1;
+            }
+
+            const payload = {
+                uid: getUniqueId(pathname, parentsection, title, key),
+                formName
+            };
+            dispatch({ type: 'DELETE_FORM_FIELD', payload });
+
+            setNumber(number - 1);
+
+            await DBService.delete(uid, formName, checkStoreObject);
+            NotifService.info('Field deleted');
         }
-
-        // delete field
-        let key = number - indexRef;
-
-        if (indexRef === (number - 1) || indexRef === number) {
-            key = number - 1;
-        }
-
-        const payload = {
-            uid: getUniqueId(pathname, parentsection, title, key),
-            formName
-        };
-        dispatch({ type: 'DELETE_FORM_FIELD', payload });
-
-        setNumber(number - 1);
     };
 
     useEffect(() => {

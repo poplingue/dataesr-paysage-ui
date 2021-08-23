@@ -3,17 +3,19 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 
 export default function CustomToggle({ keynumber, parentsection, title }) {
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [checked, setCheched] = useState('none');
     const [init, setInit] = useState(true);
     const { pathname } = useRouter();
     const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
     const formName = getFormName(pathname);
-    const toggleValue = getFieldValue(forms, formName, uniqueId)
+    const toggleValue = getFieldValue(forms, formName, uniqueId);
 
     useEffect(() => {
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
         let defaultValue = 'false';
 
         if (init && getForm(forms, formName)) {
@@ -30,8 +32,19 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
             setInit(false);
+
+            const updateIndexDB = async () => {
+                await DBService.set({
+                    value: defaultValue,
+                    uid: uniqueId,
+                }, formName);
+            };
+
+            if (checkStoreObject) {
+                updateIndexDB();
+            }
         }
-    }, [dispatch, formName, forms, init, toggleValue, uniqueId]);
+    }, [dispatch, formName, forms, init, storeObjects, toggleValue, uniqueId]);
 
     useEffect(() => {
         if (!init) {
@@ -41,14 +54,23 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
         }
     }, [init, toggleValue]);
 
-    const onToggleChange = (e) => {
+    const onToggleChange = async (e) => {
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value: e.target.checked ? 'true' : 'false',
             uid: uniqueId,
             formName,
         };
+
         dispatch({ type: 'UPDATE_FORM_FIELD', payload });
         setCheched(!checked);
+
+        if (checkStoreObject) {
+            await DBService.set({
+                value: e.target.checked ? 'true' : 'false',
+                uid: uniqueId,
+            }, formName);
+        }
     };
 
 

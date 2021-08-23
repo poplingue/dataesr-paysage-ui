@@ -4,27 +4,41 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
 import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
+import NotifService from '../../services/NotifService';
 
 export default function CustomSelect({ title, staticValues = [], keynumber, parentsection }) {
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [selectValue, setSelectValue] = useState('');
     const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber || 0);
+    const uid = getUniqueId(pathname, parentsection, title, keynumber || 0);
     const formName = getFormName(pathname);
 
-    const onSelectChange = (e) => {
+    const onSelectChange = async (e) => {
         const value = e.target.value;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value,
-            uid: uniqueId,
+            uid,
             formName,
         };
 
         if (e.target.value) {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+
+            if (checkStoreObject) {
+                await DBService.set({
+                    value,
+                    uid
+                }, formName);
+
+            }
         } else {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
+            // TODO Make it async
+            await DBService.delete(uid, formName, checkStoreObject)
+            NotifService.info('Select field deleted');
         }
 
         setSelectValue(value);
@@ -32,9 +46,9 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
 
     useEffect(() => {
         if (formName && !selectValue && getForm(forms, formName)) {
-            setSelectValue(getFieldValue(forms, formName, uniqueId));
+            setSelectValue(getFieldValue(forms, formName, uid));
         }
-    }, [formName, forms, selectValue, uniqueId]);
+    }, [formName, forms, selectValue, uid]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
@@ -59,8 +73,8 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
     return (
         <section className="wrapper-select py-10">
             <Select
-                data-field={uniqueId}
-                data-testid={uniqueId}
+                data-field={uid}
+                data-testid={uid}
                 onChange={(e) => onSelectChange(e)}
                 selected={selectValue}
                 label={title}

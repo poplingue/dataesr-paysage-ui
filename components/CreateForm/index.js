@@ -14,16 +14,25 @@ const CreateForm = ({ jsonForm }) => {
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
 
-    const retrieveField = useCallback((field) => {
+    const retrieveField = useCallback(async (field) => {
         const { value, uid, } = field;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
         dispatch({ type: 'UPDATE_FORM_FIELD', payload: { value, uid, formName } });
-    }, [dispatch, formName]);
+
+        if (checkStoreObject) {
+            await DBService.set({
+                value,
+                uid
+            }, formName);
+        }
+    }, [dispatch, formName, storeObjects]);
 
     useEffect(() => {
 
         const getIndexDBData = async () => {
             if (storeObjects.indexOf(formName) > -1 && formName) {
-                const indexDBData = await NotifService.fetching(DBService.getAllObjects(formName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
+                const indexDBData = await NotifService.promise(DBService.getAllObjects(formName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
                 indexDBData.forEach((elm) => {
                     retrieveField(elm);
                 });

@@ -3,9 +3,10 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 
 function Input({ label, keynumber, title, parentsection, value = '' }) {
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [textValue, setTextValue] = useState(value);
     const inputRef = useRef(null);
     const { pathname } = useRouter();
@@ -13,8 +14,9 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
     const formName = getFormName(pathname);
     const inputValue = getFieldValue(forms, formName, uniqueId)
 
-    const saveValue = (e) => {
+    const saveValue = async (e) => {
         const value = e.target.value;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value,
             uid: uniqueId,
@@ -22,6 +24,14 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
         };
         setTextValue(value);
         dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+
+        if (checkStoreObject) {
+            await DBService.set({
+                value,
+                uid: uniqueId,
+            }, formName);
+
+        }
     };
 
     useEffect(() => {

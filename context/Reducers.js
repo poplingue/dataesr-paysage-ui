@@ -5,17 +5,7 @@ import ACTIONS from './Actions';
 const reducers = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
-            const { value, formName, uid, dbUpdate = true } = action.payload;
-            const checkStoreObject = state.storeObjects.indexOf(formName) > -1;
-
-            // TODO DBService outside from Reducer
-            if (dbUpdate && checkStoreObject) {
-                DBService.set({
-                    value,
-                    uid
-                }, formName, checkStoreObject);
-            }
-
+            const { value, formName, uid } = action.payload;
             const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
             const newForm = getForm(state.forms, formName);
 
@@ -42,10 +32,6 @@ const reducers = (state, action) => {
 
         case ACTIONS.DELETE_FORM_FIELD: {
             const { formName, uid } = action.payload;
-
-            // TODO DBService outside from Reducer
-            DBService.delete(uid, formName, state.storeObjects.indexOf(formName) > -1);
-
             const currentForm = getForm(state.forms, formName) || [];
             const newForm = currentForm.filter((field) => field.uid !== uid);
             const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
@@ -65,7 +51,7 @@ const reducers = (state, action) => {
             const currentForm = getForm(state.forms, formName);
             let newForm = [];
             let formsInd;
-            // TODO refacto
+
             state.forms.find((f, i) => {
                 if (Object.keys(f)[0] === formName) {
                     formsInd = i;
@@ -73,11 +59,10 @@ const reducers = (state, action) => {
                     return true;
                 }
             });
-            debugger; // eslint-disable-line
             // Through right number of fields
             Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
 
-                // Retrieve fields key of the section
+                // Retrieve field's key of the section
                 const filteredFields = currentForm.filter((field) => {
 
                     return field.uid.startsWith(section);
@@ -89,6 +74,7 @@ const reducers = (state, action) => {
                     const currentFieldKey = filteredFields[i];
                     // Delete in indexDB
                     DBService.delete(currentFieldKey, formName, state.storeObjects.indexOf(formName) > -1);
+
                     // Delete in global state
                     newForm = currentForm.filter((field) => {
                         return field.uid !== currentFieldKey;

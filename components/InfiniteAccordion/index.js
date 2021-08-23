@@ -105,7 +105,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                 <Col n="2">
                                     <FieldButton
                                         datatestid={`btn-delete-${cleanString(newTitle)}`}
-                                        onClick={() => deleteSection(type, i, fieldTitle, newTitle)}
+                                        onClick={() => deleteSection(type, i, newTitle)}
                                         title="Supprimer"
                                     >
                                     </FieldButton>

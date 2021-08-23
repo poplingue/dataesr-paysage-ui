@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 
 const NotifService = {
-    async fetching(promise, message) {
+    async promise(promise, message) {
         return toast.promise(promise, {
             loading: 'Loading...',
             success: message,

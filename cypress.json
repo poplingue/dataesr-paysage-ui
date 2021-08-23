@@ -2,5 +2,7 @@
   "baseUrl": "http://localhost:3000",
   "integrationFolder": "cypress/integration/paysage",
   "video": false,
-  "projectId": "9ymqdh"
+  "projectId": "9ymqdh",
+  "viewportWidth": 1920,
+  "viewportHeight": 1080
 }

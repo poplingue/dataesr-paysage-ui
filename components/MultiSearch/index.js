@@ -5,9 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString, getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import styles from './MultiSearch.module.scss';
+import DBService from '../../services/DBService';
 
 function MultiSearch({ title, parentsection }) {
-    const { state: { departments, forms }, dispatch } = useContext(AppContext);
+    const { state: { departments, forms, storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
     const uid = getUniqueId(pathname, parentsection, title, 0);
@@ -24,8 +25,9 @@ function MultiSearch({ title, parentsection }) {
     ) => option.label.toLowerCase().includes(internalValue.toLowerCase());
     const filteredOptions = options.filter((option, index, arr) => filterSearch(textValue, option, index, arr));
 
-    const onSelectChange = (e) => {
+    const onSelectChange = async (e) => {
         const { value } = e.target;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         // Remove value if exists
         let newValue = selectedValues && selectedValues.filter((item) => item !== value);
@@ -43,6 +45,13 @@ function MultiSearch({ title, parentsection }) {
                 formName,
             }
         });
+
+        if (checkStoreObject) {
+            await DBService.set({
+                value: newValue,
+                uid
+            }, formName);
+        }
     };
 
     useEffect(() => {

@@ -4,19 +4,31 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 
 function CustomRadio({ title, staticValues = [], parentsection }) {
     const [radioValues, setRadioValues] = useState([]);
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentsection, title, 0);
+    const uid = getUniqueId(pathname, parentsection, title, 0);
     const formName = getFormName(pathname);
 
-    const onRadioChange = (e) => {
+    const onRadioChange = async (e) => {
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+        const { value } = e.target;
+
         dispatch({
             type: 'UPDATE_FORM_FIELD',
-            payload: { value: e.target.value, uid: uniqueId, formName }
+            payload: { value, uid, formName }
         });
+
+        if (checkStoreObject) {
+            await DBService.set({
+                value,
+                uid
+            }, formName);
+
+        }
     };
 
     useEffect(() => {
@@ -42,7 +54,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
         <section className="wrapper-input py-10">
             <Row>
                 <Col>
-                    <RadioGroup legend={title} isInline data-field={uniqueId}>
+                    <RadioGroup legend={title} isInline data-field={uid}>
                         {radioValues.map((radio, i) => {
                             const { value, label } = radio;
 
@@ -51,7 +63,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                                 key={i}
                                 label={label}
                                 value={value}
-                                isChecked={formName ? value === getFieldValue(forms, formName, uniqueId) : false}
+                                isChecked={formName ? value === getFieldValue(forms, formName, uid) : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}
