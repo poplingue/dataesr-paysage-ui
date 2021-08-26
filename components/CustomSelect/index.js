@@ -37,7 +37,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
         } else {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
             // TODO Make it async
-            await DBService.delete(uid, formName, checkStoreObject)
+            await DBService.delete(uid, formName)
             NotifService.info('Select field deleted');
         }
 

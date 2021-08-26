@@ -61,7 +61,7 @@ function InfiniteField({ children, title, parentsection }) {
 
             setNumber(number - 1);
 
-            await DBService.delete(uid, formName, checkStoreObject);
+            await DBService.delete(uid, formName);
             NotifService.info('Field deleted');
         }
     };

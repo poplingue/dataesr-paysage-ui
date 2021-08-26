@@ -6,6 +6,7 @@ import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from
 import FieldButton from '../FieldButton';
 import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
+import DBService from '../../services/DBService';
 
 export default function InfiniteAccordion({ title, content, dataAttSection }) {
     const { state: { forms }, dispatch } = useContext(AppContext);
@@ -26,11 +27,18 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         // DOM remove
         sectionRefs[index].current.removeChild(sectionRefs[index].current.children[0]);
 
-        // indexDB & global state remove
+        const filteredFields = currentForm().filter((field) => {
+
+            return field.uid.startsWith(getUniqueId(pathname, newTitle));
+        }).map((fieldObj) => {
+            return fieldObj.uid;
+        });
+
+        // global state remove
         dispatch({
-            type: 'DELETE_FORM_SECTION',
+            type: 'DELETE_FORM_FIELD_LIST',
             payload: {
-                section: getUniqueId(pathname, newTitle),
+                uids: filteredFields,
                 formName,
                 fieldsNumber: sections[type]
             }
@@ -38,6 +46,11 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
 
         // local state remove
         updateSection(sectionType, sections[type] - 1);
+
+        if (filteredFields.length) {
+            // indexDB remove
+            DBService.deleteList(filteredFields, formName);
+        }
     };
 
     useEffect(() => {
@@ -56,6 +69,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                 }
 
                 const newTitle = `${title}#${i}`;
+                // TODO make it work with i !== 0 only
                 const deletable = (sections[type] - 1 === i && i !== 0);
                 let fieldTitle = '';
 

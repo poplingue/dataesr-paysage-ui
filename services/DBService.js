@@ -17,56 +17,55 @@ const DBService = {
     },
 
     async asyncOpenDB(dbName, version, objectStores, cb) {
-
-        return await openDB(dbName, version, {
-            upgrade(db, oldVersion, newVersion, transaction) {
-                NotifService.info(`IndexDB version ${db.version} upgraded`);
-
-                if (objectStores) {
-                    let names = [];
-
-                    objectStores.map((name) => {
-                        if (db.objectStoreNames.contains(name)) {
-                            db.deleteObjectStore(name);
-                        }
-
-                        db.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
-                    });
-
-                    cb(names);
-                }
-            },
-            blocked() {
-                // Called if there are older versions of the database open on the origin, so this version cannot open
-                // TODO manage with link in popup alert to reload manually
-                window.location.reload();
-
-            },
-            blocking() {
-                // Called if connection is blocking a future version of the database from opening.
-                // TODO manage with link in popup alert to reload manually
-                window.location.reload();
-            },
-            terminated(e) {
-                console.debug('==== terminated ==== ', e);
-            },
-        });
-    },
-
-    async init(objectStores, cb) {
         try {
-            const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStores, cb);
+            return await openDB(dbName, version, {
+                upgrade(db, oldVersion, newVersion, transaction) {
+                    NotifService.info(`IndexDB version ${db.version} upgraded`);
 
-            if (cb) {
-                cb(db.objectStoreNames, db.version);
-            }
+                    if (objectStores) {
+                        let names = [];
 
-            NotifService.info(`IndexDB version ${db.version} connected`);
+                        objectStores.map((name) => {
+                            if (db.objectStoreNames.contains(name)) {
+                                db.deleteObjectStore(name);
+                            }
+
+                            db.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
+                        });
+
+                        cb(names);
+                    }
+                },
+                blocked() {
+                    // Called if there are older versions of the database open on the origin, so this version cannot open
+                    // TODO manage with link in popup alert to reload manually
+                    window.location.reload();
+
+                },
+                blocking() {
+                    // Called if connection is blocking a future version of the database from opening.
+                    // TODO manage with link in popup alert to reload manually
+                    window.location.reload();
+                },
+                terminated(e) {
+                    console.debug('==== terminated ==== ', e);
+                },
+            });
 
         } catch (err) {
             console.log('==== err ==== ', err);
             await NotifService.promise(this.asyncDeleteDB(getVal('IDB_DATABASE_NAME')), err);
         }
+    },
+
+    async init(objectStores, cb) {
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStores, cb);
+
+        if (cb) {
+            cb(db.objectStoreNames, db.version);
+        }
+
+        NotifService.info(`IndexDB version ${db.version} connected`);
     },
 
     async set(objValue, name) {
@@ -103,6 +102,23 @@ const DBService = {
             };
 
         };
+    },
+
+    async deleteList(keys, name) {
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+
+        // TODO add check
+        const tx = db.transaction(name);
+
+        if (tx) {
+            for (let i = 0; i < keys.length; i = i + 1) {
+                const uid = await db.getKey(name, keys[i]);
+
+                if (uid) {
+                    await db.delete(name, uid);
+                }
+            }
+        }
     },
 
     async delete(uid, name, objectStoreChecked) {

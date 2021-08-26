@@ -1,5 +1,4 @@
 import { getForm } from '../helpers/utils';
-import DBService from '../services/DBService';
 import ACTIONS from './Actions';
 
 const reducers = (state, action) => {
@@ -46,36 +45,25 @@ const reducers = (state, action) => {
             };
         }
 
-        case ACTIONS.DELETE_FORM_SECTION: {
-            const { formName, section, fieldsNumber } = action.payload;
+        case ACTIONS.DELETE_FORM_FIELD_LIST: {
+            const { formName, uids, fieldsNumber } = action.payload;
             const currentForm = getForm(state.forms, formName);
             let newForm = [];
-            let formsInd;
+            let formIndex;
 
             state.forms.find((f, i) => {
                 if (Object.keys(f)[0] === formName) {
-                    formsInd = i;
+                    formIndex = i;
 
                     return true;
                 }
             });
+
             // Through right number of fields
             Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
+                for (let i = 0; i < uids.length; i = i + 1) {
+                    const currentFieldKey = uids[i];
 
-                // Retrieve field's key of the section
-                const filteredFields = currentForm.filter((field) => {
-
-                    return field.uid.startsWith(section);
-                }).map((fieldObj) => {
-                    return fieldObj.uid;
-                });
-
-                for (let i = 0; i < filteredFields.length; i = i + 1) {
-                    const currentFieldKey = filteredFields[i];
-                    // Delete in indexDB
-                    DBService.delete(currentFieldKey, formName, state.storeObjects.indexOf(formName) > -1);
-
-                    // Delete in global state
                     newForm = currentForm.filter((field) => {
                         return field.uid !== currentFieldKey;
                     });
@@ -85,9 +73,9 @@ const reducers = (state, action) => {
             return {
                 ...state,
                 forms: [
-                    ...state.forms.slice(0, formsInd), // everything before current field
-                    { ...state.forms[formsInd], ...{ [formName]: newForm } },
-                    ...state.forms.slice(formsInd + 1), // everything after current field
+                    ...state.forms.slice(0, formIndex), // everything before current field
+                    { ...state.forms[formIndex], ...{ [formName]: newForm } },
+                    ...state.forms.slice(formIndex + 1), // everything after current field
                 ]
             };
 
