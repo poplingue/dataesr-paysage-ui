@@ -16,6 +16,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
     const formName = getFormName(pathname);
 
     const onSelectChange = async (e) => {
+        // TODO manage select empty
         const value = e.target.value;
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
@@ -37,7 +38,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
         } else {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
             // TODO Make it async
-            await DBService.delete(uid, formName)
+            await DBService.delete(uid, formName);
             NotifService.info('Select field deleted');
         }
 
@@ -45,8 +46,11 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
     };
 
     useEffect(() => {
-        if (formName && !selectValue && getForm(forms, formName)) {
-            setSelectValue(getFieldValue(forms, formName, uid));
+        const fieldValue = getFieldValue(forms, formName, uid);
+        const mustBeUpdated = selectValue !== fieldValue;
+
+        if (formName && getForm(forms, formName) && (!selectValue || mustBeUpdated)) {
+            setSelectValue(fieldValue);
         }
     }, [formName, forms, selectValue, uid]);
 

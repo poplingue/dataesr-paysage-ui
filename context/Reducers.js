@@ -1,4 +1,4 @@
-import { getForm } from '../helpers/utils';
+import { getFieldValue, getForm } from '../helpers/utils';
 import ACTIONS from './Actions';
 
 const reducers = (state, action) => {
@@ -29,6 +29,40 @@ const reducers = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_FORM_FIELD_LIST: {
+            const { formName, fields } = action.payload;
+            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
+            const newForm = getForm(state.forms, formName);
+
+            for (let i = 0; i < fields.length; i = i + 1) {
+                const currentField = fields[i];
+
+                // case create new entry
+                if (currentField.value && !getFieldValue(state.forms, formName, currentField.uid)) {
+                    newForm.push(currentField);
+                }
+
+                // case uid already exists
+                if (currentField.value && getFieldValue(state.forms, formName, currentField.uid)) {
+                    const index = newForm.findIndex(obj => {
+                            return Object.entries(obj)[1][1] === currentField.uid;
+                        }
+                    );
+
+                    newForm[index] = currentField;
+                }
+            }
+
+            return {
+                ...state,
+                forms: [
+                    ...state.forms.slice(0, formIndex), // everything before current field
+                    { [formName]: newForm },
+                    ...state.forms.slice(formIndex + 1), // everything after current field
+                ]
+            };
+        }
+
         case ACTIONS.DELETE_FORM_FIELD: {
             const { formName, uid } = action.payload;
             const currentForm = getForm(state.forms, formName) || [];
@@ -48,8 +82,8 @@ const reducers = (state, action) => {
         case ACTIONS.DELETE_FORM_FIELD_LIST: {
             const { formName, uids, fieldsNumber } = action.payload;
             const currentForm = getForm(state.forms, formName);
-            let newForm = [];
             let formIndex;
+            let indexes = [];
 
             state.forms.find((f, i) => {
                 if (Object.keys(f)[0] === formName) {
@@ -59,16 +93,16 @@ const reducers = (state, action) => {
                 }
             });
 
-            // Through right number of fields
-            Array.apply(null, { length: fieldsNumber || 1 }).map((v, i) => {
-                for (let i = 0; i < uids.length; i = i + 1) {
-                    const currentFieldKey = uids[i];
+            for (let i = 0; i < uids.length; i = i + 1) {
+                const currentFieldKey = uids[i];
+                const index = currentForm.findIndex(obj => {
+                        return Object.entries(obj)[1][1] === currentFieldKey;
+                    }
+                );
+                indexes.push(index);
+            }
 
-                    newForm = currentForm.filter((field) => {
-                        return field.uid !== currentFieldKey;
-                    });
-                }
-            });
+            const newForm = currentForm.filter((field, i) => indexes.indexOf(i) === -1);
 
             return {
                 ...state,

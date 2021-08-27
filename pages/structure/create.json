@@ -45,8 +45,12 @@
             "title": "Type",
             "type": "select",
             "staticValues": [
+              "catégorie 0",
               "catégorie 1",
-              "catégorie 2"
+              "catégorie 2",
+              "catégorie 3",
+              "catégorie 4",
+              "catégorie 5"
             ]
           },
           {

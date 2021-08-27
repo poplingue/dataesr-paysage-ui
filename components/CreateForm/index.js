@@ -31,6 +31,7 @@ const CreateForm = ({ jsonForm }) => {
     useEffect(() => {
 
         const getIndexDBData = async () => {
+            // TODO refacto
             if (storeObjects.indexOf(formName) > -1 && formName) {
                 const indexDBData = await NotifService.promise(DBService.getAllObjects(formName, storeObjects.indexOf(formName) > -1), 'Data from IndexDB fetched');
                 indexDBData.forEach((elm) => {

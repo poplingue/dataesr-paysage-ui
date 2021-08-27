@@ -8,24 +8,24 @@ const DBService = {
         return window.indexedDB.open(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
     },
 
-    async asyncDeleteDB(name) {
-        await NotifService.promise(deleteDB(name), 'IndexDB deleted');
+    async asyncDeleteDB(dbName) {
+        await NotifService.promise(deleteDB(dbName), 'IndexDB deleted');
     },
 
     async getDBNames() {
         return await window.indexedDB.databases();
     },
 
-    async asyncOpenDB(dbName, version, objectStores, cb) {
+    async asyncOpenDB(dbName, version, objectStoreNames, cb) {
         try {
             return await openDB(dbName, version, {
                 upgrade(db, oldVersion, newVersion, transaction) {
                     NotifService.info(`IndexDB version ${db.version} upgraded`);
 
-                    if (objectStores) {
+                    if (objectStoreNames) {
                         let names = [];
 
-                        objectStores.map((name) => {
+                        objectStoreNames.map((name) => {
                             if (db.objectStoreNames.contains(name)) {
                                 db.deleteObjectStore(name);
                             }
@@ -58,8 +58,8 @@ const DBService = {
         }
     },
 
-    async init(objectStores, cb) {
-        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStores, cb);
+    async init(objectStoreNames, cb) {
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStoreNames, cb);
 
         if (cb) {
             cb(db.objectStoreNames, db.version);
@@ -68,7 +68,7 @@ const DBService = {
         NotifService.info(`IndexDB version ${db.version} connected`);
     },
 
-    async set(objValue, name) {
+    async set(objValue, objectStoreName) {
         // TODO async
         let DBOpenRequest = await this.getDB(), db;
 
@@ -76,10 +76,10 @@ const DBService = {
             db = DBOpenRequest.result;
 
             // create a new transaction
-            const txn = event.target.result.transaction(name, 'readwrite');
+            const txn = event.target.result.transaction(objectStoreName, 'readwrite');
 
             // get the object store
-            const store = txn.objectStore(name);
+            const store = txn.objectStore(objectStoreName);
 
             // set the value
             let query = store.put({ ...objValue });
@@ -104,24 +104,34 @@ const DBService = {
         };
     },
 
-    async deleteList(keys, name) {
+    async setList(list, objectStoreName) {
         const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+        const tx = db.transaction(objectStoreName, 'readwrite');
 
+        for (let i = 0; i < list.length; i = i + 1) {
+            await tx.store.put({ ...list[i] });
+        }
+
+        await tx.done;
+    },
+
+    async deleteList(keys, objectStoreName) {
+        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
         // TODO add check
-        const tx = db.transaction(name);
+        const tx = db.transaction(objectStoreName);
 
         if (tx) {
             for (let i = 0; i < keys.length; i = i + 1) {
-                const uid = await db.getKey(name, keys[i]);
+                const uid = await db.getKey(objectStoreName, keys[i]);
 
                 if (uid) {
-                    await db.delete(name, uid);
+                    await db.delete(objectStoreName, uid);
                 }
             }
         }
     },
 
-    async delete(uid, name, objectStoreChecked) {
+    async delete(uid, objectStoreName) {
         // TODO async
         let DBOpenRequest = await this.getDB(), db;
 
@@ -129,23 +139,21 @@ const DBService = {
 
             db = DBOpenRequest.result;
 
-            if (objectStoreChecked) {
-                // create a new transaction
-                const txn = event.target.result.transaction(name, 'readwrite');
+            // create a new transaction
+            const txn = event.target.result.transaction(objectStoreName, 'readwrite');
 
-                // get the object store
-                const store = txn.objectStore(name);
-                store.delete(uid);
-            }
+            // get the object store
+            const store = txn.objectStore(objectStoreName);
+            store.delete(uid);
         };
 
     },
 
-    async getAllObjects(name, objectStoreChecked) {
+    async getAllObjects(objectStoreName, objectStoreChecked) {
         const db = await NotifService.promise(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB getAllObjects connection ok');
 
         if (objectStoreChecked && db) {
-            const store = db.transaction(name).objectStore(name);
+            const store = db.transaction(objectStoreName).objectStore(objectStoreName);
 
             return await store.getAll();
         } else {

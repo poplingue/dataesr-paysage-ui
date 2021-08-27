@@ -34,15 +34,15 @@ export function containsObject(obj, array) {
  *
  * @param pathname
  * @param name
- * @param key
+ * @param id
  * @param section
- * @returns {string} format form@section#i/field-index
+ * @returns {string} format pathname@[section#i]/[name]#[index]
  */
-export function getUniqueId(pathname, section = '', name = '', key) {
+export function getUniqueId(pathname, section = '', name = '', id) {
     // TODO standardize this shit
-    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}#${key}`;
+    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}#${id}`;
 
-    if (!key && key !== 0) {
+    if (!id && id !== 0) {
         r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}`;
     }
 

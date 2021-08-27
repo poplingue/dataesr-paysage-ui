@@ -4,9 +4,9 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
+import NotifService from '../../services/NotifService';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
-import NotifService from '../../services/NotifService';
 
 function InfiniteField({ children, title, parentsection }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);

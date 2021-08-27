@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { createRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 import FieldButton from '../FieldButton';
 import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
-import DBService from '../../services/DBService';
 
 export default function InfiniteAccordion({ title, content, dataAttSection }) {
-    const { state: { forms }, dispatch } = useContext(AppContext);
+    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);
@@ -23,34 +23,80 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         setSections((prev) => ({ ...prev, [type]: nb }));
     }, []);
 
-    const deleteSection = (sectionType, index, newTitle) => {
-        // DOM remove
-        sectionRefs[index].current.removeChild(sectionRefs[index].current.children[0]);
+    const deleteSection = async (sectionType, index, newTitle) => {
+        let fieldsToDelete = [];
+        let fieldsToUpdate = [];
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        const filteredFields = currentForm().filter((field) => {
+        // Reassign Section's fields value...
+        for (let i = 0; i <= currentForm().length; i = i + 1) {
 
-            return field.uid.startsWith(getUniqueId(pathname, newTitle));
-        }).map((fieldObj) => {
-            return fieldObj.uid;
-        });
+            const currentField = currentForm()[i];
 
-        // global state remove
-        dispatch({
-            type: 'DELETE_FORM_FIELD_LIST',
-            payload: {
-                uids: filteredFields,
-                formName,
-                fieldsNumber: sections[type]
+            // TODO why need to check currentField?
+            if (currentField) {
+                // get id of section based on uid
+                const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
+                const match = currentField.uid.match(reg);
+                const id = match ? parseInt(match[0].substring(1)) : null;
+
+                if (id && id === index) {
+                    fieldsToDelete.push(currentField.uid);
+                }
+
+                if (id && id === sections[type] - 1) {
+                    fieldsToDelete.push(currentField.uid);
+                }
+
+                const sectionReg = (/@.+?\//g).exec(currentField.uid);
+                const newUid = currentField.uid.replace(sectionReg[0], `@${sectionType}#${id - 1}/`);
+
+                if (id && id > index) {
+                    fieldsToUpdate.push({ value: currentField.value, uid: newUid });
+                    fieldsToDelete.push(currentField.uid);
+                }
             }
-        });
-
-        // local state remove
-        updateSection(sectionType, sections[type] - 1);
-
-        if (filteredFields.length) {
-            // indexDB remove
-            DBService.deleteList(filteredFields, formName);
         }
+
+        // remove stored fields
+        if (fieldsToDelete.length) {
+            // global state
+            dispatch({
+                type: 'DELETE_FORM_FIELD_LIST',
+                payload: {
+                    uids: fieldsToDelete,
+                    formName,
+                    fieldsNumber: sections[type]
+                }
+            });
+
+            if (checkStoreObject) {
+                // indexDB
+                await DBService.deleteList(fieldsToDelete, formName);
+            }
+        }
+
+        // update stored fields
+        if (fieldsToUpdate.length) {
+
+            // global state
+            dispatch({
+                type: 'UPDATE_FORM_FIELD_LIST',
+                payload: {
+                    fields: fieldsToUpdate,
+                    formName,
+                }
+            });
+
+            if (checkStoreObject) {
+                // indexDB
+                // TODO DBService.setAll
+                await DBService.setList(fieldsToUpdate, formName);
+            }
+        }
+
+        // local state retrieve one section
+        updateSection(sectionType, sections[type] - 1);
     };
 
     useEffect(() => {
@@ -70,7 +116,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
 
                 const newTitle = `${title}#${i}`;
                 // TODO make it work with i !== 0 only
-                const deletable = (sections[type] - 1 === i && i !== 0);
+                const deletable = i !== 0;
                 let fieldTitle = '';
 
                 return <li className={styles.Accordion} key={newTitle}>
@@ -86,7 +132,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                             className={styles.Item}
                                             key={newTitle}
                                             title={newTitle}>
-                                            {content.map((field) => {
+                                            {content.map((field, j) => {
                                                 const {
                                                     type: fieldType,
                                                     infinite,
@@ -101,7 +147,6 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                                             <Col>
                                                                 <Switch
                                                                     section={newTitle}
-                                                                    keynumber={i}
                                                                     type={fieldType}
                                                                     title={fieldTitle}
                                                                     infinite={infinite}
