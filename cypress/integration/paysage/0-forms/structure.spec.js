@@ -22,14 +22,14 @@ context('Structure form page', () => {
 
     it('should render new Toggle', () => {
         cy.get('[data-testid="btn-add-etat"]').click();
-        cy.get('[data-cy="structure/create@etat#1/test#1"]').should('exist');
+        cy.get('[data-cy="structure/create@etat#1/test#0"]').should('exist');
         cy.get('[data-testid="btn-delete-etat#1"]').should('exist');
     });
 
     it('should clean new Toggle', () => {
         cy.get('[data-testid="btn-add-etat"]').click();
         cy.get('[data-testid="btn-delete-etat#1"]').click({ force: true });
-        cy.get('[data-cy="structure/create@etat#1/test#1"]').should('not.exist');
+        cy.get('[data-cy="structure/create@etat#1/test#0"]').should('not.exist');
     });
 
     it('should expand accordion', () => {
@@ -62,5 +62,24 @@ context('Structure form page', () => {
         cy.get('.fr-accordion__btn').contains('Catégories#0').should('exist');
         cy.get('[data-testid="btn-add-categories"]').should('exist');
 
+    });
+
+    it('should add, change and delete Catégorie section', () => {
+        cy.get('[data-testid="structure/create@categories#0/type#0"]').find('select').select('catégorie 1');
+        cy.get('[data-testid="btn-add-categories"]').click();
+        cy.get('[data-testid="structure/create@categories#1/type#0"]').find('select').select('catégorie 2');
+        cy.get('[data-testid="structure/create@categories#1/start-day#0"]').find('select').select('12');
+        cy.get('[data-testid="structure/create@categories#1/end-month#0"]').find('select').select('12');
+        cy.get('[data-testid="structure/create@categories#1/end-year#0"]').find('select').select('2012');
+        cy.get('[data-testid="btn-add-categories"]').click();
+        cy.get('[data-testid="structure/create@categories#2/end-day#0"]').find('select').select('1');
+        cy.get('[data-testid="structure/create@categories#2/start-month#0"]').find('select').select('1');
+        cy.get('[data-testid="structure/create@categories#2/end-year#0"]').find('select').select('2000');
+        cy.get('[data-testid="btn-delete-categories#1"]').click({ force: true });
+
+        cy.wait(1000);
+        cy.get('[data-testid="structure/create@categories#1/end-day#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="structure/create@categories#1/start-month#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="structure/create@categories#1/end-year#0"]').find('select').should('have.value', '2000');
     });
 });

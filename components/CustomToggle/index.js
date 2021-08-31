@@ -10,7 +10,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
     const [checked, setCheched] = useState('none');
     const [init, setInit] = useState(true);
     const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
+    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber || 0);
     const formName = getFormName(pathname);
     const toggleValue = getFieldValue(forms, formName, uniqueId);
 

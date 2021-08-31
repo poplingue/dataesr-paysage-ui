@@ -16,7 +16,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
     const formName = getFormName(pathname);
 
     const onSelectChange = async (e) => {
-        // TODO manage select empty
+        // TODO manage select empty?
         const value = e.target.value;
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {

@@ -29,32 +29,24 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         // Reassign Section's fields value...
-        for (let i = 0; i <= currentForm().length; i = i + 1) {
+        for (let i = 0; i < currentForm().length; i = i + 1) {
 
-            const currentField = currentForm()[i];
+            const { uid, value } = currentForm()[i];
+            // get id of section based on uid
+            const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
+            const match = uid.match(reg);
+            const id = match ? parseInt(match[0].substring(1)) : null;
 
-            // TODO why need to check currentField?
-            if (currentField) {
-                // get id of section based on uid
-                const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
-                const match = currentField.uid.match(reg);
-                const id = match ? parseInt(match[0].substring(1)) : null;
+            if (id && (id === index || id === sections[type] - 1)) {
+                fieldsToDelete.push(uid);
+            }
 
-                if (id && id === index) {
-                    fieldsToDelete.push(currentField.uid);
-                }
+            if (id && id > index) {
+                const sectionReg = (/@.+?\//g).exec(uid);
+                const newUid = uid.replace(sectionReg[0], `@${sectionType}#${id - 1}/`);
 
-                if (id && id === sections[type] - 1) {
-                    fieldsToDelete.push(currentField.uid);
-                }
-
-                const sectionReg = (/@.+?\//g).exec(currentField.uid);
-                const newUid = currentField.uid.replace(sectionReg[0], `@${sectionType}#${id - 1}/`);
-
-                if (id && id > index) {
-                    fieldsToUpdate.push({ value: currentField.value, uid: newUid });
-                    fieldsToDelete.push(currentField.uid);
-                }
+                fieldsToUpdate.push({ value, uid: newUid });
+                fieldsToDelete.push(uid);
             }
         }
 
@@ -90,7 +82,6 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
 
             if (checkStoreObject) {
                 // indexDB
-                // TODO DBService.setAll
                 await DBService.setList(fieldsToUpdate, formName);
             }
         }
@@ -118,6 +109,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                 // TODO make it work with i !== 0 only
                 const deletable = i !== 0;
                 let fieldTitle = '';
+                // TODO refacto data-sub-section
 
                 return <li className={styles.Accordion} key={newTitle}>
                     <section
@@ -163,7 +155,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                 {deletable &&
                                 <Col n="2">
                                     <FieldButton
-                                        datatestid={`btn-delete-${cleanString(newTitle)}`}
+                                        datatestid={`btn-delete-${cleanString(title)}#${i}`}
                                         onClick={() => deleteSection(type, i, newTitle)}
                                         title="Supprimer"
                                     >
