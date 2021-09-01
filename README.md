@@ -52,6 +52,10 @@ IndexDB is used to store data from forms. On each change value is updated in SER
 
 :warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
 
+## Errors handler
+
+ErrorBoundary can be used to catch runtime error. As this feature doesn't work with server side rendering, it must wrapped a NoSSRWrapper component.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

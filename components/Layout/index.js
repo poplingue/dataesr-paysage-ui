@@ -13,7 +13,7 @@ import {
 } from '@dataesr/react-dsfr';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';

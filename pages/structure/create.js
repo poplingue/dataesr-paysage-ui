@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import CreateForm from '../../components/CreateForm';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
@@ -13,8 +12,8 @@ export default function Create({ data }) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
         }
     });
-    
-return (
+
+    return (
         <Layout mainTitle="Create a structure">
             <div>
                 <SideNavigation items={CreateStructure[0].form}>
@@ -33,6 +32,5 @@ export async function getStaticProps() {
         return { notFound: true };
     }
 
-    
-return { props: { data } };
+    return { props: { data } };
 }
