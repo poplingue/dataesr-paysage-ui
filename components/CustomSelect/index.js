@@ -1,23 +1,31 @@
 import { Select } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
 import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 
-export default function CustomSelect({ title, staticValues = [], keynumber, parentsection }) {
+export default function CustomSelect({
+                                         title,
+                                         staticValues = [],
+                                         keynumber,
+                                         parentsection,
+                                         newValue,
+                                         newValueCheck,
+                                         updateCheck
+                                     }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
+    const [init, setInit] = useState(true);
     const [selectValue, setSelectValue] = useState('');
     const { pathname } = useRouter();
     const uid = getUniqueId(pathname, parentsection, title, keynumber || 0);
     const formName = getFormName(pathname);
 
-    const onSelectChange = async (e) => {
+    const onSelectChange = useCallback(async (value) => {
         // TODO manage select empty?
-        const value = e.target.value;
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value,
@@ -25,7 +33,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
             formName,
         };
 
-        if (e.target.value) {
+        if (value) {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
             if (checkStoreObject) {
@@ -43,7 +51,14 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
         }
 
         setSelectValue(value);
-    };
+    }, [dispatch, formName, storeObjects, uid]);
+
+    useEffect(() => {
+        if (newValue && newValueCheck) {
+            onSelectChange(newValue);
+            updateCheck(false);
+        }
+    }, [onSelectChange, newValueCheck, newValue, updateCheck]);
 
     useEffect(() => {
         const fieldValue = getFieldValue(forms, formName, uid);
@@ -79,7 +94,7 @@ export default function CustomSelect({ title, staticValues = [], keynumber, pare
             <Select
                 data-field={uid}
                 data-testid={uid}
-                onChange={(e) => onSelectChange(e)}
+                onChange={(e) => onSelectChange(e.target.value)}
                 selected={selectValue}
                 label={title}
                 options={options}

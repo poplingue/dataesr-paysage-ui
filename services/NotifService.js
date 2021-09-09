@@ -8,7 +8,7 @@ const NotifService = {
             error: (err) => `Error: ${err.toString()}`,
         }, {
             success: {
-                duration: 8000,
+                duration: 4000,
                 icon: '☀️',
                 style: {
                     fontSize: 14,
@@ -23,7 +23,7 @@ const NotifService = {
             },
             error: {
                 icon: '🔴',
-                duration: 100000,
+                duration: 5000,
                 style: {
                     fontSize: 14,
                     background: 'rgba(247, 191, 195, 0.6)',
@@ -42,7 +42,7 @@ const NotifService = {
         return toast(message, {
             position: 'top-right',
             icon: '👾',
-            duration: 100000,
+            duration: 3000,
             style: {
                 fontSize: 14,
                 background: 'rgba(198, 255, 237, 0.6)',

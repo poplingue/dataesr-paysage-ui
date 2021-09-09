@@ -1,10 +1,17 @@
+import getConfig from 'next/config';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
+    const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
+    // console.log(serverRuntimeConfig.secondSecret);
+    // console.log(publicRuntimeConfig.user);
+
     return (
         <Layout mainTitle="Paysage">
+            user: {serverRuntimeConfig.user}
             <div className={styles.container}>
                 <main className={styles.main}>
                     <h1 className={styles.title}>

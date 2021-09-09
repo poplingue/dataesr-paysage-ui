@@ -6,6 +6,14 @@ module.exports = withSass({
     cssModules: true
 });
 module.exports = {
+    serverRuntimeConfig: {
+        // Will only be available on the server side
+        secondSecret: process.env.SECOND_SECRET, // Pass through env variables
+    },
+    publicRuntimeConfig: {
+        // Will be available on both server and client
+        user: 'toto',
+    },
     target: 'serverless',
     async rewrites() {
         return [
