@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly List 1`] = `
+<section
+  className="List"
+>
+  <ul>
+    <p>
+      child
+    </p>
+  </ul>
+</section>
+`;

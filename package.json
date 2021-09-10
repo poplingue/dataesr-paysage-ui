@@ -15,13 +15,14 @@
     "cy:run": "start-server-and-test dev 3000 cy:run-only"
   },
   "dependencies": {
-    "@dataesr/react-dsfr": "0.6.1",
+    "@dataesr/react-dsfr": "0.6.3",
     "@zeit/next-sass": "^1.0.1",
     "idb": "^6.1.2",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.1.0",
+    "react-test-renderer": "^17.0.2",
     "sass": "^1.36.0"
   },
   "devDependencies": {

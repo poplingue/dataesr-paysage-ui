@@ -78,7 +78,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
         data-field={uniqueId}
         data-cy={uniqueId}
         onChange={(e) => onToggleChange(e)}
-        isChecked={checked === 'true'}
+        checked={checked === 'true'}
         label={title}
     />;
 }

@@ -6,7 +6,8 @@ export default function DynamicBreadcrumb() {
     const router = useRouter();
     const obj = {
         '/structure/create': ['Ajouter une structure'],
-        '/person/create': ['Ajouter une personne']
+        '/person/create': ['Ajouter une personne'],
+        '/national': ['France']
     };
     if (!obj[router.asPath]) return null;
 

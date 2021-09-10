@@ -1,15 +1,15 @@
 import {
     Header,
     HeaderBody,
-    Logo,
-    Service,
-    Tool,
-    ToolItemGroup,
-    ToolItem,
     HeaderNav,
+    Logo,
     NavItem,
     NavSubItem,
+    Service,
     SwitchTheme,
+    Tool,
+    ToolItem,
+    ToolItemGroup,
 } from '@dataesr/react-dsfr';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -75,6 +75,7 @@ export default function Layout({ children, mainTitle }) {
                             asLink={<NavLink href="/person/create"/>}
                         />
                     </NavItem>
+                    <NavItem title="France" asLink={<NavLink href="/national">France</NavLink>}/>
                     <NavItem title="Ressources">
                         <NavSubItem
                             link="https://scanr.enseignementsup-recherche.gouv.fr/"

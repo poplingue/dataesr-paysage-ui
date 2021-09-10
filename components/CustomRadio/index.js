@@ -63,7 +63,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                                 key={i}
                                 label={label}
                                 value={value}
-                                isChecked={formName ? value === getFieldValue(forms, formName, uid) : false}
+                                checked={formName ? value === getFieldValue(forms, formName, uid) : false}
                                 onChange={(e) => onRadioChange(e)}
                             />;
                         })}
