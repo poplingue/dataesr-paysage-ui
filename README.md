@@ -77,7 +77,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## TODO
 
 * button to reset data from current form
-* button to close all sections of the form at once (and reverse)
 * manage boundaries error
 * add unit tests for complex components
 * add possibility of comments to section/field

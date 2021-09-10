@@ -74,7 +74,6 @@ export default function Layout({ children, mainTitle }) {
                             title="Ajouter une personne"
                             asLink={<NavLink href="/person/create"/>}
                         />
-                        <NavSubItem title="Ressource #3" link="/path-to-resources-3"/>
                     </NavItem>
                     <NavItem title="Ressources">
                         <NavSubItem

@@ -1,10 +1,11 @@
 import { Accordion, AccordionItem, Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
+import FieldButton from '../FieldButton';
 import InfiniteAccordion from '../InfiniteAccordion';
 import Switch from '../Switch';
 import styles from './CreateForm.module.scss';
@@ -13,6 +14,29 @@ const CreateForm = ({ jsonForm }) => {
     const { state: { storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
+    const [accordionsExpanded, setAccordionsExpanded] = useState(false);
+
+    const simulateClick = (elem) => {
+        const evt = new MouseEvent('click', {
+            bubbles: true,
+            cancelable: true,
+            view: window
+        });
+
+        // If cancelled, don't dispatch our event
+        const canceled = !elem.dispatchEvent(evt);
+
+        setAccordionsExpanded(!accordionsExpanded);
+    };
+
+    const expandCloseAll = () => {
+        const open = accordionsExpanded ? 'true' : 'false';
+        const btnAccordions = document.querySelectorAll(`.fr-accordion__btn[aria-expanded="${open}"]`);
+
+        for (let i = 0; i < btnAccordions.length; i = i + 1) {
+            simulateClick(btnAccordions[i]);
+        }
+    };
 
     const retrieveField = useCallback(async (field) => {
         const { value, uid, } = field;
@@ -43,46 +67,55 @@ const CreateForm = ({ jsonForm }) => {
         getIndexDBData();
     }, [retrieveField, storeObjects, formName]);
 
-    return <>
-        {jsonForm.form.map((section, i) => {
-            const { title: sectionTitle, content, infinite } = section;
-            const dataSection = sectionUniqueId(sectionTitle, content.length);
-            // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
+    return <Container fluid>
+        <Row>
+            <Col offset="10" n="3" spacing='my-2w'>
+                <FieldButton
+                    datatestid='btn-expand-close'
+                    title="Réduire / Étendre"
+                    onClick={expandCloseAll}/>
+            </Col>
+            <Col n="12">
+                {jsonForm.form.map((section, i) => {
+                    const { title: sectionTitle, content, infinite } = section;
+                    const dataSection = sectionUniqueId(sectionTitle, content.length);
+                    // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
-            return infinite ? <InfiniteAccordion
-                    dataAttSection={dataSection}
-                    title={sectionTitle}
-                    content={content}
-                    key={sectionTitle}/> :
-                <Accordion keepOpen className={styles.Accordion} key={dataSection} data-section={dataSection}>
-                    <AccordionItem
-                        initExpand
-                        className={styles.Item}
-                        title={sectionTitle}>
-                        {content.map((field, j) => {
-                            const { type, title, infinite, staticValues } = field;
+                    return infinite ? <InfiniteAccordion
+                            dataAttSection={dataSection}
+                            title={sectionTitle}
+                            content={content}
+                            key={sectionTitle}/> :
+                        <Accordion keepOpen className={styles.Accordion} key={dataSection} data-section={dataSection}>
+                            <AccordionItem
+                                className={styles.Item}
+                                title={sectionTitle}>
+                                {content.map((field) => {
+                                    const { type, title, infinite, staticValues } = field;
 
-                            return <div key={title}>
-                                <Container fluid>
-                                    <Row alignItems="middle">
-                                        <Col>
-                                            <Switch
-                                                keynumber={i}
-                                                section={sectionTitle}
-                                                type={type}
-                                                title={title}
-                                                infinite={infinite}
-                                                staticValues={staticValues}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Container>
-                            </div>;
-                        })}
-                    </AccordionItem>
-                </Accordion>;
-        })}
-    </>;
+                                    return <div key={title}>
+                                        <Container fluid>
+                                            <Row alignItems="middle">
+                                                <Col>
+                                                    <Switch
+                                                        keynumber={i}
+                                                        section={sectionTitle}
+                                                        type={type}
+                                                        title={title}
+                                                        infinite={infinite}
+                                                        staticValues={staticValues}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Container>
+                                    </div>;
+                                })}
+                            </AccordionItem>
+                        </Accordion>;
+                })}
+            </Col>
+        </Row>
+    </Container>;
 };
 
 export default CreateForm;

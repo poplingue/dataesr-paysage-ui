@@ -35,8 +35,8 @@ li {
 }
 
 ul {
-    padding: 0 !important;
-    margin: 0!important;
+    padding: 0;
+    margin: 0;
 }
 
 /**
@@ -53,4 +53,8 @@ ul {
 .py-10 {
     padding-bottom: 10px;
     padding-top: 10px;
+}
+
+.p-0 {
+    padding: 0;
 }
