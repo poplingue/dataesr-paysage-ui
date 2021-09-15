@@ -17,3 +17,12 @@ export function getVal(key) {
 
     return data[key];
 }
+
+
+export function getTitle(key) {
+    const data = {
+        university: 'Universités',
+    };
+
+    return data[key];
+}

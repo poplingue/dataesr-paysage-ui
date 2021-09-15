@@ -1,6 +1,7 @@
 import { getUniqueId } from './utils';
+import { getTitle } from './constants';
 
-describe('Helpers utils getUniqueId function', () => {
+describe('Helpers utils functions', () => {
     it('should render uniqueId string', () => {
         const x = getUniqueId('/person/create', 'Section', 'Name', 2);
         expect(x).toEqual('person/create@section/name#2');
@@ -14,5 +15,10 @@ describe('Helpers utils getUniqueId function', () => {
     it('should render uniqueId string without name', () => {
         const x = getUniqueId('/person/create', 'Section');
         expect(x).toEqual('person/create@section');
+    });
+
+    it('should render right Title', () => {
+        const x = getTitle('university');
+        expect(x).toEqual('Universités');
     });
 });

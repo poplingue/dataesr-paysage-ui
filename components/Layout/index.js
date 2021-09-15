@@ -1,10 +1,13 @@
 import {
+    Col,
+    Container,
     Header,
     HeaderBody,
     HeaderNav,
     Logo,
     NavItem,
     NavSubItem,
+    Row,
     Service,
     SwitchTheme,
     Tool,
@@ -18,7 +21,8 @@ import { Toaster } from 'react-hot-toast';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
 
-export default function Layout({ children, mainTitle }) {
+// TODO add propTypes
+export default function Layout({ children, mainTitle, pageTitle }) {
     const { pathname } = useRouter();
     const [waitWindow, setWaitWindow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +79,7 @@ export default function Layout({ children, mainTitle }) {
                             asLink={<NavLink href="/person/create"/>}
                         />
                     </NavItem>
-                    <NavItem title="France" asLink={<NavLink href="/national">France</NavLink>}/>
+                    <NavItem title="France" asLink={<NavLink href="/national/list">France</NavLink>}/>
                     <NavItem title="Ressources">
                         <NavSubItem
                             link="https://scanr.enseignementsup-recherche.gouv.fr/"
@@ -90,7 +94,14 @@ export default function Layout({ children, mainTitle }) {
                 </HeaderNav>
             </Header><SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/></>}
             <DynamicBreadcrumb/>
-            {children}
+            <Container>
+                <Row>
+                    <Col>
+                        <h1 className="fs-32-40 marianne-bold">{pageTitle}</h1>
+                        {children}
+                    </Col>
+                </Row>
+            </Container>
             <Toaster/>
         </>
     );

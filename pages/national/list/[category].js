@@ -1,10 +1,14 @@
 import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Layout from '../../components/Layout';
-import List from '../../components/List';
-import ListElement from '../../components/ListElement';
+import Layout from '../../../components/Layout';
+import List from '../../../components/List';
+import ListElement from '../../../components/ListElement';
+import { getTitle } from '../../../helpers/constants';
 
-export default function National({ structures }) {
+export default function Category({ structures }) {
+    const router = useRouter();
+    const { category } = router.query;
     const [selection, setSelection] = useState([]);
     const [elements, setElements] = useState(() => {
         return structures.map((structure, i) => {
@@ -21,7 +25,7 @@ export default function National({ structures }) {
     };
 
     return (
-        <Layout>
+        <Layout pageTitle={`Liste ${getTitle(category)}`}>
             <Container>
                 <Row>
                     <Col n="8">
@@ -39,11 +43,13 @@ export default function National({ structures }) {
                                             <Container fluid className="w-100">
                                                 <Row alignItems="top">
                                                     <Col n="11">
-                                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                        <div>Lorem ipsum dolor sit amet, consectetur adipisicing
+                                                            elit.
                                                         </div>
                                                     </Col>
                                                     <Col n="1">
-                                                        {structure.checked ? <Icon name="ri-checkbox-line" size="2x"/> :
+                                                        {structure.checked ?
+                                                            <Icon name="ri-checkbox-line" size="2x"/> :
                                                             <Icon name="ri-checkbox-blank-line" size="2x"/>}
                                                     </Col>
                                                 </Row>
@@ -54,7 +60,7 @@ export default function National({ structures }) {
                             })}
                         </List>
                     </Col>
-                    <Col n='4'>
+                    <Col n="4">
                         <List>
                             {selection.map((s) => {
                                 return <ListElement key={s.id}>

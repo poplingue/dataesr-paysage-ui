@@ -4,8 +4,8 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString, getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/utils';
-import styles from './MultiSearch.module.scss';
 import DBService from '../../services/DBService';
+import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, parentsection }) {
     const { state: { departments, forms, storeObjects }, dispatch } = useContext(AppContext);

@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import "../styles/styles.scss"
 import { DataProvider } from '../context/GlobalState';
 
 function MyApp({ Component, pageProps }) {
