@@ -63,13 +63,13 @@ context('Person form page', () => {
 
     it('should open all sections', () => {
         cy.get('[data-testid="btn-expand-close"]').click();
+        cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="Wikidata"]').should('be.visible');
         cy.get('[data-testid="person/create@denomination/genre#1"]').should('be.visible');
 
     });
 
     it('should close all sections', () => {
-        cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="Wikidata"]').should('not.be.visible');
         cy.get('[data-testid="person/create@denomination/genre#1"]').should('not.be.visible');

@@ -1,5 +1,5 @@
-import { getUniqueId } from './utils';
 import { getTitle } from './constants';
+import { getUniqueId } from './utils';
 
 describe('Helpers utils functions', () => {
     it('should render uniqueId string', () => {

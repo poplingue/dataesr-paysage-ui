@@ -14,7 +14,7 @@ const CreateForm = ({ jsonForm }) => {
     const { state: { storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const formName = getFormName(pathname);
-    const [accordionsExpanded, setAccordionsExpanded] = useState(false);
+    const [accordionsExpanded, setAccordionsExpanded] = useState(true);
 
     const simulateClick = (elem) => {
         const evt = new MouseEvent('click', {
@@ -82,12 +82,14 @@ const CreateForm = ({ jsonForm }) => {
                     // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
                     return infinite ? <InfiniteAccordion
+                            accordionsExpanded={accordionsExpanded}
                             dataAttSection={dataSection}
                             title={sectionTitle}
                             content={content}
                             key={sectionTitle}/> :
                         <Accordion keepOpen className={styles.Accordion} key={dataSection} data-section={dataSection}>
                             <AccordionItem
+                                initExpand={accordionsExpanded}
                                 className={styles.Item}
                                 title={sectionTitle}>
                                 {content.map((field) => {

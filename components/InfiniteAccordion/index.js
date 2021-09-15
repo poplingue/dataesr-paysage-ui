@@ -8,7 +8,7 @@ import FieldButton from '../FieldButton';
 import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
 
-export default function InfiniteAccordion({ title, content, dataAttSection }) {
+export default function InfiniteAccordion({ title, content, dataAttSection, accordionsExpanded }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const { pathname } = useRouter();
     const [sections, setSections] = useState({});
@@ -122,6 +122,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                         <Col n={deletable ? '10' : '12'}>
                                             <Accordion keepOpen>
                                                 <AccordionItem
+                                                    initExpand={accordionsExpanded}
                                                     className={styles.Item}
                                                     key={newTitle}
                                                     title={newTitle}>
