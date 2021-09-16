@@ -1,7 +1,7 @@
 import CreateForm from '../../components/CreateForm';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
-import CreatePerson from './create.json';
+import CreatePerson from './form.json';
 
 export default function Create() {
     return (

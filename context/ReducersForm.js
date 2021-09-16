@@ -1,7 +1,7 @@
 import { getFieldValue, getForm } from '../helpers/utils';
 import ACTIONS from './Actions';
 
-const reducers = (state, action) => {
+const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
             const { value, formName, uid } = action.payload;
@@ -136,4 +136,4 @@ const reducers = (state, action) => {
     }
 };
 
-export default reducers;
+export default reducersForm;

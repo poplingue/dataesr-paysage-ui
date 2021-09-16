@@ -6,7 +6,7 @@ import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 
 function Input({ label, keynumber, title, parentsection, value = '' }) {
-    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const [textValue, setTextValue] = useState(value);
     const inputRef = useRef(null);
     const { pathname, query: { object} } = useRouter();

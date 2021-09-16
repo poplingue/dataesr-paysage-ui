@@ -3,10 +3,10 @@ import CreateForm from '../../components/CreateForm';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
-import CreateStructure from './create.json';
+import CreateStructure from './form.json';
 
 export default function Create({ data }) {
-    const { state, dispatch } = useContext(AppContext);
+    const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
     useEffect(() => {
         if (data && !state.departments.length) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });

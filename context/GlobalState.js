@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DBService';
-import reducers from './Reducers';
+import reducersForm from './ReducersForm';
+import reducersList from './ReducersList';
 
 export const AppContext = createContext();
 
@@ -11,15 +12,23 @@ export const DataProvider = ({ children }) => {
         departments: [],
         forms: [{ 'create/person': [] }, { 'create/structure': [] }]
     };
-    const [state, dispatch] = useReducer(reducers, initialState);
+
+    const initialStateList = {
+        exportMode: false,
+        selectionToExport: []
+    };
+
+    const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
+    const [stateList, dispatchList] = useReducer(reducersList, initialStateList);
 
     const cbInit = (storeObjects) => {
-        dispatch({ type: 'UPDATE_INDB_STORE_OBJECTS', payload: { storeObjects } });
+        dispatchForm({ type: 'UPDATE_INDB_STORE_OBJECTS', payload: { storeObjects } });
     };
 
     useEffect(() => {
         DBService.init(['create/person', 'create/structure'], cbInit);
     }, []);
 
-    return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;
+    return <AppContext.Provider
+        value={{ stateForm, dispatchForm, stateList, dispatchList }}>{children}</AppContext.Provider>;
 };

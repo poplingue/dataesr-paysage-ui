@@ -9,7 +9,7 @@ import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
 
 export default function InfiniteAccordion({ title, content, dataAttSection, accordionsExpanded }) {
-    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const { pathname, query: { object } } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);

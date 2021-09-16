@@ -9,7 +9,7 @@ import Field from '../Field';
 import FieldButton from '../FieldButton';
 
 function InfiniteField({ children, title, parentsection }) {
-    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const [number, setNumber] = useState(0);
     const { pathname, query: { object } } = useRouter();
     const formName = getFormName(pathname, object);

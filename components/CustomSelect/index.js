@@ -16,7 +16,7 @@ export default function CustomSelect({
                                          newValueCheck,
                                          updateCheck
                                      }) {
-    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [options, setOptions] = useState([]);
     const [init, setInit] = useState(true);
     const [selectValue, setSelectValue] = useState('');

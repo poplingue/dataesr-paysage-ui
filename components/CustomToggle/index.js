@@ -6,7 +6,7 @@ import { getFieldValue, getForm, getFormName, getUniqueId } from '../../helpers/
 import DBService from '../../services/DBService';
 
 export default function CustomToggle({ keynumber, parentsection, title }) {
-    const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const [checked, setCheched] = useState('none');
     const [init, setInit] = useState(true);
     const { pathname, query: { object } } = useRouter();

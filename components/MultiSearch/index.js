@@ -8,7 +8,7 @@ import DBService from '../../services/DBService';
 import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, parentsection }) {
-    const { state: { departments, forms, storeObjects }, dispatch } = useContext(AppContext);
+    const { stateForm: { departments, forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const { pathname, query: { object } } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, parentsection, title, 0);

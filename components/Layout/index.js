@@ -40,6 +40,30 @@ export default function Layout({ children, mainTitle, pageTitle }) {
                 <title>{mainTitle || 'Paysage'}</title>
                 <link rel="icon" href="/favicon/favicon.ico"/>
                 <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet"/>
+                <link
+                    rel="preload"
+                    href="/fonts/Marianne-Regular.woff"
+                    as="font"
+                    crossOrigin=""
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/Marianne-Regular.woff2"
+                    as="font"
+                    crossOrigin=""
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/Marianne-Bold.woff"
+                    as="font"
+                    crossOrigin=""
+                />
+                <link
+                    rel="preload"
+                    href="/fonts/Marianne-Bold.woff2"
+                    as="font"
+                    crossOrigin=""
+                />
             </Head>
             {waitWindow && <><Header>
                 <HeaderBody>
