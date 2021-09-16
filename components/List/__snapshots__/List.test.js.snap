@@ -4,7 +4,9 @@ exports[`renders correctly List 1`] = `
 <section
   className="List"
 >
-  <ul>
+  <ul
+    className="p-0"
+  >
     <p>
       child
     </p>

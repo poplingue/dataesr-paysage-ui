@@ -1,11 +1,15 @@
 import * as nextRouter from 'next/router';
 import React from 'react';
 import { getUniqueId } from '../../helpers/utils';
-import { render, screen, fireEvent } from '../../test/test-utils';
+import { fireEvent, render, screen } from '../../test/test-utils';
 import Input from './Input';
 
 nextRouter.useRouter = jest.fn();
-nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname: '/create/person' }));
+nextRouter.useRouter.mockImplementation(() => ({
+    route: '/create/person',
+    pathname: '/create/[object]',
+    query: { object: 'person' }
+}));
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -36,7 +40,7 @@ describe('Field component', () => {
     });
 
     it('should render the input label', () => {
-        const uniqueId = getUniqueId('/create/person', 'Section', 'Title', 1);
+        const uniqueId = getUniqueId('create/person', 'Section', 'Title', 1);
         expect(screen.getByTestId('Title')).toHaveAttribute('data-field', uniqueId);
     });
 

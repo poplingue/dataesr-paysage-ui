@@ -6,7 +6,7 @@ import { render, screen } from '../../test/test-utils';
 import InfiniteField from './index';
 
 nextRouter.useRouter = jest.fn();
-nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname: '/create/person' }));
+nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname: '/create/[object]', query: {object: 'person'} }));
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),

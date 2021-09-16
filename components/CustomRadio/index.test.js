@@ -6,7 +6,7 @@ import { render, screen } from '../../test/test-utils';
 import CustomRadio from './index';
 
 nextRouter.useRouter = jest.fn();
-nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname:'/create/person' }));
+nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname:'/create/[object]', query: {object: 'person'} }));
 
 describe('Custom Radio', () => {
     it('should render the title', () => {

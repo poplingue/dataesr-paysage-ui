@@ -5,7 +5,7 @@ import { AppContext } from '../context/GlobalState';
 const Providers = ({ children }) => {
 
     return <AppContext.Provider value={{
-        state: {
+        stateForm: {
             darkTheme: false,
             storeObjects: ['create/person'],
             departments: [],
@@ -18,11 +18,12 @@ const Providers = ({ children }) => {
                 }, 'create/structure': {}
             }
         },
-        dispatch: () => {
+        dispatchForm: () => {
         }
     }
     }>{children}</AppContext.Provider>;
 };
+
 const customRender = (ui, options = {}) =>
     render(ui, { wrapper: Providers, ...options });
 
