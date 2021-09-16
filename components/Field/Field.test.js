@@ -4,7 +4,7 @@ import { render, screen } from '../../test/test-utils';
 import Field from './index';
 
 nextRouter.useRouter = jest.fn();
-nextRouter.useRouter.mockImplementation(() => ({ route: '/person/create', pathname: '/person/create' }));
+nextRouter.useRouter.mockImplementation(() => ({ route: '/create/person', pathname: '/create/person' }));
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),

@@ -9,7 +9,7 @@ export const DataProvider = ({ children }) => {
         darkTheme: false,
         storeObjects: [],
         departments: [],
-        forms: [{ 'person/create': [] }, { 'structure/create': [] }]
+        forms: [{ 'create/person': [] }, { 'create/structure': [] }]
     };
     const [state, dispatch] = useReducer(reducers, initialState);
 
@@ -18,7 +18,7 @@ export const DataProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        DBService.init(['person/create', 'structure/create'], cbInit);
+        DBService.init(['create/person', 'create/structure'], cbInit);
     }, []);
 
     return <AppContext.Provider value={{ state, dispatch }}>{children}</AppContext.Provider>;

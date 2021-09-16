@@ -24,13 +24,6 @@ export default function Create({ data }) {
     );
 }
 
-export async function getStaticProps() {
-    const res = await fetch(`https://geo.api.gouv.fr/departements?fields=nom,code,codeRegion`);
-    const data = await res.json();
 
-    if (!data) {
-        return { notFound: true };
-    }
 
-    return { props: { data } };
-}
+

@@ -21,7 +21,7 @@ export function getVal(key) {
 
 export function getTitle(key) {
     const data = {
-        university: 'Universités',
+        5: 'Universités',
     };
 
     return data[key];

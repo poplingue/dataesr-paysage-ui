@@ -11,8 +11,8 @@ import FieldButton from '../FieldButton';
 function InfiniteField({ children, title, parentsection }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [number, setNumber] = useState(0);
-    const { pathname } = useRouter();
-    const formName = getFormName(pathname);
+    const { pathname, query: { object } } = useRouter();
+    const formName = getFormName(pathname, object);
 
     const deleteField = async (ref) => {
         const element = ref.querySelectorAll('[data-field]');
@@ -31,15 +31,15 @@ function InfiniteField({ children, title, parentsection }) {
                     dispatch({
                         type: 'UPDATE_FORM_FIELD', payload: {
                             formName,
-                            value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
-                            uid: getUniqueId(pathname, parentsection, title, i - 1)
+                            value: getFieldValue(forms, formName, getUniqueId(formName, parentsection, title, i)),
+                            uid: getUniqueId(formName, parentsection, title, i - 1)
                         }
                     });
 
                     if (checkStoreObject) {
                         // TODO refacto getFieldValue
                         await DBService.set({
-                            value: getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)),
+                            value: getFieldValue(forms, formName, getUniqueId(formName, parentsection, title, i)),
                             uid
                         }, formName);
                     }
@@ -54,7 +54,7 @@ function InfiniteField({ children, title, parentsection }) {
             }
 
             const payload = {
-                uid: getUniqueId(pathname, parentsection, title, key),
+                uid: getUniqueId(formName, parentsection, title, key),
                 formName
             };
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
@@ -70,7 +70,7 @@ function InfiniteField({ children, title, parentsection }) {
         const currentForm = getForm(forms, formName);
 
         if (currentForm) {
-            const initInfinite = currentForm.filter((field) => field.uid.startsWith(getUniqueId(pathname, parentsection, title)));
+            const initInfinite = currentForm.filter((field) => field.uid.startsWith(getUniqueId(formName, parentsection, title)));
             setNumber(initInfinite.length || 1);
         }
     }, [forms, title, parentsection, formName, pathname]);
@@ -80,11 +80,11 @@ function InfiniteField({ children, title, parentsection }) {
                 <Row>
                     <Col n="12">
                         {Array.apply(null, { length: number }).map((v, i) => {
-                                const value = getFieldValue(forms, formName, getUniqueId(pathname, parentsection, title, i)) || null;
+                                const value = getFieldValue(forms, formName, getUniqueId(formName, parentsection, title, i)) || null;
                                 const newTitle = `${title}#${i}`;
 
                                 return <Field
-                                    key={getUniqueId(pathname, '', title, i)}
+                                    key={getUniqueId(formName, '', title, i)}
                                     value={value}
                                     index={i}
                                     pathname={pathname}

@@ -12,8 +12,8 @@ import styles from './CreateForm.module.scss';
 
 const CreateForm = ({ jsonForm }) => {
     const { state: { storeObjects }, dispatch } = useContext(AppContext);
-    const { pathname } = useRouter();
-    const formName = getFormName(pathname);
+    const { pathname, query: { object } } = useRouter();
+    const formName = getFormName(pathname, object);
     const [accordionsExpanded, setAccordionsExpanded] = useState(true);
 
     const simulateClick = (elem) => {

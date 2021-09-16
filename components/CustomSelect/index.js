@@ -20,9 +20,9 @@ export default function CustomSelect({
     const [options, setOptions] = useState([]);
     const [init, setInit] = useState(true);
     const [selectValue, setSelectValue] = useState('');
-    const { pathname } = useRouter();
-    const uid = getUniqueId(pathname, parentsection, title, keynumber || 0);
-    const formName = getFormName(pathname);
+    const { pathname, query: { object } } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, parentsection, title, keynumber || 0);
 
     const onSelectChange = useCallback(async (value) => {
         // TODO manage select empty?

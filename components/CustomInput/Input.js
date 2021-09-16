@@ -9,9 +9,9 @@ function Input({ label, keynumber, title, parentsection, value = '' }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
     const [textValue, setTextValue] = useState(value);
     const inputRef = useRef(null);
-    const { pathname } = useRouter();
-    const uniqueId = getUniqueId(pathname, parentsection, title, keynumber);
-    const formName = getFormName(pathname);
+    const { pathname, query: { object} } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uniqueId = getUniqueId(formName, parentsection, title, keynumber);
     const inputValue = getFieldValue(forms, formName, uniqueId)
 
     const saveValue = async (e) => {

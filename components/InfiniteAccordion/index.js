@@ -10,12 +10,12 @@ import styles from './InfiniteAcordion.module.scss';
 
 export default function InfiniteAccordion({ title, content, dataAttSection, accordionsExpanded }) {
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
-    const { pathname } = useRouter();
+    const { pathname, query: { object } } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);
-    const formName = getFormName(pathname);
+    const formName = getFormName(pathname, object);
     const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);
-    const sectionName = useMemo(() => getUniqueId(pathname, type), [pathname, type]);
+    const sectionName = useMemo(() => getUniqueId(formName, type), [pathname, type]);
     const currentForm = useCallback(() => getForm(forms, formName) || [], [formName, forms]);
     const formSections = useCallback(() => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')), [currentForm]);
 

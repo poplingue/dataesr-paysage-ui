@@ -3,18 +3,18 @@ import { getUniqueId } from './utils';
 
 describe('Helpers utils functions', () => {
     it('should render uniqueId string', () => {
-        const x = getUniqueId('/person/create', 'Section', 'Name', 2);
-        expect(x).toEqual('person/create@section/name#2');
+        const x = getUniqueId('/create/person', 'Section', 'Name', 2);
+        expect(x).toEqual('create/person@section/name#2');
     });
 
     it('should render uniqueId string without key', () => {
-        const x = getUniqueId('/person/create', 'Section', 'Name');
-        expect(x).toEqual('person/create@section/name');
+        const x = getUniqueId('/create/person', 'Section', 'Name');
+        expect(x).toEqual('create/person@section/name');
     });
 
     it('should render uniqueId string without name', () => {
-        const x = getUniqueId('/person/create', 'Section');
-        expect(x).toEqual('person/create@section');
+        const x = getUniqueId('/create/person', 'Section');
+        expect(x).toEqual('create/person@section');
     });
 
     it('should render right Title', () => {

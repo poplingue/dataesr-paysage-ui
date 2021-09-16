@@ -1,7 +1,7 @@
 context('Structure form page', () => {
     beforeEach(() => {
         cy.deleteIndexDB();
-        cy.visit('http://localhost:3000/structure/create');
+        cy.visit('http://localhost:3000/create/structure');
     });
 
     it('should display current page BreadCrumbs', () => {
@@ -9,11 +9,11 @@ context('Structure form page', () => {
     });
 
     it('should switch toggle value', () => {
-        cy.get('[data-cy="structure/create@etat#0/test#0"]').click();
-        cy.get('[data-cy="structure/create@etat#0/test#0"]').find('input').should('be.checked');
+        cy.get('[data-cy="create/structure@etat#0/test#0"]').click();
+        cy.get('[data-cy="create/structure@etat#0/test#0"]').find('input').should('be.checked');
 
-        cy.get('[data-cy="structure/create@etat#0/test#0"]').click();
-        cy.get('[data-cy="structure/create@etat#0/test#0"]').find('input').should('not.be.checked');
+        cy.get('[data-cy="create/structure@etat#0/test#0"]').click();
+        cy.get('[data-cy="create/structure@etat#0/test#0"]').find('input').should('not.be.checked');
     });
 
     it('should render the Add button', () => {
@@ -22,14 +22,14 @@ context('Structure form page', () => {
 
     it('should render new Toggle', () => {
         cy.get('[data-testid="btn-add-etat"]').click();
-        cy.get('[data-cy="structure/create@etat#1/test#0"]').should('exist');
+        cy.get('[data-cy="create/structure@etat#1/test#0"]').should('exist');
         cy.get('[data-testid="btn-delete-etat#1"]').should('exist');
     });
 
     it('should clean new Toggle', () => {
         cy.get('[data-testid="btn-add-etat"]').click();
         cy.get('[data-testid="btn-delete-etat#1"]').click({ force: true });
-        cy.get('[data-cy="structure/create@etat#1/test#0"]').should('not.exist');
+        cy.get('[data-cy="create/structure@etat#1/test#0"]').should('not.exist');
     });
 
     it('should expand accordion', () => {
@@ -40,8 +40,8 @@ context('Structure form page', () => {
     });
 
     it('should select catégorie 2 Type value', () => {
-        cy.get('[data-testid="structure/create@categories#0/type#0"]').find('select').select('catégorie 2');
-        cy.get('[data-testid="structure/create@categories#0/type#0"]').find('select').should('have.value', 'catégorie 2');
+        cy.get('[data-testid="create/structure@categories#0/type#0"]').find('select').select('catégorie 2');
+        cy.get('[data-testid="create/structure@categories#0/type#0"]').find('select').should('have.value', 'catégorie 2');
     });
 
     it('should select Potentiel État value', () => {
@@ -65,31 +65,31 @@ context('Structure form page', () => {
     });
 
     it('should add, change and delete Catégorie section', () => {
-        cy.get('[data-testid="structure/create@categories#0/type#0"]').find('select').select('catégorie 1');
+        cy.get('[data-testid="create/structure@categories#0/type#0"]').find('select').select('catégorie 1');
         cy.get('[data-testid="btn-add-categories"]').click();
-        cy.get('[data-testid="structure/create@categories#1/type#0"]').find('select').select('catégorie 2');
-        cy.get('[data-testid="structure/create@categories#1/start-day#0"]').find('select').select('12');
-        cy.get('[data-testid="structure/create@categories#1/end-month#0"]').find('select').select('12');
-        cy.get('[data-testid="structure/create@categories#1/end-year#0"]').find('select').select('2012');
+        cy.get('[data-testid="create/structure@categories#1/type#0"]').find('select').select('catégorie 2');
+        cy.get('[data-testid="create/structure@categories#1/start-day#0"]').find('select').select('12');
+        cy.get('[data-testid="create/structure@categories#1/end-month#0"]').find('select').select('12');
+        cy.get('[data-testid="create/structure@categories#1/end-year#0"]').find('select').select('2012');
         cy.get('[data-testid="btn-add-categories"]').click();
-        cy.get('[data-testid="structure/create@categories#2/end-day#0"]').find('select').select('1');
-        cy.get('[data-testid="structure/create@categories#2/start-month#0"]').find('select').select('1');
-        cy.get('[data-testid="structure/create@categories#2/end-year#0"]').find('select').select('2000');
+        cy.get('[data-testid="create/structure@categories#2/end-day#0"]').find('select').select('1');
+        cy.get('[data-testid="create/structure@categories#2/start-month#0"]').find('select').select('1');
+        cy.get('[data-testid="create/structure@categories#2/end-year#0"]').find('select').select('2000');
         cy.get('[data-testid="btn-delete-categories#1"]').click({ force: true });
 
         cy.wait(1000);
-        cy.get('[data-testid="structure/create@categories#1/end-day#0"]').find('select').should('have.value', '1');
-        cy.get('[data-testid="structure/create@categories#1/start-month#0"]').find('select').should('have.value', '1');
-        cy.get('[data-testid="structure/create@categories#1/end-year#0"]').find('select').should('have.value', '2000');
+        cy.get('[data-testid="create/structure@categories#1/end-day#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="create/structure@categories#1/start-month#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="create/structure@categories#1/end-year#0"]').find('select').should('have.value', '2000');
     });
     //
     it('should should select today date', () => {
         const now = new Date();
 
         cy.get('[data-testid="today-categories#0"]').first().click();
-        cy.get('[data-testid="structure/create@categories#0/start-day#0"]').find('select').should('have.value', now.getDay());
-        cy.get('[data-testid="structure/create@categories#0/start-month#0"]').find('select').should('have.value', now.getMonth() + 1);
-        cy.get('[data-testid="structure/create@categories#0/start-year#0"]').find('select').should('have.value', now.getFullYear());
+        cy.get('[data-testid="create/structure@categories#0/start-day#0"]').find('select').should('have.value', now.getDay());
+        cy.get('[data-testid="create/structure@categories#0/start-month#0"]').find('select').should('have.value', now.getMonth() + 1);
+        cy.get('[data-testid="create/structure@categories#0/start-year#0"]').find('select').should('have.value', now.getFullYear());
 
     });
 
@@ -97,9 +97,9 @@ context('Structure form page', () => {
         const now = new Date();
 
         cy.get('[data-testid="firstJanuary-categories#0"]').last().click();
-        cy.get('[data-testid="structure/create@categories#0/end-day#0"]').find('select').should('have.value', '1');
-        cy.get('[data-testid="structure/create@categories#0/end-month#0"]').find('select').should('have.value', '1');
-        cy.get('[data-testid="structure/create@categories#0/end-year#0"]').find('select').should('have.value', now.getFullYear());
+        cy.get('[data-testid="create/structure@categories#0/end-day#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="create/structure@categories#0/end-month#0"]').find('select').should('have.value', '1');
+        cy.get('[data-testid="create/structure@categories#0/end-year#0"]').find('select').should('have.value', now.getFullYear());
 
     });
 });

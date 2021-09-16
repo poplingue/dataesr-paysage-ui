@@ -1,10 +1,10 @@
 import style from './List.module.scss';
 
-export default function List({ children, container }) {
+export default function List({ children }) {
 
     return (
         <section className={style.List}>
-            <ul>
+            <ul className='p-0'>
                 {children}
             </ul>
         </section>

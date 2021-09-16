@@ -7,15 +7,15 @@ const Providers = ({ children }) => {
     return <AppContext.Provider value={{
         state: {
             darkTheme: false,
-            storeObjects: ['person/create'],
+            storeObjects: ['create/person'],
             departments: [],
-            formName: 'person/create',
+            formName: 'create/person',
             forms: {
-                'person/create': {
-                    'person/create@section/infinite#0': 'test 1',
-                    'person/create@section/infinite#1': 'test 2',
-                    'person/create@section/infinite#2': 'test 3'
-                }, 'structure/create': {}
+                'create/person': {
+                    'create/person@section/infinite#0': 'test 1',
+                    'create/person@section/infinite#1': 'test 2',
+                    'create/person@section/infinite#2': 'test 3'
+                }, 'create/structure': {}
             }
         },
         dispatch: () => {

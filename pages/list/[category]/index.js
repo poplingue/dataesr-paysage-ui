@@ -1,4 +1,4 @@
-import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import { Col, Container, Icon, Row, Tile, TileBody, Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../../../components/Layout';
@@ -10,6 +10,7 @@ export default function Category({ structures }) {
     const router = useRouter();
     const { category } = router.query;
     const [selection, setSelection] = useState([]);
+    const [exportMode, setExportMode] = useState(false);
     const [elements, setElements] = useState(() => {
         return structures.map((structure, i) => {
             return { ...structure, checked: false, id: i };
@@ -17,17 +18,29 @@ export default function Category({ structures }) {
     });
 
     const onTileClick = (id) => {
-        const newList = elements.map((elm) => {
-            return { ...elm, checked: id === elm.id ? !elm.checked : elm.checked };
-        });
-        setElements(newList);
-        setSelection(newList.filter((l) => l.checked));
+        if (!exportMode) {
+            router.push(`/list/${category}/${id}`);
+        } else {
+            const newList = elements.map((elm) => {
+                return { ...elm, checked: id === elm.id ? !elm.checked : elm.checked };
+            });
+            setElements(newList);
+            setSelection(newList.filter((l) => l.checked));
+        }
     };
 
     return (
-        <Layout pageTitle={`Liste ${getTitle(category)}`}>
-            <Container>
+        <Layout pageTitle={`Liste catégorie : ${category}`}>
+            <Container fluid>
                 <Row>
+                    <Col n="12">
+                        <Toggle
+                            onChange={() => setExportMode(!exportMode)}
+                            checked={exportMode}
+                            label="Mode export"
+                            description="Exporter votre liste personnalisée"
+                        />
+                    </Col>
                     <Col n="8">
                         <List>
                             {elements.map((structure, i) => {
@@ -42,16 +55,16 @@ export default function Category({ structures }) {
                                             description={structure.desc}>
                                             <Container fluid className="w-100">
                                                 <Row alignItems="top">
-                                                    <Col n="11">
+                                                    <Col n={exportMode ? '11' : '12'}>
                                                         <div>Lorem ipsum dolor sit amet, consectetur adipisicing
                                                             elit.
                                                         </div>
                                                     </Col>
-                                                    <Col n="1">
+                                                    {exportMode && <Col n="1">
                                                         {structure.checked ?
                                                             <Icon name="ri-checkbox-line" size="2x"/> :
                                                             <Icon name="ri-checkbox-blank-line" size="2x"/>}
-                                                    </Col>
+                                                    </Col>}
                                                 </Row>
                                             </Container>
                                         </TileBody>
@@ -80,19 +93,23 @@ export async function getServerSideProps() {
         props: {
             structures: [
                 {
-                    'name': 'Structure A',
+                    'id': 0,
+                    'name': 'Structure 0',
                     'desc': 'Description',
                 },
                 {
-                    'name': 'Structure Z',
+                    'id': 1,
+                    'name': 'Structure 1',
                     'desc': 'Description'
                 },
                 {
-                    'name': 'Structure E',
+                    'id': 2,
+                    'name': 'Structure 2',
                     'desc': 'Description'
                 },
                 {
-                    'name': 'Structure R',
+                    'id': 3,
+                    'name': 'Structure 3',
                     'desc': 'Description'
                 }
             ]

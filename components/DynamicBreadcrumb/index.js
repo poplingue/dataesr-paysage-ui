@@ -4,16 +4,36 @@ import NavLink from '../NavLink';
 
 export default function DynamicBreadcrumb() {
     const router = useRouter();
+    const { category, id } = router.query;
+
     const pages = {
-        '/structure/create': [{ label: 'Ajouter une structure' }],
-        '/person/create': [{ label: 'Ajouter une personne' }],
-        '/national': [{ label: 'France' }],
-        '/national/list': [{ label: 'Listes qualifiées d\'établissements' }],
-        '/national/list/university': [{
-            label: 'Listes qualifiées d\'établissements',
-            href: '/national/list/'
-        }, { label: 'Les Universités' }],
+        '/create/structure': [{ label: 'Ajouter une structure' }],
+        '/create/person': [{ label: 'Ajouter une personne' }],
+        '/list': [{ label: 'Listes qualifiées' }],
+        [`/list/${category}/${id}`]: [
+            {
+                label: 'Listes qualifiées',
+                href: '/list/'
+            },
+            {
+                label: `${category}`,
+                href: `/list/${category}/`
+            },
+            {
+                label: `${id}`
+            }
+        ],
+        [`/list/${category}`]: [
+            {
+                label: 'Listes qualifiées',
+                href: '/list'
+            },
+            {
+                label: `${category}`
+            }
+        ],
     };
+
 
     if (!pages[router.asPath]) return null;
 
@@ -27,7 +47,7 @@ export default function DynamicBreadcrumb() {
 
                     key={elm.label}
                     data-cy={'current-page'}
-                    asLink={elm.href ? <NavLink href={elm.href}>Accueil</NavLink>: null}>
+                    asLink={elm.href ? <NavLink href={elm.href}>Accueil</NavLink> : null}>
                     {elm.label}
                 </BreadcrumbItem>;
             })}

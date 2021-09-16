@@ -9,9 +9,9 @@ import DBService from '../../services/DBService';
 function CustomRadio({ title, staticValues = [], parentsection }) {
     const [radioValues, setRadioValues] = useState([]);
     const { state: { forms, storeObjects }, dispatch } = useContext(AppContext);
-    const { pathname } = useRouter();
-    const uid = getUniqueId(pathname, parentsection, title, 0);
-    const formName = getFormName(pathname);
+    const { pathname, query: { object } } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, parentsection, title, 0);
 
     const onRadioChange = async (e) => {
         const checkStoreObject = storeObjects.indexOf(formName) > -1;

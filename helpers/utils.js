@@ -32,22 +32,22 @@ export function containsObject(obj, array) {
 
 /**
  *
- * @param pathname
+ * @param formName
  * @param name
  * @param id
  * @param section
  * @returns {string} format pathname@[section#i]/[name]#[index]
  */
-export function getUniqueId(pathname, section = '', name = '', id) {
+export function getUniqueId(formName, section = '', name = '', id) {
     // TODO standardize this shit
-    let r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}#${id}`;
+    let r = `${formName}@${cleanString(section)}/${cleanString(name)}#${id}`;
 
     if (!id && id !== 0) {
-        r = `${pathname.substring(1)}@${cleanString(section)}/${cleanString(name)}`;
+        r = `${formName}@${cleanString(section)}/${cleanString(name)}`;
     }
 
     if (!name) {
-        r = `${pathname.substring(1)}@${cleanString(section)}`;
+        r = `${formName}@${cleanString(section)}`;
     }
 
     return r;
@@ -57,8 +57,8 @@ export function getUniqueId(pathname, section = '', name = '', id) {
  *
  * @returns {string}
  */
-export function getFormName(pathname) {
-    return pathname.substring(1);
+export function getFormName(pathname, query) {
+    return pathname.replace(/\[+([^\][]+)]+/g, query).substring(1);
 }
 
 /**

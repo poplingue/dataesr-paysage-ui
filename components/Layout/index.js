@@ -69,17 +69,17 @@ export default function Layout({ children, mainTitle, pageTitle }) {
                     <NavItem title="Accueil" asLink={<NavLink href="/">Accueil</NavLink>}/>
                     <NavItem title="Je contribue">
                         <NavSubItem
-                            current={pathname.startsWith('/structure/create')}
+                            current={pathname.startsWith('/create/structure')}
                             title="Ajouter une structure"
-                            asLink={<NavLink href="/structure/create"/>}
+                            asLink={<NavLink href="/create/structure"/>}
                         />
                         <NavSubItem
-                            current={pathname.startsWith('/person/create')}
+                            current={pathname.startsWith('/create/person')}
                             title="Ajouter une personne"
-                            asLink={<NavLink href="/person/create"/>}
+                            asLink={<NavLink href="/create/person"/>}
                         />
                     </NavItem>
-                    <NavItem title="France" asLink={<NavLink href="/national/list">France</NavLink>}/>
+                    <NavItem title="France" asLink={<NavLink href="/list">France</NavLink>}/>
                     <NavItem title="Ressources">
                         <NavSubItem
                             link="https://scanr.enseignementsup-recherche.gouv.fr/"
