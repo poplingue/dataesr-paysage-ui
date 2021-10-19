@@ -9,7 +9,7 @@ import { AppContext } from '../../../context/GlobalState';
 
 export default function Category({ structures }) {
     const router = useRouter();
-    const { stateList: { exportMode }, dispatchList } = useContext(AppContext);
+    const { stateList: { exportMode } } = useContext(AppContext);
     const { category } = router.query;
     const [selection, setSelection] = useState([]);
     const [elements, setElements] = useState(() => {

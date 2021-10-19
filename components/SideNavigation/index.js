@@ -1,5 +1,8 @@
-import { Col, Container, Row, SideMenu, SideMenuLink } from '@dataesr/react-dsfr';
+import { Col, Container, Icon, Row, SideMenu, SideMenuLink, Text } from '@dataesr/react-dsfr';
+import { useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
 import { sectionUniqueId } from '../../helpers/utils';
+import styles from './SideNavigation.module.scss';
 
 export default function SideNavigation({ children, items }) {
     const goToSection = (e, dataSection) => {
@@ -8,24 +11,45 @@ export default function SideNavigation({ children, items }) {
         window.scrollTo(left, top + window.scrollY);
     };
 
+    const { stateList: { sideMode }, dispatchList: dispatch } = useContext(AppContext);
+
     return (<Container>
         <Row>
-            <Col n="12 md-3">
+            <Col n={`12 ${sideMode ? 'md-1' : 'md-4'}`}>
                 <SideMenu
-                    title="Navigation"
-                    buttonLabel="Navigation"
+                    buttonLabel='Navigation'
                     className="fr-sidemenu--sticky">
-                    {items.map((section) => {
-                        const { title, content } = section;
+                    <li>
+                        <input type="checkbox" id="isCollapsed" className="hidden"
+                               onClick={() => dispatch({
+                                   type: 'UPDATE_SIDE_NAVIGATION_MODE',
+                                   payload: {
+                                       sideMode: !sideMode,
+                                   }
+                               })}
+                        />
+                        <div className={`${styles.SideNav} ${sideMode ? '' : styles.Active}`}>
+                            <label htmlFor="isCollapsed">
+                                <Icon name={sideMode ? 'ri-menu-unfold-line' : 'ri-menu-fold-line'} size="lg"
+                                      className={`${styles.Icon} ${sideMode ? styles.Active : ''}`}/>
+                                <Text className={sideMode ? 'hidden' : ''} as="span" size="lg">Navigation</Text>
+                            </label>
+                            <ul>
+                                {items.map((section) => {
+                                    const { title, content } = section;
 
-                        return <SideMenuLink
-                            onClick={(e) => goToSection(e, sectionUniqueId(title, content.length))}
-                            href="/"
-                            key={`${title}-${content.length}`}>{title}</SideMenuLink>;
-                    })}
+                                    return <SideMenuLink
+                                        className={sideMode ? 'hidden' : ''}
+                                        onClick={(e) => goToSection(e, sectionUniqueId(title, content.length))}
+                                        href="/"
+                                        key={`${title}-${content.length}`}>{title}</SideMenuLink>;
+                                })}
+                            </ul>
+                        </div>
+                    </li>
                 </SideMenu>
             </Col>
-            <Col n="12 md-9">
+            <Col n={`12 ${sideMode ? 'md-11' : 'md-8'}`}>
                 {children}
             </Col>
         </Row>

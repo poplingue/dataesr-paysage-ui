@@ -98,88 +98,90 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
 
     }, [formSections, sectionName, type, updateSection]);
 
-    return <Container fluid>
-        <Row>
-            <Col n='12'>
-                <ul className='p-0'>
-                    {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
-                        if (!sections[type]) {
-                            updateSection(type, 1);
-                        }
+    return <div data-section={dataAttSection}>
+        <Container fluid>
+            <Row>
+                <Col n="12">
+                    <ul className="p-0">
+                        {Array.apply(null, { length: sections[type] || 1 }).map((v, i) => {
+                            if (!sections[type]) {
+                                updateSection(type, 1);
+                            }
 
-                        const newTitle = `${title}#${i}`;
-                        // TODO make it work with i !== 0 only
-                        const deletable = i !== 0;
-                        let fieldTitle = '';
-                        // TODO refacto data-sub-section
+                            const newTitle = `${title}#${i}`;
+                            // TODO make it work with i !== 0 only
+                            const deletable = i !== 0;
+                            let fieldTitle = '';
+                            // TODO refacto data-sub-section
 
-                        return <li className={styles.Accordion} key={newTitle}>
-                            <section
-                                data-sub-section={`${dataAttSection}#${i}`}
-                                ref={sectionRefs[i]}>
-                                <Container fluid>
-                                    <Row gutters>
-                                        <Col n={deletable ? '10' : '12'}>
-                                            <Accordion keepOpen>
-                                                <AccordionItem
-                                                    initExpand={accordionsExpanded}
-                                                    className={styles.Item}
-                                                    key={newTitle}
-                                                    title={newTitle}>
-                                                    {content.map((field, j) => {
-                                                        const {
-                                                            type: fieldType,
-                                                            infinite,
-                                                            staticValues
-                                                        } = field;
+                            return <li className={styles.Accordion} key={newTitle}>
+                                <section
+                                    data-sub-section={`${dataAttSection}#${i}`}
+                                    ref={sectionRefs[i]}>
+                                    <Container fluid>
+                                        <Row gutters>
+                                            <Col n={deletable ? '10' : '12'}>
+                                                <Accordion keepOpen>
+                                                    <AccordionItem
+                                                        initExpand={accordionsExpanded}
+                                                        className={styles.Item}
+                                                        key={newTitle}
+                                                        title={newTitle}>
+                                                        {content.map((field, j) => {
+                                                            const {
+                                                                type: fieldType,
+                                                                infinite,
+                                                                staticValues
+                                                            } = field;
 
-                                                        fieldTitle = field.title;
+                                                            fieldTitle = field.title;
 
-                                                        return <div key={fieldTitle}>
-                                                            <Container>
-                                                                <Row alignItems="middle" gutters>
-                                                                    <Col>
-                                                                        <Switch
-                                                                            section={newTitle}
-                                                                            type={fieldType}
-                                                                            title={fieldTitle}
-                                                                            infinite={infinite}
-                                                                            staticValues={staticValues}
-                                                                        />
-                                                                    </Col>
-                                                                </Row>
-                                                            </Container>
-                                                        </div>;
-                                                    })}
-                                                </AccordionItem>
-                                            </Accordion>
-                                        </Col>
-                                        {deletable &&
-                                        <Col n="2">
-                                            <FieldButton
-                                                datatestid={`btn-delete-${cleanString(title)}#${i}`}
-                                                onClick={() => deleteSection(type, i, newTitle)}
-                                                title="Supprimer"
-                                            >
-                                            </FieldButton>
-                                        </Col>
-                                        }
-                                    </Row>
-                                </Container>
-                            </section>
-                        </li>;
-                    })}</ul>
-            </Col>
-            <Col>
-                <div className={styles.Button}>
-                    <Button
-                        icon="ri-add-line"
-                        size="sm"
-                        data-testid={`btn-add-${cleanString(type)}`}
-                        onClick={() => updateSection(type, sections[type] + 1)}>
-                        Add 1 {title}</Button>
-                </div>
-            </Col>
-        </Row>
-    </Container>;
+                                                            return <div key={fieldTitle}>
+                                                                <Container>
+                                                                    <Row alignItems="middle" gutters>
+                                                                        <Col>
+                                                                            <Switch
+                                                                                section={newTitle}
+                                                                                type={fieldType}
+                                                                                title={fieldTitle}
+                                                                                infinite={infinite}
+                                                                                staticValues={staticValues}
+                                                                            />
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Container>
+                                                            </div>;
+                                                        })}
+                                                    </AccordionItem>
+                                                </Accordion>
+                                            </Col>
+                                            {deletable &&
+                                            <Col n="2">
+                                                <FieldButton
+                                                    datatestid={`btn-delete-${cleanString(title)}#${i}`}
+                                                    onClick={() => deleteSection(type, i, newTitle)}
+                                                    title="Supprimer"
+                                                >
+                                                </FieldButton>
+                                            </Col>
+                                            }
+                                        </Row>
+                                    </Container>
+                                </section>
+                            </li>;
+                        })}</ul>
+                </Col>
+                <Col>
+                    <div className={styles.Button}>
+                        <Button
+                            icon="ri-add-line"
+                            size="sm"
+                            data-testid={`btn-add-${cleanString(type)}`}
+                            onClick={() => updateSection(type, sections[type] + 1)}>
+                            Add 1 {title}</Button>
+                    </div>
+                </Col>
+            </Row>
+        </Container>
+    </div>;
 }

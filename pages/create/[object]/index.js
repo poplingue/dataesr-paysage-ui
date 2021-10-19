@@ -30,8 +30,8 @@ export async function getStaticProps() {
 export async function getStaticPaths() {
     return {
         paths: [
-            '/create/[object]',
-            { params: { object: 'structure' } },
+            '/create/person',
+            '/create/structure',
         ],
         fallback: true,
     }

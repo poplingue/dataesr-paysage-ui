@@ -15,7 +15,8 @@ export const DataProvider = ({ children }) => {
 
     const initialStateList = {
         exportMode: false,
-        selectionToExport: []
+        selectionToExport: [],
+        sideMode: false,
     };
 
     const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
