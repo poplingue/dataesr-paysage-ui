@@ -13,7 +13,7 @@ export default function Home() {
         <Layout mainTitle="Paysage">
             <Container fluid>
                 <Row>
-                    <h2>Recherche</h2>
+                    <h2>Recherchez</h2>
                 </Row>
                 <Row>
                     <Col n="12">

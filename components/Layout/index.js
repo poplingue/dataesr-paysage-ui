@@ -103,18 +103,30 @@ export default function Layout({ children, mainTitle, pageTitle }) {
                             asLink={<NavLink href="/create/person"/>}
                         />
                     </NavItem>
-                    <NavItem title="France" asLink={<NavLink href="/list">France</NavLink>}/>
-                    <NavItem title="Ressources">
+                    <NavItem title="Annuaire">
                         <NavSubItem
-                            link="https://scanr.enseignementsup-recherche.gouv.fr/"
-                            title="ScanR"
+                            current={pathname.startsWith('/search')}
+                            title="Rechercher une personne"
+                            asLink={<NavLink href="/search"/>}
                         />
                         <NavSubItem
-                            link="https://curiexplore.enseignementsup-recherche.gouv.fr/"
-                            title="CurieXplore"
+                            title="Listes qualifiées"
+                            asLink={<NavLink href="/list"/>}
                         />
                     </NavItem>
-                    <NavItem title="Aide" link="/"/>
+                    <NavItem title="Répertoire">
+                        <NavSubItem
+                            current={pathname.startsWith('/search')}
+                            title="Rechercher une structure"
+                            asLink={<NavLink href="/search"/>}
+                        />
+                        <NavSubItem
+                            title="Listes qualifiées"
+                            asLink={<NavLink href="/list"/>}
+                        />
+                    </NavItem>
+                    <NavItem title="Ressources" asLink={<NavLink href="/resources"/>} />
+                    <NavItem title="Aide" asLink={<NavLink href="/help"/>}/>
                 </HeaderNav>
             </Header><SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/></>}
             <DynamicBreadcrumb/>
