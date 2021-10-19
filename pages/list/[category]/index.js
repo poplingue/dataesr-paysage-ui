@@ -20,7 +20,7 @@ export default function Category({ structures }) {
 
     const onTileClick = (id) => {
         if (!exportMode) {
-            router.push(`/list/${category}/${id}`);
+            router.push(`/object/${category}/${id}`);
         } else {
             const newList = elements.map((elm) => {
                 return { ...elm, checked: id === elm.id ? !elm.checked : elm.checked };

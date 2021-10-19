@@ -18,11 +18,26 @@ export function getVal(key) {
     return data[key];
 }
 
-
 export function getTitle(key) {
     const data = {
         5: 'Universités',
     };
 
     return data[key];
+}
+
+/**
+ *
+ * @param id
+ * @returns string
+ */
+export function getObjectType(id) {
+    const objectTypes = {
+        0: { name: 'structure', title: 'Structure' },
+        1: { name: 'person', title: 'Personne' },
+        2: { name: 'project', title: 'Projet' },
+        3: { name: 'category', title: 'Catégorie' },
+    };
+
+    return objectTypes[id];
 }
