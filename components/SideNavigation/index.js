@@ -2,9 +2,13 @@ import { Col, Container, Icon, Row, SideMenu, SideMenuLink, Text } from '@dataes
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { sectionUniqueId } from '../../helpers/utils';
+import useViewport from '../../hooks/useViewport';
 import styles from './SideNavigation.module.scss';
 
 export default function SideNavigation({ children, items }) {
+    // TODO manage mobile sticky sidemenu
+    const { mobile } = useViewport();
+
     const goToSection = (e, dataSection) => {
         const section = document.querySelector(`[data-section=${dataSection}]`);
         const { left, top } = section.getBoundingClientRect();
@@ -13,11 +17,12 @@ export default function SideNavigation({ children, items }) {
 
     const { stateList: { sideMode }, dispatchList: dispatch } = useContext(AppContext);
 
-    return (<Container>
+    return (
+        <Container>
         <Row>
             <Col n={`12 ${sideMode ? 'md-1' : 'md-4'}`}>
                 <SideMenu
-                    buttonLabel='Navigation'
+                    buttonLabel="Navigation"
                     className="fr-sidemenu--sticky">
                     <li>
                         <input type="checkbox" id="isCollapsed" className="hidden"
@@ -29,11 +34,13 @@ export default function SideNavigation({ children, items }) {
                                })}
                         />
                         <div className={`${styles.SideNav} ${sideMode ? '' : styles.Active}`}>
-                            <label htmlFor="isCollapsed">
+                            {!mobile &&
+                            <label htmlFor="isCollapsed" className={`${styles.SideNavLabel} d-block txt-center`}>
                                 <Icon name={sideMode ? 'ri-menu-unfold-line' : 'ri-menu-fold-line'} size="lg"
                                       className={`${styles.Icon} ${sideMode ? styles.Active : ''} marianne`}/>
-                                <Text className={`${sideMode ? 'hidden' : ''} marianne`} as="span" size="lg">Navigation</Text>
-                            </label>
+                                <Text className={`${sideMode ? 'hidden' : ''} marianne`} as="span"
+                                      size="md">Navigation</Text>
+                            </label>}
                             <ul className={`${styles.SideNavContent} ${!sideMode && styles.Active}`}>
                                 {items.map((section) => {
                                     const { title, content } = section;

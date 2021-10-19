@@ -87,3 +87,11 @@ ul {
     clip-path: inset(50%);
     border: 0;
 }
+
+.txt-center {
+    text-align: center;
+}
+
+.d-block {
+    display: block;
+}

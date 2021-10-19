@@ -3,6 +3,7 @@ import CreateForm from '../../components/CreateForm';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
+import NoSSRWrapper from '../../helpers/no-ssr-wrapper';
 import CreateStructure from './form.json';
 
 export default function Create({ data }) {
@@ -15,11 +16,11 @@ export default function Create({ data }) {
 
     return (
         <Layout mainTitle="Create a structure">
-            <div>
+            <NoSSRWrapper>
                 <SideNavigation items={CreateStructure[0].form}>
                     <CreateForm jsonForm={CreateStructure[0]}/>
                 </SideNavigation>
-            </div>
+            </NoSSRWrapper>
         </Layout>
     );
 }

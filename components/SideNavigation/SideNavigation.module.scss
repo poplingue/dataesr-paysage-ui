@@ -13,13 +13,9 @@
 .Icon {
   position: absolute;
   left: 10px;
-  top: 2px;
+  top: 7px;
   padding: 8px;
   background: #fff;
-
-  & + span {
-    padding-left: 60px;
-  }
 
   &.Active {
     border: 1px solid var(--g-300);
@@ -34,4 +30,9 @@
   &.Active {
     border-top: 1px solid var(--g-300);
   }
+}
+
+.SideNavLabel {
+  height: 40px;
+  padding-top: 8px;
 }
