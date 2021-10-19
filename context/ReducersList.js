@@ -13,6 +13,10 @@ const reducersList = (state, action) => {
             return { ...state, exportMode: !state.exportMode };
         }
 
+        case ACTIONS.UPDATE_SIDE_NAVIGATION_MODE: {
+            return { ...state, sideMode: !state.sideMode };
+        }
+
         default:
             break;
     }
