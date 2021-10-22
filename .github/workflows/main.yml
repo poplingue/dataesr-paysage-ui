@@ -5,6 +5,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,3 +18,11 @@ jobs:
         run: yarn
       - name: Run tests
         run: yarn run test
+#      - name: Run Cypress
+#        run: yarn run cy:run
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#github-tests'
+        if: always()
