@@ -46,7 +46,7 @@ export default function DynamicBreadcrumb() {
                     href={i === pages[router.asPath].length - 1 ? '' : elm.href}
 
                     key={elm.label}
-                    data-cy={'current-page'}
+                    data-cy='current-page'
                     asLink={elm.href ? <NavLink href={elm.href}>Accueil</NavLink> : null}>
                     {elm.label}
                 </BreadcrumbItem>;

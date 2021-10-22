@@ -98,7 +98,7 @@ function InfiniteField({ children, title, parentsection }) {
                     <Col>
                         <FieldButton
                             icon="ri-add-line"
-                            datatestid="btn-add"
+                            dataTestid="btn-add"
                             onClick={() => setNumber(number + 1)}
                             title={`${title}`}/>
                     </Col>

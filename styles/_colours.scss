@@ -91,13 +91,6 @@
   --pink-light-75: #ffe0cf;
   --pink-light-50: #fff0e7;
   --pink-light-25: #fff9f5;
-  --pink-soft-175: #58231f;
-  --pink-soft-150: #b1635c;
-  --pink-soft-125: #d07c75;
-  --pink-soft-100: #ff8d7e;
-  --pink-soft-75: #ffc6bf;
-  --pink-soft-50: #ffe2df;
-  --pink-soft-25: #fff4f2;
   --pink-dark-125: #c0806f;
   --pink-dark-100: #d08a77;
   --pink-dark-75: #e7c4bb;
@@ -121,4 +114,29 @@
   --brown-50: #e8dad6;
   --brown-25: #f6f0ee;
 
+  /**
+    up to date with DSFR
+  */
+  --pink-soft-700: #bf6a5e;
+  --pink-soft-600: #d07c75;
+  --pink-soft-500: #ff8d7e;
+  --pink-soft-400: #ffc6be;
+  --pink-soft-300: #ffe2df;
+  --pink-soft-200: #fff4f2;
+
+  /**
+    DSFR
+   */
+  --blue-france-700: #00006d;
+  --blue-france-600: #000074;
+  --blue-france-500: #000091;
+  --blue-france-400: #7f7fc8;
+  --blue-france-300: #9a9aff;
+  --blue-france-200: #ececff;
+  --blue-france-100: #f5f5ff;
+
+  /**
+    Custom colors
+   */
+  --border-page: transparent;
 }

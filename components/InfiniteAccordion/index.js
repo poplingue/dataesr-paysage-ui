@@ -121,7 +121,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
                                     <Container fluid>
                                         <Row gutters>
                                             <Col n={deletable ? '10' : '12'}>
-                                                <Accordion keepOpen>
+                                                <Accordion keepOpen data-cy="accordion">
                                                     <AccordionItem
                                                         initExpand={accordionsExpanded}
                                                         className={styles.Item}
@@ -158,7 +158,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
                                             {deletable &&
                                             <Col n="2">
                                                 <FieldButton
-                                                    datatestid={`btn-delete-${cleanString(title)}#${i}`}
+                                                    dataTestid={`btn-delete-${cleanString(title)}#${i}`}
                                                     onClick={() => deleteSection(type, i, newTitle)}
                                                     title="Supprimer"
                                                 >

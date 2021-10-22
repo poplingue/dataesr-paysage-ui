@@ -41,3 +41,35 @@ export function getObjectType(id) {
 
     return objectTypes[id];
 }
+
+export const PersonPageSkeleton = [
+    {
+        title: 'Synthèse',
+        content: [
+            { title: 'Fonctions actuelles', component: 'functions' },
+            { title: 'Contact', component: 'contact' },
+            { title: 'Les dernières dépêches'}
+        ],
+        component: 'synthesis',
+    },
+    {
+        title: 'Fonctions et responsabilités',
+        content: [],
+        component: 'responsability',
+    },
+    {
+        title: 'Présence sur le web',
+        content: [],
+        component: 'web',
+    },
+    {
+        title: 'Prix et distinctions',
+        content: [],
+        component: 'price',
+    },
+    {
+        title: 'Identifiants',
+        content: [],
+        component: 'identifier',
+    }
+];

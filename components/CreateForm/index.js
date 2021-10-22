@@ -71,7 +71,7 @@ const CreateForm = ({ jsonForm }) => {
         <Row>
             <Col offset="10" n="3" spacing='my-2w'>
                 <FieldButton
-                    datatestid='btn-expand-close'
+                    dataTestid='btn-expand-close'
                     title="Réduire / Étendre"
                     onClick={expandCloseAll}/>
             </Col>
@@ -87,7 +87,11 @@ const CreateForm = ({ jsonForm }) => {
                             title={sectionTitle}
                             content={content}
                             key={sectionTitle}/> :
-                        <Accordion keepOpen className={styles.Accordion} key={dataSection} data-section={dataSection}>
+                        <Accordion
+                            keepOpen
+                            className={styles.Accordion}
+                            key={dataSection}
+                            data-section={dataSection}>
                             <AccordionItem
                                 initExpand={accordionsExpanded}
                                 className={styles.Item}

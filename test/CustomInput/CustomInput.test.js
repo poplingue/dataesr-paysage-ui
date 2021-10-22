@@ -1,8 +1,8 @@
 import * as nextRouter from 'next/router';
 import React from 'react';
+import Input from '../../components/CustomInput/Input';
 import { getUniqueId } from '../../helpers/utils';
-import { fireEvent, render, screen } from '../../test/test-utils';
-import Input from './Input';
+import { fireEvent, render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
