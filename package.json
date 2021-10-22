@@ -15,7 +15,7 @@
     "cy:run": "start-server-and-test dev 3000 cy:run-only"
   },
   "dependencies": {
-    "@dataesr/react-dsfr": "0.7.0",
+    "@dataesr/react-dsfr": "0.7.1",
     "@zeit/next-sass": "^1.0.1",
     "idb": "^6.1.2",
     "next": "11.0.1",
