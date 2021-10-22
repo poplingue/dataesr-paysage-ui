@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "export": "next export",
     "lint": "next lint --fix",
     "test": "jest --env=jsdom --watchAll",
     "cy:run-rec": "yarn cy:run-only --record --key 27e5d3f3-7cbb-4ff6-8ffd-8851e432d76a",
