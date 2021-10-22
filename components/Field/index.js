@@ -30,7 +30,7 @@ export default function Field({ title, label, index, parentsection, deleteField,
                                     {field}
                                 </Col>
                                 {index > 0 && <Col n="4"><FieldButton
-                                    datatestid={`btn-delete-${cleanString(label)}`}
+                                    dataTestid={`btn-delete-${cleanString(label)}`}
                                     title={`Supprimer`}
                                     onClick={deleteCurrentField}/></Col>}
                             </Row>

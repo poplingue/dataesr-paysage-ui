@@ -33,10 +33,10 @@ context('Structure form page', () => {
     });
 
     it('should expand accordion', () => {
-        cy.get('[data-testid="accordion-button"]').eq(1).click();
-        cy.get('[data-testid="accordion-button"]').eq(1).invoke('attr', 'aria-expanded').should('eq', 'false');
-        cy.get('[data-testid="accordion-button"]').eq(1).click();
-        cy.get('[data-testid="accordion-button"]').eq(1).invoke('attr', 'aria-expanded').should('eq', 'true');
+        cy.get('[data-cy="accordion"]').eq(1).find('.fr-accordion__btn').click();
+        cy.get('[data-cy="accordion"]').eq(1).find('.fr-accordion__btn').invoke('attr', 'aria-expanded').should('eq', 'false');
+        cy.get('[data-cy="accordion"]').eq(1).find('.fr-accordion__btn').click();
+        cy.get('[data-cy="accordion"]').eq(1).find('.fr-accordion__btn').invoke('attr', 'aria-expanded').should('eq', 'true');
     });
 
     it('should select catégorie 2 Type value', () => {

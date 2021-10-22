@@ -71,6 +71,18 @@ ul {
     padding: 0;
 }
 
+.pt-64 {
+    padding-top: 64px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-60 {
+    margin-bottom: 60px;
+}
+
 /**
     Helpers
  */

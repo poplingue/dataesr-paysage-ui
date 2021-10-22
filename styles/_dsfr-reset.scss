@@ -1,9 +1,31 @@
 .fr-sidemenu {
+  z-index: 1;
   .fr-sidemenu__item a {
     padding-right: 0;
   }
 
   .fr-sidemenu__inner {
     border-right: none;
+    padding: 0;
+
+    .fr-collapse {
+      padding: 0;
+    }
+  }
+}
+
+.fr-accordion {
+  .fr-accordion__title + .fr-collapse {
+    margin: 0;
+  }
+
+  .fr-accordion__btn.fr-btn--lg {
+    padding-left: 16px;
+  }
+}
+
+.psg-content-wrapper {
+  .fr-highlight {
+    margin-left: 0;
   }
 }

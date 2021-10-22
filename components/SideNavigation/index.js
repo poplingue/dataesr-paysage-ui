@@ -1,64 +1,43 @@
-import { Col, Container, Icon, Row, SideMenu, SideMenuLink, Text } from '@dataesr/react-dsfr';
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { sectionUniqueId } from '../../helpers/utils';
 import useViewport from '../../hooks/useViewport';
-import styles from './SideNavigation.module.scss';
+import Navigation from './Navigation';
 
 export default function SideNavigation({ children, items }) {
-    // TODO manage mobile sticky sidemenu
+    const { stateList: { sideMode }, dispatchList: dispatch } = useContext(AppContext);
     const { mobile } = useViewport();
 
-    const goToSection = (e, dataSection) => {
-        const section = document.querySelector(`[data-section=${dataSection}]`);
-        const { left, top } = section.getBoundingClientRect();
-        window.scrollTo(left, top + window.scrollY);
-    };
-
-    const { stateList: { sideMode }, dispatchList: dispatch } = useContext(AppContext);
-
     return (
-        <Container>
-        <Row>
-            <Col n={`12 ${sideMode ? 'md-1' : 'md-4'}`}>
-                <SideMenu
-                    buttonLabel="Navigation"
-                    className="fr-sidemenu--sticky">
-                    <li>
-                        <input type="checkbox" id="isCollapsed" className="hidden"
-                               onClick={() => dispatch({
-                                   type: 'UPDATE_SIDE_NAVIGATION_MODE',
-                                   payload: {
-                                       sideMode: !sideMode,
-                                   }
-                               })}
-                        />
-                        <div className={`${styles.SideNav} ${sideMode ? '' : styles.Active}`}>
-                            {!mobile &&
-                            <label htmlFor="isCollapsed" className={`${styles.SideNavLabel} d-block txt-center`}>
-                                <Icon name={sideMode ? 'ri-menu-unfold-line' : 'ri-menu-fold-line'} size="lg"
-                                      className={`${styles.Icon} ${sideMode ? styles.Active : ''} marianne`}/>
-                                <Text className={`${sideMode ? 'hidden' : ''} marianne`} as="span"
-                                      size="md">Navigation</Text>
-                            </label>}
-                            <ul className={`${styles.SideNavContent} ${!sideMode && styles.Active}`}>
-                                {items.map((section) => {
-                                    const { title, content } = section;
-
-                                    return <SideMenuLink
-                                        className={sideMode ? 'hidden' : ''}
-                                        onClick={(e) => goToSection(e, sectionUniqueId(title, content.length))}
-                                        href="/"
-                                        key={`${title}-${content.length}`}>{title}</SideMenuLink>;
-                                })}
-                            </ul>
-                        </div>
-                    </li>
-                </SideMenu>
-            </Col>
-            <Col n={`12 ${sideMode ? 'md-11' : 'md-8'}`}>
-                {children}
-            </Col>
-        </Row>
-    </Container>);
+        <Container fluid={!mobile}>
+            <Row>
+                <Col n={`12 ${sideMode ? 'md-1' : 'md-3'}`}>
+                    <Navigation
+                        sideMode={sideMode}
+                        items={items}
+                        dispatch={dispatch}/>
+                </Col>
+                <Col n={`12 ${sideMode ? 'md-11' : 'md-9'}`}>
+                    {children}
+                </Col>
+            </Row>
+        </Container>
+    );
 }
+
+
+SideNavigation.propTypes = {
+    items: PropTypes.arrayOf(PropTypes.shape({
+        content: PropTypes.arrayOf(PropTypes.shape({
+            component: PropTypes.string,
+            title: PropTypes.string
+        })),
+        title: PropTypes.string
+    })).isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+};

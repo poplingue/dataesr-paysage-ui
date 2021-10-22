@@ -103,7 +103,7 @@ export function uniqueOnlyFilter(value, index, self) {
  * @param contentNumber
  * @returns {string}
  */
-export function sectionUniqueId(title, contentNumber) {
+export function sectionUniqueId(title, contentNumber = '0') {
     return `${cleanString(title)}-${contentNumber}`;
 }
 
@@ -145,4 +145,22 @@ export function getFieldValue(forms, name, id) {
     }
 
     return fieldValue ? fieldValue.value : '';
+}
+
+/**
+ *
+ * @param property
+ * @returns {string}
+ */
+export function getCSSValue(property) {
+    return getComputedStyle(document.documentElement).getPropertyValue(property);
+}
+
+/**
+ *
+ * @param property
+ * @param value
+ */
+export function setCSSProperty(property, value) {
+    document.documentElement.style.setProperty(property, value);
 }

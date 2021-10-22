@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import List from './index';
+import ListElement from '../../components/ListElement';
 
 it('renders correctly List', () => {
-    const tree = renderer.create(<List><p>child</p></List>).toJSON();
+    const tree = renderer.create(<ListElement><p>child</p></ListElement>).toJSON();
     expect(tree).toMatchSnapshot();
 });

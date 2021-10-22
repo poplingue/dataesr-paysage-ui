@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DBService';
 import reducersForm from './ReducersForm';
 import reducersList from './ReducersList';
+import reducersPage from './ReducersPage';
 
 export const AppContext = createContext();
 
@@ -19,8 +20,13 @@ export const DataProvider = ({ children }) => {
         sideMode: false,
     };
 
+    const initialStatePage = {
+        pageTheme: 'transparent',
+    };
+
     const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
     const [stateList, dispatchList] = useReducer(reducersList, initialStateList);
+    const [statePage, dispatchPage] = useReducer(reducersPage, initialStatePage);
 
     const cbInit = (storeObjects) => {
         dispatchForm({ type: 'UPDATE_INDB_STORE_OBJECTS', payload: { storeObjects } });
@@ -31,5 +37,5 @@ export const DataProvider = ({ children }) => {
     }, []);
 
     return <AppContext.Provider
-        value={{ stateForm, dispatchForm, stateList, dispatchList }}>{children}</AppContext.Provider>;
+        value={{ stateForm, dispatchForm, stateList, dispatchList, statePage, dispatchPage }}>{children}</AppContext.Provider>;
 };

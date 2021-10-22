@@ -4,25 +4,32 @@ import {
     Header,
     HeaderBody,
     HeaderNav,
+    Highlight,
     Logo,
     NavItem,
     NavSubItem,
     Row,
     Service,
     SwitchTheme,
+    Title,
     Tool,
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
+
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import NoSSRWrapper from '../../helpers/no-ssr-wrapper';
+import BorderPage from '../BorderPage';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
 
+
 // TODO add propTypes
-export default function Layout({ children, mainTitle, pageTitle }) {
+export default function Layout({ children, mainTitle, pageTitle, highlight, fluid }) {
     const { pathname } = useRouter();
     const [waitWindow, setWaitWindow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -125,20 +132,45 @@ export default function Layout({ children, mainTitle, pageTitle }) {
                             asLink={<NavLink href="/list"/>}
                         />
                     </NavItem>
-                    <NavItem title="Ressources" asLink={<NavLink href="/resources"/>} />
+                    <NavItem title="Ressources" asLink={<NavLink href="/resources"/>}/>
                     <NavItem title="Aide" asLink={<NavLink href="/help"/>}/>
                 </HeaderNav>
             </Header><SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/></>}
             <DynamicBreadcrumb/>
-            <Container>
-                <Row>
-                    <Col>
-                        <h1 className="fs-32-40 marianne-bold">{pageTitle}</h1>
-                        {children}
-                    </Col>
-                </Row>
+            <Container fluid={fluid}>
+                <section className="pt-64">
+                    <Row>
+                        <Col className="p-relative">
+                            {pageTitle && <Container fluid className="psg-content-wrapper">
+                                <Row>
+                                    <Col offset="1" className="psg-header-page mb-60">
+                                        <Highlight size="sm" className="mb-20">{highlight}</Highlight>
+                                        <Title as="h2" look="h3">{pageTitle}</Title>
+                                    </Col>
+                                </Row>
+                            </Container>}
+                            {children}
+                        </Col>
+                    </Row>
+                </section>
             </Container>
             <Toaster/>
         </>
     );
 }
+
+Layout.defaults = {
+    fluid: false,
+    highlight: '',
+    pageTitle: '',
+};
+Layout.propTypes = {
+    fluid: PropTypes.bool,
+    highlight: PropTypes.string,
+    pageTitle: PropTypes.string,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+};

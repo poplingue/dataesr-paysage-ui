@@ -1,6 +1,5 @@
 import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import getConfig from 'next/config';
-import Link from 'next/link';
 import Layout from '../components/Layout';
 
 export default function Home() {

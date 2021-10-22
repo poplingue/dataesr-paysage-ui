@@ -82,13 +82,13 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                         <Row>
                             <Col n="4">
                                 <FieldButton
-                                    datatestid={`today-${cleanString(parentsection)}`}
+                                    dataTestid={`today-${cleanString(parentsection)}`}
                                     title="Aujourd'hui"
                                     onClick={() => automaticDate('today')}/>
                             </Col>
                             <Col n="4">
                                 <FieldButton
-                                    datatestid={`firstJanuary-${cleanString(parentsection)}`}
+                                    dataTestid={`firstJanuary-${cleanString(parentsection)}`}
                                     title="1er janvier"
                                     onClick={() => automaticDate('firstJanuary')}/>
                             </Col>
