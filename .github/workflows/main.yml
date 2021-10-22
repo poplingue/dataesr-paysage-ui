@@ -6,11 +6,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
+      - name: Checkout code
       - uses: actions/checkout@v2
-      - name: Set up node 
+      - name: Setup node
         uses: actions/setup-node@v1
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests 
-        run: npm test
+      - name: Run tests
+        run: yarn run test
