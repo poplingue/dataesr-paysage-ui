@@ -77,10 +77,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## TODO
 
 * button to reset data from current form
-* manage boundaries error
 * add unit tests for complex components
 * add possibility of comments to section/field
 * adding link to section/field 
 * manage mandatory field and errored field
-* manage notification current input has been modified but not saved
 * improve DynamicBreadcrumb system
+* dark theme ToolBox and Navigation components

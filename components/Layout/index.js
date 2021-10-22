@@ -31,14 +31,7 @@ import NavLink from '../NavLink';
 // TODO add propTypes
 export default function Layout({ children, mainTitle, pageTitle, highlight, fluid }) {
     const { pathname } = useRouter();
-    const [waitWindow, setWaitWindow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        if (!waitWindow) {
-            setWaitWindow(true);
-        }
-    }, [waitWindow]);
 
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     return (
@@ -72,7 +65,7 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
                     crossOrigin=""
                 />
             </Head>
-            {waitWindow && <><Header>
+            <Header>
                 <HeaderBody>
                     <Logo splitCharacter={10}>{`Ministère le l'enseignement supérieur et de la recherche`}</Logo>
                     <Service
@@ -135,7 +128,8 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
                     <NavItem title="Ressources" asLink={<NavLink href="/resources"/>}/>
                     <NavItem title="Aide" asLink={<NavLink href="/help"/>}/>
                 </HeaderNav>
-            </Header><SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/></>}
+            </Header>
+            {/*<SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/>*/}
             <DynamicBreadcrumb/>
             <Container fluid={fluid}>
                 <section className="pt-64">
