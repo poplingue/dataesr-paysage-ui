@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
