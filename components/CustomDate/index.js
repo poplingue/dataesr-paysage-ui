@@ -32,7 +32,7 @@ export default function CustomDate({ title, parentsection, keynumber }) {
             newDate = [{
                 options: days,
                 title: `${title} day`,
-                selectedValue: now.getDay().toString()
+                selectedValue: now.getDate().toString()
             }, {
                 options: months,
                 title: `${title} month`,

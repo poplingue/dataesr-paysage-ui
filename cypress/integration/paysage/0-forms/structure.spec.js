@@ -83,17 +83,17 @@ context('Structure form page', () => {
         cy.get('[data-testid="create/structure@categories#1/end-year#0"]').find('select').should('have.value', '2000');
     });
     //
-    it('should should select today date', () => {
+    it('should select today date', () => {
         const now = new Date();
 
         cy.get('[data-testid="today-categories#0"]').first().click();
-        cy.get('[data-testid="create/structure@categories#0/start-day#0"]').find('select').should('have.value', now.getDay());
+        cy.get('[data-testid="create/structure@categories#0/start-day#0"]').find('select').should('have.value', now.getDate());
         cy.get('[data-testid="create/structure@categories#0/start-month#0"]').find('select').should('have.value', now.getMonth() + 1);
         cy.get('[data-testid="create/structure@categories#0/start-year#0"]').find('select').should('have.value', now.getFullYear());
 
     });
 
-    it('should should select 1st january date', () => {
+    it('should select 1st january date', () => {
         const now = new Date();
 
         cy.get('[data-testid="firstJanuary-categories#0"]').last().click();
