@@ -33,10 +33,13 @@ context('Person form page', () => {
     it('should create multiple infinite input field', () => {
         cy.get('[data-field="create/person@denomination/autre-denomination#0"]').find('input').type('Il n\'y a de divinité');
         cy.get('[data-testid="btn-add"]').click();
+        cy.scrollTo(0, 300);
         cy.get('[data-field="create/person@denomination/autre-denomination#1"]').find('input').type('qu\'Allah');
         cy.get('[data-testid="btn-add"]').click();
+        cy.scrollTo(0, 300);
         cy.get('[data-field="create/person@denomination/autre-denomination#2"]').find('input').type('et Mahomet est');
         cy.get('[data-testid="btn-add"]').click();
+        cy.scrollTo(0, 300);
         cy.get('[data-field="create/person@denomination/autre-denomination#3"]').find('input').type('son messager');
 
         cy.get('[data-field="create/person@denomination/autre-denomination#0"]').find('input').should('have.value', 'Il n\'y a de divinité');
