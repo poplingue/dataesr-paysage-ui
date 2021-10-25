@@ -16,9 +16,9 @@ jobs:
           node-version: '14'
       - name: Install modules
         run: yarn
-      - name: Run tests
+      - name: Run unit tests
         run: yarn run test
-      - name: Run Cypress
+      - name: Run Cypress tests
         run: yarn run cy:run
       - name: Notify Slack
         uses: act10ns/slack@v1
