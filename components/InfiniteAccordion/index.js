@@ -2,7 +2,7 @@ import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/
 import { useRouter } from 'next/router';
 import { createRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
+import { cleanString, getCSSValue, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 import FieldButton from '../FieldButton';
 import Switch from '../Switch';
@@ -18,7 +18,6 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
     const sectionName = useMemo(() => getUniqueId(formName, type), [pathname, type]);
     const currentForm = useCallback(() => getForm(forms, formName) || [], [formName, forms]);
     const formSections = useCallback(() => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')), [currentForm]);
-
     const updateSection = useCallback((type, nb) => {
         setSections((prev) => ({ ...prev, [type]: nb }));
     }, []);
@@ -121,7 +120,11 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
                                     <Container fluid>
                                         <Row gutters>
                                             <Col n={deletable ? '10' : '12'}>
-                                                <Accordion keepOpen data-cy="accordion">
+                                                <Accordion
+                                                    color={getCSSValue('--yellow-dark-700')}
+                                                    keepOpen
+                                                    data-cy="accordion"
+                                                    size="lg">
                                                     <AccordionItem
                                                         initExpand={accordionsExpanded}
                                                         className={styles.Item}

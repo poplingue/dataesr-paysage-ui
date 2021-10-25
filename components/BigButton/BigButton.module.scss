@@ -1,0 +1,16 @@
+.Button {
+  display: inline-block;
+
+  &.Square {
+    max-width: 200px;
+
+  }
+
+  button {
+    padding: 20px;
+  }
+
+  .Icon {
+    padding-bottom: 10px;
+  }
+}

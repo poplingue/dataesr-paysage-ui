@@ -10,7 +10,6 @@ import {
     NavSubItem,
     Row,
     Service,
-    SwitchTheme,
     Title,
     Tool,
     ToolItem,
@@ -20,20 +19,18 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import NoSSRWrapper from '../../helpers/no-ssr-wrapper';
-import BorderPage from '../BorderPage';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
 
 
 // TODO add propTypes
 export default function Layout({ children, mainTitle, pageTitle, highlight, fluid }) {
-    const { pathname } = useRouter();
+    const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
-
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
+
     return (
         <>
             <Head>
@@ -90,15 +87,15 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
                     </Tool>
                 </HeaderBody>
                 <HeaderNav path={pathname}>
-                    <NavItem title="Accueil" asLink={<NavLink href="/">Accueil</NavLink>}/>
-                    <NavItem title="Je contribue">
+                    <NavItem title="Accueil" asLink={<NavLink href="/">Accueil</NavLink>} current={pathname === '/'}/>
+                    <NavItem title="Je contribue" current={asPath.startsWith('/create')}>
                         <NavSubItem
-                            current={pathname.startsWith('/create/structure')}
+                            current={asPath.startsWith('/create') && !asPath.startsWith('/create/person')}
                             title="Ajouter une structure"
-                            asLink={<NavLink href="/create/structure"/>}
+                            asLink={<NavLink href="/create"/>}
                         />
                         <NavSubItem
-                            current={pathname.startsWith('/create/person')}
+                            current={asPath.startsWith('/create/person')}
                             title="Ajouter une personne"
                             asLink={<NavLink href="/create/person"/>}
                         />
@@ -125,8 +122,9 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
                             asLink={<NavLink href="/list"/>}
                         />
                     </NavItem>
-                    <NavItem title="Ressources" asLink={<NavLink href="/resources"/>}/>
-                    <NavItem title="Aide" asLink={<NavLink href="/help"/>}/>
+                    <NavItem title="Ressources" asLink={<NavLink href="/resources"/>}
+                             current={pathname.startsWith('/resources')}/>
+                    <NavItem title="Aide" asLink={<NavLink href="/help"/>} current={pathname.startsWith('/help')}/>
                 </HeaderNav>
             </Header>
             {/*<SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/>*/}
@@ -153,7 +151,7 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
     );
 }
 
-Layout.defaults = {
+Layout.defaultProps = {
     fluid: false,
     highlight: '',
     pageTitle: '',

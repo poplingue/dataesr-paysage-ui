@@ -2,7 +2,7 @@ import { Accordion, AccordionItem, Col, Container, Row } from '@dataesr/react-ds
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import { getCSSValue, getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 import FieldButton from '../FieldButton';
@@ -69,7 +69,7 @@ const CreateForm = ({ jsonForm }) => {
 
     return <Container fluid>
         <Row>
-            <Col offset="10" n="3" spacing='my-2w'>
+            <Col offset="10" n="2" spacing='my-2w'>
                 <FieldButton
                     dataTestid='btn-expand-close'
                     title="Réduire / Étendre"
@@ -88,6 +88,8 @@ const CreateForm = ({ jsonForm }) => {
                             content={content}
                             key={sectionTitle}/> :
                         <Accordion
+                            color={getCSSValue('--yellow-dark-700')}
+                            size="lg"
                             keepOpen
                             className={styles.Accordion}
                             key={dataSection}
