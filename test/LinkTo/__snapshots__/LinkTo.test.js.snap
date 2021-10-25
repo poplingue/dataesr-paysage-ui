@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LinkTo /> renders correctly LinkTo 1`] = `
+<div
+  className="LinkTo"
+>
+  <a
+    href="/create/structure"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+  >
+    Ceci est mon texte
+    <span
+      className="ri-lg icon-right ds-fr--v-middle ri-arrow-right-line"
+    />
+  </a>
+</div>
+`;
