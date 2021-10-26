@@ -15,7 +15,7 @@ export default function SideNavigation({ children, items }) {
     return (
         <Container fluid={!mobile}>
             <Row>
-                <Col n={`12 ${sideMode ? 'md-1' : 'md-3'}`}>
+                <Col n={`12 ${sideMode==='on' ? 'md-1' : 'md-3'}`}>
                     <Navigation
                         sideMode={sideMode === 'on'}
                         items={items}
