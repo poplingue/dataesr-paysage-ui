@@ -65,7 +65,7 @@ export default function Navigation({ sideMode, dispatch, items }) {
                     <Icon name={sideMode ? 'ri-menu-unfold-line' : 'ri-menu-fold-line'}
                           size="lg"
                           className={`${styles.Icon} ${sideMode ? styles.Active : ''} marianne`}/>
-                    <Icon name={`${open && 'ri-arrow-left-s-line'}`} iconPosition="right"
+                    <Icon name='ri-arrow-left-s-line' iconPosition="right"
                           className={styles.Arrow}>
                         <Text
                             className={`${sideMode ? 'hidden' : ''} marianne`}

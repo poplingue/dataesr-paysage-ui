@@ -4,9 +4,7 @@ const mediumBreakpoint = 767;
 const largeBreakpoint = 992;
 
 const useViewport = () => {
-    const { innerWidth } = window;
-    // TODO fix window error SSR
-    const [size, setSize] = useState({});
+    const [size, setSize] = useState({ mobile: null, tablet: null, desktop: null });
 
     useEffect(() => {
         const handleWindowResize = () => {
@@ -23,7 +21,7 @@ const useViewport = () => {
         window.addEventListener('resize', handleWindowResize);
 
         return () => window.removeEventListener('resize', handleWindowResize);
-    }, [innerWidth]);
+    }, []);
 
     return size;
 };
