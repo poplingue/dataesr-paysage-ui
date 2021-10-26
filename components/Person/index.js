@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem, Col, Row } from '@dataesr/react-dsfr';
 import { PersonPageSkeleton } from '../../helpers/constants';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import PageTheme from '../PageTheme';
 import Identifier from './Identifier';
 import styles from './Person.module.scss';
@@ -8,7 +9,6 @@ import Price from './Price';
 import Responsability from './Responsability';
 import Synthesis from './Synthesis/index';
 import Web from './Web';
-import useCSSProperty from '../../hooks/useCSSProperty';
 
 const components = {
     synthesis: Synthesis,

@@ -47,7 +47,6 @@
     "jest": "^27.0.6",
     "jest-enzyme": "^7.1.2",
     "jest-styled-components": "^7.0.5",
-    "lint-staged": "^11.2.5",
     "start-server-and-test": "^1.13.1",
     "webpack": "^5.50.0",
     "webpack-dev-server": "^3.11.2"
@@ -58,11 +57,9 @@
     }
   },
   "lint-staged": {
-    "src/**/*.+(js)": [
-      "eslint --fix"
-    ],
-    "src/**/*.scss": [
-      "stylelint"
+    "*.{js}": [
+      "./node_modules/.bin/eslint --fix",
+      "git add"
     ]
   }
 }
