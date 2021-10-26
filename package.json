@@ -50,16 +50,5 @@
     "start-server-and-test": "^1.13.1",
     "webpack": "^5.50.0",
     "webpack-dev-server": "^3.11.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js}": [
-      "./node_modules/.bin/eslint --fix",
-      "git add"
-    ]
   }
 }
