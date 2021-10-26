@@ -1,3 +1,3 @@
 export default function Identifier() {
-    return <p>Identifier</p>;
+  return <p>Identifier</p>;
 }

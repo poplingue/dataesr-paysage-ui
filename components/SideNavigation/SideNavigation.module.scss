@@ -1,5 +1,4 @@
 .SideNav {
-
   &.Active {
     background: #fff;
     box-shadow: 2px 2px 6px 1px rgb(0 0 0 / 0.3);
@@ -20,7 +19,6 @@
   &.Active {
     border: 1px solid var(--g-300);
     box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 0.3);
-
   }
 }
 
@@ -40,7 +38,6 @@
 .Arrow:before {
   position: absolute;
   right: 50px;
-
 }
 
 #Sticky {

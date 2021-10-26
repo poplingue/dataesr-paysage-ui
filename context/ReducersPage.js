@@ -7,6 +7,10 @@ const reducersPage = (state, action) => {
             return { ...state, pageTheme: action.payload };
         }
 
+        case ACTIONS.UPDATE_SIDE_NAVIGATION_MODE: {
+            return { ...state, sideMode: state.sideMode === 'on' ? 'off' : 'on' };
+        }
+
         default:
             break;
     }

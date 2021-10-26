@@ -1,3 +1,3 @@
 export default function Responsability() {
-    return <p>Responsability</p>;
+  return <p>Responsability</p>;
 }

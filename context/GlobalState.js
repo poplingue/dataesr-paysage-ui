@@ -17,10 +17,10 @@ export const DataProvider = ({ children }) => {
     const initialStateList = {
         exportMode: false,
         selectionToExport: [],
-        sideMode: false,
     };
 
     const initialStatePage = {
+        sideMode: 'off',
         pageTheme: 'transparent',
     };
 

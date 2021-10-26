@@ -28,9 +28,9 @@
 //     win.indexedDB.deleteDatabase("SERVICE_FORMS");
 // });
 
-Cypress.Commands.add('deleteIndexDB', (win) => {
-    return new Cypress.Promise(async (resolve) => {
-        window.indexedDB.deleteDatabase('SERVICE_FORMS');
-        resolve();
-    });
+Cypress.Commands.add("deleteIndexDB", win => {
+  return new Cypress.Promise(async resolve => {
+    window.indexedDB.deleteDatabase("SERVICE_FORMS");
+    resolve();
+  });
 });
