@@ -1,56 +1,56 @@
 .SideNav {
-  &.Active {
-    background: #fff;
-    box-shadow: 2px 2px 6px 1px rgb(0 0 0 / 0.3);
-  }
+    &.Active {
+        background: #fff;
+        box-shadow: 2px 2px 6px 1px rgb(0 0 0 / 0.3);
+    }
 
-  span {
-    cursor: pointer;
-  }
+    span {
+        cursor: pointer;
+    }
 }
 
 .Icon {
-  position: absolute;
-  left: 1px;
-  top: 7px;
-  padding: 8px;
-  background: #fff;
+    position: absolute;
+    left: 1px;
+    top: 7px;
+    padding: 8px;
+    background: #fff;
 
-  &.Active {
-    border: 1px solid var(--g-300);
-    box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 0.3);
-  }
+    &.Active {
+        border: 1px solid var(--g-300);
+        box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 0.3);
+    }
 }
 
 .SideNavContent {
-  padding: 0 0 16px 16px;
+    padding: 0 0 16px 16px;
 
-  &.Active {
-    border-top: 1px solid var(--g-300);
-  }
+    &.Active {
+        border-top: 1px solid var(--g-300);
+    }
 }
 
 .SideNavLabel {
-  height: 40px;
-  padding-top: 8px;
+    height: 40px;
+    padding-top: 8px;
 }
 
 .Arrow:before {
-  position: absolute;
-  right: 50px;
+    position: absolute;
+    right: 50px;
 }
 
 #Sticky {
-  width: 100vw;
-  position: fixed;
-  top: 0;
-  z-index: 100;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    z-index: 100;
 }
 
 @media (min-width: 767px) {
-  .SideNav {
-    &.Active {
-      border: 1px solid var(--g-300);
+    .SideNav {
+        &.Active {
+            border: 1px solid var(--g-300);
+        }
     }
-  }
 }

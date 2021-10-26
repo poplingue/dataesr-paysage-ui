@@ -1,15 +1,15 @@
 .Button {
-  display: inline-block;
+    display: inline-block;
 
-  &.Square {
-    max-width: 200px;
-  }
+    &.Square {
+        max-width: 200px;
+    }
 
-  button {
-    padding: 20px;
-  }
+    button {
+        padding: 20px;
+    }
 
-  .Icon {
-    padding-bottom: 10px;
-  }
+    .Icon {
+        padding-bottom: 10px;
+    }
 }
