@@ -1,15 +1,15 @@
-import { useEffect } from 'react'
-import { getCSSValue, setCSSProperty } from '../../helpers/utils'
-import styles from './BorderPage.module.scss'
+import { useEffect } from 'react';
+import { getCSSValue, setCSSProperty } from '../../helpers/utils';
+import styles from './BorderPage.module.scss';
 
 export default function BorderPage({ color }) {
     useEffect(() => {
-        const borderColor = getCSSValue('--border-page')
+        const borderColor = getCSSValue('--border-page');
 
         if (color !== borderColor) {
-            setCSSProperty('--border-page', color)
+            setCSSProperty('--border-page', color);
         }
-    }, [color])
+    }, [color]);
 
-    return <span className={styles.BorderPage} />
+    return <span className={styles.BorderPage} />;
 }

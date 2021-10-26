@@ -1,9 +1,9 @@
-import { Icon, Text } from '@dataesr/react-dsfr'
-import { useState } from 'react'
-import styles from './ToolBox.module.scss'
+import { Icon, Text } from '@dataesr/react-dsfr';
+import { useState } from 'react';
+import styles from './ToolBox.module.scss';
 
 export default function ToolBox({ children }) {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(true);
 
     return (
         <div className={`${styles.ToolBox} ${open ? styles.Active : ''}`}>
@@ -35,5 +35,5 @@ export default function ToolBox({ children }) {
             </div>
             <div className={`${!open && 'hidden'}`}>{children}</div>
         </div>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import { Button } from '@dataesr/react-dsfr'
+import { Button } from '@dataesr/react-dsfr';
 
 export default function FieldButton({ title, onClick, dataTestid, icon }) {
     return (
@@ -11,5 +11,5 @@ export default function FieldButton({ title, onClick, dataTestid, icon }) {
         >
             {title}
         </Button>
-    )
+    );
 }

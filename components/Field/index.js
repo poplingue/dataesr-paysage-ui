@@ -1,8 +1,8 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr'
-import { Children, cloneElement, useRef } from 'react'
-import { cleanString } from '../../helpers/utils'
-import FieldButton from '../FieldButton'
-import styles from './Field.module.scss'
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import { Children, cloneElement, useRef } from 'react';
+import { cleanString } from '../../helpers/utils';
+import FieldButton from '../FieldButton';
+import styles from './Field.module.scss';
 
 export default function Field({
     title,
@@ -13,11 +13,11 @@ export default function Field({
     children,
     value,
 }) {
-    const ref = useRef(null)
+    const ref = useRef(null);
 
     const deleteCurrentField = () => {
-        deleteField(ref.current)
-    }
+        deleteField(ref.current);
+    };
 
     return (
         <Container fluid>
@@ -30,7 +30,7 @@ export default function Field({
                             value,
                             parentsection,
                             keynumber: index,
-                        })
+                        });
 
                         return (
                             <div key={i} ref={ref} className={styles.Field}>
@@ -53,10 +53,10 @@ export default function Field({
                                     </Row>
                                 </Container>
                             </div>
-                        )
+                        );
                     })}
                 </Col>
             </Row>
         </Container>
-    )
+    );
 }

@@ -1,16 +1,16 @@
-import { Select } from '@dataesr/react-dsfr'
-import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../context/GlobalState'
-import { getUrl } from '../../helpers/constants'
+import { Select } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getUrl } from '../../helpers/constants';
 import {
     getFieldValue,
     getForm,
     getFormName,
     getUniqueId,
-} from '../../helpers/utils'
-import DBService from '../../services/DBService'
-import NotifService from '../../services/NotifService'
+} from '../../helpers/utils';
+import DBService from '../../services/DBService';
+import NotifService from '../../services/NotifService';
 
 export default function CustomSelect({
     title,
@@ -24,28 +24,28 @@ export default function CustomSelect({
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
-    } = useContext(AppContext)
-    const [options, setOptions] = useState([])
-    const [init, setInit] = useState(true)
-    const [selectValue, setSelectValue] = useState('')
+    } = useContext(AppContext);
+    const [options, setOptions] = useState([]);
+    const [init, setInit] = useState(true);
+    const [selectValue, setSelectValue] = useState('');
     const {
         pathname,
         query: { object },
-    } = useRouter()
-    const formName = getFormName(pathname, object)
-    const uid = getUniqueId(formName, parentsection, title, keynumber || 0)
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, parentsection, title, keynumber || 0);
 
     const onSelectChange = useCallback(async value => {
         // TODO manage select empty?
-        const checkStoreObject = storeObjects.indexOf(formName) > -1
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value,
             uid,
             formName,
-        }
+        };
 
         if (value) {
-            dispatch({ type: 'UPDATE_FORM_FIELD', payload })
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
             if (checkStoreObject) {
                 await DBService.set(
@@ -54,37 +54,37 @@ export default function CustomSelect({
                         uid,
                     },
                     formName
-                )
+                );
             }
         } else {
-            dispatch({ type: 'DELETE_FORM_FIELD', payload })
+            dispatch({ type: 'DELETE_FORM_FIELD', payload });
             // TODO Make it async
-            await DBService.delete(uid, formName)
-            NotifService.info('Select field deleted')
+            await DBService.delete(uid, formName);
+            NotifService.info('Select field deleted');
         }
 
-        setSelectValue(value)
-    }, [dispatch, formName, storeObjects, uid])
+        setSelectValue(value);
+    }, [dispatch, formName, storeObjects, uid]);
 
     useEffect(() => {
         if (newValue && newValueCheck) {
-            onSelectChange(newValue)
-            updateCheck(false)
+            onSelectChange(newValue);
+            updateCheck(false);
         }
-    }, [onSelectChange, newValueCheck, newValue, updateCheck])
+    }, [onSelectChange, newValueCheck, newValue, updateCheck]);
 
     useEffect(() => {
-        const fieldValue = getFieldValue(forms, formName, uid)
-        const mustBeUpdated = selectValue !== fieldValue
+        const fieldValue = getFieldValue(forms, formName, uid);
+        const mustBeUpdated = selectValue !== fieldValue;
 
         if (
             formName &&
             getForm(forms, formName) &&
             (!selectValue || mustBeUpdated)
         ) {
-            setSelectValue(fieldValue)
+            setSelectValue(fieldValue);
         }
-    }, [formName, forms, selectValue, uid])
+    }, [formName, forms, selectValue, uid]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
@@ -94,22 +94,22 @@ export default function CustomSelect({
                 .then(() => {
                     // fake data
                     const obj = ['f', 'm', 'n'].map(s => {
-                        return { value: s, label: s }
-                    })
-                    setOptions(obj)
-                })
+                        return { value: s, label: s };
+                    });
+                    setOptions(obj);
+                });
         } else if (!options.length) {
             setOptions(
                 staticValues.map(value => {
-                    return { value: value, label: value }
+                    return { value: value, label: value };
                 })
-            )
+            );
             setOptions(prev => [
                 ...prev,
                 { value: '', label: 'Select an option' },
-            ])
+            ]);
         }
-    }, [options, setOptions, staticValues, title])
+    }, [options, setOptions, staticValues, title]);
 
     return (
         <section className="wrapper-select py-10">
@@ -122,5 +122,5 @@ export default function CustomSelect({
                 options={options}
             />
         </section>
-    )
+    );
 }

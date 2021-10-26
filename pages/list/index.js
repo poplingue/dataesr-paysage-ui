@@ -5,9 +5,9 @@ import {
     Col,
     Container,
     Row,
-} from '@dataesr/react-dsfr'
-import Link from 'next/link'
-import Layout from '../../components/Layout'
+} from '@dataesr/react-dsfr';
+import Link from 'next/link';
+import Layout from '../../components/Layout';
 
 export default function List() {
     return (
@@ -23,5 +23,5 @@ export default function List() {
                 </Row>
             </Container>
         </Layout>
-    )
+    );
 }

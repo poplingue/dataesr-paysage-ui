@@ -1,32 +1,32 @@
-import { Col, Container, Radio, RadioGroup, Row } from '@dataesr/react-dsfr'
-import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../context/GlobalState'
-import { getUrl } from '../../helpers/constants'
-import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils'
-import DBService from '../../services/DBService'
+import { Col, Container, Radio, RadioGroup, Row } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getUrl } from '../../helpers/constants';
+import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
 
 function CustomRadio({ title, staticValues = [], parentsection }) {
-    const [radioValues, setRadioValues] = useState([])
+    const [radioValues, setRadioValues] = useState([]);
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
-    } = useContext(AppContext)
+    } = useContext(AppContext);
     const {
         pathname,
         query: { object },
-    } = useRouter()
-    const formName = getFormName(pathname, object)
-    const uid = getUniqueId(formName, parentsection, title, 0)
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, parentsection, title, 0);
 
     const onRadioChange = async e => {
-        const checkStoreObject = storeObjects.indexOf(formName) > -1
-        const { value } = e.target
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+        const { value } = e.target;
 
         dispatch({
             type: 'UPDATE_FORM_FIELD',
             payload: { value, uid, formName },
-        })
+        });
 
         if (checkStoreObject) {
             await DBService.set(
@@ -35,9 +35,9 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                     uid,
                 },
                 formName
-            )
+            );
         }
-    }
+    };
 
     useEffect(() => {
         if (!staticValues.length && !radioValues.length) {
@@ -47,18 +47,18 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                 .then(json => {
                     // fake data
                     const fakeData = ['1', '2', '3'].map(s => {
-                        return { value: s, label: s }
-                    })
-                    setRadioValues(fakeData)
-                })
+                        return { value: s, label: s };
+                    });
+                    setRadioValues(fakeData);
+                });
         } else if (!radioValues.length) {
             setRadioValues(
                 staticValues.map(value => {
-                    return { value: value, label: value }
+                    return { value: value, label: value };
                 })
-            )
+            );
         }
-    }, [radioValues, setRadioValues, staticValues, title])
+    }, [radioValues, setRadioValues, staticValues, title]);
 
     return (
         <Container fluid>
@@ -67,7 +67,7 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                     <Col>
                         <RadioGroup legend={title} isInline data-field={uid}>
                             {radioValues.map((radio, i) => {
-                                const { value, label } = radio
+                                const { value, label } = radio;
 
                                 return (
                                     <Radio
@@ -87,14 +87,14 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
                                         }
                                         onChange={e => onRadioChange(e)}
                                     />
-                                )
+                                );
                             })}
                         </RadioGroup>
                     </Col>
                 </Row>
             </section>
         </Container>
-    )
+    );
 }
 
-export default CustomRadio
+export default CustomRadio;

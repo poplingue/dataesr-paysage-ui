@@ -1,5 +1,5 @@
-import Layout from '../../components/Layout'
-import LinkTo from '../../components/LinkTo'
+import Layout from '../../components/Layout';
+import LinkTo from '../../components/LinkTo';
 
 export default function Create() {
     return (
@@ -9,5 +9,5 @@ export default function Create() {
                 href="/create/structure"
             />
         </Layout>
-    )
+    );
 }

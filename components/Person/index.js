@@ -1,14 +1,14 @@
-import { Accordion, AccordionItem, Col } from '@dataesr/react-dsfr'
-import { PersonPageSkeleton } from '../../helpers/constants'
-import { cleanString, sectionUniqueId } from '../../helpers/utils'
-import useCSSProperty from '../../hooks/useCSSProperty'
-import PageTheme from '../PageTheme'
-import Identifier from './Identifier'
-import styles from './Person.module.scss'
-import Price from './Price'
-import Responsability from './Responsability'
-import Synthesis from './Synthesis/index'
-import Web from './Web'
+import { Accordion, AccordionItem, Col } from '@dataesr/react-dsfr';
+import { PersonPageSkeleton } from '../../helpers/constants';
+import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
+import PageTheme from '../PageTheme';
+import Identifier from './Identifier';
+import styles from './Person.module.scss';
+import Price from './Price';
+import Responsability from './Responsability';
+import Synthesis from './Synthesis/index';
+import Web from './Web';
 
 const components = {
     synthesis: Synthesis,
@@ -16,23 +16,23 @@ const components = {
     identifier: Identifier,
     web: Web,
     price: Price,
-}
+};
 
 export default function Person({ id }) {
-    const { style: pink } = useCSSProperty('--pink-soft-700')
+    const { style: pink } = useCSSProperty('--pink-soft-700');
 
     return (
         <PageTheme color={pink}>
             <Col className={styles.Person}>
                 <Accordion size="lg" color={pink} keepOpen>
                     {PersonPageSkeleton.map(elm => {
-                        const { content, title, component } = elm
+                        const { content, title, component } = elm;
 
                         const dataSection = sectionUniqueId(
                             cleanString(title),
                             content.length
-                        )
-                        const Component = components[component]
+                        );
+                        const Component = components[component];
 
                         return (
                             <AccordionItem
@@ -48,10 +48,10 @@ export default function Person({ id }) {
                                     />
                                 )}
                             </AccordionItem>
-                        )
+                        );
                     })}
                 </Accordion>
             </Col>
         </PageTheme>
-    )
+    );
 }

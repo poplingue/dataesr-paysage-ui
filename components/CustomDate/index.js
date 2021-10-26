@@ -1,14 +1,14 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr'
-import { useState } from 'react'
-import { cleanString, range } from '../../helpers/utils'
-import CustomSelect from '../CustomSelect'
-import FieldButton from '../FieldButton'
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import { useState } from 'react';
+import { cleanString, range } from '../../helpers/utils';
+import CustomSelect from '../CustomSelect';
+import FieldButton from '../FieldButton';
 
 export default function CustomDate({ title, parentsection, keynumber }) {
-    const days = range(1, 31, true)
-    const months = range(1, 12, true)
-    const years = range(1900, 2021, true)
-    const [newValueCheck, setNewValueCheck] = useState(false)
+    const days = range(1, 31, true);
+    const months = range(1, 12, true);
+    const years = range(1900, 2021, true);
+    const [newValueCheck, setNewValueCheck] = useState(false);
     const [dateData, setDateData] = useState([
         {
             options: days,
@@ -25,12 +25,12 @@ export default function CustomDate({ title, parentsection, keynumber }) {
             title: `${title} year`,
             selectedValue: '',
         },
-    ])
+    ]);
 
     const automaticDate = when => {
-        const now = new Date()
-        let newDate = null
-        setNewValueCheck(!newValueCheck)
+        const now = new Date();
+        let newDate = null;
+        setNewValueCheck(!newValueCheck);
 
         if (when === 'today') {
             newDate = [
@@ -49,7 +49,7 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                     title: `${title} year`,
                     selectedValue: now.getFullYear().toString(),
                 },
-            ]
+            ];
         } else {
             newDate = [
                 {
@@ -67,11 +67,11 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                     title: `${title} year`,
                     selectedValue: now.getFullYear().toString(),
                 },
-            ]
+            ];
         }
 
-        setDateData(newDate)
-    }
+        setDateData(newDate);
+    };
 
     return (
         <section className="wrapper-select py-10">
@@ -90,7 +90,7 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                                     updateCheck={v => setNewValueCheck(v)}
                                 />
                             </Col>
-                        )
+                        );
                     })}
                     <Col n="6">
                         <Container fluid>
@@ -121,5 +121,5 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                 </Row>
             </Container>
         </section>
-    )
+    );
 }

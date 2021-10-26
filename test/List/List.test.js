@@ -1,7 +1,7 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import List from '../../components/List'
+import List from '../../components/List';
 
 it('renders correctly List', () => {
     const tree = renderer
@@ -10,6 +10,6 @@ it('renders correctly List', () => {
                 <p>child</p>
             </List>
         )
-        .toJSON()
-    expect(tree).toMatchSnapshot()
-})
+        .toJSON();
+    expect(tree).toMatchSnapshot();
+});

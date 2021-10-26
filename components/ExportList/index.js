@@ -1,62 +1,62 @@
-import { Col, Container, Row, Toggle } from '@dataesr/react-dsfr'
-import { useContext } from 'react'
-import XLSX from 'xlsx'
-import { AppContext } from '../../context/GlobalState'
-import FieldButton from '../FieldButton'
-import List from '../List'
+import { Col, Container, Row, Toggle } from '@dataesr/react-dsfr';
+import { useContext } from 'react';
+import XLSX from 'xlsx';
+import { AppContext } from '../../context/GlobalState';
+import FieldButton from '../FieldButton';
+import List from '../List';
 
 function Workbook() {
-    if (!(this instanceof Workbook)) return new Workbook()
+    if (!(this instanceof Workbook)) return new Workbook();
 
-    this.SheetNames = []
+    this.SheetNames = [];
 
-    this.Sheets = {}
+    this.Sheets = {};
 }
 
 export default function ExportList({ children, selection }) {
     const {
         stateList: { exportMode },
         dispatchList: dispatch,
-    } = useContext(AppContext)
+    } = useContext(AppContext);
 
     const download = (url, name) => {
-        let a = document.createElement('a')
-        a.href = url
-        a.download = name
-        a.click()
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = name;
+        a.click();
 
-        window.URL.revokeObjectURL(url)
-    }
+        window.URL.revokeObjectURL(url);
+    };
 
     const s2ab = s => {
-        const buf = new ArrayBuffer(s.length)
+        const buf = new ArrayBuffer(s.length);
 
-        const view = new Uint8Array(buf)
+        const view = new Uint8Array(buf);
 
-        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
+        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
 
-        return buf
-    }
+        return buf;
+    };
 
     const exportJson = filename => {
-        const wb = new Workbook()
-        const ws = XLSX.utils.json_to_sheet(selection)
+        const wb = new Workbook();
+        const ws = XLSX.utils.json_to_sheet(selection);
 
-        wb.SheetNames.push('shit')
-        wb.Sheets['shit'] = ws
+        wb.SheetNames.push('shit');
+        wb.Sheets['shit'] = ws;
 
         const wbout = XLSX.write(wb, {
             bookType: 'xlsx',
             bookSST: true,
             type: 'binary',
-        })
+        });
 
         let url = window.URL.createObjectURL(
             new Blob([s2ab(wbout)], { type: 'application/octet-stream' })
-        )
+        );
 
-        download(url, filename)
-    }
+        download(url, filename);
+    };
 
     return (
         <Container fluid>
@@ -78,7 +78,7 @@ export default function ExportList({ children, selection }) {
                     <Col n="4">
                         <List>
                             {selection.map(s => {
-                                return <li key={s.name}>{s.name}</li>
+                                return <li key={s.name}>{s.name}</li>;
                             })}
                         </List>
                         <FieldButton
@@ -89,5 +89,5 @@ export default function ExportList({ children, selection }) {
                 )}
             </Row>
         </Container>
-    )
+    );
 }

@@ -30,7 +30,7 @@
 
 Cypress.Commands.add('deleteIndexDB', win => {
     return new Cypress.Promise(async resolve => {
-        window.indexedDB.deleteDatabase('SERVICE_FORMS')
-        resolve()
-    })
-})
+        window.indexedDB.deleteDatabase('SERVICE_FORMS');
+        resolve();
+    });
+});

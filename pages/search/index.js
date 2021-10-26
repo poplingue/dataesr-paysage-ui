@@ -1,6 +1,6 @@
-import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr'
-import Layout from '../../components/Layout'
-import NavLink from '../../components/NavLink'
+import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import Layout from '../../components/Layout';
+import NavLink from '../../components/NavLink';
 
 export default function Search() {
     return (
@@ -28,5 +28,5 @@ export default function Search() {
                 </Row>
             </Container>
         </Layout>
-    )
+    );
 }

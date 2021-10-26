@@ -7,19 +7,19 @@ import useCSSProperty from '../../hooks/useCSSProperty'
 import CreateStructure from './form.json'
 
 export default function Create({ data }) {
-    const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext)
-    const { style: yellow } = useCSSProperty('--yellow-dark-700')
+    const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
+    const { style: yellow } = useCSSProperty('--yellow-dark-700');
     useEffect(() => {
         if (data && !state.departments.length) {
-            dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data })
+            dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
         }
-    })
+    });
 
     return (
         <Layout pageTitle="Create a structure">
             <SideNavigation items={CreateStructure[0].form}>
-                <CreateForm jsonForm={CreateStructure[0]} color={yellow} />
+                <CreateForm jsonForm={CreateStructure[0]} color={yellow}/>
             </SideNavigation>
         </Layout>
-    )
+    );
 }

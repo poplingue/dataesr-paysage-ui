@@ -5,8 +5,8 @@ import {
     Col,
     Container,
     Row,
-} from '@dataesr/react-dsfr'
-import { useRouter } from 'next/router'
+} from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
 import {
     createRef,
     useCallback,
@@ -14,20 +14,20 @@ import {
     useEffect,
     useMemo,
     useState,
-} from 'react'
-import { AppContext } from '../../context/GlobalState'
+} from 'react';
+import { AppContext } from '../../context/GlobalState';
 import {
     cleanString,
     getForm,
     getFormName,
     getUniqueId,
     uniqueOnlyFilter,
-} from '../../helpers/utils'
-import useCSSProperty from '../../hooks/useCSSProperty'
-import DBService from '../../services/DBService'
-import FieldButton from '../FieldButton'
-import Switch from '../Switch'
-import styles from './InfiniteAcordion.module.scss'
+} from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
+import DBService from '../../services/DBService';
+import FieldButton from '../FieldButton';
+import Switch from '../Switch';
+import styles from './InfiniteAcordion.module.scss';
 
 export default function InfiniteAccordion({
     title,
@@ -35,33 +35,33 @@ export default function InfiniteAccordion({
     dataAttSection,
     accordionsExpanded,
 }) {
-    const { style: yellow } = useCSSProperty('--yellow-dark-700')
+    const { style: yellow } = useCSSProperty('--yellow-dark-700');
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
-    } = useContext(AppContext)
+    } = useContext(AppContext);
     const {
         pathname,
         query: { object },
-    } = useRouter()
-    const [sections, setSections] = useState({})
-    const type = cleanString(title)
-    const formName = getFormName(pathname, object)
+    } = useRouter();
+    const [sections, setSections] = useState({});
+    const type = cleanString(title);
+    const formName = getFormName(pathname, object);
     const sectionRefs = useMemo(
         () =>
             Array(sections[type] || 1)
                 .fill(0)
                 .map(() => createRef()),
         [sections, type]
-    )
+    );
     const sectionName = useMemo(() => getUniqueId(formName, type), [
         formName,
         type,
-    ])
+    ]);
     const currentForm = useCallback(() => getForm(forms, formName) || [], [
         formName,
         forms,
-    ])
+    ]);
     const formSections = useCallback(
         () =>
             currentForm().map(c =>
@@ -71,37 +71,37 @@ export default function InfiniteAccordion({
                     .join('/')
             ),
         [currentForm]
-    )
+    );
     const updateSection = useCallback((type, nb) => {
-        setSections(prev => ({ ...prev, [type]: nb }))
-    }, [])
+        setSections(prev => ({ ...prev, [type]: nb }));
+    }, []);
 
     const deleteSection = async (sectionType, index, newTitle) => {
-        let fieldsToDelete = []
-        let fieldsToUpdate = []
-        const checkStoreObject = storeObjects.indexOf(formName) > -1
+        let fieldsToDelete = [];
+        let fieldsToUpdate = [];
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         // Reassign Section's fields value...
         for (let i = 0; i < currentForm().length; i = i + 1) {
-            const { uid, value } = currentForm()[i]
+            const { uid, value } = currentForm()[i];
             // get id of section based on uid
-            const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g')
-            const match = uid.match(reg)
-            const id = match ? parseInt(match[0].substring(1)) : null
+            const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
+            const match = uid.match(reg);
+            const id = match ? parseInt(match[0].substring(1)) : null;
 
             if (id && (id === index || id === sections[type] - 1)) {
-                fieldsToDelete.push(uid)
+                fieldsToDelete.push(uid);
             }
 
             if (id && id > index) {
-                const sectionReg = /@.+?\//g.exec(uid)
+                const sectionReg = /@.+?\//g.exec(uid);
                 const newUid = uid.replace(
                     sectionReg[0],
                     `@${sectionType}#${id - 1}/`
-                )
+                );
 
-                fieldsToUpdate.push({ value, uid: newUid })
-                fieldsToDelete.push(uid)
+                fieldsToUpdate.push({ value, uid: newUid });
+                fieldsToDelete.push(uid);
             }
         }
 
@@ -115,11 +115,11 @@ export default function InfiniteAccordion({
                     formName,
                     fieldsNumber: sections[type],
                 },
-            })
+            });
 
             if (checkStoreObject) {
                 // indexDB
-                await DBService.deleteList(fieldsToDelete, formName)
+                await DBService.deleteList(fieldsToDelete, formName);
             }
         }
 
@@ -132,26 +132,26 @@ export default function InfiniteAccordion({
                     fields: fieldsToUpdate,
                     formName,
                 },
-            })
+            });
 
             if (checkStoreObject) {
                 // indexDB
-                await DBService.setList(fieldsToUpdate, formName)
+                await DBService.setList(fieldsToUpdate, formName);
             }
         }
 
         // local state retrieve one section
-        updateSection(sectionType, sections[type] - 1)
-    }
+        updateSection(sectionType, sections[type] - 1);
+    };
 
     useEffect(() => {
         const sectionFields = formSections()
             .filter(uniqueOnlyFilter)
             .filter(k => {
-                return k.startsWith(sectionName)
-            })
-        updateSection(type, sectionFields.length)
-    }, [formSections, sectionName, type, updateSection])
+                return k.startsWith(sectionName);
+            });
+        updateSection(type, sectionFields.length);
+    }, [formSections, sectionName, type, updateSection]);
 
     return (
         <div data-section={dataAttSection}>
@@ -163,13 +163,13 @@ export default function InfiniteAccordion({
                                 length: sections[type] || 1,
                             }).map((v, i) => {
                                 if (!sections[type]) {
-                                    updateSection(type, 1)
+                                    updateSection(type, 1);
                                 }
 
-                                const newTitle = `${title}#${i}`
+                                const newTitle = `${title}#${i}`;
                                 // TODO make it work with i !== 0 only
-                                const deletable = i !== 0
-                                let fieldTitle = ''
+                                const deletable = i !== 0;
+                                let fieldTitle = '';
                                 // TODO refacto data-sub-section
 
                                 return (
@@ -215,10 +215,10 @@ export default function InfiniteAccordion({
                                                                             type: fieldType,
                                                                             infinite,
                                                                             staticValues,
-                                                                        } = field
+                                                                        } = field;
 
                                                                         fieldTitle =
-                                                                            field.title
+                                                                            field.title;
 
                                                                         return (
                                                                             <div
@@ -253,7 +253,7 @@ export default function InfiniteAccordion({
                                                                                     </Row>
                                                                                 </Container>
                                                                             </div>
-                                                                        )
+                                                                        );
                                                                     }
                                                                 )}
                                                             </AccordionItem>
@@ -280,7 +280,7 @@ export default function InfiniteAccordion({
                                             </Container>
                                         </section>
                                     </li>
-                                )
+                                );
                             })}
                         </ul>
                     </Col>
@@ -301,5 +301,5 @@ export default function InfiniteAccordion({
                 </Row>
             </Container>
         </div>
-    )
+    );
 }

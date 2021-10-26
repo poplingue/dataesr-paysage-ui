@@ -1,6 +1,6 @@
-import { Button, Icon } from '@dataesr/react-dsfr'
-import PropTypes from 'prop-types'
-import styles from './BigButton.module.scss'
+import { Button, Icon } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
+import styles from './BigButton.module.scss';
 
 export default function BigButton({ onClick, title, icon, color, square }) {
     return (
@@ -25,17 +25,17 @@ export default function BigButton({ onClick, title, icon, color, square }) {
                 </div>
             </Button>
         </div>
-    )
+    );
 }
 
 BigButton.defaultProps = {
     color: '000091',
     square: true,
-}
+};
 BigButton.propTypes = {
     onClick: PropTypes.func.isRequired,
     square: PropTypes.bool,
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     color: PropTypes.string,
-}
+};

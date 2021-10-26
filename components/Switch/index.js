@@ -1,9 +1,9 @@
-import CustomDate from '../CustomDate'
-import CustomInput from '../CustomInput'
-import CustomRadio from '../CustomRadio'
-import CustomSelect from '../CustomSelect'
-import CustomToggle from '../CustomToggle'
-import MultiSearch from '../MultiSearch'
+import CustomDate from '../CustomDate';
+import CustomInput from '../CustomInput';
+import CustomRadio from '../CustomRadio';
+import CustomSelect from '../CustomSelect';
+import CustomToggle from '../CustomToggle';
+import MultiSearch from '../MultiSearch';
 
 export default function Switch({
     type,
@@ -23,7 +23,7 @@ export default function Switch({
                         keynumber={keynumber}
                         parentsection={section}
                     />
-                )
+                );
             case 'select':
                 return (
                     <CustomSelect
@@ -32,7 +32,7 @@ export default function Switch({
                         keynumber={keynumber}
                         parentsection={section}
                     />
-                )
+                );
             case 'multiSearch':
                 return (
                     <MultiSearch
@@ -40,7 +40,7 @@ export default function Switch({
                         keynumber={keynumber}
                         parentsection={section}
                     />
-                )
+                );
             case 'radio':
                 return (
                     <CustomRadio
@@ -49,7 +49,7 @@ export default function Switch({
                         keynumber={keynumber}
                         parentsection={section}
                     />
-                )
+                );
             case 'date':
                 return (
                     <CustomDate
@@ -57,7 +57,7 @@ export default function Switch({
                         parentsection={section}
                         keynumber={keynumber}
                     />
-                )
+                );
             case 'toggle':
                 return (
                     <CustomToggle
@@ -65,11 +65,11 @@ export default function Switch({
                         keynumber={keynumber}
                         parentsection={section}
                     />
-                )
+                );
             default:
-                return null
+                return null;
         }
-    }
+    };
 
-    return renderSwitch(type)
+    return renderSwitch(type);
 }

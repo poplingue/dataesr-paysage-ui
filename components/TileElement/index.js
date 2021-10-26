@@ -1,7 +1,7 @@
-import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr'
-import PropTypes from 'prop-types'
-import { useContext } from 'react'
-import { AppContext } from '../../context/GlobalState'
+import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
 
 export default function TileElement({
     color,
@@ -15,7 +15,7 @@ export default function TileElement({
 }) {
     const {
         stateList: { exportMode },
-    } = useContext(AppContext)
+    } = useContext(AppContext);
 
     return (
         <Tile
@@ -60,14 +60,14 @@ export default function TileElement({
                 </Container>
             </TileBody>
         </Tile>
-    )
+    );
 }
 
 TileElement.defaultProps = {
     color: '#000091',
     defaultIcon: '',
     checked: false,
-}
+};
 TileElement.propTypes = {
     color: PropTypes.string,
     title: PropTypes.string.isRequired,
@@ -76,4 +76,4 @@ TileElement.propTypes = {
     onClick: PropTypes.func.isRequired,
     checked: PropTypes.bool,
     defaultIcon: PropTypes.string,
-}
+};

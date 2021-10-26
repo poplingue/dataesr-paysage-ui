@@ -1,16 +1,16 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr'
-import PropTypes from 'prop-types'
-import { useContext } from 'react'
-import { AppContext } from '../../context/GlobalState'
-import useViewport from '../../hooks/useViewport'
-import Navigation from './Navigation'
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import useViewport from '../../hooks/useViewport';
+import Navigation from './Navigation';
 
 export default function SideNavigation({ children, items }) {
     const {
         statePage: { sideMode },
         dispatchPage: dispatch,
-    } = useContext(AppContext)
-    const { mobile } = useViewport()
+    } = useContext(AppContext);
+    const { mobile } = useViewport();
 
     return (
         <Container fluid={!mobile}>
@@ -31,7 +31,7 @@ export default function SideNavigation({ children, items }) {
                 </Col>
             </Row>
         </Container>
-    )
+    );
 }
 
 SideNavigation.propTypes = {
@@ -51,4 +51,4 @@ SideNavigation.propTypes = {
         PropTypes.node,
         PropTypes.string,
     ]).isRequired,
-}
+};

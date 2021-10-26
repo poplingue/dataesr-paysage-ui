@@ -1,5 +1,5 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr'
-import Layout from '../../components/Layout'
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Layout from '../../components/Layout';
 
 export default function Help() {
     return (
@@ -12,5 +12,5 @@ export default function Help() {
                 </Row>
             </Container>
         </Layout>
-    )
+    );
 }

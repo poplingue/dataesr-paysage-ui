@@ -4,62 +4,62 @@ import {
     Col,
     Container,
     Row,
-} from '@dataesr/react-dsfr'
-import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../context/GlobalState'
-import { getFormName, sectionUniqueId } from '../../helpers/utils'
-import DBService from '../../services/DBService'
-import NotifService from '../../services/NotifService'
-import FieldButton from '../FieldButton'
-import InfiniteAccordion from '../InfiniteAccordion'
-import Switch from '../Switch'
-import styles from './CreateForm.module.scss'
+} from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DBService';
+import NotifService from '../../services/NotifService';
+import FieldButton from '../FieldButton';
+import InfiniteAccordion from '../InfiniteAccordion';
+import Switch from '../Switch';
+import styles from './CreateForm.module.scss';
 
 const CreateForm = ({ jsonForm, color }) => {
     const {
         stateForm: { storeObjects },
         dispatchForm: dispatch,
-    } = useContext(AppContext)
+    } = useContext(AppContext);
     const {
         pathname,
         query: { object },
-    } = useRouter()
-    const formName = getFormName(pathname, object)
-    const [accordionsExpanded, setAccordionsExpanded] = useState(true)
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const [accordionsExpanded, setAccordionsExpanded] = useState(true);
 
     const simulateClick = elem => {
         const evt = new MouseEvent('click', {
             bubbles: true,
             cancelable: true,
             view: window,
-        })
+        });
 
         // If cancelled, don't dispatch our event
-        const canceled = !elem.dispatchEvent(evt)
+        const canceled = !elem.dispatchEvent(evt);
 
-        setAccordionsExpanded(!accordionsExpanded)
-    }
+        setAccordionsExpanded(!accordionsExpanded);
+    };
 
     const expandCloseAll = () => {
-        const open = accordionsExpanded ? 'true' : 'false'
+        const open = accordionsExpanded ? 'true' : 'false';
         const btnAccordions = document.querySelectorAll(
             `.fr-accordion__btn[aria-expanded="${open}"]`
-        )
+        );
 
         for (let i = 0; i < btnAccordions.length; i = i + 1) {
-            simulateClick(btnAccordions[i])
+            simulateClick(btnAccordions[i]);
         }
-    }
+    };
 
     const retrieveField = useCallback(async field => {
-        const { value, uid } = field
-        const checkStoreObject = storeObjects.indexOf(formName) > -1
+        const { value, uid } = field;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         dispatch({
             type: 'UPDATE_FORM_FIELD',
             payload: { value, uid, formName },
-        })
+        });
 
         if (checkStoreObject) {
             await DBService.set(
@@ -68,9 +68,9 @@ const CreateForm = ({ jsonForm, color }) => {
                     uid,
                 },
                 formName
-            )
+            );
         }
-    }, [dispatch, formName, storeObjects])
+    }, [dispatch, formName, storeObjects]);
 
     useEffect(() => {
         const getIndexDBData = async () => {
@@ -82,15 +82,15 @@ const CreateForm = ({ jsonForm, color }) => {
                         storeObjects.indexOf(formName) > -1
                     ),
                     'Data from IndexDB fetched'
-                )
+                );
                 indexDBData.forEach(elm => {
-                    retrieveField(elm)
-                })
+                    retrieveField(elm);
+                });
             }
-        }
+        };
 
-        getIndexDBData()
-    }, [retrieveField, storeObjects, formName])
+        getIndexDBData();
+    }, [retrieveField, storeObjects, formName]);
 
     return (
         <Row>
@@ -103,11 +103,11 @@ const CreateForm = ({ jsonForm, color }) => {
             </Col>
             <Col n="12">
                 {jsonForm.form.map((section, i) => {
-                    const { title: sectionTitle, content, infinite } = section
+                    const { title: sectionTitle, content, infinite } = section;
                     const dataSection = sectionUniqueId(
                         sectionTitle,
                         content.length
-                    )
+                    );
                     // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
                     return infinite ? (
@@ -138,7 +138,7 @@ const CreateForm = ({ jsonForm, color }) => {
                                         title,
                                         infinite,
                                         staticValues,
-                                    } = field
+                                    } = field;
 
                                     return (
                                         <div key={title}>
@@ -161,15 +161,15 @@ const CreateForm = ({ jsonForm, color }) => {
                                                 </Row>
                                             </Container>
                                         </div>
-                                    )
+                                    );
                                 })}
                             </AccordionItem>
                         </Accordion>
-                    )
+                    );
                 })}
             </Col>
         </Row>
-    )
-}
+    );
+};
 
-export default CreateForm
+export default CreateForm;

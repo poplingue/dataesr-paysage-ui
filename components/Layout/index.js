@@ -23,24 +23,24 @@ import {
     Tool,
     ToolItem,
     ToolItemGroup,
-} from '@dataesr/react-dsfr'
+} from '@dataesr/react-dsfr';
 
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import PropTypes from 'prop-types'
-import { useContext, useState } from 'react'
-import { Toaster } from 'react-hot-toast'
-import { AppContext } from '../../context/GlobalState'
-import DynamicBreadcrumb from '../DynamicBreadcrumb'
-import NavLink from '../NavLink'
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import { useContext, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { AppContext } from '../../context/GlobalState';
+import DynamicBreadcrumb from '../DynamicBreadcrumb';
+import NavLink from '../NavLink';
 
 // TODO add propTypes
 export default function Layout({ children, mainTitle, pageTitle, highlight }) {
-    const { pathname, asPath } = useRouter()
+    const { pathname, asPath } = useRouter();
     const {
         statePage: { sideMode },
-    } = useContext(AppContext)
-    const [isOpen, setIsOpen] = useState(false)
+    } = useContext(AppContext);
+    const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
 
     return (
@@ -252,14 +252,14 @@ export default function Layout({ children, mainTitle, pageTitle, highlight }) {
                 </FooterBottom>
             </Footer>
         </>
-    )
+    );
 }
 
 Layout.defaultProps = {
     fluid: false,
     highlight: '',
     pageTitle: '',
-}
+};
 Layout.propTypes = {
     fluid: PropTypes.bool,
     highlight: PropTypes.string,
@@ -269,4 +269,4 @@ Layout.propTypes = {
         PropTypes.node,
         PropTypes.string,
     ]).isRequired,
-}
+};

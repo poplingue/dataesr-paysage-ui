@@ -1,10 +1,10 @@
-import { Breadcrumb, BreadcrumbItem, Container } from '@dataesr/react-dsfr'
-import { useRouter } from 'next/router'
-import NavLink from '../NavLink'
+import { Breadcrumb, BreadcrumbItem, Container } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import NavLink from '../NavLink';
 
 export default function DynamicBreadcrumb() {
-    const router = useRouter()
-    const { category, id } = router.query
+    const router = useRouter();
+    const { category, id } = router.query;
 
     const pages = {
         '/create/structure': [{ label: 'Ajouter une structure' }],
@@ -32,9 +32,9 @@ export default function DynamicBreadcrumb() {
                 label: `${category}`,
             },
         ],
-    }
+    };
 
-    if (!pages[router.asPath]) return null
+    if (!pages[router.asPath]) return null;
 
     return (
         <Container>
@@ -60,9 +60,9 @@ export default function DynamicBreadcrumb() {
                         >
                             {elm.label}
                         </BreadcrumbItem>
-                    )
+                    );
                 })}
             </Breadcrumb>
         </Container>
-    )
+    );
 }

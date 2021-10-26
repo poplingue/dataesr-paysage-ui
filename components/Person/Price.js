@@ -1,3 +1,3 @@
 export default function Price() {
-    return <p>Price</p>
+    return <p>Price</p>;
 }
