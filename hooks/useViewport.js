@@ -5,13 +5,8 @@ const largeBreakpoint = 992;
 
 const useViewport = () => {
     const { innerWidth } = window;
-    const [size, setSize] = useState({
-        mobile: window ? innerWidth <= mediumBreakpoint : null,
-        tablet: window
-            ? innerWidth <= largeBreakpoint && innerWidth > mediumBreakpoint
-            : null,
-        desktop: window ? innerWidth > largeBreakpoint : null,
-    });
+    // TODO fix window error SSR
+    const [size, setSize] = useState({});
 
     useEffect(() => {
         const handleWindowResize = () => {
@@ -24,7 +19,9 @@ const useViewport = () => {
             });
         };
 
+        handleWindowResize();
         window.addEventListener('resize', handleWindowResize);
+
         return () => window.removeEventListener('resize', handleWindowResize);
     }, [innerWidth]);
 

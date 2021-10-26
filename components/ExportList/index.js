@@ -4,7 +4,6 @@ import XLSX from 'xlsx';
 import { AppContext } from '../../context/GlobalState';
 import FieldButton from '../FieldButton';
 import List from '../List';
-import ListElement from '../ListElement';
 
 function Workbook() {
     if (!(this instanceof Workbook))
@@ -71,9 +70,10 @@ export default function ExportList({ children, selection }) {
                 {exportMode && <Col n="4">
                     <List>
                         {selection.map((s) => {
-                            return <ListElement key={s.id}>
+                            return <li key={s.name}>
                                 {s.name}
-                            </ListElement>;
+                            </li>;
+
                         })}
                     </List>
                     <FieldButton

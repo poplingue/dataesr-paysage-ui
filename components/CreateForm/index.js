@@ -2,7 +2,8 @@ import { Accordion, AccordionItem, Col, Container, Row } from '@dataesr/react-ds
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getCSSValue, getFormName, sectionUniqueId } from '../../helpers/utils';
+import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 import FieldButton from '../FieldButton';
@@ -11,6 +12,7 @@ import Switch from '../Switch';
 import styles from './CreateForm.module.scss';
 
 const CreateForm = ({ jsonForm }) => {
+    const { style: yellow } = useCSSProperty('--yellow-dark-700');
     const { stateForm: { storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const { pathname, query: { object } } = useRouter();
     const formName = getFormName(pathname, object);
@@ -69,9 +71,9 @@ const CreateForm = ({ jsonForm }) => {
 
     return <Container fluid>
         <Row>
-            <Col offset="10" n="2" spacing='my-2w'>
+            <Col offset="10" n="2" spacing="my-2w">
                 <FieldButton
-                    dataTestid='btn-expand-close'
+                    dataTestid="btn-expand-close"
                     title="Réduire / Étendre"
                     onClick={expandCloseAll}/>
             </Col>
@@ -88,7 +90,7 @@ const CreateForm = ({ jsonForm }) => {
                             content={content}
                             key={sectionTitle}/> :
                         <Accordion
-                            color={getCSSValue('--yellow-dark-700')}
+                            color={yellow}
                             size="lg"
                             keepOpen
                             className={styles.Accordion}

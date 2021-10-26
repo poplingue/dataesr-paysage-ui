@@ -1,10 +1,19 @@
 import {
     Col,
     Container,
+    Footer,
+    FooterBody,
+    FooterBodyItem,
+    FooterBottom,
+    FooterCopy,
+    FooterLink,
+    FooterTop,
+    FooterTopCategory,
     Header,
     HeaderBody,
     HeaderNav,
     Highlight,
+    Link,
     Logo,
     NavItem,
     NavSubItem,
@@ -129,14 +138,14 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
             </Header>
             {/*<SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/>*/}
             <DynamicBreadcrumb/>
-            <Container fluid={fluid}>
-                <section className="pt-64">
+            <Container fluid={fluid} className='mb-60'>
+                <section className="pt-24">
                     <Row>
                         <Col className="p-relative">
                             {pageTitle && <Container fluid className="psg-content-wrapper">
                                 <Row>
-                                    <Col offset="1" className="psg-header-page mb-60">
-                                        <Highlight size="sm" className="mb-20">{highlight}</Highlight>
+                                    <Col className="psg-header-page mb-60">
+                                        {highlight && <Highlight size="sm" className="mb-20">{highlight}</Highlight>}
                                         <Title as="h2" look="h3">{pageTitle}</Title>
                                     </Col>
                                 </Row>
@@ -147,6 +156,52 @@ export default function Layout({ children, mainTitle, pageTitle, highlight, flui
                 </section>
             </Container>
             <Toaster/>
+            <Footer>
+                <FooterTop>
+                    <FooterTopCategory title="Liens utiles">
+                        <FooterLink asLink={<NavLink href="/help"/>}>Aide</FooterLink>
+                        <FooterLink asLink={<NavLink href="/"/>}>Nous contacter</FooterLink>
+                    </FooterTopCategory>
+                </FooterTop>
+                <FooterBody
+                    description="Paysage : Plateforme d'échanges et d'informations de la DGESIP et de la DGRI"
+                >
+                    <Logo>Ministère de l‘enseignement supérieur de la rechercher et de l‘innovation</Logo>
+                    <FooterBodyItem>
+                        <Link href="https://legifrance.gouv.fr">
+                            legifrance.gouv.fr
+                        </Link>
+                    </FooterBodyItem>
+                    <FooterBodyItem>
+                        <Link href="https://gouvernement.fr">
+                            gouvernement.fr
+                        </Link>
+                    </FooterBodyItem>
+                    <FooterBodyItem>
+                        <Link href="https://service-public.fr">
+                            service-public.fr
+                        </Link>
+                    </FooterBodyItem>
+                    <FooterBodyItem>
+                        <Link href="https://data.gouv.fr">
+                            data.gouv.fr
+                        </Link>
+                    </FooterBodyItem>
+                </FooterBody>
+                <FooterBottom>
+                    <FooterLink href="https://www.enseignementsup-recherche.gouv.fr/">enseignementsup-recherche.gouv.fr</FooterLink>
+                    <FooterLink onClick={() => setIsOpen(true)}>
+            <span
+                className="fr-fi-theme-fill fr-link--icon-left"
+                aria-controls="fr-theme-modal"
+                data-fr-opened={isOpen}
+            >
+              Paramètres d’affichage
+            </span>
+                    </FooterLink>
+                    <FooterCopy href="/">© République Française 2020</FooterCopy>
+                </FooterBottom>
+            </Footer>
         </>
     );
 }

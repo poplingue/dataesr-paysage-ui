@@ -2,13 +2,15 @@ import { Accordion, AccordionItem, Button, Col, Container, Row } from '@dataesr/
 import { useRouter } from 'next/router';
 import { createRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { cleanString, getCSSValue, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
+import { cleanString, getForm, getFormName, getUniqueId, uniqueOnlyFilter } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DBService';
 import FieldButton from '../FieldButton';
 import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
 
 export default function InfiniteAccordion({ title, content, dataAttSection, accordionsExpanded }) {
+    const { style: yellow } = useCSSProperty('--yellow-dark-700');
     const { stateForm: { forms, storeObjects }, dispatchForm: dispatch } = useContext(AppContext);
     const { pathname, query: { object } } = useRouter();
     const [sections, setSections] = useState({});
@@ -121,7 +123,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
                                         <Row gutters>
                                             <Col n={deletable ? '10' : '12'}>
                                                 <Accordion
-                                                    color={getCSSValue('--yellow-dark-700')}
+                                                    color={yellow}
                                                     keepOpen
                                                     data-cy="accordion"
                                                     size="lg">

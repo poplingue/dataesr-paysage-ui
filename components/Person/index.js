@@ -1,6 +1,6 @@
 import { Accordion, AccordionItem, Col, Row } from '@dataesr/react-dsfr';
 import { PersonPageSkeleton } from '../../helpers/constants';
-import { cleanString, getCSSValue, sectionUniqueId } from '../../helpers/utils';
+import { cleanString, sectionUniqueId } from '../../helpers/utils';
 import PageTheme from '../PageTheme';
 import Identifier from './Identifier';
 import styles from './Person.module.scss';
@@ -8,6 +8,7 @@ import Price from './Price';
 import Responsability from './Responsability';
 import Synthesis from './Synthesis/index';
 import Web from './Web';
+import useCSSProperty from '../../hooks/useCSSProperty';
 
 const components = {
     synthesis: Synthesis,
@@ -18,7 +19,7 @@ const components = {
 };
 
 export default function Person({ id }) {
-    const pink = getCSSValue('--pink-soft-700');
+    const { style: pink } = useCSSProperty('--pink-soft-700');
 
     return <PageTheme color={pink}>
         <Row className={styles.Person}>

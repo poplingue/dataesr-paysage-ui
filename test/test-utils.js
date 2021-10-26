@@ -2,10 +2,12 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { AppContext } from '../context/GlobalState';
 
-const Providers = ({ children }) => {
-
+const Providers = (props, options) => {
     return <AppContext.Provider value={{
-        stateForm: {
+        stateList: options.stateList || {
+            exportMode: true,
+        },
+        stateForm: options.stateForm || {
             darkTheme: false,
             storeObjects: ['create/person'],
             departments: [],
@@ -21,11 +23,12 @@ const Providers = ({ children }) => {
         dispatchForm: () => {
         }
     }
-    }>{children}</AppContext.Provider>;
+    }>{props.children}</AppContext.Provider>;
 };
 
-const customRender = (ui, options = {}) =>
-    render(ui, { wrapper: Providers, ...options });
+const customRender = (ui, options = {}) => {
+    return render(ui, { wrapper: props => Providers(props, options), ...options });
+};
 
 // re-export everything
 export * from '@testing-library/react';

@@ -1,0 +1,293 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TileElement component renders correctly TileElement 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <button
+        class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
+        style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
+        type="button"
+      >
+        <div
+          class="fr-tile__body"
+        >
+          <p
+            class="fr-tile__title"
+          >
+            Title 0
+          </p>
+          <p
+            class="fr-tile__desc"
+          >
+            subTitle
+          </p>
+          <div
+            class="fr-container-fluid w-100"
+          >
+            <div
+              class="fr-grid-row fr-grid-row--top"
+            >
+              <div
+                class="fr-col-11"
+              >
+                <div>
+                  body
+                </div>
+              </div>
+              <div
+                class="fr-col-1 txt-right"
+              >
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <button
+      class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
+      style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
+      type="button"
+    >
+      <div
+        class="fr-tile__body"
+      >
+        <p
+          class="fr-tile__title"
+        >
+          Title 0
+        </p>
+        <p
+          class="fr-tile__desc"
+        >
+          subTitle
+        </p>
+        <div
+          class="fr-container-fluid w-100"
+        >
+          <div
+            class="fr-grid-row fr-grid-row--top"
+          >
+            <div
+              class="fr-col-11"
+            >
+              <div>
+                body
+              </div>
+            </div>
+            <div
+              class="fr-col-1 txt-right"
+            >
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`TileElement component renders correctly TileElement with exportMode 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <button
+        class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
+        style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
+        type="button"
+      >
+        <div
+          class="fr-tile__body"
+        >
+          <p
+            class="fr-tile__title"
+          >
+            Title 1
+          </p>
+          <p
+            class="fr-tile__desc"
+          >
+            subTitle
+          </p>
+          <div
+            class="fr-container-fluid w-100"
+          >
+            <div
+              class="fr-grid-row fr-grid-row--top"
+            >
+              <div
+                class="fr-col-11"
+              >
+                <div>
+                  body
+                </div>
+              </div>
+              <div
+                class="fr-col-1 txt-right"
+              >
+                <span
+                  class="ri-2x icon-left ri-checkbox-line"
+                  style="color: rgb(0, 0, 145);"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </body>,
+  "container": <div>
+    <button
+      class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
+      style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
+      type="button"
+    >
+      <div
+        class="fr-tile__body"
+      >
+        <p
+          class="fr-tile__title"
+        >
+          Title 1
+        </p>
+        <p
+          class="fr-tile__desc"
+        >
+          subTitle
+        </p>
+        <div
+          class="fr-container-fluid w-100"
+        >
+          <div
+            class="fr-grid-row fr-grid-row--top"
+          >
+            <div
+              class="fr-col-11"
+            >
+              <div>
+                body
+              </div>
+            </div>
+            <div
+              class="fr-col-1 txt-right"
+            >
+              <span
+                class="ri-2x icon-left ri-checkbox-line"
+                style="color: rgb(0, 0, 145);"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

@@ -1,13 +1,14 @@
-import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import ExportList from '../../../components/ExportList';
 import Layout from '../../../components/Layout';
 import List from '../../../components/List';
-import ListElement from '../../../components/ListElement';
+import TileElement from '../../../components/TileElement';
 import { AppContext } from '../../../context/GlobalState';
+import useCSSProperty from '../../../hooks/useCSSProperty';
 
 export default function Category({ structures }) {
+    const { style: yellow } = useCSSProperty('--yellow-dark-700');
     const router = useRouter();
     const { stateList: { exportMode } } = useContext(AppContext);
     const { category } = router.query;
@@ -35,32 +36,18 @@ export default function Category({ structures }) {
             <ExportList selection={selection}>
                 <List>
                     {elements.map((structure, i) => {
-                        return <ListElement key={i} className="mx-10">
-                            <Tile
-                                className="w-100"
-                                horizontal
-                                onClick={() => onTileClick(structure.id)}
-                            >
-                                <TileBody
-                                    title={structure.name}
-                                    description={structure.desc}>
-                                    <Container fluid className="w-100">
-                                        <Row alignItems="top">
-                                            <Col n={exportMode ? '11' : '12'}>
-                                                <div>Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                    elit.
-                                                </div>
-                                            </Col>
-                                            {exportMode && <Col n="1">
-                                                {structure.checked ?
-                                                    <Icon name="ri-checkbox-line" size="2x"/> :
-                                                    <Icon name="ri-checkbox-blank-line" size="2x"/>}
-                                            </Col>}
-                                        </Row>
-                                    </Container>
-                                </TileBody>
-                            </Tile>
-                        </ListElement>;
+                        return <li key={structure.name}>
+                            <TileElement
+                                defaultIcon="ri-arrow-right-line"
+                                color={yellow}
+                                checked={structure.checked}
+                                title={structure.name}
+                                subTitle="subTitle"
+                                body={structure.desc}
+                                onClick={onTileClick}
+                                id={structure.id}>
+                            </TileElement>
+                        </li>;
                     })}
                 </List>
             </ExportList>

@@ -75,6 +75,10 @@ ul {
     padding-top: 64px;
 }
 
+.pt-24 {
+    padding-top: 24px;
+}
+
 .mb-20 {
     margin-bottom: 20px;
 }
@@ -102,6 +106,10 @@ ul {
 
 .txt-center {
     text-align: center;
+}
+
+.txt-right {
+    text-align: right;
 }
 
 .d-block {
