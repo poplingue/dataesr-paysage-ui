@@ -51,5 +51,11 @@
     "start-server-and-test": "^1.13.1",
     "webpack": "^5.50.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true
   }
 }

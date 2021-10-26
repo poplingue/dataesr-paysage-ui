@@ -1,8 +1,8 @@
 import CreateForm from "../../components/CreateForm";
 import Layout from "../../components/Layout";
 import SideNavigation from "../../components/SideNavigation";
-import CreatePerson from "./form.json";
 import useCSSProperty from "../../hooks/useCSSProperty";
+import CreatePerson from "./form.json";
 
 export default function CreateP() {
   const { style: pink } = useCSSProperty("--pink-soft-700");
