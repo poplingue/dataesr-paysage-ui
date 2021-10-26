@@ -1,10 +1,10 @@
-import { useContext, useEffect } from 'react'
-import CreateForm from '../../components/CreateForm'
-import Layout from '../../components/Layout'
-import SideNavigation from '../../components/SideNavigation'
-import { AppContext } from '../../context/GlobalState'
-import useCSSProperty from '../../hooks/useCSSProperty'
-import CreateStructure from './form.json'
+import { useContext, useEffect } from 'react';
+import CreateForm from '../../components/CreateForm';
+import Layout from '../../components/Layout';
+import SideNavigation from '../../components/SideNavigation';
+import { AppContext } from '../../context/GlobalState';
+import useCSSProperty from '../../hooks/useCSSProperty';
+import CreateStructure from './form.json';
 
 export default function Create({ data }) {
     const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
@@ -18,7 +18,7 @@ export default function Create({ data }) {
     return (
         <Layout pageTitle="Create a structure">
             <SideNavigation items={CreateStructure[0].form}>
-                <CreateForm jsonForm={CreateStructure[0]} color={yellow}/>
+                <CreateForm jsonForm={CreateStructure[0]} color={yellow} />
             </SideNavigation>
         </Layout>
     );
