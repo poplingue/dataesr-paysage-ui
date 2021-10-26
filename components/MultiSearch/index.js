@@ -13,7 +13,7 @@ function MultiSearch({ title, parentsection }) {
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, parentsection, title, 0);
     const [textValue, setTextValue] = useState('');
-    const currentForm = useCallback(() => forms && formName ? getForm(forms, formName) : null, [forms, pathname]);
+    const currentForm = useCallback(() => forms && formName ? getForm(forms, formName) : null, [formName, forms]);
     const [selectedValues, setSelectedvalues] = useState([]);
     const options = departments.map((departement) => ({
         value: departement.nom,

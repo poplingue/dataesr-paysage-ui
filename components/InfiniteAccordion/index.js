@@ -17,7 +17,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection, acco
     const type = cleanString(title);
     const formName = getFormName(pathname, object);
     const sectionRefs = useMemo(() => Array(sections[type] || 1).fill(0).map(() => createRef()), [sections, type]);
-    const sectionName = useMemo(() => getUniqueId(formName, type), [pathname, type]);
+    const sectionName = useMemo(() => getUniqueId(formName, type), [formName, type]);
     const currentForm = useCallback(() => getForm(forms, formName) || [], [formName, forms]);
     const formSections = useCallback(() => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')), [currentForm]);
     const updateSection = useCallback((type, nb) => {

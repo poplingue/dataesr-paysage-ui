@@ -13,9 +13,14 @@
     "cy:open-only": "cypress open",
     "cy:run-only": "cypress run",
     "cy:open": "start-server-and-test dev 3000 cy:open-only",
-    "cy:run": "start-server-and-test dev 3000 cy:run-only"
+    "cy:run": "start-server-and-test dev 3000 cy:run-only",
+    "prepare": "husky install",
+    "eject": "react-scripts eject",
+    "stylelint": "stylelint --fix **/*.scss"
   },
   "dependencies": {
+    "@commitlint/cli": "^13.2.1",
+    "@commitlint/config-conventional": "^13.2.0",
     "@dataesr/react-dsfr": "0.7.4",
     "@zeit/next-sass": "^1.0.1",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -37,12 +42,27 @@
     "eslint-config-next": "11.0.1",
     "eslint-plugin-import-order-alphabetical": "^1.0.1",
     "html-webpack-plugin": "^5.3.2",
+    "husky": "^7.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
     "jest-enzyme": "^7.1.2",
     "jest-styled-components": "^7.0.5",
+    "lint-staged": "^11.2.5",
     "start-server-and-test": "^1.13.1",
     "webpack": "^5.50.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.+(js)": [
+      "eslint --fix"
+    ],
+    "src/**/*.scss": [
+      "stylelint"
+    ]
   }
 }
