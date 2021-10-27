@@ -18,11 +18,12 @@ const components = {
     price: Price,
 };
 
-export default function Person({ id }) {
+export default function Person({ id, children }) {
     const { style: pink } = useCSSProperty('--pink-soft-700');
 
     return (
         <PageTheme color={pink}>
+            {children}
             <Col className={styles.Person}>
                 <Accordion size="lg" color={pink} keepOpen>
                     {PersonPageSkeleton.map(elm => {

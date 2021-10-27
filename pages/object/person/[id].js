@@ -16,11 +16,12 @@ export default function Object() {
             <HeaderLayout pageTitle="Une Personne"
                           highlight="Last update on Tuesday 5th of September 2020"/>
             <SideNavigation items={PersonPageSkeleton}>
-                <Person id={id}/>
+                <Person id={id}>
+                    <ToolBox>
+                        <FieldButton title="Tools"/>
+                    </ToolBox>
+                </Person>
             </SideNavigation>
-            <ToolBox>
-                <FieldButton title="Tools"/>
-            </ToolBox>
         </Layout>
     );
 }
