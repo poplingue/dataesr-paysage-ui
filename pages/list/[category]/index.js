@@ -1,6 +1,8 @@
+import {Container, Col, Row} from '@dataesr/react-dsfr'
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import ExportList from '../../../components/ExportList';
+import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
 import List from '../../../components/List';
 import TileElement from '../../../components/TileElement';
@@ -32,25 +34,32 @@ export default function Category({ structures }) {
     };
 
     return (
-        <Layout pageTitle={`Liste catégorie : ${category}`}>
-            <ExportList selection={selection}>
-                <List>
-                    {elements.map((structure, i) => {
-                        return <li key={structure.name}>
-                            <TileElement
-                                defaultIcon="ri-arrow-right-line"
-                                color={yellow}
-                                checked={structure.checked}
-                                title={structure.name}
-                                subTitle="subTitle"
-                                body={structure.desc}
-                                onClick={onTileClick}
-                                id={structure.id}>
-                            </TileElement>
-                        </li>;
-                    })}
-                </List>
-            </ExportList>
+        <Layout>
+            <HeaderLayout pageTitle={`Liste catégorie : ${category}`}/>
+            <Container>
+                <Row>
+                    <Col>
+                        <ExportList selection={selection}>
+                            <List>
+                                {elements.map((structure, i) => {
+                                    return <li key={structure.name}>
+                                        <TileElement
+                                            defaultIcon="ri-arrow-right-line"
+                                            color={yellow}
+                                            checked={structure.checked}
+                                            title={structure.name}
+                                            subTitle="subTitle"
+                                            body={structure.desc}
+                                            onClick={onTileClick}
+                                            id={structure.id}>
+                                        </TileElement>
+                                    </li>;
+                                })}
+                            </List>
+                        </ExportList>
+                    </Col>
+                </Row>
+            </Container>
         </Layout>
     );
 }

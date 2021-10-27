@@ -62,9 +62,9 @@ function CustomRadio({ title, staticValues = [], parentsection }) {
 
     return (
         <Container fluid>
-            <section className="wrapper-input py-10">
+            <section className="wrapper-input">
                 <Row>
-                    <Col>
+                    <Col spacing="py-3w">
                         <RadioGroup legend={title} isInline data-field={uid}>
                             {radioValues.map((radio, i) => {
                                 const { value, label } = radio;

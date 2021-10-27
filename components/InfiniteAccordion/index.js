@@ -29,6 +29,7 @@ import FieldButton from '../FieldButton';
 import Switch from '../Switch';
 import styles from './InfiniteAcordion.module.scss';
 
+// TODO refacto
 export default function InfiniteAccordion({
     title,
     content,
@@ -226,12 +227,14 @@ export default function InfiniteAccordion({
                                                                                     fieldTitle
                                                                                 }
                                                                             >
-                                                                                <Container>
+                                                                                <Container
+                                                                                    fluid
+                                                                                >
                                                                                     <Row
                                                                                         alignItems="middle"
                                                                                         gutters
                                                                                     >
-                                                                                        <Col>
+                                                                                        <Col spacing="py-3w">
                                                                                             <Switch
                                                                                                 section={
                                                                                                     newTitle

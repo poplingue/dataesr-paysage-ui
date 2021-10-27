@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import HeaderLayout from '../../../../components/HeaderLayout';
 import Layout from '../../../../components/Layout';
 import { getObjectType } from '../../../../helpers/constants';
 
@@ -10,7 +11,8 @@ export default function Object() {
     const name = getObjectType(type) ? getObjectType(type).name : type;
 
     return (
-        <Layout pageTitle={title}>
+        <Layout>
+            <HeaderLayout pageTitle={title}/>
             Object Type : {name}
             <br/>
             Structure : {id}

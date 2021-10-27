@@ -1,5 +1,6 @@
 import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import getConfig from 'next/config';
+import HeaderLayout from '../components/HeaderLayout';
 import Layout from '../components/Layout';
 
 export default function Home() {
@@ -9,8 +10,9 @@ export default function Home() {
     // console.log(publicRuntimeConfig.user);
 
     return (
-        <Layout mainTitle="Paysage">
-            <Container fluid>
+        <Layout>
+            <HeaderLayout pageTitle="Bienvenue"/>
+            <Container>
                 <Row>
                     <h2>Recherchez</h2>
                 </Row>

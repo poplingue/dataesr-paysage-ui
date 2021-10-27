@@ -6,7 +6,7 @@ import {
     Row,
 } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DBService';
@@ -94,8 +94,9 @@ const CreateForm = ({ jsonForm, color }) => {
 
     return (
         <Row>
-            <Col offset="10" n="2" spacing="my-2w">
+            <Col offset="10" n="2">
                 <FieldButton
+                    className={styles.Button}
                     dataTestid="btn-expand-close"
                     title="Réduire / Étendre"
                     onClick={expandCloseAll}

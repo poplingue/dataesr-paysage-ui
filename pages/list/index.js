@@ -7,11 +7,13 @@ import {
     Row,
 } from '@dataesr/react-dsfr';
 import Link from 'next/link';
+import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 
 export default function List() {
     return (
-        <Layout pageTitle="Listes qualifiées de structure">
+        <Layout>
+            <HeaderLayout pageTitle="Listes qualifiées de structure" />
             <Container>
                 <Row>
                     <Col n="3">

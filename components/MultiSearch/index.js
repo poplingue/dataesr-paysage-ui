@@ -80,15 +80,15 @@ function MultiSearch({ title, parentsection }) {
     }, [currentForm, formName, forms, selectedValues, uid]);
 
     return (
-        <section className="wrapper-multi-search py-10">
+        <section className="wrapper-multi-search">
             <TextInput
                 onChange={e => setTextValue(e.target.value)}
                 value={textValue}
                 label={title}
             />
-            <Container>
-                <Row>
-                    <Col n="6">
+            <Container fluid>
+                <Row gutters>
+                    <Col n="6" spacing="py-3w">
                         <ul className="max-200">
                             {filteredOptions.map((option, i) => {
                                 return (
@@ -97,9 +97,7 @@ function MultiSearch({ title, parentsection }) {
                                             option.value
                                         )}-${i}`}
                                         key={uuidv4()}
-                                        className={`${
-                                            styles.listElement
-                                        } py-10`}
+                                        className={styles.listElement}
                                     >
                                         <Checkbox
                                             label={option.label}
@@ -118,7 +116,7 @@ function MultiSearch({ title, parentsection }) {
                             })}
                         </ul>
                     </Col>
-                    <Col n="6">
+                    <Col n="6" spacing="py-3w">
                         {selectedValues.length > 0 && (
                             <ul>
                                 {selectedValues.map(selected => {

@@ -112,7 +112,7 @@ export default function CustomSelect({
     }, [options, setOptions, staticValues, title]);
 
     return (
-        <section className="wrapper-select py-10">
+        <section className="wrapper-select">
             <Select
                 data-field={uid}
                 data-testid={uid}

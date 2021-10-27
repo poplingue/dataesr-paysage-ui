@@ -5,13 +5,18 @@ import {
     SideMenuLink,
     Text,
 } from '@dataesr/react-dsfr';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
 import { sectionUniqueId } from '../../helpers/utils';
 import useScroll from '../../hooks/useScroll';
 import useViewport from '../../hooks/useViewport';
 import styles from './SideNavigation.module.scss';
 
-export default function Navigation({ sideMode, dispatch, items }) {
+export default function Navigation({ items }) {
+    const {
+        statePage: { sideMode },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
     const { mobile } = useViewport();
     const [sticky, setSticky] = useState(false);
     const [offsetTop, setOffsetTop] = useState(null);
@@ -49,11 +54,7 @@ export default function Navigation({ sideMode, dispatch, items }) {
     const ref = useRef(null);
 
     return (
-        <SideMenu
-            id={mobile && sticky ? styles.Sticky : ''}
-            ref={ref}
-            buttonLabel="Navigation"
-        >
+        <SideMenu ref={ref} buttonLabel="Navigation">
             <li>
                 <input
                     type="checkbox"
@@ -110,8 +111,9 @@ export default function Navigation({ sideMode, dispatch, items }) {
                         </label>
                     )}
                     <ul
-                        className={`${styles.SideNavContent} ${sideMode ===
-                            'off' && styles.Active}`}
+                        className={`${styles.SideNavContent} ${
+                            sideMode === 'off' ? styles.Active : ''
+                        }`}
                     >
                         {items.map(section => {
                             const { title, content, component } = section;

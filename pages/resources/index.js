@@ -1,16 +1,10 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 
 export default function Resources() {
     return (
-        <Layout pageTitle="Ressources">
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <p>Ressources...</p>
-                    </Col>
-                </Row>
-            </Container>
+        <Layout>
+            <HeaderLayout pageTitle="Ressources" />
         </Layout>
     );
 }

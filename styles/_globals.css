@@ -62,29 +62,8 @@ ul {
     margin: 0;
 }
 
-.py-10 {
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
 .p-0 {
     padding: 0;
-}
-
-.pt-64 {
-    padding-top: 64px;
-}
-
-.pt-24 {
-    padding-top: 24px;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-.mb-60 {
-    margin-bottom: 60px;
 }
 
 /**

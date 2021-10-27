@@ -20,7 +20,8 @@ export const DataProvider = ({ children }) => {
     };
 
     const initialStatePage = {
-        sideMode: 'off',
+        sideMode: 'on',
+        hasBreadCrumbs: false,
         pageTheme: 'transparent',
     };
 

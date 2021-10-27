@@ -8,22 +8,17 @@ import Navigation from './Navigation';
 export default function SideNavigation({ children, items }) {
     const {
         statePage: { sideMode },
-        dispatchPage: dispatch,
     } = useContext(AppContext);
     const { mobile } = useViewport();
 
     return (
-        <Container fluid={!mobile}>
+        <Container>
             <Row>
-                <Col n={`12 ${sideMode==='on' ? 'md-1' : 'md-3'}`}>
-                    <Navigation
-                        sideMode={sideMode === 'on'}
-                        items={items}
-                        dispatch={dispatch}
-                    />
+                <Col n={`12 ${sideMode === 'on' ? 'md-1' : 'md-3'}`}>
+                    <Navigation items={items} />
                 </Col>
                 <Col n={`12 ${sideMode === 'on' ? 'md-11' : 'md-9'}`}>
-                    <Container>
+                    <Container fluid>
                         <Row>
                             <Col>{children}</Col>
                         </Row>

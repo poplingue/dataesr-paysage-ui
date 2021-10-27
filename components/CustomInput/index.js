@@ -5,7 +5,7 @@ import Input from './Input';
 function CustomInput({ title, infinite, parentsection }) {
     return (
         <Container fluid>
-            <section className="wrapper-input py-10">
+            <section className="wrapper-input">
                 <Row alignItems="bottom" gutters>
                     {infinite ? (
                         <InfiniteField
@@ -18,7 +18,7 @@ function CustomInput({ title, infinite, parentsection }) {
                             />
                         </InfiniteField>
                     ) : (
-                        <Col>
+                        <Col spacing="py-3w">
                             <Input
                                 title={title}
                                 label={title}

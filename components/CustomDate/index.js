@@ -74,12 +74,12 @@ export default function CustomDate({ title, parentsection, keynumber }) {
     };
 
     return (
-        <section className="wrapper-select py-10">
+        <section className="wrapper-select">
             <Container fluid>
                 <Row gutters alignItems="middle">
                     {dateData.map(select => {
                         return (
-                            <Col n="12 md-2" key={select.title}>
+                            <Col n="12 md-2" key={select.title} spacing="py-3w">
                                 <CustomSelect
                                     parentsection={parentsection}
                                     keynumber={keynumber}

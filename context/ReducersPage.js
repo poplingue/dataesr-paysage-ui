@@ -11,6 +11,10 @@ const reducersPage = (state, action) => {
             return { ...state, sideMode: state.sideMode === 'on' ? 'off' : 'on' };
         }
 
+        case ACTIONS.UPDATE_HAS_BREADCRUMBS: {
+            return { ...state, hasBreadCrumbs: !state.hasBreadCrumbs };
+        }
+
         default:
             break;
     }

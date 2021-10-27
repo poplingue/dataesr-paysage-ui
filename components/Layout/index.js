@@ -35,18 +35,15 @@ import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
 
 // TODO add propTypes
-export default function Layout({ children, mainTitle, pageTitle, highlight }) {
+export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
-    const {
-        statePage: { sideMode },
-    } = useContext(AppContext);
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
 
     return (
         <>
             <Head>
-                <title>{mainTitle || 'Paysage'}</title>
+                <title>{headTitle || 'Paysage'}</title>
                 <link rel="icon" href="/favicon/favicon.ico" />
                 <link
                     href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
@@ -162,40 +159,10 @@ export default function Layout({ children, mainTitle, pageTitle, highlight }) {
                 </HeaderNav>
             </Header>
             {/*<SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/>*/}
-            <DynamicBreadcrumb />
-            <Container fluid className="mb-60">
-                <section className="pt-24">
-                    <Row>
-                        <Col className="p-relative">
-                            {pageTitle && (
-                                <Container className="psg-content-wrapper">
-                                    <Row>
-                                        <Col
-                                            n="11"
-                                            className="psg-header-page"
-                                            offset={
-                                                sideMode === 'on' ? '' : '2'
-                                            }
-                                        >
-                                            {highlight && (
-                                                <Highlight
-                                                    size="sm"
-                                                    className="mb-20"
-                                                >
-                                                    {highlight}
-                                                </Highlight>
-                                            )}
-                                            <Title as="h2" look="h3">
-                                                {pageTitle}
-                                            </Title>
-                                        </Col>
-                                    </Row>
-                                </Container>
-                            )}
-                            {children}
-                        </Col>
-                    </Row>
-                </section>
+            <Container fluid spacing="mb-10w">
+                <Row>
+                    <Col>{children}</Col>
+                </Row>
             </Container>
             <Toaster />
             <Footer>
@@ -257,13 +224,11 @@ export default function Layout({ children, mainTitle, pageTitle, highlight }) {
 
 Layout.defaultProps = {
     fluid: false,
-    highlight: '',
-    pageTitle: '',
+    headTitle: '',
 };
 Layout.propTypes = {
     fluid: PropTypes.bool,
-    highlight: PropTypes.string,
-    pageTitle: PropTypes.string,
+    headTitle: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

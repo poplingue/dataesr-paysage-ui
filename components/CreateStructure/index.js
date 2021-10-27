@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import HeaderLayout from '../HeaderLayout';
 import CreateStructure from './form.json';
 
 export default function Create({ data }) {
@@ -16,7 +17,8 @@ export default function Create({ data }) {
     });
 
     return (
-        <Layout pageTitle="Create a structure">
+        <Layout>
+            <HeaderLayout pageTitle="Ajouter une structure" />
             <SideNavigation items={CreateStructure[0].form}>
                 <CreateForm jsonForm={CreateStructure[0]} color={yellow} />
             </SideNavigation>

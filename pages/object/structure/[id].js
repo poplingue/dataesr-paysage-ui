@@ -1,6 +1,7 @@
 import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import BigButton from '../../../components/BigButton';
+import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
 
 export default function Object() {
@@ -8,7 +9,8 @@ export default function Object() {
     const { id } = router.query;
 
     return (
-        <Layout pageTitle="Structure">
+        <Layout>
+            <HeaderLayout pageTitle="Une Structure"/>
             Structure : {id}
             <Accordion>
                 <AccordionItem title="">

@@ -1,13 +1,15 @@
 import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 import NavLink from '../../components/NavLink';
 
 export default function Search() {
     return (
-        <Layout pageTitle="Recherche">
-            <Container fluid>
+        <Layout>
+            <HeaderLayout pageTitle="Recherche" />
+            <Container>
                 <Row>
-                    <Col>
+                    <Col n="12">
                         <p>Recherche...</p>
                     </Col>
                     <Col>
