@@ -8,7 +8,7 @@ const reducersPage = (state, action) => {
         }
 
         case ACTIONS.UPDATE_SIDE_NAVIGATION_MODE: {
-            return { ...state, sideMode: state.sideMode === 'on' ? 'off' : 'on' };
+            return { ...state, sideMode: action.payload.sideMode };
         }
 
         case ACTIONS.UPDATE_HAS_BREADCRUMBS: {

@@ -13,6 +13,7 @@ import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 import FieldButton from '../FieldButton';
 import InfiniteAccordion from '../InfiniteAccordion';
+import PageTheme from '../PageTheme';
 import Switch from '../Switch';
 import styles from './CreateForm.module.scss';
 
@@ -93,83 +94,91 @@ const CreateForm = ({ jsonForm, color }) => {
     }, [retrieveField, storeObjects, formName]);
 
     return (
-        <Row>
-            <Col offset="10" n="2">
-                <FieldButton
-                    className={styles.Button}
-                    dataTestid="btn-expand-close"
-                    title="Réduire / Étendre"
-                    onClick={expandCloseAll}
-                />
-            </Col>
-            <Col n="12">
-                {jsonForm.form.map((section, i) => {
-                    const { title: sectionTitle, content, infinite } = section;
-                    const dataSection = sectionUniqueId(
-                        sectionTitle,
-                        content.length
-                    );
-                    // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
+        <PageTheme color={color}>
+            <Row>
+                <Col offset="10" n="2" className="p-relative">
+                    <FieldButton
+                        className={styles.Button}
+                        dataTestid="btn-expand-close"
+                        title="Réduire / Étendre"
+                        onClick={expandCloseAll}
+                    />
+                </Col>
+                <Col n="12">
+                    {jsonForm.form.map((section, i) => {
+                        const {
+                            title: sectionTitle,
+                            content,
+                            infinite,
+                        } = section;
+                        const dataSection = sectionUniqueId(
+                            sectionTitle,
+                            content.length
+                        );
+                        // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
-                    return infinite ? (
-                        <InfiniteAccordion
-                            accordionsExpanded={accordionsExpanded}
-                            dataAttSection={dataSection}
-                            title={sectionTitle}
-                            content={content}
-                            key={sectionTitle}
-                        />
-                    ) : (
-                        <Accordion
-                            color={color}
-                            size="lg"
-                            keepOpen
-                            className={styles.Accordion}
-                            key={dataSection}
-                            data-section={dataSection}
-                        >
-                            <AccordionItem
-                                initExpand={accordionsExpanded}
-                                className={styles.Item}
+                        return infinite ? (
+                            <InfiniteAccordion
+                                accordionsExpanded={accordionsExpanded}
+                                dataAttSection={dataSection}
                                 title={sectionTitle}
+                                content={content}
+                                key={sectionTitle}
+                            />
+                        ) : (
+                            <Accordion
+                                color={color}
+                                size="lg"
+                                keepOpen
+                                className={styles.Accordion}
+                                key={dataSection}
+                                data-section={dataSection}
                             >
-                                {content.map(field => {
-                                    const {
-                                        type,
-                                        title,
-                                        infinite,
-                                        staticValues,
-                                    } = field;
+                                <AccordionItem
+                                    initExpand={accordionsExpanded}
+                                    className={styles.Item}
+                                    title={sectionTitle}
+                                >
+                                    {content.map(field => {
+                                        const {
+                                            type,
+                                            title,
+                                            infinite,
+                                            staticValues,
+                                        } = field;
 
-                                    return (
-                                        <div key={title}>
-                                            <Container fluid>
-                                                <Row alignItems="middle">
-                                                    <Col>
-                                                        <Switch
-                                                            keynumber={i}
-                                                            section={
-                                                                sectionTitle
-                                                            }
-                                                            type={type}
-                                                            title={title}
-                                                            infinite={infinite}
-                                                            staticValues={
-                                                                staticValues
-                                                            }
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Container>
-                                        </div>
-                                    );
-                                })}
-                            </AccordionItem>
-                        </Accordion>
-                    );
-                })}
-            </Col>
-        </Row>
+                                        return (
+                                            <div key={title}>
+                                                <Container fluid>
+                                                    <Row alignItems="middle">
+                                                        <Col>
+                                                            <Switch
+                                                                keynumber={i}
+                                                                section={
+                                                                    sectionTitle
+                                                                }
+                                                                type={type}
+                                                                title={title}
+                                                                infinite={
+                                                                    infinite
+                                                                }
+                                                                staticValues={
+                                                                    staticValues
+                                                                }
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Container>
+                                            </div>
+                                        );
+                                    })}
+                                </AccordionItem>
+                            </Accordion>
+                        );
+                    })}
+                </Col>
+            </Row>
+        </PageTheme>
     );
 };
 

@@ -24,7 +24,6 @@ export default function PageTheme({ children, color }) {
         <>
             <BorderPage color={color} />
             {children}
-            {children}
         </>
     );
 }

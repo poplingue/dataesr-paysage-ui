@@ -18,6 +18,7 @@ export default function Navigation({ items }) {
         dispatchPage: dispatch,
     } = useContext(AppContext);
     const { mobile } = useViewport();
+    // TODO fix mobile sticky position too early
     const [sticky, setSticky] = useState(false);
     const [offsetTop, setOffsetTop] = useState(null);
     const [initOffsetTop, setInitOffsetTop] = useState(null);
@@ -52,9 +53,14 @@ export default function Navigation({ items }) {
         handleScroll();
     }, [handleScroll, offsetTop]);
     const ref = useRef(null);
+    const sideOpened = sideMode === 'on';
 
     return (
-        <SideMenu ref={ref} buttonLabel="Navigation">
+        <SideMenu
+            ref={ref}
+            buttonLabel="Navigation"
+            id={mobile && sticky ? styles.Sticky : ''}
+        >
             <li>
                 <input
                     type="checkbox"
@@ -64,14 +70,14 @@ export default function Navigation({ items }) {
                         dispatch({
                             type: 'UPDATE_SIDE_NAVIGATION_MODE',
                             payload: {
-                                sideMode: sideMode === 'on' ? 'off' : 'on',
+                                sideMode: sideOpened ? 'off' : 'on',
                             },
                         })
                     }
                 />
                 <div
                     className={`${styles.SideNav} ${
-                        sideMode === 'on' ? '' : styles.Active
+                        sideOpened ? styles.Active : ''
                     }`}
                 >
                     {!mobile && (
@@ -84,13 +90,13 @@ export default function Navigation({ items }) {
                         >
                             <Icon
                                 name={
-                                    sideMode === 'on'
-                                        ? 'ri-menu-unfold-line'
-                                        : 'ri-menu-fold-line'
+                                    sideOpened
+                                        ? 'ri-menu-fold-line'
+                                        : 'ri-menu-unfold-line'
                                 }
                                 size="lg"
                                 className={`${styles.Icon} ${
-                                    sideMode === 'on' ? styles.Active : ''
+                                    sideOpened ? '' : styles.Active
                                 } marianne`}
                             />
                             <Icon
@@ -100,7 +106,7 @@ export default function Navigation({ items }) {
                             >
                                 <Text
                                     className={`${
-                                        sideMode === 'on' ? 'hidden' : ''
+                                        sideOpened ? '' : 'hidden'
                                     } marianne`}
                                     as="span"
                                     size="md"
@@ -112,7 +118,7 @@ export default function Navigation({ items }) {
                     )}
                     <ul
                         className={`${styles.SideNavContent} ${
-                            sideMode === 'off' ? styles.Active : ''
+                            sideOpened ? styles.Active : ''
                         }`}
                     >
                         {items.map(section => {
@@ -122,9 +128,7 @@ export default function Navigation({ items }) {
                                 return (
                                     <SideMenuItem
                                         key={title}
-                                        className={
-                                            sideMode === 'on' ? 'hidden' : ''
-                                        }
+                                        className={sideOpened ? '' : 'hidden'}
                                         title={title}
                                         expandedDefault
                                     >
@@ -135,8 +139,7 @@ export default function Navigation({ items }) {
 
                                             return (
                                                 <SideMenuLink
-                                                    className={`${sideMode ===
-                                                        'on' &&
+                                                    className={`${!sideOpened &&
                                                         'hidden'} marianne`}
                                                     onClick={e =>
                                                         goToSection(
@@ -159,9 +162,7 @@ export default function Navigation({ items }) {
 
                             return (
                                 <SideMenuLink
-                                    className={
-                                        sideMode === 'on' ? 'hidden' : ''
-                                    }
+                                    className={sideOpened ? '' : 'hidden'}
                                     onClick={e =>
                                         goToSection(
                                             e,

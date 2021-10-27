@@ -2,23 +2,22 @@ import { Col, Container, Row } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import useViewport from '../../hooks/useViewport';
 import Navigation from './Navigation';
 
 export default function SideNavigation({ children, items }) {
     const {
         statePage: { sideMode },
     } = useContext(AppContext);
-    const { mobile } = useViewport();
+    const sideOpened = sideMode === 'on';
 
     return (
-        <Container>
+        <Container className="p-relative" fluid>
             <Row>
-                <Col n={`12 ${sideMode === 'on' ? 'md-1' : 'md-3'}`}>
+                <Col n={`12 ${sideOpened ? 'md-3' : 'md-1'}`}>
                     <Navigation items={items} />
                 </Col>
-                <Col n={`12 ${sideMode === 'on' ? 'md-11' : 'md-9'}`}>
-                    <Container fluid>
+                <Col n={`12 ${sideOpened ? 'md-9' : 'md-11'}`}>
+                    <Container>
                         <Row>
                             <Col>{children}</Col>
                         </Row>
