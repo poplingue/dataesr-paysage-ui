@@ -12,14 +12,12 @@ import {
     Header,
     HeaderBody,
     HeaderNav,
-    Highlight,
     Link,
     Logo,
     NavItem,
     NavSubItem,
     Row,
     Service,
-    Title,
     Tool,
     ToolItem,
     ToolItemGroup,
@@ -28,10 +26,8 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { AppContext } from '../../context/GlobalState';
-import DynamicBreadcrumb from '../DynamicBreadcrumb';
 import NavLink from '../NavLink';
 
 // TODO add propTypes

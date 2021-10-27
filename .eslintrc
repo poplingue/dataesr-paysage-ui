@@ -1,6 +1,7 @@
 {
   "plugins": [
-    "eslint-plugin-import-order-alphabetical"
+    "eslint-plugin-import-order-alphabetical",
+    "unused-imports"
   ],
   "rules": {
     "newline-before-return": "error",
@@ -27,7 +28,9 @@
         "next": "*"
       }
     ],
-    "import-order-alphabetical/order": "error"
+    "import-order-alphabetical/order": "error",
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error"
   },
   "extends": [
     "next",
