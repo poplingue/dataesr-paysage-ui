@@ -6,7 +6,7 @@ import LinkTo from '../../components/LinkTo';
 export default function Create() {
     return (
         <Layout>
-            <HeaderLayout pageTitle="Create" />
+            <HeaderLayout pageTitle="Ajouter une structure" />
             <Container>
                 <Row>
                     <Col>

@@ -6,7 +6,7 @@ export default function Help() {
     return (
         <Layout>
             <HeaderLayout pageTitle="Aide" />
-            <Container fluid>
+            <Container>
                 <Row>
                     <Col>
                         <p>Aide...</p>

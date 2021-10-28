@@ -33,8 +33,8 @@ export function getTitle(key) {
  */
 export function getObjectType(id) {
     const objectTypes = {
-        0: { name: 'structure', title: 'Structure' },
-        1: { name: 'person', title: 'Personne' },
+        0: { name: 'structure', title: 'Établissement', color: '--yellow-dark-700' },
+        1: { name: 'person', title: 'Personne' , color: '--pink-soft-700' },
         2: { name: 'project', title: 'Projet' },
         3: { name: 'category', title: 'Catégorie' },
     };

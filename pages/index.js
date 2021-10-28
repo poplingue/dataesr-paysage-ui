@@ -14,10 +14,12 @@ export default function Home() {
             <HeaderLayout pageTitle="Bienvenue"/>
             <Container>
                 <Row>
-                    <h2>Recherchez</h2>
+                    <Col spacing='mb-5w'>
+                        <h2>Recherchez</h2>
+                    </Col>
                 </Row>
                 <Row>
-                    <Col n="12">
+                    <Col n="12" spacing='mb-3w'>
                         <Icon name="ri-user-3-line" size="xs">
                             <h1 className="fs-28-32 m-0">Salut Sam!</h1>
                         </Icon>

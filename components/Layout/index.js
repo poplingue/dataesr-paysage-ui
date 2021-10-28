@@ -122,7 +122,7 @@ export default function Layout({ children, headTitle }) {
                     </NavItem>
                     <NavItem title="Annuaire">
                         <NavSubItem
-                            current={pathname.startsWith('/search')}
+                            current={pathname.startsWith('/search/1')}
                             title="Rechercher une personne"
                             asLink={<NavLink href="/search" />}
                         />
@@ -135,7 +135,7 @@ export default function Layout({ children, headTitle }) {
                         <NavSubItem
                             current={pathname.startsWith('/search')}
                             title="Rechercher une structure"
-                            asLink={<NavLink href="/search" />}
+                            asLink={<NavLink href="/search/0" />}
                         />
                         <NavSubItem
                             title="Listes qualifiées"

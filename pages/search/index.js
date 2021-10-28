@@ -9,13 +9,10 @@ export default function Search() {
             <HeaderLayout pageTitle="Recherche" />
             <Container>
                 <Row>
-                    <Col n="12">
-                        <p>Recherche...</p>
-                    </Col>
                     <Col>
                         <Tile className="w-100" horizontal>
                             <TileBody
-                                title="Person A"
+                                title="Une Personne"
                                 linkHref="/object/person/8"
                                 asLink={
                                     <NavLink href="/object/person/8">
@@ -23,7 +20,7 @@ export default function Search() {
                                     </NavLink>
                                 }
                             >
-                                <p>Person A</p>
+                                <p>Fonction</p>
                             </TileBody>
                         </Tile>
                     </Col>

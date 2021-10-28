@@ -1,3 +1,4 @@
+import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import HeaderLayout from '../../../../components/HeaderLayout';
 import Layout from '../../../../components/Layout';
@@ -13,9 +14,16 @@ export default function Object() {
     return (
         <Layout>
             <HeaderLayout pageTitle={title}/>
-            Object Type : {name}
-            <br/>
-            Structure : {id}
+            <Container>
+                <Row>
+                    <Col n='12'>
+                        Structure : {id}
+                    </Col>
+                    <Col>
+                        Object Type : {name}
+                    </Col>
+                </Row>
+            </Container>
         </Layout>
     );
 }

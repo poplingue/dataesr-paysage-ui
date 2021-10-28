@@ -6,14 +6,13 @@ export default function ToolBox({ children }) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className={`${styles.ToolBox} ${open ? styles.Active : ''}`}>
-            <div
-                className={styles.Header}
-                data-cy="toolbox-header"
-                onClick={() => setOpen(!open)}
-            >
+        <div
+            className={`${styles.ToolBox} ${open ? styles.Active : ''}`}
+            data-cy="toolbox-header"
+        >
+            <div className={styles.Header} onClick={() => setOpen(!open)}>
                 <Icon
-                    name={`${open && 'ri-arrow-right-s-line'}`}
+                    name={`${open ? 'ri-arrow-right-s-line' : ''}`}
                     className={styles.Arrow}
                 >
                     <Text
@@ -33,7 +32,7 @@ export default function ToolBox({ children }) {
                     }`}
                 />
             </div>
-            <div className={`${!open && 'hidden'}`}>{children}</div>
+            <div className={`${!open ? 'hidden' : ''}`}>{children}</div>
         </div>
     );
 }

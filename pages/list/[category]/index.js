@@ -7,23 +7,27 @@ import Layout from '../../../components/Layout';
 import List from '../../../components/List';
 import TileElement from '../../../components/TileElement';
 import { AppContext } from '../../../context/GlobalState';
+import { getObjectType } from '../../../helpers/constants';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 
-export default function Category({ structures }) {
-    const { style: yellow } = useCSSProperty('--yellow-dark-700');
+export default function Category(props) {
     const router = useRouter();
     const { stateList: { exportMode } } = useContext(AppContext);
     const { category } = router.query;
+    const { style: color } = useCSSProperty(getObjectType(category).color);
     const [selection, setSelection] = useState([]);
+
     const [elements, setElements] = useState(() => {
-        return structures.map((structure, i) => {
+        const items = props[getObjectType(category).name] || [];
+        
+return items.map((structure, i) => {
             return { ...structure, checked: false };
         });
     });
 
     const onTileClick = (id) => {
         if (!exportMode) {
-            router.push(`/object/${category}/${id}`);
+            router.push(`/object/${getObjectType(category).name}/${id}`);
         } else {
             const newList = elements.map((elm) => {
                 return { ...elm, checked: id === elm.id ? !elm.checked : elm.checked };
@@ -35,7 +39,7 @@ export default function Category({ structures }) {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle={`Liste catégorie : ${category}`}/>
+            <HeaderLayout pageTitle={`Liste catégorie : ${getObjectType(category).title}`}/>
             <Container>
                 <Row>
                     <Col>
@@ -45,7 +49,7 @@ export default function Category({ structures }) {
                                     return <li key={structure.name}>
                                         <TileElement
                                             defaultIcon="ri-arrow-right-line"
-                                            color={yellow}
+                                            color={color}
                                             checked={structure.checked}
                                             title={structure.name}
                                             subTitle="subTitle"
@@ -67,7 +71,7 @@ export default function Category({ structures }) {
 export async function getServerSideProps() {
     return {
         props: {
-            structures: [
+            structure: [
                 {
                     'id': 0,
                     'name': 'Structure 0',
@@ -86,6 +90,28 @@ export async function getServerSideProps() {
                 {
                     'id': 3,
                     'name': 'Structure 3',
+                    'desc': 'Description'
+                }
+            ],
+            person: [
+                {
+                    'id': 0,
+                    'name': 'Personne 0',
+                    'desc': 'Description',
+                },
+                {
+                    'id': 1,
+                    'name': 'Personne 1',
+                    'desc': 'Description'
+                },
+                {
+                    'id': 2,
+                    'name': 'Personne 2',
+                    'desc': 'Description'
+                },
+                {
+                    'id': 3,
+                    'name': 'Personne 3',
                     'desc': 'Description'
                 }
             ]

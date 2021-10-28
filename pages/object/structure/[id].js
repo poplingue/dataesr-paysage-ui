@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
+import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import BigButton from '../../../components/BigButton';
 import HeaderLayout from '../../../components/HeaderLayout';
@@ -11,21 +11,23 @@ export default function Object() {
     return (
         <Layout>
             <HeaderLayout pageTitle="Une Structure"/>
-            Structure : {id}
-            <Accordion>
-                <AccordionItem title="">
-                    item
-                </AccordionItem>
-            </Accordion>
-            <BigButton
-                square={false}
-                onClick={() => {
-                }}
-                color="#f55"
-                title="Ajouter un nouvel Établissement"
-                icon="ri-add-circle-line"
-            >
-            </BigButton>
+            <Container>
+                <Row>
+                    <Col>
+                        Structure : {id}
+                    </Col>
+                    <Col>
+                        <BigButton
+                            square={false}
+                            onClick={() => {
+                            }}
+                            title="Ajouter un nouveau texte"
+                            icon="ri-add-circle-line"
+                        >
+                        </BigButton>
+                    </Col>
+                </Row>
+            </Container>
         </Layout>
     );
 }
