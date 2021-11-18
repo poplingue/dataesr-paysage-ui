@@ -10,7 +10,7 @@ import {
 } from '../../helpers/utils';
 import DBService from '../../services/DBService';
 
-export default function CustomToggle({ keynumber, parentsection, title }) {
+export default function CustomToggle({ index, section, title }) {
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -22,12 +22,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uniqueId = getUniqueId(
-        formName,
-        parentsection,
-        title,
-        keynumber || 0
-    );
+    const uniqueId = getUniqueId(formName, section, title, index || 0);
     const toggleValue = getFieldValue(forms, formName, uniqueId);
 
     useEffect(() => {
@@ -72,7 +67,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
         }
     }, [init, toggleValue]);
 
-    const onToggleChange = async e => {
+    const onToggleChange = async (e) => {
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
         const payload = {
             value: e.target.checked ? 'true' : 'false',
@@ -98,7 +93,7 @@ export default function CustomToggle({ keynumber, parentsection, title }) {
         <Toggle
             data-field={uniqueId}
             data-cy={uniqueId}
-            onChange={e => onToggleChange(e)}
+            onChange={(e) => onToggleChange(e)}
             checked={checked === 'true'}
             label={title}
         />

@@ -5,11 +5,15 @@ const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
             const { value, formName, uid } = action.payload;
-            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
+            const formIndex = state.forms.findIndex(
+                (obj) => Object.keys(obj)[0] === formName
+            );
             const newForm = getForm(state.forms, formName);
 
             if (newForm) {
-                const fieldIndex = newForm.findIndex(field => field.uid === uid);
+                const fieldIndex = newForm.findIndex(
+                    (field) => field.uid === uid
+                );
 
                 if (fieldIndex > -1) {
                     // replace object field at fieldIndex
@@ -25,29 +29,36 @@ const reducersForm = (state, action) => {
                     ...state.forms.slice(0, formIndex), // everything before current field
                     { ...state.forms[formIndex], ...{ [formName]: newForm } },
                     ...state.forms.slice(formIndex + 1), // everything after current field
-                ]
+                ],
             };
         }
 
         case ACTIONS.UPDATE_FORM_FIELD_LIST: {
             const { formName, fields } = action.payload;
-            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
+            const formIndex = state.forms.findIndex(
+                (obj) => Object.keys(obj)[0] === formName
+            );
             const newForm = getForm(state.forms, formName);
 
             for (let i = 0; i < fields.length; i = i + 1) {
                 const currentField = fields[i];
 
                 // case create new entry
-                if (currentField.value && !getFieldValue(state.forms, formName, currentField.uid)) {
+                if (
+                    currentField.value &&
+                    !getFieldValue(state.forms, formName, currentField.uid)
+                ) {
                     newForm.push(currentField);
                 }
 
                 // case uid already exists
-                if (currentField.value && getFieldValue(state.forms, formName, currentField.uid)) {
-                    const index = newForm.findIndex(obj => {
-                            return Object.entries(obj)[1][1] === currentField.uid;
-                        }
-                    );
+                if (
+                    currentField.value &&
+                    getFieldValue(state.forms, formName, currentField.uid)
+                ) {
+                    const index = newForm.findIndex((obj) => {
+                        return Object.entries(obj)[1][1] === currentField.uid;
+                    });
 
                     newForm[index] = currentField;
                 }
@@ -59,7 +70,7 @@ const reducersForm = (state, action) => {
                     ...state.forms.slice(0, formIndex), // everything before current field
                     { [formName]: newForm },
                     ...state.forms.slice(formIndex + 1), // everything after current field
-                ]
+                ],
             };
         }
 
@@ -67,7 +78,9 @@ const reducersForm = (state, action) => {
             const { formName, uid } = action.payload;
             const currentForm = getForm(state.forms, formName) || [];
             const newForm = currentForm.filter((field) => field.uid !== uid);
-            const formIndex = state.forms.findIndex(obj => Object.keys(obj)[0] === formName);
+            const formIndex = state.forms.findIndex(
+                (obj) => Object.keys(obj)[0] === formName
+            );
 
             return {
                 ...state,
@@ -75,7 +88,7 @@ const reducersForm = (state, action) => {
                     ...state.forms.slice(0, formIndex), // everything before current field
                     { ...state.forms[formIndex], ...{ [formName]: newForm } },
                     ...state.forms.slice(formIndex + 1), // everything after current field
-                ]
+                ],
             };
         }
 
@@ -94,15 +107,16 @@ const reducersForm = (state, action) => {
             });
 
             for (let i = 0; i < uids.length; i = i + 1) {
-                const currentFieldKey = uids[i];
-                const index = currentForm.findIndex(obj => {
-                        return Object.entries(obj)[1][1] === currentFieldKey;
-                    }
-                );
+                const currentFieldIndex = uids[i];
+                const index = currentForm.findIndex((obj) => {
+                    return Object.entries(obj)[1][1] === currentFieldIndex;
+                });
                 indexes.push(index);
             }
 
-            const newForm = currentForm.filter((field, i) => indexes.indexOf(i) === -1);
+            const newForm = currentForm.filter(
+                (field, i) => indexes.indexOf(i) === -1
+            );
 
             return {
                 ...state,
@@ -110,9 +124,8 @@ const reducersForm = (state, action) => {
                     ...state.forms.slice(0, formIndex), // everything before current field
                     { ...state.forms[formIndex], ...{ [formName]: newForm } },
                     ...state.forms.slice(formIndex + 1), // everything after current field
-                ]
+                ],
             };
-
         }
 
         case ACTIONS.UPDATE_CURRENT_FORMNAME: {
@@ -120,7 +133,7 @@ const reducersForm = (state, action) => {
 
             return {
                 ...state,
-                formName
+                formName,
             };
         }
 
@@ -129,6 +142,20 @@ const reducersForm = (state, action) => {
 
         case ACTIONS.UPDATE_DEPARTMENTS: {
             return { ...state, departments: action.payload };
+        }
+
+        case ACTIONS.UPDATE_OBJECT_FORM_TYPE: {
+            return { ...state, objectFormType: action.payload };
+        }
+
+        case ACTIONS.UPDATE_VALID_SECTION: {
+            return {
+                ...state,
+                validSections: {
+                    ...state.validSections,
+                    ...action.payload.section,
+                },
+            };
         }
 
         default:

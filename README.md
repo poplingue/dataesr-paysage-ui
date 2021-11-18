@@ -82,6 +82,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * add unit tests for complex components
 * add possibility of comments to section/field
 * adding link to section/field 
-* manage mandatory field and errored field
 * improve DynamicBreadcrumb system
 * dark theme ToolBox and Navigation components
+* add middleware functions for theme
+* new component CustomCheckbox
+* Forms: compare data from DB and data from IndexDB
+  * check validation field
+  * check validation section

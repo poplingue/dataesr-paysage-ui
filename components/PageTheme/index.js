@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import BorderPage from '../BorderPage';
 
@@ -14,10 +14,8 @@ export default function PageTheme({ children, color }) {
         }
     }, [color, pageTheme, dispatch]);
 
-    useLayoutEffect(() => {
-        return () => {
-            dispatch({ type: 'UPDATE_COLOR_THEME', payload: 'transparent' });
-        };
+    useEffect(() => {
+        dispatch({ type: 'UPDATE_COLOR_THEME', payload: 'transparent' });
     }, [dispatch]);
 
     return (

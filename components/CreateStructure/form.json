@@ -6,8 +6,18 @@
         "infinite": true,
         "content": [
           {
-            "title": "Test",
-            "type": "toggle"
+            "title": "Satisfaction",
+            "type": "checkbox",
+            "validatorId": "satisfaction",
+            "staticValues": [
+              "satisfied",
+              "not satisfied"
+            ]
+          },
+          {
+            "title": "Title",
+            "type": "text",
+            "validatorId": "title"
           }
         ]
       },
@@ -16,15 +26,23 @@
         "content": [
           {
             "title": "Siret",
-            "type": "text"
+            "type": "text",
+            "validatorId": "siret"
           },
           {
             "title": "Wikidata",
-            "type": "text"
+            "type": "text",
+            "validatorId": "wikidata"
           },
           {
             "title": "RNSR",
-            "type": "text"
+            "type": "text",
+            "validatorId": "rnsr"
+          },
+          {
+            "title": "Tutelle",
+            "type": "checkbox",
+            "validatorId": "tutelle"
           }
         ]
       },
@@ -33,7 +51,8 @@
         "content": [
           {
             "title": "Lier à un ou plusieurs départements",
-            "type": "multiSearch"
+            "type": "multiSearch",
+            "validatorId": "departments"
           }
         ]
       },
@@ -51,20 +70,23 @@
               "catégorie 3",
               "catégorie 4",
               "catégorie 5"
-            ]
+            ],
+            "validatorId": "categories"
           },
           {
             "title": "Start",
-            "type": "date"
+            "type": "date",
+            "validatorId": "startDate"
           },
           {
             "title": "End",
-            "type": "date"
+            "type": "date",
+            "validatorId": "endDate"
           }
         ]
       },
       {
-        "title": "Informations",
+        "title": "État de la structure",
         "content": [
           {
             "title": "État",
@@ -73,7 +95,8 @@
               "Ouvert",
               "Fermé",
               "Potentiel"
-            ]
+            ],
+            "validatorId": "state"
           }
         ]
       },
@@ -86,7 +109,8 @@
               "Université",
               "Grande Ecole"
             ],
-            "type": "select"
+            "type": "select",
+            "validatorId": "typology"
           }
         ]
       }

@@ -1,9 +1,9 @@
 import { useContext, useEffect } from 'react';
-import CreateForm from '../../components/CreateForm';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import CreateStructure from './form.json';
 
@@ -20,7 +20,11 @@ export default function Create({ data }) {
         <Layout>
             <HeaderLayout pageTitle="Ajouter une structure" />
             <SideNavigation items={CreateStructure[0].form}>
-                <CreateForm jsonForm={CreateStructure[0]} color={yellow} />
+                <CreateForm
+                    jsonForm={CreateStructure[0]}
+                    color={yellow}
+                    objectFormType="structure"
+                />
             </SideNavigation>
         </Layout>
     );

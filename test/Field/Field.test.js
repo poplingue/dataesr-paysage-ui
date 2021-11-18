@@ -18,12 +18,12 @@ describe('Field component', () => {
     const setState = jest.fn();
 
     beforeEach(() => {
-        React.useState.mockImplementation(init => [init, setState]);
+        React.useState.mockImplementation((init) => [init, setState]);
         render(
             <Field
                 label="Field"
                 index={1}
-                parentsection="Section"
+                section="Section"
                 title="Field"
                 value="Content field"
             >

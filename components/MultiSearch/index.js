@@ -10,10 +10,11 @@ import {
     getFormName,
     getUniqueId,
 } from '../../helpers/utils';
+import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DBService';
 import styles from './MultiSearch.module.scss';
 
-function MultiSearch({ title, parentsection }) {
+function MultiSearch({ title, section, validatorConfig, updateValidSection }) {
     const {
         stateForm: { departments, forms, storeObjects },
         dispatchForm: dispatch,
@@ -23,14 +24,14 @@ function MultiSearch({ title, parentsection }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, parentsection, title, 0);
+    const uid = getUniqueId(formName, section, title, 0);
     const [textValue, setTextValue] = useState('');
     const currentForm = useCallback(
         () => (forms && formName ? getForm(forms, formName) : null),
         [formName, forms]
     );
     const [selectedValues, setSelectedvalues] = useState([]);
-    const options = departments.map(departement => ({
+    const options = departments.map((departement) => ({
         value: departement.nom,
         label: `${departement.codeRegion} - ${departement.nom}`,
     }));
@@ -39,16 +40,17 @@ function MultiSearch({ title, parentsection }) {
     const filteredOptions = options.filter((option, index, arr) =>
         filterSearch(textValue, option, index, arr)
     );
+    const { checkField, message, type } = useValidator(validatorConfig);
 
-    const onSelectChange = async e => {
+    const onSelectChange = async (e) => {
         const { value } = e.target;
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         // Remove value if exists
         let newValue =
-            selectedValues && selectedValues.filter(item => item !== value);
+            selectedValues && selectedValues.filter((item) => item !== value);
 
-        // Add value is does not exist
+        // Add value if does not exist
         if (selectedValues.indexOf(value) === -1) {
             newValue = [...selectedValues, value];
         }
@@ -71,6 +73,9 @@ function MultiSearch({ title, parentsection }) {
                 formName
             );
         }
+
+        checkField(newValue.join(' '));
+        updateValidSection(null, null);
     };
 
     useEffect(() => {
@@ -79,16 +84,22 @@ function MultiSearch({ title, parentsection }) {
         }
     }, [currentForm, formName, forms, selectedValues, uid]);
 
+    useEffect(() => {
+        updateValidSection(uid, type);
+    }, [type, uid, updateValidSection]);
+
     return (
         <section className="wrapper-multi-search">
             <TextInput
-                onChange={e => setTextValue(e.target.value)}
+                message={message}
+                messageType={type}
+                onChange={(e) => setTextValue(e.target.value)}
                 value={textValue}
                 label={title}
             />
             <Container fluid>
                 <Row gutters>
-                    <Col n="6" spacing="py-3w">
+                    <Col n="6" spacing="py-1w">
                         <ul className="max-200">
                             {filteredOptions.map((option, i) => {
                                 return (
@@ -101,7 +112,7 @@ function MultiSearch({ title, parentsection }) {
                                     >
                                         <Checkbox
                                             label={option.label}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                                 onSelectChange(e);
                                             }}
                                             defaultChecked={
@@ -116,10 +127,10 @@ function MultiSearch({ title, parentsection }) {
                             })}
                         </ul>
                     </Col>
-                    <Col n="6" spacing="py-3w">
+                    <Col n="6" spacing="py-1w">
                         {selectedValues.length > 0 && (
                             <ul>
-                                {selectedValues.map(selected => {
+                                {selectedValues.map((selected) => {
                                     return <li key={uuidv4()}>{selected}</li>;
                                 })}
                             </ul>

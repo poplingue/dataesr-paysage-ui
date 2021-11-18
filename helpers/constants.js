@@ -2,8 +2,9 @@ import { cleanString } from './utils';
 
 export function getUrl(key) {
     const urls = {
-        'genre': 'https://jsonplaceholder.typicode.com/todos',
-        'etat': 'https://jsonplaceholder.typicode.com/todos'
+        genre: 'https://jsonplaceholder.typicode.com/todos',
+        etat: 'https://jsonplaceholder.typicode.com/todos',
+        tutelle: 'https://jsonplaceholder.typicode.com/todos',
     };
 
     return urls[cleanString(key)];
@@ -33,8 +34,12 @@ export function getTitle(key) {
  */
 export function getObjectType(id) {
     const objectTypes = {
-        0: { name: 'structure', title: 'Établissement', color: '--yellow-dark-700' },
-        1: { name: 'person', title: 'Personne' , color: '--pink-soft-700' },
+        0: {
+            name: 'structure',
+            title: 'Établissement',
+            color: '--yellow-dark-700',
+        },
+        1: { name: 'person', title: 'Personne', color: '--pink-soft-700' },
         2: { name: 'project', title: 'Projet' },
         3: { name: 'category', title: 'Catégorie' },
     };
@@ -48,7 +53,7 @@ export const PersonPageSkeleton = [
         content: [
             { title: 'Fonctions actuelles', component: 'functions' },
             { title: 'Contact', component: 'contact' },
-            { title: 'Les dernières dépêches'}
+            { title: 'Les dernières dépêches' },
         ],
         component: 'synthesis',
     },
@@ -71,5 +76,5 @@ export const PersonPageSkeleton = [
         title: 'Identifiants',
         content: [],
         component: 'identifier',
-    }
+    },
 ];

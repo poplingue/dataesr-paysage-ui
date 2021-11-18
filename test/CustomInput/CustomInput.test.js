@@ -21,12 +21,24 @@ describe('Field component', () => {
     let wrapper;
 
     beforeEach(() => {
-        React.useState.mockImplementation(init => [init, setState]);
+        React.useState.mockImplementation((init) => [init, setState]);
         wrapper = render(
             <Input
-                keynumber={1}
+                validatorConfig={{
+                    required: true,
+                    validators: [
+                        (value) => ({
+                            valid:
+                                value.length > 2 &&
+                                !!value.match(/^\d+(\.\d{1,2})?$/),
+                            errorMsg:
+                                '3 caractères minimum, uniquement numériques',
+                        }),
+                    ],
+                }}
+                index={1}
                 label="Label"
-                parentsection="Section"
+                section="Section"
                 title="Title"
                 value="Content value"
             />
@@ -41,7 +53,7 @@ describe('Field component', () => {
         expect(screen.getByDisplayValue('Content value')).toBeVisible();
     });
 
-    it('should render the input label', () => {
+    it('should have Title as data-field', () => {
         const uniqueId = getUniqueId('create/person', 'Section', 'Title', 1);
         expect(screen.getByTestId('Title')).toHaveAttribute(
             'data-field',

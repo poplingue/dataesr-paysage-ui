@@ -68,14 +68,28 @@ context('Person form page', () => {
         cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="Wikidata"]').should('be.visible');
-        cy.get('[data-testid="create/person@denomination/genre#1"]').should('be.visible');
+        cy.get('[data-testid="create/person@denomination/genre#0"]').should('be.visible');
 
     });
 
     it('should close all sections', () => {
         cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="Wikidata"]').should('not.be.visible');
-        cy.get('[data-testid="create/person@denomination/genre#1"]').should('not.be.visible');
+        cy.get('[data-testid="create/person@denomination/genre#0"]').should('not.be.visible');
 
+    });
+
+    it('should display error input', () => {
+        cy.get('[data-testid="Nom"] input').type('A');
+        cy.get('[data-testid="Nom"]').find('.fr-error-text').should('be.visible');
+    });
+
+    it('should display valid input', () => {
+        cy.get('[data-testid="Nom"] input').type('Abcd');
+        cy.get('[data-testid="Nom"]').find('.fr-input').should('have.class', 'fr-input--valid');
+    });
+
+    it('should display optional hint', () => {
+        cy.get('[data-testid="Autre dénomination"] .fr-hint-text').should('be.visible');
     });
 });

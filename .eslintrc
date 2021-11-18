@@ -32,10 +32,7 @@
     "no-unused-vars": "off",
     "unused-imports/no-unused-imports": "error"
   },
-  "extends": [
-    "next",
-    "next/core-web-vitals"
-  ],
+  "extends": ["next", "prettier", "next/core-web-vitals"],
   "env": {
     "jest": true
   }

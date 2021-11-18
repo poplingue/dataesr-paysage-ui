@@ -81,7 +81,7 @@ context('Misc', () => {
       cy.screenshot('my-image')
     })
 
-    it('Cypress.Screenshot.defaults() - change default config of screenshots', function () {
+    it('Cypress.Screenshot.defaults() - change default configValidator of screenshots', function () {
       Cypress.Screenshot.defaults({
         blackout: ['.foo'],
         capture: 'viewport',

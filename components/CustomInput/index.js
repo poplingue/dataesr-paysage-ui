@@ -2,28 +2,35 @@ import { Container, Row, Col } from '@dataesr/react-dsfr';
 import InfiniteField from '../InfiniteField';
 import Input from './Input';
 
-function CustomInput({ title, infinite, parentsection }) {
+function CustomInput({
+    title,
+    infinite,
+    section,
+    validatorConfig,
+    updateValidSection,
+}) {
     return (
         <Container fluid>
             <section className="wrapper-input">
                 <Row alignItems="bottom" gutters>
                     {infinite ? (
-                        <InfiniteField
-                            title={title}
-                            parentsection={parentsection}
-                        >
+                        <InfiniteField title={title} section={section}>
                             <Input
+                                updateValidSection={updateValidSection}
+                                validatorConfig={validatorConfig}
                                 title={title}
-                                parentsection={parentsection}
+                                section={section}
                             />
                         </InfiniteField>
                     ) : (
-                        <Col spacing="py-3w">
+                        <Col spacing="py-1w">
                             <Input
+                                updateValidSection={updateValidSection}
+                                validatorConfig={validatorConfig}
                                 title={title}
                                 label={title}
-                                keynumber={0}
-                                parentsection={parentsection}
+                                index={0}
+                                section={section}
                             />
                         </Col>
                     )}

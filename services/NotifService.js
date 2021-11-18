@@ -1,53 +1,69 @@
 import toast from 'react-hot-toast';
 
+const bgError = 'rgba(247, 191, 195, 0.6)';
+const bgValid = 'rgba(197, 230, 216, 0.6)';
+const iconError = '🔴';
+const iconValid = '🟢';
+
 const NotifService = {
     async promise(promise, message) {
-        return toast.promise(promise, {
-            loading: 'Loading...',
-            success: message,
-            error: (err) => `Error: ${err.toString()}`,
-        }, {
-            success: {
-                duration: 4000,
-                icon: '☀️',
-                style: {
-                    fontSize: 14,
-                    background: 'rgba(197, 230, 216, 0.6)',
-                },
+        return toast.promise(
+            promise,
+            {
+                loading: 'Loading...',
+                success: message,
+                error: (err) => `Error: ${err.toString()}`,
             },
-            loading: {
-                style: {
-                    fontSize: 14,
-                    background: 'rgba(213, 219, 239, 0.6)',
+            {
+                success: {
+                    duration: 4000,
+                    icon: '☀️',
+                    style: {
+                        fontSize: 14,
+                        background: bgValid,
+                    },
                 },
-            },
-            error: {
-                icon: '🔴',
+                loading: {
+                    style: {
+                        fontSize: 14,
+                        background: 'rgba(213, 219, 239, 0.6)',
+                    },
+                },
+                error: {
+                    icon: iconError,
+                    duration: 5000,
+                    style: {
+                        fontSize: 14,
+                        background: bgError,
+                    },
+                },
+                icon: '👾',
                 duration: 5000,
-                style: {
-                    fontSize: 14,
-                    background: 'rgba(247, 191, 195, 0.6)',
+                position: 'bottom-right',
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': message,
                 },
-            },
-            icon: '👾',
-            duration: 5000,
-            position: 'bottom-right',
-            ariaProps: {
-                role: 'status',
-                'aria-live': message,
-            },
-        });
+            }
+        );
     },
-    info(message) {
+    info(message, type = 'valid') {
+        const typeObject = {
+            error: { background: bgError, icon: iconError },
+            valid: { background: bgValid, icon: iconValid },
+        };
+
         return toast(message, {
             position: 'top-right',
-            icon: '👾',
+            icon: typeObject[type].icon,
+            className: `cy-notif-${type}`,
             duration: 3000,
             style: {
                 fontSize: 14,
-                background: 'rgba(198, 255, 237, 0.6)',
-            }, });
-    }
+                background: typeObject[type].background,
+            },
+        });
+    },
 };
 
 export default NotifService;

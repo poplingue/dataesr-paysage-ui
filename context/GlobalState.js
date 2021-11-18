@@ -10,8 +10,10 @@ export const DataProvider = ({ children }) => {
     const initialState = {
         darkTheme: false,
         storeObjects: [],
+        objectFormType: '',
+        validSections: [],
         departments: [],
-        forms: [{ 'create/person': [] }, { 'create/structure': [] }]
+        forms: [{ 'create/person': [] }, { 'create/structure': [] }],
     };
 
     const initialStateList = {
@@ -26,17 +28,38 @@ export const DataProvider = ({ children }) => {
     };
 
     const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
-    const [stateList, dispatchList] = useReducer(reducersList, initialStateList);
-    const [statePage, dispatchPage] = useReducer(reducersPage, initialStatePage);
+    const [stateList, dispatchList] = useReducer(
+        reducersList,
+        initialStateList
+    );
+    const [statePage, dispatchPage] = useReducer(
+        reducersPage,
+        initialStatePage
+    );
 
     const cbInit = (storeObjects) => {
-        dispatchForm({ type: 'UPDATE_INDB_STORE_OBJECTS', payload: { storeObjects } });
+        dispatchForm({
+            type: 'UPDATE_INDB_STORE_OBJECTS',
+            payload: { storeObjects },
+        });
     };
 
     useEffect(() => {
         DBService.init(['create/person', 'create/structure'], cbInit);
     }, []);
 
-    return <AppContext.Provider
-        value={{ stateForm, dispatchForm, stateList, dispatchList, statePage, dispatchPage }}>{children}</AppContext.Provider>;
+    return (
+        <AppContext.Provider
+            value={{
+                stateForm,
+                dispatchForm,
+                stateList,
+                dispatchList,
+                statePage,
+                dispatchPage,
+            }}
+        >
+            {children}
+        </AppContext.Provider>
+    );
 };

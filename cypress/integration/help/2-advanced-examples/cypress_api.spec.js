@@ -82,7 +82,7 @@ context('Cypress.arch', () => {
   })
 })
 
-context('Cypress.config()', () => {
+context('Cypress.configValidator()', () => {
   beforeEach(() => {
     cy.visit('https://example.cypress.io/cypress-api')
   })
@@ -103,7 +103,7 @@ context('Cypress.config()', () => {
 
     expect(Cypress.config('pageLoadTimeout')).to.eq(60000)
 
-    // this will change the config for the rest of your tests!
+    // this will change the configValidator for the rest of your tests!
     Cypress.config('pageLoadTimeout', 20000)
 
     expect(Cypress.config('pageLoadTimeout')).to.eq(20000)

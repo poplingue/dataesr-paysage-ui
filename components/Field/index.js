@@ -8,7 +8,7 @@ export default function Field({
     title,
     label,
     index,
-    parentsection,
+    section,
     deleteField,
     children,
     value,
@@ -28,8 +28,8 @@ export default function Field({
                             title,
                             label,
                             value,
-                            parentsection,
-                            keynumber: index,
+                            section,
+                            index,
                         });
 
                         return (
@@ -42,7 +42,7 @@ export default function Field({
                                         {index > 0 && (
                                             <Col n="4">
                                                 <FieldButton
-                                                    dataTestid={`btn-delete-${cleanString(
+                                                    dataTestId={`btn-delete-${cleanString(
                                                         label
                                                     )}`}
                                                     title={`Supprimer`}

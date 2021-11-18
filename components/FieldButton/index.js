@@ -4,17 +4,21 @@ import { Button } from '@dataesr/react-dsfr';
 export default function FieldButton({
     title,
     onClick,
-    dataTestid,
+    dataTestId,
     icon,
     className,
+    disabled,
+    colors,
 }) {
     return (
         <Button
+            disabled={disabled}
             className={className}
             icon={icon}
-            data-testid={dataTestid}
+            data-testid={dataTestId}
             size="sm"
             secondary
+            colors={colors}
             onClick={onClick}
         >
             {title}

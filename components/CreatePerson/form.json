@@ -7,11 +7,13 @@
         "content": [
           {
             "title": "Wikidata",
-            "type": "text"
+            "type": "text",
+            "validatorId": "wikidata"
           },
           {
             "title": "IdRef",
-            "type": "text"
+            "type": "text",
+            "validatorId": "idref"
           }
         ]
       },
@@ -21,20 +23,24 @@
         "content": [
           {
             "title": "Nom",
-            "type": "text"
+            "type": "text",
+            "validatorId": "lastname"
           },
           {
             "title": "Prénom",
-            "type": "text"
+            "type": "text",
+            "validatorId": "firstname"
           },
           {
             "title": "Autre dénomination",
             "type": "text",
-            "infinite": true
+            "infinite": true,
+            "validatorId": "otherName"
           },
           {
             "title": "Genre",
-            "type": "select"
+            "type": "select",
+            "validatorId": "genre"
           }
         ]
       }

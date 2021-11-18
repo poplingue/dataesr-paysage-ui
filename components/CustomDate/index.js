@@ -4,7 +4,13 @@ import { cleanString, range } from '../../helpers/utils';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
 
-export default function CustomDate({ title, parentsection, keynumber }) {
+export default function CustomDate({
+    title,
+    section,
+    index,
+    validatorConfig,
+    updateValidSection,
+}) {
     const days = range(1, 31, true);
     const months = range(1, 12, true);
     const years = range(1900, 2021, true);
@@ -27,10 +33,11 @@ export default function CustomDate({ title, parentsection, keynumber }) {
         },
     ]);
 
-    const automaticDate = when => {
+    const automaticDate = (when) => {
         const now = new Date();
         let newDate = null;
         setNewValueCheck(!newValueCheck);
+        updateValidSection(null, null);
 
         if (when === 'today') {
             newDate = [
@@ -77,17 +84,21 @@ export default function CustomDate({ title, parentsection, keynumber }) {
         <section className="wrapper-select">
             <Container fluid>
                 <Row gutters alignItems="middle">
-                    {dateData.map(select => {
+                    {dateData.map((select) => {
+                        const { title, selectedValue, options } = select;
+
                         return (
-                            <Col n="12 md-2" key={select.title} spacing="py-3w">
+                            <Col n="12 md-2" key={title} spacing="py-1w">
                                 <CustomSelect
-                                    parentsection={parentsection}
-                                    keynumber={keynumber}
-                                    title={select.title}
-                                    staticValues={select.options}
-                                    newValue={select.selectedValue}
+                                    updateValidSection={updateValidSection}
+                                    validatorConfig={validatorConfig}
+                                    section={section}
+                                    index={index}
+                                    title={title}
+                                    staticValues={options}
+                                    newValue={selectedValue}
                                     newValueCheck={newValueCheck}
-                                    updateCheck={v => setNewValueCheck(v)}
+                                    updateCheck={(v) => setNewValueCheck(v)}
                                 />
                             </Col>
                         );
@@ -97,8 +108,8 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                             <Row>
                                 <Col n="4">
                                     <FieldButton
-                                        dataTestid={`today-${cleanString(
-                                            parentsection
+                                        dataTestId={`today-${cleanString(
+                                            section
                                         )}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
@@ -106,8 +117,8 @@ export default function CustomDate({ title, parentsection, keynumber }) {
                                 </Col>
                                 <Col n="4">
                                     <FieldButton
-                                        dataTestid={`firstJanuary-${cleanString(
-                                            parentsection
+                                        dataTestId={`firstJanuary-${cleanString(
+                                            section
                                         )}`}
                                         title="1er janvier"
                                         onClick={() =>

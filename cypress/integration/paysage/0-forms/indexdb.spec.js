@@ -10,13 +10,19 @@ context('IndexDB', () => {
     it('should save input text value', () => {
         cy.get('[data-testid="Nom"]').find('input').type('SamSam');
         cy.reload();
-        cy.get('[data-testid="Nom"]').find('input').should('have.value', 'SamSam');
+        cy.get('[data-testid="Nom"]')
+            .find('input')
+            .should('have.value', 'SamSam');
     });
 
     it('should save input radio choice', () => {
-        cy.get('[data-testid="create/person@denomination/genre#1"]').find('select').select('n');
+        cy.get('[data-testid="create/person@denomination/genre#0"]')
+            .find('select')
+            .select('n');
         cy.reload();
-        cy.get('[data-testid="create/person@denomination/genre#1"]').find('select').should('have.value', 'n');
+        cy.get('[data-testid="create/person@denomination/genre#0"]')
+            .find('select')
+            .should('have.value', 'n');
     });
 
     it('should save selected values on structure form page', () => {

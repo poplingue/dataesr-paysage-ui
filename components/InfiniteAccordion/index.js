@@ -1,11 +1,4 @@
-import {
-    Accordion,
-    AccordionItem,
-    Button,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import { Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import {
     createRef,
@@ -25,9 +18,10 @@ import {
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DBService';
-import FieldButton from '../FieldButton';
-import Switch from '../Switch';
+import AccordionForm from '../Form/AccordionForm';
+import FormAccordionItem from '../Form/FormAccordionItem';
 import styles from './InfiniteAcordion.module.scss';
+import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
 export default function InfiniteAccordion({
@@ -55,29 +49,24 @@ export default function InfiniteAccordion({
                 .map(() => createRef()),
         [sections, type]
     );
-    const sectionName = useMemo(() => getUniqueId(formName, type), [
-        formName,
-        type,
-    ]);
-    const currentForm = useCallback(() => getForm(forms, formName) || [], [
-        formName,
-        forms,
-    ]);
+    const sectionName = useMemo(
+        () => getUniqueId(formName, type),
+        [formName, type]
+    );
+    const currentForm = useCallback(
+        () => getForm(forms, formName) || [],
+        [formName, forms]
+    );
     const formSections = useCallback(
-        () =>
-            currentForm().map(c =>
-                c.uid
-                    .split('/')
-                    .slice(0, 2)
-                    .join('/')
-            ),
+        () => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')),
         [currentForm]
     );
+
     const updateSection = useCallback((type, nb) => {
-        setSections(prev => ({ ...prev, [type]: nb }));
+        setSections((prev) => ({ ...prev, [type]: nb }));
     }, []);
 
-    const deleteSection = async (sectionType, index, newTitle) => {
+    const deleteSection = async (sectionType, index) => {
         let fieldsToDelete = [];
         let fieldsToUpdate = [];
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
@@ -148,9 +137,8 @@ export default function InfiniteAccordion({
     useEffect(() => {
         const sectionFields = formSections()
             .filter(uniqueOnlyFilter)
-            .filter(k => {
-                return k.startsWith(sectionName);
-            });
+            .filter((k) => k.split('#')[0] === sectionName);
+
         updateSection(type, sectionFields.length);
     }, [formSections, sectionName, type, updateSection]);
 
@@ -170,119 +158,32 @@ export default function InfiniteAccordion({
                                 const newTitle = `${title}#${i}`;
                                 // TODO make it work with i !== 0 only
                                 const deletable = i !== 0;
-                                let fieldTitle = '';
-                                // TODO refacto data-sub-section
 
                                 return (
-                                    <li
-                                        className={styles.Accordion}
-                                        key={newTitle}
-                                    >
-                                        <section
-                                            data-sub-section={`${dataAttSection}#${i}`}
-                                            ref={sectionRefs[i]}
+                                    <div key={`${dataAttSection}-${i}`}>
+                                        <WrapperAccordion
+                                            sectionRef={sectionRefs[i]}
+                                            colSize="12"
                                         >
-                                            <Container fluid>
-                                                <Row gutters>
-                                                    <Col
-                                                        n={
-                                                            deletable
-                                                                ? '10'
-                                                                : '12'
-                                                        }
-                                                    >
-                                                        <Accordion
-                                                            color={yellow}
-                                                            keepOpen
-                                                            data-cy="accordion"
-                                                            size="lg"
-                                                        >
-                                                            <AccordionItem
-                                                                initExpand={
-                                                                    accordionsExpanded
-                                                                }
-                                                                className={
-                                                                    styles.Item
-                                                                }
-                                                                key={newTitle}
-                                                                title={newTitle}
-                                                            >
-                                                                {content.map(
-                                                                    (
-                                                                        field,
-                                                                        j
-                                                                    ) => {
-                                                                        const {
-                                                                            type: fieldType,
-                                                                            infinite,
-                                                                            staticValues,
-                                                                        } = field;
-
-                                                                        fieldTitle =
-                                                                            field.title;
-
-                                                                        return (
-                                                                            <div
-                                                                                key={
-                                                                                    fieldTitle
-                                                                                }
-                                                                            >
-                                                                                <Container
-                                                                                    fluid
-                                                                                >
-                                                                                    <Row
-                                                                                        alignItems="middle"
-                                                                                        gutters
-                                                                                    >
-                                                                                        <Col spacing="py-3w">
-                                                                                            <Switch
-                                                                                                section={
-                                                                                                    newTitle
-                                                                                                }
-                                                                                                type={
-                                                                                                    fieldType
-                                                                                                }
-                                                                                                title={
-                                                                                                    fieldTitle
-                                                                                                }
-                                                                                                infinite={
-                                                                                                    infinite
-                                                                                                }
-                                                                                                staticValues={
-                                                                                                    staticValues
-                                                                                                }
-                                                                                            />
-                                                                                        </Col>
-                                                                                    </Row>
-                                                                                </Container>
-                                                                            </div>
-                                                                        );
-                                                                    }
-                                                                )}
-                                                            </AccordionItem>
-                                                        </Accordion>
-                                                    </Col>
-                                                    {deletable && (
-                                                        <Col n="2">
-                                                            <FieldButton
-                                                                dataTestid={`btn-delete-${cleanString(
-                                                                    title
-                                                                )}#${i}`}
-                                                                onClick={() =>
-                                                                    deleteSection(
-                                                                        type,
-                                                                        i,
-                                                                        newTitle
-                                                                    )
-                                                                }
-                                                                title="Supprimer"
-                                                            />
-                                                        </Col>
-                                                    )}
-                                                </Row>
-                                            </Container>
-                                        </section>
-                                    </li>
+                                            <AccordionForm
+                                                color={yellow}
+                                                keepOpen
+                                                initExpand={accordionsExpanded}
+                                                newTitle={newTitle}
+                                            >
+                                                <FormAccordionItem
+                                                    content={content}
+                                                    newTitle={newTitle}
+                                                    deleteSection={
+                                                        deleteSection
+                                                    }
+                                                    index={i}
+                                                    title={title}
+                                                    deletable={deletable}
+                                                />
+                                            </AccordionForm>
+                                        </WrapperAccordion>
+                                    </div>
                                 );
                             })}
                         </ul>

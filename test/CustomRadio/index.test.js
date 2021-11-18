@@ -16,8 +16,9 @@ describe('Custom Radio', () => {
     it('should render the title', () => {
         render(
             <CustomRadio
+                updateValidSection={() => {}}
                 title="Radio Star"
-                parentsection="Section"
+                section="Section"
                 staticValues={['1', '2']}
             />
         );

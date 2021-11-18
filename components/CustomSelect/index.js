@@ -1,5 +1,6 @@
 import { Select } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
@@ -9,16 +10,19 @@ import {
     getFormName,
     getUniqueId,
 } from '../../helpers/utils';
+import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 
 export default function CustomSelect({
     title,
     staticValues = [],
-    keynumber,
-    parentsection,
+    index,
+    section,
     newValue,
     newValueCheck,
+    validatorConfig,
+    updateValidSection,
     updateCheck,
 }) {
     const {
@@ -26,45 +30,41 @@ export default function CustomSelect({
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [options, setOptions] = useState([]);
-    const [init, setInit] = useState(true);
     const [selectValue, setSelectValue] = useState('');
     const {
         pathname,
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, parentsection, title, keynumber || 0);
+    const uid = getUniqueId(formName, section, title, index || 0);
 
-    const onSelectChange = useCallback(async value => {
-        // TODO manage select empty?
-        const checkStoreObject = storeObjects.indexOf(formName) > -1;
-        const payload = {
-            value,
-            uid,
-            formName,
-        };
+    const { checkField, message, type } = useValidator(validatorConfig);
 
-        if (value) {
-            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+    const onSelectChange = useCallback(
+        async (value) => {
+            // TODO manage select empty?
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
+            const payload = {
+                value,
+                uid,
+                formName,
+            };
 
-            if (checkStoreObject) {
-                await DBService.set(
-                    {
-                        value,
-                        uid,
-                    },
-                    formName
-                );
+            if (value) {
+                dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+
+                if (checkStoreObject) {
+                    await DBService.set(payload, formName);
+                }
+            } else {
+                dispatch({ type: 'DELETE_FORM_FIELD', payload });
+                // TODO Make it async
+                await DBService.delete(uid, formName);
+                NotifService.info('Select field deleted');
             }
-        } else {
-            dispatch({ type: 'DELETE_FORM_FIELD', payload });
-            // TODO Make it async
-            await DBService.delete(uid, formName);
-            NotifService.info('Select field deleted');
-        }
-
-        setSelectValue(value);
-    }, [dispatch, formName, storeObjects, uid]);
+        },
+        [dispatch, formName, storeObjects, uid]
+    );
 
     useEffect(() => {
         if (newValue && newValueCheck) {
@@ -82,41 +82,62 @@ export default function CustomSelect({
             getForm(forms, formName) &&
             (!selectValue || mustBeUpdated)
         ) {
+            checkField(fieldValue, 'silent');
             setSelectValue(fieldValue);
         }
-    }, [formName, forms, selectValue, uid]);
+    }, [checkField, formName, forms, selectValue, uid]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
             fetch(getUrl(title))
-                .then(res => res.json())
+                .then((res) => res.json())
                 .then(() => {
                     // fake data
-                    const obj = ['f', 'm', 'n'].map(s => {
+                    const obj = ['f', 'm', 'n'].map((s) => {
                         return { value: s, label: s };
+                    });
+
+                    obj.push({
+                        value: '',
+                        label: 'Sélectionnez une option',
+                        disabled: false,
                     });
                     setOptions(obj);
                 });
         } else if (!options.length) {
             setOptions(
-                staticValues.map(value => {
+                staticValues.map((value) => {
                     return { value: value, label: value };
                 })
             );
-            setOptions(prev => [
+            setOptions((prev) => [
                 ...prev,
                 { value: '', label: 'Select an option' },
             ]);
         }
     }, [options, setOptions, staticValues, title]);
 
+    const onChange = async (e) => {
+        const { value } = e.target;
+        checkField(value);
+        await onSelectChange(value);
+        setSelectValue(value);
+        updateValidSection(null, null);
+    };
+
+    useEffect(() => {
+        updateValidSection(uid, type);
+    }, [type, uid, updateValidSection]);
+
     return (
         <section className="wrapper-select">
             <Select
+                message={message}
+                messageType={type || undefined}
                 data-field={uid}
                 data-testid={uid}
-                onChange={e => onSelectChange(e.target.value)}
+                onChange={onChange}
                 selected={selectValue}
                 label={title}
                 options={options}
@@ -124,3 +145,25 @@ export default function CustomSelect({
         </section>
     );
 }
+
+CustomSelect.defaultProps = {
+    index: '',
+    newValue: '',
+    newValueCheck: false,
+    updateCheck: () => {},
+    updateValidSection: () => {},
+};
+CustomSelect.propTypes = {
+    title: PropTypes.string.isRequired,
+    staticValues: PropTypes.arrayOf(PropTypes.string),
+    index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    section: PropTypes.string.isRequired,
+    newValue: PropTypes.string,
+    newValueCheck: PropTypes.bool,
+    validatorConfig: PropTypes.shape({
+        required: PropTypes.bool,
+        validators: PropTypes.arrayOf(PropTypes.func),
+    }).isRequired,
+    updateValidSection: PropTypes.func.isRequired,
+    updateCheck: PropTypes.func,
+};

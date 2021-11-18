@@ -20,9 +20,9 @@ jest.mock('react', () => ({
 describe('InfiniteField component', () => {
     const setState = jest.fn();
     beforeEach(() => {
-        React.useState.mockImplementation(init => [init, setState]);
+        React.useState.mockImplementation((init) => [init, setState]);
         render(
-            <InfiniteField title="Infinite" parentsection="Section">
+            <InfiniteField title="Infinite" section="Section">
                 <p>Test</p>
             </InfiniteField>
         );

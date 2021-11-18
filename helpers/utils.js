@@ -9,7 +9,11 @@ export function cleanString(str) {
         return '';
     }
 
-    return str.replace(/\s+/g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    return str
+        .replace(/\s+/g, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
 }
 
 /**
@@ -83,7 +87,7 @@ export function removeKey(obj, keyToDelete) {
 export function range(min, max, string) {
     return Array(max - min + 1)
         .fill(0)
-        .map((_, i) => string ? (i + min).toString() : (i + min));
+        .map((_, i) => (string ? (i + min).toString() : i + min));
 }
 
 /**
@@ -114,7 +118,6 @@ export function sectionUniqueId(title, contentNumber = '0') {
  * @returns {null || array}
  */
 export function getForm(forms, name) {
-
     let form = null;
 
     if (name) {
@@ -153,7 +156,9 @@ export function getFieldValue(forms, name, id) {
  * @returns {string}
  */
 export function getCSSValue(property) {
-    return getComputedStyle(document.documentElement).getPropertyValue(property);
+    return getComputedStyle(document.documentElement).getPropertyValue(
+        property
+    );
 }
 
 /**

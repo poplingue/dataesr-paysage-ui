@@ -83,9 +83,7 @@ export default function Navigation({ items }) {
                     {!mobile && (
                         <label
                             htmlFor="isCollapsed"
-                            className={`${
-                                styles.SideNavLabel
-                            } d-block txt-center`}
+                            className={`${styles.SideNavLabel} d-block txt-center`}
                             data-cy="nav-header-text"
                         >
                             <Icon
@@ -121,7 +119,7 @@ export default function Navigation({ items }) {
                             sideOpened ? styles.Active : ''
                         }`}
                     >
-                        {items.map(section => {
+                        {items.map((section, i) => {
                             const { title, content, component } = section;
 
                             if (component && content.length > 0) {
@@ -132,16 +130,16 @@ export default function Navigation({ items }) {
                                         title={title}
                                         expandedDefault
                                     >
-                                        {content.map(subSection => {
-                                            const {
-                                                title: subSectionTitle,
-                                            } = subSection;
+                                        {content.map((subSection) => {
+                                            const { title: subSectionTitle } =
+                                                subSection;
 
                                             return (
                                                 <SideMenuLink
-                                                    className={`${!sideOpened &&
-                                                        'hidden'} marianne`}
-                                                    onClick={e =>
+                                                    className={`${
+                                                        !sideOpened && 'hidden'
+                                                    } marianne`}
+                                                    onClick={(e) =>
                                                         goToSection(
                                                             e,
                                                             sectionUniqueId(
@@ -163,7 +161,7 @@ export default function Navigation({ items }) {
                             return (
                                 <SideMenuLink
                                     className={sideOpened ? '' : 'hidden'}
-                                    onClick={e =>
+                                    onClick={(e) =>
                                         goToSection(
                                             e,
                                             sectionUniqueId(
@@ -173,7 +171,7 @@ export default function Navigation({ items }) {
                                         )
                                     }
                                     href="/"
-                                    key={`${title}-${content.length}`}
+                                    key={`${title}-${content.length}-${i}`}
                                 >
                                     {title}
                                 </SideMenuLink>
