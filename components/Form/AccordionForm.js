@@ -16,6 +16,7 @@ export default function AccordionForm({
 }) {
     const { style: green } = useCSSProperty('--success');
     const { style: grey } = useCSSProperty('--g-400');
+    const { style: dark } = useCSSProperty('--g-700');
     const { style: orange } = useCSSProperty('--warning');
 
     const [sectionStatus, setSectionStatus] = useState('neutral');
@@ -49,16 +50,16 @@ export default function AccordionForm({
                 color={colorIcon[sectionStatus]}
                 size="1x"
                 name="ri-check-double-line"
-                iconPosition="right"
+                verticalAlign
             >
-                <span>{newTitle}</span>
+                {newTitle}
             </Icon>
         );
     };
 
     return (
         <Accordion
-            color={color}
+            color={dark}
             keepOpen
             data-cy="accordion"
             size={size}

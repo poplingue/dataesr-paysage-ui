@@ -6,18 +6,14 @@
         "infinite": true,
         "content": [
           {
-            "title": "Satisfaction",
-            "type": "checkbox",
-            "validatorId": "satisfaction",
-            "staticValues": [
-              "satisfied",
-              "not satisfied"
-            ]
-          },
-          {
             "title": "Title",
             "type": "text",
             "validatorId": "title"
+          },
+          {
+            "title": "Test",
+            "type": "toggle",
+            "validatorId": "test"
           }
         ]
       },

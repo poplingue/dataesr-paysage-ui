@@ -60,6 +60,6 @@ export const configValidator = {
         required: true,
     },
     tutelle: {
-        required: true,
+        required: false,
     },
 };

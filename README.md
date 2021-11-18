@@ -80,6 +80,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 * button to reset data from current form
 * add unit tests for complex components
+* move form pages to a test page
 * add possibility of comments to section/field
 * adding link to section/field 
 * improve DynamicBreadcrumb system

@@ -2,7 +2,7 @@ export const configValidator = {
     wikidata: {
         required: true,
         validators: [
-            value => ({
+            (value) => ({
                 valid: value.length > 2,
                 errorMsg: '3 caractères minimum',
             }),
@@ -11,7 +11,7 @@ export const configValidator = {
     idref: {
         required: true,
         validators: [
-            value => ({
+            (value) => ({
                 valid: value.length > 2 && !!value.match(/^\d+(\.\d{1,2})?$/),
                 errorMsg: '3 caractères minimum, uniquement numériques',
             }),
@@ -23,16 +23,19 @@ export const configValidator = {
     firstname: {
         required: true,
         validators: [
-            value => ({
+            (value) => ({
                 valid: value.length > 2,
                 errorMsg: '3 caractères minimum',
             }),
         ],
     },
+    satisfaction: {
+        required: true,
+    },
     lastname: {
         required: false,
         validators: [
-            value => ({
+            (value) => ({
                 valid: value.length > 2,
                 errorMsg: '3 caractères minimum',
             }),
@@ -41,7 +44,7 @@ export const configValidator = {
     otherName: {
         required: false,
         validators: [
-            value => ({
+            (value) => ({
                 valid: value.length > 2,
                 errorMsg: '3 caractères minimum',
             }),

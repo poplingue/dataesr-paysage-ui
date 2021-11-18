@@ -39,7 +39,7 @@ function CustomCheckbox({
     const uid = getUniqueId(formName, section, title, 0);
     const [checkboxValues, setCheckboxValues] = useState(() =>
         staticValues.map((elm) => {
-            return { label: elm, checked: false, value: elm };
+            return { label: elm, checked: false, value: cleanString(elm) };
         })
     );
     const [values, setValues] = useState([]);
