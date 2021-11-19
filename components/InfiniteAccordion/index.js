@@ -168,6 +168,11 @@ export default function InfiniteAccordion({
                                             colSize="12"
                                         >
                                             <AccordionForm
+                                                spacing={
+                                                    i === sections[type] - 1
+                                                        ? 'mb-1w'
+                                                        : 'mb-3w'
+                                                }
                                                 color={yellow}
                                                 keepOpen
                                                 initExpand={accordionsExpanded}

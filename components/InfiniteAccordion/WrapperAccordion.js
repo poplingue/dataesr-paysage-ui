@@ -11,7 +11,7 @@ export default function WrapperAccordion({
             <section ref={sectionRef}>
                 <Container fluid>
                     <Row gutters>
-                        <Col n={colSize} className="pt-0">
+                        <Col n={colSize} className="pt-0" spacing="">
                             {children}
                         </Col>
                     </Row>

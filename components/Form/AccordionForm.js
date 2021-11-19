@@ -1,4 +1,11 @@
-import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
+import {
+    Accordion,
+    AccordionItem,
+    Col,
+    Container,
+    Icon,
+    Row,
+} from '@dataesr/react-dsfr';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString } from '../../helpers/utils';
@@ -12,6 +19,7 @@ export default function AccordionForm({
     newTitle,
     children,
     dataSection,
+    spacing,
 }) {
     const { style: green } = useCSSProperty('--success');
     const { style: grey } = useCSSProperty('--g-400');
@@ -57,21 +65,27 @@ export default function AccordionForm({
     };
 
     return (
-        <Accordion
-            className={styles.Accordion}
-            color={dark}
-            keepOpen
-            data-cy="accordion"
-            size={size}
-            data-section={dataSection}
-        >
-            <AccordionItem
-                initExpand={initExpand}
-                className={styles.Item}
-                title={renderTitle()}
-            >
-                {children}
-            </AccordionItem>
-        </Accordion>
+        <Container fluid>
+            <Row>
+                <Col spacing={spacing || 'mb-3w'}>
+                    <Accordion
+                        className={styles.Accordion}
+                        color={dark}
+                        keepOpen
+                        data-cy="accordion"
+                        size={size}
+                        data-section={dataSection}
+                    >
+                        <AccordionItem
+                            initExpand={initExpand}
+                            className={styles.Item}
+                            title={renderTitle()}
+                        >
+                            {children}
+                        </AccordionItem>
+                    </Accordion>
+                </Col>
+            </Row>
+        </Container>
     );
 }

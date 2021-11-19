@@ -125,7 +125,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
 
                         return infinite ? (
                             <Col
-                                spacing={i === 0 ? '' : 'mt-6w'}
+                                spacing={i === 0 ? '' : 'my-w'}
                                 key={`${sectionTitle}-${i}`}
                             >
                                 <InfiniteAccordion
