@@ -129,22 +129,34 @@ export default function FormAccordionItem({
                     </div>
                 );
             })}
-            <Row justifyContent="right">
-                <DeleteButton
-                    display={deletable}
-                    title={title}
-                    index={index}
-                    onclick={() =>
-                        deleteSection(cleanString(title), index, newTitle)
-                    }
-                />
-                <FieldButton
-                    disabled={disabled}
-                    colors={['#fff', disabled ? grey : green]}
-                    onClick={save}
-                    title="Sauvegarder"
-                    dataTestId={`${cleanString(newTitle)}-save-button`}
-                />
+            <Row>
+                <Container>
+                    <Row gutters justifyContent="right" spacing="pt-2w">
+                        <DeleteButton
+                            display={deletable}
+                            title={title}
+                            index={index}
+                            onclick={async () =>
+                                await deleteSection(
+                                    cleanString(title),
+                                    index,
+                                    newTitle
+                                )
+                            }
+                        />
+                        <Col n="2" className="txt-right">
+                            <FieldButton
+                                disabled={disabled}
+                                colors={['#fff', disabled ? grey : green]}
+                                onClick={save}
+                                title="Sauvegarder"
+                                dataTestId={`${cleanString(
+                                    newTitle
+                                )}-save-button`}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
             </Row>
         </>
     );

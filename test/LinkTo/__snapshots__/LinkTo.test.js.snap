@@ -9,10 +9,12 @@ exports[`<LinkTo /> renders correctly LinkTo 1`] = `
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
-    Ceci est mon texte
-    <span
-      className="ri-lg icon-right ds-fr--v-middle ri-arrow-right-line"
-    />
+    <span>
+      Ceci est mon texte
+      <span
+        className="ri-lg icon-right ds-fr--v-middle ri-arrow-right-line"
+      />
+    </span>
   </a>
 </div>
 `;

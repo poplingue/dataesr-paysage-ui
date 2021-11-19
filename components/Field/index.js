@@ -1,7 +1,6 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { Children, cloneElement, useRef } from 'react';
-import { cleanString } from '../../helpers/utils';
-import FieldButton from '../FieldButton';
+import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './Field.module.scss';
 
 export default function Field({
@@ -40,13 +39,12 @@ export default function Field({
                                             {field}
                                         </Col>
                                         {index > 0 && (
+                                            // TODO remove props label
                                             <Col n="4">
-                                                <FieldButton
-                                                    dataTestId={`btn-delete-${cleanString(
-                                                        label
-                                                    )}`}
-                                                    title={`Supprimer`}
-                                                    onClick={deleteCurrentField}
+                                                <DeleteButton
+                                                    display
+                                                    label={label}
+                                                    onclick={deleteCurrentField}
                                                 />
                                             </Col>
                                         )}

@@ -1,4 +1,4 @@
-import { Button, Col, Container, Row } from '@dataesr/react-dsfr';
+import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import {
     createRef,
@@ -18,9 +18,9 @@ import {
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DBService';
+import FieldButton from '../FieldButton';
 import AccordionForm from '../Form/AccordionForm';
 import FormAccordionItem from '../Form/FormAccordionItem';
-import styles from './InfiniteAcordion.module.scss';
 import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
@@ -31,6 +31,8 @@ export default function InfiniteAccordion({
     accordionsExpanded,
 }) {
     const { style: yellow } = useCSSProperty('--yellow-dark-700');
+    const { style: dark } = useCSSProperty('--g-700');
+
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -188,19 +190,16 @@ export default function InfiniteAccordion({
                             })}
                         </ul>
                     </Col>
-                    <Col>
-                        <div className={styles.Button}>
-                            <Button
-                                icon="ri-add-line"
-                                size="sm"
-                                data-testid={`btn-add-${cleanString(type)}`}
-                                onClick={() =>
-                                    updateSection(type, sections[type] + 1)
-                                }
-                            >
-                                Add 1 {title}
-                            </Button>
-                        </div>
+                    <Col spacing="pb-4w">
+                        <FieldButton
+                            colors={[dark, '#fff']}
+                            icon="ri-add-line"
+                            title={`Ajouter un(e) « ${title} »`}
+                            dataTestId={`btn-add-${cleanString(type)}`}
+                            onClick={() =>
+                                updateSection(type, sections[type] + 1)
+                            }
+                        />
                     </Col>
                 </Row>
             </Container>

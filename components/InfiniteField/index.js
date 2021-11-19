@@ -8,6 +8,7 @@ import {
     getFormName,
     getUniqueId,
 } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DBService';
 import NotifService from '../../services/NotifService';
 import Field from '../Field';
@@ -24,6 +25,7 @@ function InfiniteField({ children, title, section }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
+    const { style: dark } = useCSSProperty('--g-700');
 
     const deleteField = async (ref) => {
         const element = ref.querySelectorAll('[data-field]');
@@ -125,10 +127,11 @@ function InfiniteField({ children, title, section }) {
                     </Col>
                     <Col>
                         <FieldButton
+                            colors={[dark, '#fff']}
                             icon="ri-add-line"
                             dataTestId="btn-add"
                             onClick={() => setNumber(number + 1)}
-                            title={`${title}`}
+                            title={title}
                         />
                     </Col>
                 </Row>

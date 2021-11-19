@@ -10,7 +10,7 @@ import FieldButton from '../FieldButton';
 import InfiniteAccordion from '../InfiniteAccordion';
 import PageTheme from '../PageTheme';
 import AccordionForm from './AccordionForm';
-import styles from './CreateForm.module.scss';
+import styles from './Form.module.scss';
 import FormAccordionItem from './FormAccordionItem';
 
 const CreateForm = ({ jsonForm, color, objectFormType }) => {
@@ -124,7 +124,10 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                         // TODO https://www.chakshunyu.com/blog/how-to-write-readable-react-content-states/?ck_subscriber_id=1366272460
 
                         return infinite ? (
-                            <div key={`${sectionTitle}-${i}`}>
+                            <Col
+                                spacing={i === 0 ? '' : 'mt-6w'}
+                                key={`${sectionTitle}-${i}`}
+                            >
                                 <InfiniteAccordion
                                     accordionsExpanded={accordionsExpanded}
                                     dataAttSection={dataSection}
@@ -132,7 +135,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                     content={content}
                                     index={`${sectionTitle}-${i}`}
                                 />
-                            </div>
+                            </Col>
                         ) : (
                             <AccordionForm
                                 key={i}

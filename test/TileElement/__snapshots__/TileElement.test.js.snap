@@ -182,10 +182,12 @@ Object {
               <div
                 class="fr-col-1 txt-right"
               >
-                <span
-                  class="ri-2x icon-left ri-checkbox-line"
-                  style="color: rgb(0, 0, 145);"
-                />
+                <span>
+                  <span
+                    class="ri-2x icon-left ri-checkbox-line"
+                    style="color: rgb(0, 0, 145);"
+                  />
+                </span>
               </div>
             </div>
           </div>
@@ -228,10 +230,12 @@ Object {
             <div
               class="fr-col-1 txt-right"
             >
-              <span
-                class="ri-2x icon-left ri-checkbox-line"
-                style="color: rgb(0, 0, 145);"
-              />
+              <span>
+                <span
+                  class="ri-2x icon-left ri-checkbox-line"
+                  style="color: rgb(0, 0, 145);"
+                />
+              </span>
             </div>
           </div>
         </div>

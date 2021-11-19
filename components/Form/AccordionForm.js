@@ -3,11 +3,10 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import styles from '../InfiniteAccordion/InfiniteAcordion.module.scss';
+import styles from './Form.module.scss';
 
 // TODO add proptypes
 export default function AccordionForm({
-    color,
     size = 'lg',
     initExpand,
     newTitle,
@@ -49,7 +48,7 @@ export default function AccordionForm({
                 className={`cy-${sectionStatus}`}
                 color={colorIcon[sectionStatus]}
                 size="1x"
-                name="ri-check-double-line"
+                name="ri-shield-check-line"
                 verticalAlign
             >
                 {newTitle}
@@ -59,6 +58,7 @@ export default function AccordionForm({
 
     return (
         <Accordion
+            className={styles.Accordion}
             color={dark}
             keepOpen
             data-cy="accordion"

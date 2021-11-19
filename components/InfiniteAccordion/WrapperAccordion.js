@@ -1,5 +1,4 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
-import styles from './InfiniteAcordion.module.scss';
 
 export default function WrapperAccordion({
     sectionRef,
@@ -8,11 +7,13 @@ export default function WrapperAccordion({
     children,
 }) {
     return (
-        <li className={styles.Accordion} key={key}>
+        <li key={key}>
             <section ref={sectionRef}>
                 <Container fluid>
                     <Row gutters>
-                        <Col n={colSize}>{children}</Col>
+                        <Col n={colSize} className="pt-0">
+                            {children}
+                        </Col>
                     </Row>
                 </Container>
             </section>
