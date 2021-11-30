@@ -5,6 +5,8 @@ context('Person page', () => {
 
     it('should open/close Tools', () => {
         cy.get('[data-cy="toolbox-header"]').find('.ri-tools-fill ').click();
-        cy.get('[data-cy="toolbox-header"]').find(".fr-text").should('not.have.class', 'hidden');
+        cy.get('[data-cy="toolbox-header"]')
+            .find('.fr-text--md')
+            .should('not.have.class', 'hidden');
     });
-})
+});

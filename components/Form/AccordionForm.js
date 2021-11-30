@@ -21,10 +21,10 @@ export default function AccordionForm({
     dataSection,
     spacing,
 }) {
-    const { style: green } = useCSSProperty('--success');
-    const { style: grey } = useCSSProperty('--g-400');
-    const { style: dark } = useCSSProperty('--g-700');
-    const { style: orange } = useCSSProperty('--warning');
+    const { style: green } = useCSSProperty('--success-main-525');
+    const { style: grey } = useCSSProperty('--grey-850');
+    const { style: dark } = useCSSProperty('--grey-425');
+    const { style: orange } = useCSSProperty('--warning-main-525');
 
     const [sectionStatus, setSectionStatus] = useState('neutral');
 

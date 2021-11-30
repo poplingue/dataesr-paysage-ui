@@ -21,6 +21,7 @@ import {
     Tool,
     ToolItem,
     ToolItemGroup,
+    SwitchTheme,
 } from '@dataesr/react-dsfr';
 
 import Head from 'next/head';
@@ -154,7 +155,7 @@ export default function Layout({ children, headTitle }) {
                     />
                 </HeaderNav>
             </Header>
-            {/*<SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen}/>*/}
+            <SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen} />
             <Container fluid spacing="mb-10w">
                 <Row>
                     <Col>{children}</Col>

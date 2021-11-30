@@ -29,8 +29,8 @@ export default function FormAccordionItem({
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
-    const { style: green } = useCSSProperty('--success');
-    const { style: grey } = useCSSProperty('--g-400');
+    const { style: green } = useCSSProperty('--success-main-525');
+    const { style: grey } = useCSSProperty('--grey-850');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
@@ -144,10 +144,11 @@ export default function FormAccordionItem({
                                 )
                             }
                         />
+                        {/* TODO remove data-testId */}
                         <Col n="2" className="txt-right">
                             <FieldButton
                                 disabled={disabled}
-                                colors={['#fff', disabled ? grey : green]}
+                                colors={disabled ? [] : ['#fff', green]}
                                 onClick={save}
                                 title="Sauvegarder"
                                 dataTestId={`${cleanString(

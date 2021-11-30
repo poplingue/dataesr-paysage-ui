@@ -1,6 +1,5 @@
 const path = require('path');
 const withSass = require('@zeit/next-sass');
-const { PHASE_DEVELOPMENT_SERVER } = require('next/constants');
 module.exports = withSass();
 module.exports = {
     serverRuntimeConfig: {
@@ -11,7 +10,6 @@ module.exports = {
         // Will be available on both server and client
         user: 'toto',
     },
-    target: 'serverless',
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,
 };

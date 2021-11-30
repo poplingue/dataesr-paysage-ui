@@ -9,7 +9,9 @@ import CreateStructure from './form.json';
 
 export default function Create({ data }) {
     const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
-    const { style: yellow } = useCSSProperty('--yellow-dark-700');
+    const { style: yellow } = useCSSProperty(
+        '--green-tilleul-verveine-main-707'
+    );
     useEffect(() => {
         if (data && !state.departments.length) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });

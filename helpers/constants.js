@@ -37,9 +37,13 @@ export function getObjectType(id) {
         0: {
             name: 'structure',
             title: 'Établissement',
-            color: '--yellow-dark-700',
+            color: '--green-tilleul-verveine-main-707',
         },
-        1: { name: 'person', title: 'Personne', color: '--pink-soft-700' },
+        1: {
+            name: 'person',
+            title: 'Personne',
+            color: '--pink-tuile-main-556',
+        },
         2: { name: 'project', title: 'Projet' },
         3: { name: 'category', title: 'Catégorie' },
     };

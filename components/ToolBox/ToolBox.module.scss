@@ -8,7 +8,7 @@
     text-align: center;
 
     &.Active {
-        border: 1px solid var(--g-300);
+        border: 1px solid var(--grey-975);
         box-shadow: -2px 2px 6px 1px rgb(0 0 0 / 0.3);
     }
 }
@@ -24,7 +24,7 @@
 
 .HeaderTxt {
     text-align: center;
-    border-bottom: 1px solid var(--g-300);
+    border-bottom: 1px solid var(--grey-975);
     padding: 8px 6px;
 }
 

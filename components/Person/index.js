@@ -18,15 +18,15 @@ const components = {
     price: Price,
 };
 
-export default function Person({ id, children }) {
-    const { style: pink } = useCSSProperty('--pink-soft-700');
+export default function Person({ children }) {
+    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
     return (
         <PageTheme color={pink}>
             {children}
             <Col className={styles.Person}>
                 <Accordion size="lg" color={pink} keepOpen>
-                    {PersonPageSkeleton.map(elm => {
+                    {PersonPageSkeleton.map((elm) => {
                         const { content, title, component } = elm;
 
                         const dataSection = sectionUniqueId(

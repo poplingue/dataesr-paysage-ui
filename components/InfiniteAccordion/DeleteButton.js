@@ -10,7 +10,7 @@ export default function DeleteButton({
     onclick,
     label = '',
 }) {
-    const { style: red } = useCSSProperty('--error');
+    const { style: red } = useCSSProperty('--error-main-525');
 
     return (
         display && (

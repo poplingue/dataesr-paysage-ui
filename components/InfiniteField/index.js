@@ -25,7 +25,7 @@ function InfiniteField({ children, title, section }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const { style: dark } = useCSSProperty('--g-700');
+    const { style: dark } = useCSSProperty('--grey-425');
 
     const deleteField = async (ref) => {
         const element = ref.querySelectorAll('[data-field]');

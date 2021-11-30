@@ -6,7 +6,7 @@ import HeaderLayout from '../HeaderLayout';
 import CreatePerson from './form.json';
 
 export default function Create() {
-    const { style: pink } = useCSSProperty('--pink-soft-700');
+    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
     return (
         <Layout>

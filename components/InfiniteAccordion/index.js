@@ -30,8 +30,10 @@ export default function InfiniteAccordion({
     dataAttSection,
     accordionsExpanded,
 }) {
-    const { style: yellow } = useCSSProperty('--yellow-dark-700');
-    const { style: dark } = useCSSProperty('--g-700');
+    const { style: yellow } = useCSSProperty(
+        '--green-tilleul-verveine-main-707'
+    );
+    const { style: dark } = useCSSProperty('--grey-425');
 
     const {
         stateForm: { forms, storeObjects },
