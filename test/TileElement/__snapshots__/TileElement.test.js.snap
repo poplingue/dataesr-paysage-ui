@@ -5,19 +5,26 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <button
-        class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
-        style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
-        type="button"
+      <div
+        class="fr-tile fr-tile--grey fr-enlarge-link fr-tile--horizontal w-100"
+        role="button"
+        style="box-shadow: inset 0 0 0 1px var(--border-default-grey),inset 0 -.25rem 0 0 #000091;"
+        tabindex="0"
       >
         <div
           class="fr-tile__body"
         >
-          <p
+          <h3
             class="fr-tile__title"
           >
-            Title 0
-          </p>
+            <a
+              class="fr-tile__link"
+              href=""
+              target="_self"
+            >
+              Title 0
+            </a>
+          </h3>
           <p
             class="fr-tile__desc"
           >
@@ -44,23 +51,30 @@ Object {
             </div>
           </div>
         </div>
-      </button>
+      </div>
     </div>
   </body>,
   "container": <div>
-    <button
-      class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
-      style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
-      type="button"
+    <div
+      class="fr-tile fr-tile--grey fr-enlarge-link fr-tile--horizontal w-100"
+      role="button"
+      style="box-shadow: inset 0 0 0 1px var(--border-default-grey),inset 0 -.25rem 0 0 #000091;"
+      tabindex="0"
     >
       <div
         class="fr-tile__body"
       >
-        <p
+        <h3
           class="fr-tile__title"
         >
-          Title 0
-        </p>
+          <a
+            class="fr-tile__link"
+            href=""
+            target="_self"
+          >
+            Title 0
+          </a>
+        </h3>
         <p
           class="fr-tile__desc"
         >
@@ -87,7 +101,7 @@ Object {
           </div>
         </div>
       </div>
-    </button>
+    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -148,19 +162,26 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <button
-        class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
-        style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
-        type="button"
+      <div
+        class="fr-tile fr-tile--grey fr-enlarge-link fr-tile--horizontal w-100"
+        role="button"
+        style="box-shadow: inset 0 0 0 1px var(--border-default-grey),inset 0 -.25rem 0 0 #000091;"
+        tabindex="0"
       >
         <div
           class="fr-tile__body"
         >
-          <p
+          <h3
             class="fr-tile__title"
           >
-            Title 1
-          </p>
+            <a
+              class="fr-tile__link"
+              href=""
+              target="_self"
+            >
+              Title 1
+            </a>
+          </h3>
           <p
             class="fr-tile__desc"
           >
@@ -192,23 +213,30 @@ Object {
             </div>
           </div>
         </div>
-      </button>
+      </div>
     </div>
   </body>,
   "container": <div>
-    <button
-      class="fr-tile fr-enlarge-link fr-tile--horizontal w-100"
-      style="box-shadow: inset 0 -0.25rem 0 0 #000091;"
-      type="button"
+    <div
+      class="fr-tile fr-tile--grey fr-enlarge-link fr-tile--horizontal w-100"
+      role="button"
+      style="box-shadow: inset 0 0 0 1px var(--border-default-grey),inset 0 -.25rem 0 0 #000091;"
+      tabindex="0"
     >
       <div
         class="fr-tile__body"
       >
-        <p
+        <h3
           class="fr-tile__title"
         >
-          Title 1
-        </p>
+          <a
+            class="fr-tile__link"
+            href=""
+            target="_self"
+          >
+            Title 1
+          </a>
+        </h3>
         <p
           class="fr-tile__desc"
         >
@@ -240,7 +268,7 @@ Object {
           </div>
         </div>
       </div>
-    </button>
+    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
