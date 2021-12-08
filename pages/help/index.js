@@ -1,15 +1,23 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
+import NavLink from '../../components/NavLink';
 
 export default function Help() {
     return (
         <Layout>
             <HeaderLayout pageTitle="Aide" />
             <Container>
-                <Row>
-                    <Col>
-                        <p>Aide...</p>
+                <Row gutters>
+                    <Col n="12">
+                        <NavLink href="/user/renewal-code">
+                            Recevoir un nouveau code d&apos;activation
+                        </NavLink>
+                    </Col>
+                    <Col n="12">
+                        <NavLink href="/user/activate-account">
+                            Activer mon compte avec le code à 6 chiffres
+                        </NavLink>
                     </Col>
                 </Row>
             </Container>

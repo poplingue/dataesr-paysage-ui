@@ -8,7 +8,7 @@ import {
     getFormName,
     getUniqueId,
 } from '../../helpers/utils';
-import DBService from '../../services/DBService';
+import DBService from '../../services/DB.service';
 
 export default function CustomToggle({ index, section, title }) {
     const {

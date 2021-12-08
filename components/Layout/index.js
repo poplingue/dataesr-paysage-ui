@@ -82,8 +82,15 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            <ToolItem icon="ri-user-3-line" link="/path">
-                                Mon profil
+                            <ToolItem
+                                icon="ri-user-3-line"
+                                asLink={
+                                    <NavLink href="/user/signin">
+                                        Accueil
+                                    </NavLink>
+                                }
+                            >
+                                Se connecter
                             </ToolItem>
                             <ToolItem onClick={() => setIsOpen(true)}>
                                 <span

@@ -1,11 +1,13 @@
 import { deleteDB, openDB } from 'idb';
 import { getVal } from '../helpers/constants';
-import NotifService from './NotifService';
+import NotifService from './Notif.service';
 
 const DBService = {
-
     async getDB() {
-        return window.indexedDB.open(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+        return window.indexedDB.open(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
     },
 
     async asyncDeleteDB(dbName) {
@@ -30,7 +32,10 @@ const DBService = {
                                 db.deleteObjectStore(name);
                             }
 
-                            db.createObjectStore(name, { keyPath: 'uid', autoIncrement: true });
+                            db.createObjectStore(name, {
+                                keyPath: 'uid',
+                                autoIncrement: true,
+                            });
                         });
 
                         cb(names);
@@ -40,7 +45,6 @@ const DBService = {
                     // Called if there are older versions of the database open on the origin, so this version cannot open
                     // TODO manage with link in popup alert to reload manually
                     window.location.reload();
-
                 },
                 blocking() {
                     // Called if connection is blocking a future version of the database from opening.
@@ -51,15 +55,22 @@ const DBService = {
                     console.debug('==== terminated ==== ', e);
                 },
             });
-
         } catch (err) {
             console.log('==== err ==== ', err);
-            await NotifService.promise(this.asyncDeleteDB(getVal('IDB_DATABASE_NAME')), err);
+            await NotifService.promise(
+                this.asyncDeleteDB(getVal('IDB_DATABASE_NAME')),
+                err
+            );
         }
     },
 
     async init(objectStoreNames, cb) {
-        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'), objectStoreNames, cb);
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION'),
+            objectStoreNames,
+            cb
+        );
 
         if (cb) {
             cb(db.objectStoreNames, db.version);
@@ -70,13 +81,17 @@ const DBService = {
 
     async set(objValue, objectStoreName) {
         // TODO async
-        let DBOpenRequest = await this.getDB(), db;
+        let DBOpenRequest = await this.getDB(),
+            db;
 
         DBOpenRequest.onsuccess = (event) => {
             db = DBOpenRequest.result;
 
             // create a new transaction
-            const txn = event.target.result.transaction(objectStoreName, 'readwrite');
+            const txn = event.target.result.transaction(
+                objectStoreName,
+                'readwrite'
+            );
 
             // get the object store
             const store = txn.objectStore(objectStoreName);
@@ -100,12 +115,14 @@ const DBService = {
             txn.oncomplete = function () {
                 db.close();
             };
-
         };
     },
 
     async setList(list, objectStoreName) {
-        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
         const tx = db.transaction(objectStoreName, 'readwrite');
 
         for (let i = 0; i < list.length; i = i + 1) {
@@ -116,7 +133,10 @@ const DBService = {
     },
 
     async deleteList(keys, objectStoreName) {
-        const db = await this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION'));
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
         // TODO add check
         const tx = db.transaction(objectStoreName);
 
@@ -133,33 +153,43 @@ const DBService = {
 
     async delete(uid, objectStoreName) {
         // TODO async
-        let DBOpenRequest = await this.getDB(), db;
+        let DBOpenRequest = await this.getDB(),
+            db;
 
         DBOpenRequest.onsuccess = (event) => {
-
             db = DBOpenRequest.result;
 
             // create a new transaction
-            const txn = event.target.result.transaction(objectStoreName, 'readwrite');
+            const txn = event.target.result.transaction(
+                objectStoreName,
+                'readwrite'
+            );
 
             // get the object store
             const store = txn.objectStore(objectStoreName);
             store.delete(uid);
         };
-
     },
 
     async getAllObjects(objectStoreName, objectStoreChecked) {
-        const db = await NotifService.promise(this.asyncOpenDB(getVal('IDB_DATABASE_NAME'), getVal('IDB_DATABASE_VERSION')), 'IndexDB getAllObjects connection ok');
+        const db = await NotifService.promise(
+            this.asyncOpenDB(
+                getVal('IDB_DATABASE_NAME'),
+                getVal('IDB_DATABASE_VERSION')
+            ),
+            'IndexDB getAllObjects connection ok'
+        );
 
         if (objectStoreChecked && db) {
-            const store = db.transaction(objectStoreName).objectStore(objectStoreName);
+            const store = db
+                .transaction(objectStoreName)
+                .objectStore(objectStoreName);
 
             return await store.getAll();
         } else {
             return [];
         }
-    }
+    },
 };
 
 export default DBService;

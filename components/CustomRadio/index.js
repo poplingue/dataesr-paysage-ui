@@ -5,7 +5,7 @@ import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
-import DBService from '../../services/DBService';
+import DBService from '../../services/DB.service';
 
 function CustomRadio({
     title,

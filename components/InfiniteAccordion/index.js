@@ -17,7 +17,7 @@ import {
     uniqueOnlyFilter,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import DBService from '../../services/DBService';
+import DBService from '../../services/DB.service';
 import FieldButton from '../FieldButton';
 import AccordionForm from '../Form/AccordionForm';
 import FormAccordionItem from '../Form/FormAccordionItem';

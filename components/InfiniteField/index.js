@@ -9,8 +9,8 @@ import {
     getUniqueId,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import DBService from '../../services/DBService';
-import NotifService from '../../services/NotifService';
+import DBService from '../../services/DB.service';
+import NotifService from '../../services/Notif.service';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 

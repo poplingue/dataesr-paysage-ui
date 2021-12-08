@@ -3,7 +3,7 @@ import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import NotifService from '../../services/NotifService';
+import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import SwitchField from '../SwitchField';

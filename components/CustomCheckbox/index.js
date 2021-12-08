@@ -16,8 +16,8 @@ import {
     getUniqueId,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
-import DBService from '../../services/DBService';
-import NotifService from '../../services/NotifService';
+import DBService from '../../services/DB.service';
+import NotifService from '../../services/Notif.service';
 
 function CustomCheckbox({
     title,

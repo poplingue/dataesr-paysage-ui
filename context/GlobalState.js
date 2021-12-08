@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-import DBService from '../services/DBService';
+import DBService from '../services/DB.service';
 import reducersForm from './ReducersForm';
 import reducersList from './ReducersList';
 import reducersPage from './ReducersPage';

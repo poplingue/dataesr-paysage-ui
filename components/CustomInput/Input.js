@@ -3,13 +3,9 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import {
-    getFieldValue,
-    getFormName,
-    getUniqueId,
-} from '../../helpers/utils';
+import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
-import DBService from '../../services/DBService';
+import DBService from '../../services/DB.service';
 
 function Input({
     label,
@@ -78,7 +74,7 @@ function Input({
         if (textValue !== current) {
             save();
         }
-        // Warning dependencies must remain limited to textValue
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [textValue]);
 
     useEffect(() => {
@@ -112,7 +108,6 @@ function Input({
 }
 
 Input.defaultProps = {
-    updateValidSection: () => {},
     value: '',
 };
 
