@@ -6,6 +6,13 @@ import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 import NavLink from '../../components/NavLink';
+import {
+    emailErrorMsg,
+    emailMandatoryMsg,
+    emailPattern,
+    emailPatternHint,
+    passwordMandatoryMsg,
+} from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 
@@ -31,7 +38,7 @@ const formSchema = [
         name: 'password',
         type: 'password',
         required: true,
-        hint: '8 caractères minimum dont 1 chiffre, 1 caractère spécial, 1 majuscule',
+        hint: `${emailPatternHint}`,
     },
     {
         label: 'Confirmation de mot passe',
@@ -60,14 +67,11 @@ function Signup() {
             .required('Le pseudo est obligatoire')
             .matches('^(?=.*[aA-zZ]).{2,18}$', 'Format invalide'),
         email: Yup.string()
-            .required("L'email est obligatoire")
-            .email("Format d'email incorrecte"),
+            .required(`${emailMandatoryMsg}`)
+            .email(`${emailErrorMsg}`),
         password: Yup.string()
-            .required('Le mot de passe est obligatoire')
-            .matches(
-                '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$',
-                '8 caractères minimum dont 1 chiffre, 1 caractère spécial, 1 majuscule'
-            ),
+            .required(`${passwordMandatoryMsg}`)
+            .matches(`${emailPattern}`, `${emailPatternHint}`),
         firstName: Yup.string()
             .required('Le prénom est obligatoire')
             .matches('^(?=.*[aA-zZ]).{2,18}$', 'Format invalide'),
@@ -106,9 +110,7 @@ function Signup() {
                 .catch((err) => {
                     const field = err.indexOf('email') > 0 ? email : username;
                     const errorFr = errorsIntl[err](field);
-
                     NotifService.info(errorFr, 'error');
-                    console.error('==== LOG ==== ', err);
                 });
         }
     };

@@ -30,7 +30,6 @@ export default function Activate() {
         userService
             .activate(formData)
             .then((resp) => {
-                console.log('==== then onSubmit ==== ', router);
                 router
                     .push('/user/sign-in')
                     .then(() => {
@@ -40,15 +39,15 @@ export default function Activate() {
                         );
                     })
                     .catch((err) => {
-                        console.error(
-                            '==== router push /user/signin ==== ',
-                            err
-                        );
+                        NotifService.info(err, 'error');
+
+                        return Promise.reject(err);
                     });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
-                console.error('==== ERR ==== ', err);
+
+                return Promise.reject(err);
             });
     };
 

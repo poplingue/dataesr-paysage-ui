@@ -4,6 +4,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
+        // TODO /POST auth/renewal-code with email ??
         const url = `${serverRuntimeConfig.authApiUrl}/auth/send-password-renewal-code`;
         // TODO Tidy options
         const request = await fetch(url, {

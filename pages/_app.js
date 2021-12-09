@@ -6,8 +6,9 @@ import { userService } from '../services/User.service';
 
 function MyApp({ Component, pageProps, user }) {
     const MemoizedComponent = memo(Component);
-
-    return (
+    console.log('==== MyApp ==== ', user);
+    
+return (
         <DataProvider user={user}>
             <MemoizedComponent {...pageProps} />
         </DataProvider>
@@ -26,18 +27,18 @@ MyApp.getInitialProps = async ({ ctx }) => {
         tokens = JSON.parse(cookiesHeader.tokens);
     }
 
-    const user = await userService
+    return await userService
         .me(tokens)
-        .then(({ data }) => {
-            return data;
+        .then((data) => {
+            return Promise.resolve({ user: data, tokens });
         })
         .catch((error) => {
             if (error === 'No tokens') {
                 return { error: 'You must log in' };
             }
-        });
 
-    return { user, tokens };
+            return Promise.reject(error);
+        });
 };
 
 export default MyApp;

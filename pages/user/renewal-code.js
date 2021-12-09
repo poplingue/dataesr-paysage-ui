@@ -1,10 +1,16 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
 import { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
+import { AppContext } from '../../context/GlobalState';
+import {
+    emailErrorMsg,
+    emailMandatoryMsg,
+} from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 
@@ -20,13 +26,25 @@ const formSchema = [
 export default function RenewalCode() {
     const router = useRouter();
 
+    const {
+        statePage: { user },
+    } = useContext(AppContext);
+
     const validationSchema = Yup.object().shape({
         account: Yup.string()
-            .required("L'email est obligatoire")
-            .email("Format d'email incorrecte"),
+            .required(`${emailMandatoryMsg}`)
+            .email(`${emailErrorMsg}`),
     });
 
     const onSubmit = (formData) => {
+        debugger; // eslint-disable-line
+
+        if (user.active) {
+            NotifService.info('Votre compte est déjà actif', 'error');
+
+            return;
+        }
+
         userService
             .renewalCode(formData)
             .then(() => {
@@ -39,7 +57,8 @@ export default function RenewalCode() {
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
-                console.error('==== ERR ==== ', err);
+
+                return Promise.reject(err);
             });
     };
 
@@ -53,6 +72,7 @@ export default function RenewalCode() {
                             schema={formSchema}
                             validationSchema={validationSchema}
                             onSubmit={onSubmit}
+                            disable={user.active}
                         />
                     </Col>
                 </Row>

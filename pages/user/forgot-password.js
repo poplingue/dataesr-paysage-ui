@@ -5,6 +5,10 @@ import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
+import {
+    emailErrorMsg,
+    emailMandatoryMsg,
+} from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 
@@ -21,8 +25,8 @@ export default function ForgotPassword() {
     const router = useRouter();
     const validationSchema = Yup.object().shape({
         account: Yup.string()
-            .required("L'email est obligatoire")
-            .email("Format d'email incorrecte"),
+            .required(`${emailMandatoryMsg}`)
+            .email(`${emailErrorMsg}`),
     });
 
     const onSubmit = (formData) => {
@@ -40,7 +44,8 @@ export default function ForgotPassword() {
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
-                console.error('==== ERR ==== ', err);
+
+                return Promise.reject(err);
             });
     };
 

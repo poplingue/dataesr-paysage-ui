@@ -15,9 +15,7 @@ const reducersPage = (state, action) => {
         }
 
         case ACTIONS.UPDATE_USER: {
-            debugger; // eslint-disable-line
-            
-return {
+            return {
                 ...state,
                 user: action.payload.user,
                 userConnected: action.payload.userConnected,

@@ -20,6 +20,7 @@ function Home() {
             user.error === 'Utilisateur inactif' &&
             !!Object.keys(tokens).length
         ) {
+            debugger; // eslint-disable-line
             router.push('/user/sign-in').then(() => {
                 NotifService.info(
                     'Connectez vous pour activer votre compte',
@@ -34,8 +35,6 @@ function Home() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    console.log('==== USER ==== ', user);
 
     return (
         <Layout>

@@ -1,8 +1,15 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
+import {
+    combinationError,
+    emailErrorMsg,
+    genericErrorMsg,
+    passwordErrorMsg,
+    tokenError,
+} from '../helpers/internalMessages';
 
-const { publicRuntimeConfig, serverRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 export const userService = {
     signup,
@@ -88,7 +95,13 @@ async function signIn(userData) {
             return response;
         })
         .catch((err) => {
-            debugger; // eslint-disable-line
+            if (err === genericErrorMsg) {
+                return Promise.reject(emailErrorMsg);
+            }
+
+            if (err === combinationError) {
+                return Promise.reject(passwordErrorMsg);
+            }
 
             return Promise.reject(err);
         });
@@ -113,12 +126,8 @@ async function activate(code) {
                 return { response, data };
             })
             .catch((err) => {
-                if (err === "Token d'access invalide ou expiré") {
+                if (err === tokenError) {
                     userService.refreshAccessToken().then(async (response) => {
-                        console.log(
-                            '==== requestOptions ==== ',
-                            requestOptions
-                        );
                         await fetch(url, requestOptions);
 
                         return fetchHelper
@@ -140,8 +149,6 @@ async function activate(code) {
 }
 
 async function refreshAccessToken(refreshToken, refreshTokenUrl) {
-    console.log('==== refreshToken ==== ', refreshToken);
-
     const url =
         refreshTokenUrl ||
         `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
@@ -172,8 +179,6 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
             return { response, data };
         })
         .catch((err) => {
-            console.error('==== refreshAccessToken ==== ', err);
-
             return Promise.reject(err);
         });
 }
@@ -235,20 +240,18 @@ async function me(tokens) {
     };
 
     const url = `${publicRuntimeConfig.baseApiUrl}/user/me`;
+    const baseUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
 
     const response = await fetch(url, requestOptions);
-    const baseUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
 
     return fetchHelper
         .handleResponse(response)
         .then((response) => {
-            return response;
+            return Promise.resolve(response);
         })
         .catch((err) => {
-            if (err === "Token d'access invalide ou expiré") {
-                console.log('==== baseUrl ==== ', baseUrl);
-
-                userService
+            if (err === tokenError) {
+                return userService
                     .refreshAccessToken(tokens.refreshToken, baseUrl)
                     .then(async ({ data }) => {
                         const resp = await fetch(url, {
@@ -256,20 +259,22 @@ async function me(tokens) {
                             body: JSON.stringify(data.accessToken),
                         });
 
-                        return fetchHelper
-                            .handleResponse(resp)
-                            .then(async ({ data }) => {
-                                return data;
-                            })
-                            .catch((err) => {
-                                return Promise.reject(err);
-                            });
+                        return Promise.resolve(
+                            fetchHelper
+                                .handleResponse(resp)
+                                .then(async ({ data }) => {
+                                    return Promise.resolve(data);
+                                })
+                                .catch((err) => {
+                                    return Promise.reject(err);
+                                })
+                        );
                     })
                     .catch((err) => {
-                        console.log('==== refreshAccessToken url ==== ', url);
-
                         return Promise.reject(err);
                     });
+            } else {
+                return Promise.reject(err);
             }
         });
 }

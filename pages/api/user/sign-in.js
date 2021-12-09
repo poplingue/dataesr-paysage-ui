@@ -13,8 +13,10 @@ async function handler(req, res) {
         });
 
         const response = await request.text();
+
         res.status(request.status).json(response);
     } catch (err) {
+        console.log('==== ERR API ==== ', err);
         res.status(500).send(err);
     }
 }

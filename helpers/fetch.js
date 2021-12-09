@@ -1,3 +1,5 @@
+import { genericErrorMsg } from './internalMessages';
+
 export const fetchHelper = {
     authHeader,
     handleResponse,
@@ -16,10 +18,9 @@ function authHeader(tokens) {
 }
 
 async function handleResponse(response) {
-    debugger; // eslint-disable-line
-
     return response.text().then((text) => {
         let data;
+        let errorMsg = genericErrorMsg;
 
         try {
             data = text && JSON.parse(text);
@@ -28,19 +29,19 @@ async function handleResponse(response) {
         }
 
         if (!response.ok) {
-            let errorMsg =
-                (!!Object.keys(data).length && data.error) ||
-                response.statusText;
+            debugger; // eslint-disable-line
 
-            // TODO Check user tokens exist
+            if (!!Object.keys(data).length) {
+                errorMsg = data.error || genericErrorMsg;
 
-            if ([401, 403].includes(response.status)) {
-                // TODO Add logout
-                // userService.logout();
+                if (!!data.details.length) {
+                    errorMsg = data.details[0].message;
+                }
             }
 
-            if (!!Object.keys(data).length && !!data.details.length) {
-                errorMsg = data.details[0].message;
+            if ([401, 403].includes(response.status)) {
+                // TODO Add signOut
+                // userService.signOut();
             }
 
             return Promise.reject(errorMsg);
