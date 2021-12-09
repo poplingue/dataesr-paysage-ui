@@ -14,5 +14,5 @@ export async function middleware(ctx) {
         return NextResponse.next();
     }
 
-    return NextResponse.redirect('/user/signin');
+    return NextResponse.redirect('/user/sign-in');
 }

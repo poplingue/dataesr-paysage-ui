@@ -6,7 +6,7 @@ import reducersPage from './ReducersPage';
 
 export const AppContext = createContext();
 
-export const DataProvider = ({ children }) => {
+export const DataProvider = ({ user, children }) => {
     const initialState = {
         darkTheme: false,
         storeObjects: [],
@@ -25,6 +25,9 @@ export const DataProvider = ({ children }) => {
         sideMode: 'on',
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
+        user: user && !user.error ? user : {},
+        userConnected:
+            (user && Object.keys(user).length > 0 && !user.error) || false,
     };
 
     const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);

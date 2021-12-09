@@ -46,7 +46,13 @@ const formSchema = [
     },
 ];
 
-export default function Signup() {
+const errorsIntl = {
+    'email already exists.': (email) => `L'email ${email} est déjà utilisé`,
+    'username already exists.': (username) =>
+        `Le pseudo ${username} est déjà utilisé`,
+};
+
+function Signup() {
     const router = useRouter();
 
     const validationSchema = Yup.object().shape({
@@ -98,10 +104,9 @@ export default function Signup() {
                     });
                 })
                 .catch((err) => {
-                    const errorFr =
-                        err === 'email already exists.'
-                            ? `L'email ${email} est déjà pris`
-                            : err;
+                    const field = err.indexOf('email') > 0 ? email : username;
+                    const errorFr = errorsIntl[err](field);
+
                     NotifService.info(errorFr, 'error');
                     console.error('==== LOG ==== ', err);
                 });
@@ -121,13 +126,15 @@ export default function Signup() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/signin">
+                        <NavLink href="/user/sign-in">
                             J&apos;ai déjà un compte
                         </NavLink>
                     </Col>
                 </Row>
-                <Toaster />
             </Container>
+            <Toaster />
         </Layout>
     );
 }
+
+export default Signup;

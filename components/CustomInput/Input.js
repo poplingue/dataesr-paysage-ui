@@ -17,7 +17,7 @@ function Input({
     updateValidSection,
 }) {
     const {
-        stateForm: { forms, storeObjects, validSections },
+        stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 

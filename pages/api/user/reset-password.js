@@ -4,14 +4,18 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/refresh-access-token`;
+        const url = `${serverRuntimeConfig.authApiUrl}/auth/reset-password`;
 
+        const body = {
+            ...req.body,
+            code: parseInt(req.body.code),
+        };
         // TODO Tidy options
         const request = await fetch(url, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(req.body),
+            body: JSON.stringify(body),
         });
 
         const response = await request.text();

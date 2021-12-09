@@ -17,9 +17,8 @@ const formSchema = [
     },
 ];
 
-export default function RenewalCode() {
+export default function ForgotPassword() {
     const router = useRouter();
-
     const validationSchema = Yup.object().shape({
         account: Yup.string()
             .required("L'email est obligatoire")
@@ -27,12 +26,14 @@ export default function RenewalCode() {
     });
 
     const onSubmit = (formData) => {
+        const { account } = formData;
+
         userService
-            .renewalCode(formData)
+            .forgotPassword(account)
             .then(() => {
-                router.push('/user/activate-account').then(() => {
+                router.push('/user/reset-password').then(() => {
                     NotifService.info(
-                        'Un email contenant le code à 6 chiffres vous a été envoyé',
+                        'Un email contenant un code à 6 chiffres vous a été envoyé',
                         'valid'
                     );
                 });
@@ -45,7 +46,7 @@ export default function RenewalCode() {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Recevoir un nouveau code d'activation" />
+            <HeaderLayout pageTitle="Renouveler mon mot de passe : étape 1/2" />
             <Container>
                 <Row gutters>
                     <Col n="6">

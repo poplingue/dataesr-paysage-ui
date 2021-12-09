@@ -2,7 +2,6 @@ import ACTIONS from './Actions';
 
 const reducersPage = (state, action) => {
     switch (action.type) {
-
         case ACTIONS.UPDATE_COLOR_THEME: {
             return { ...state, pageTheme: action.payload };
         }
@@ -13,6 +12,16 @@ const reducersPage = (state, action) => {
 
         case ACTIONS.UPDATE_HAS_BREADCRUMBS: {
             return { ...state, hasBreadCrumbs: !state.hasBreadCrumbs };
+        }
+
+        case ACTIONS.UPDATE_USER: {
+            debugger; // eslint-disable-line
+            
+return {
+                ...state,
+                user: action.payload.user,
+                userConnected: action.payload.userConnected,
+            };
         }
 
         default:

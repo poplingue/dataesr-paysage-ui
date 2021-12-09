@@ -5,46 +5,60 @@ import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
-import NavLink from '../../components/NavLink';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 
 const formSchema = [
     {
         required: true,
-        label: `Code d\'activation`,
-        name: 'activationCode',
+        label: 'Email',
+        type: 'email',
+        name: 'account',
+    },
+    {
+        required: true,
+        label: `Code de sécurité`,
+        name: 'code',
         hint: 'Code à 6 chiffres reçu par mail',
+    },
+    {
+        label: 'Nouveau mot de passe',
+        name: 'password',
+        type: 'password',
+        required: true,
+        hint: '8 caractères minimum dont 1 chiffre, 1 caractère spécial, 1 majuscule',
     },
 ];
 
-export default function Activate() {
+export default function ResetPassword() {
     const router = useRouter();
+
     const validationSchema = Yup.object().shape({
-        activationCode: Yup.string()
+        account: Yup.string()
+            .required("L'email est obligatoire")
+            .email("Format d'email incorrecte"),
+        code: Yup.string()
             .required('Code d&apos;activation obligatoire')
             .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
+        password: Yup.string()
+            .required('Le mot de passe est obligatoire')
+            .matches(
+                '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$',
+                '8 caractères minimum dont 1 chiffre, 1 caractère spécial, 1 majuscule'
+            ),
     });
 
     const onSubmit = (formData) => {
+        const { code, account, password } = formData;
         userService
-            .activate(formData)
-            .then((resp) => {
-                console.log('==== then onSubmit ==== ', router);
-                router
-                    .push('/user/sign-in')
-                    .then(() => {
-                        NotifService.info(
-                            'Votre compte est actif, connectez-vous !',
-                            'valid'
-                        );
-                    })
-                    .catch((err) => {
-                        console.error(
-                            '==== router push /user/signin ==== ',
-                            err
-                        );
-                    });
+            .resetPassword({ code, account, password })
+            .then(() => {
+                router.push('/user/sign-in').then(() => {
+                    NotifService.info(
+                        'Votre mot de pass a été modifié',
+                        'valid'
+                    );
+                });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -54,20 +68,15 @@ export default function Activate() {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Activer mon compte" />
+            <HeaderLayout pageTitle="Renouveler mon mot de passe : étape 2/2" />
             <Container>
                 <Row gutters>
                     <Col n="6">
                         <AuthForm
                             schema={formSchema}
-                            onSubmit={onSubmit}
                             validationSchema={validationSchema}
+                            onSubmit={onSubmit}
                         />
-                    </Col>
-                    <Col n="12">
-                        <NavLink href="/user/renewal-code">
-                            Recevoir un nouveau code d&apos;activation
-                        </NavLink>
                     </Col>
                 </Row>
             </Container>

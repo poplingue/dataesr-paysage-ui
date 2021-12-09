@@ -11,7 +11,7 @@ import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
-        name: 'email',
+        name: 'account',
         type: 'email',
         label: 'Email',
         required: true,
@@ -24,10 +24,10 @@ const formSchema = [
     },
 ];
 
-export default function SignIn() {
+function SignIn() {
     const router = useRouter();
     const validationSchema = Yup.object().shape({
-        email: Yup.string()
+        account: Yup.string()
             .required("L'email est obligatoire")
             .email("Format d'email incorrecte"),
         password: Yup.string()
@@ -42,9 +42,7 @@ export default function SignIn() {
         userService
             .signIn(formData)
             .then(() => {
-                router.push('/').then(() => {
-                    NotifService.info('Vous êtes connecté', 'valid');
-                });
+                window.location = '/';
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -69,13 +67,15 @@ export default function SignIn() {
                         </NavLink>
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/forgot-pwd">
+                        <NavLink href="/user/forgot-password">
                             J&apos;ai perdu mon mot de passe
                         </NavLink>
                     </Col>
                 </Row>
-                <Toaster />
             </Container>
+            <Toaster />
         </Layout>
     );
 }
+
+export default SignIn;

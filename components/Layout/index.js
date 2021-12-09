@@ -18,17 +18,20 @@ import {
     NavSubItem,
     Row,
     Service,
+    SwitchTheme,
     Tool,
     ToolItem,
     ToolItemGroup,
-    SwitchTheme,
 } from '@dataesr/react-dsfr';
 
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { AppContext } from '../../context/GlobalState';
+import NotifService from '../../services/Notif.service';
+import { userService } from '../../services/User.service';
 import NavLink from '../NavLink';
 
 // TODO add propTypes
@@ -36,6 +39,23 @@ export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
+    const {
+        statePage: { userConnected },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
+
+    const signOut = () => {
+        userService.signOut().then(() => {
+            NotifService.info('Vous êtes déconnecté', 'valid');
+
+            if (userConnected) {
+                dispatch({
+                    type: 'UPDATE_USER',
+                    payload: { user: {}, userConnected: false },
+                });
+            }
+        });
+    };
 
     return (
         <>
@@ -82,16 +102,21 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            <ToolItem
-                                icon="ri-user-3-line"
-                                asLink={
-                                    <NavLink href="/user/signin">
-                                        Accueil
-                                    </NavLink>
-                                }
-                            >
-                                Se connecter
-                            </ToolItem>
+                            {userConnected ? (
+                                <ToolItem
+                                    onClick={signOut}
+                                    icon="ri-user-3-line"
+                                >
+                                    Se déconnecter
+                                </ToolItem>
+                            ) : (
+                                <ToolItem
+                                    icon="ri-user-3-line"
+                                    asLink={<NavLink href="/user/sign-in" />}
+                                >
+                                    Se connecter
+                                </ToolItem>
+                            )}
                             <ToolItem onClick={() => setIsOpen(true)}>
                                 <span
                                     className="fr-fi-theme-fill fr-link--icon-left"

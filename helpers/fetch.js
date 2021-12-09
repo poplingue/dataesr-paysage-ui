@@ -16,6 +16,8 @@ function authHeader(tokens) {
 }
 
 async function handleResponse(response) {
+    debugger; // eslint-disable-line
+
     return response.text().then((text) => {
         let data;
 

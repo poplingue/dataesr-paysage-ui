@@ -1,14 +1,17 @@
+import getConfig from 'next/config';
+
+const { serverRuntimeConfig } = getConfig();
+
 async function handler(req, res) {
     try {
+        const url = `${serverRuntimeConfig.authApiUrl}/auth/signup`;
+
         // TODO Tidy options
-        const request = await fetch(
-            'https://api.paysage.staging.dataesr.ovh/auth/signup',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(req.body),
-            }
-        );
+        const request = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(req.body),
+        });
 
         const response = await request.text();
         res.status(request.status).json(response);
