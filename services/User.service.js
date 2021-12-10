@@ -10,7 +10,6 @@ import {
 } from '../helpers/internalMessages';
 
 const { publicRuntimeConfig } = getConfig();
-const baseUrl = `${publicRuntimeConfig.devBaseUrl}`;
 
 export const userService = {
     signup,
@@ -25,7 +24,7 @@ export const userService = {
 };
 
 async function signup(userData) {
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/signup`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/signup`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -52,7 +51,7 @@ async function signup(userData) {
 }
 
 async function resetPassword(userData) {
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/reset-password`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/reset-password`;
     // TODO Tidy options
 
     const requestOptions = {
@@ -75,7 +74,7 @@ async function resetPassword(userData) {
 }
 
 async function renewActivationCode() {
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -113,7 +112,7 @@ async function renewActivationCode() {
 
 async function signIn(userData) {
     // TODO Tidy options
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/sign-in`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/sign-in`;
 
     const requestOptions = {
         method: 'POST',
@@ -147,7 +146,7 @@ async function signIn(userData) {
 }
 
 async function activate(code) {
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/activate-account`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/activate-account`;
 
     const requestOptions = {
         method: 'POST',
@@ -190,7 +189,7 @@ async function activate(code) {
 async function refreshAccessToken(refreshToken, refreshTokenUrl) {
     const url =
         refreshTokenUrl ||
-        `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+        `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
     const tokens = Cookies.get('tokens')
         ? JSON.parse(Cookies.get('tokens'))
         : null;
@@ -223,7 +222,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
 }
 
 async function forgotPassword(email) {
-    const url = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
 
     const requestOptions = {
         method: 'POST',
@@ -257,8 +256,8 @@ async function me(tokens) {
         body: JSON.stringify(tokens.accessToken),
     };
 
-    const meUrl = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/me`;
-    const tokenUrl = `${baseUrl}/${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+    const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
+    const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
 
     const response = await fetch(meUrl, requestOptions);
 
