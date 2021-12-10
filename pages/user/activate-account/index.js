@@ -1,12 +1,14 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { Toaster } from 'react-hot-toast';
+import { useContext } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
 import FieldButton from '../../../components/FieldButton';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
+import { AppContext } from '../../../context/GlobalState';
 import {
+    activationCodePattern,
     codeMandatoryMsg,
     connectAdviceMsg,
     tokenMissingError,
@@ -25,11 +27,12 @@ const formSchema = [
 
 export default function Activate() {
     const router = useRouter();
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
             .required(codeMandatoryMsg)
-            .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
+            .matches(activationCodePattern, 'Code non valide'),
     });
 
     const getNewCode = () => {
@@ -38,7 +41,6 @@ export default function Activate() {
             .then(({ data }) => {
                 const a = data.message.split(' ');
                 const email = a[a.length - 1];
-
                 NotifService.info(
                     `Un nouveau code a été envoyé à ${email}`,
                     'valid'
@@ -57,19 +59,14 @@ export default function Activate() {
         userService
             .activate(formData)
             .then((resp) => {
-                router
-                    .push('/user/sign-in')
-                    .then(() => {
-                        NotifService.info(
-                            'Votre compte est actif, connectez-vous !',
-                            'valid'
-                        );
-                    })
-                    .catch((err) => {
-                        NotifService.info(err, 'error');
+                dispatch({ type: 'UPDATE_ERROR', payload: '' });
 
-                        return Promise.reject(err);
-                    });
+                router.push('/user/sign-in').then(() => {
+                    NotifService.info(
+                        'Votre compte est actif, connectez-vous !',
+                        'valid'
+                    );
+                });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -98,7 +95,6 @@ export default function Activate() {
                     </Col>
                 </Row>
             </Container>
-            <Toaster />
         </Layout>
     );
 }

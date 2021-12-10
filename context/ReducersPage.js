@@ -18,7 +18,20 @@ const reducersPage = (state, action) => {
             return {
                 ...state,
                 user: action.payload.user,
+            };
+        }
+
+        case ACTIONS.UPDATE_USER_CONNECTION: {
+            return {
+                ...state,
                 userConnected: action.payload.userConnected,
+            };
+        }
+
+        case ACTIONS.UPDATE_ERROR: {
+            return {
+                ...state,
+                error: action.payload.error,
             };
         }
 

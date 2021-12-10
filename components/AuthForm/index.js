@@ -13,6 +13,7 @@ export default function AuthForm({
         resolver: yupResolver(validationSchema),
         mode: 'onChange',
     };
+
     const {
         register,
         handleSubmit,
@@ -22,12 +23,19 @@ export default function AuthForm({
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             {schema.map((schema) => {
-                const { name, label, type, required, hint } = schema;
+                const { name, label, type, required, hint, value, disabled } =
+                    schema;
 
                 return (
                     <TextInput
-                        {...register(name, { required: true })}
+                        {...register(name, {
+                            required: true,
+                            disabled: false,
+                            value,
+                        })}
                         key={name}
+                        value={value}
+                        disabled={disabled}
                         label={label}
                         name={name}
                         type={type || undefined}

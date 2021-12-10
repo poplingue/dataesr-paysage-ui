@@ -17,7 +17,7 @@ Run the development server:
 yarn dev
 ```
 
-Open [http://localhost:3002](http://localhost:3002)
+Open [http://localhost:3000](http://localhost:3000)
 
 ## Tests
 
@@ -91,3 +91,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   * check validation section
 * http://www.tabulator.info/
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
+* add spinner

@@ -6,6 +6,7 @@ import HeaderLayout from '../components/HeaderLayout';
 import Layout from '../components/Layout';
 import { AppContext } from '../context/GlobalState';
 import {
+    activateAdviceMsg,
     connectedMsg,
     connectToActivateMsg,
 } from '../helpers/internalMessages';
@@ -16,38 +17,31 @@ function Home() {
     const tokens = Cookies.get('tokens');
 
     const {
-        statePage: { user, userConnected, error },
+        statePage: { user, userConnected },
     } = useContext(AppContext);
 
     useEffect(() => {
-        if (error && error === 'Utilisateur inactif') {
-            router.push('/user/activate-account').then(() => {
-                NotifService.info(
-                    "Vous n'avez pas encore activé votre compte",
-                    'valid'
-                );
-            });
-        }
-    }, [error, router]);
+        const error = user && user.error;
 
-    useEffect(() => {
-        // TODO check useful?
-        if (
-            user.error &&
-            user.error === 'Utilisateur inactif' &&
-            !!Object.keys(tokens).length
-        ) {
-            router.push('/user/sign-in').then(() => {
-                NotifService.info(connectToActivateMsg, 'error');
-            });
-        }
-
-        if (userConnected) {
+        if (!error && userConnected) {
             NotifService.info(connectedMsg, 'valid');
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        const error = user && user.error;
+
+        if (error && error === 'Utilisateur inactif' && !tokens) {
+            router.push('/user/sign-in').then(() => {
+                NotifService.info(connectToActivateMsg, 'neutral', 10000);
+            });
+        } else if (error && error === 'Utilisateur inactif' && tokens) {
+            router.push('/user/activate-account').then(() => {
+                NotifService.info(activateAdviceMsg, 'neutral', 10000);
+            });
+        }
+    }, [router, tokens, user, user.error, userConnected]);
 
     return (
         <Layout>
@@ -63,7 +57,7 @@ function Home() {
                         <Icon name="ri-user-3-line" size="xs">
                             <h1 className="fs-28-32 m-0">
                                 {userConnected
-                                    ? `Salut à toi ${user.username}`
+                                    ? `Salut à toi ${user.username || ''}`
                                     : 'Salut'}
                             </h1>
                         </Icon>
@@ -101,9 +95,5 @@ function Home() {
         </Layout>
     );
 }
-
-Home.getInitialProps = async ({ ctx }) => {
-    console.debug('==== HOME getInitialProps ==== ', ctx);
-};
 
 export default Home;

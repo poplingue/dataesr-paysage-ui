@@ -109,6 +109,7 @@ function Input({
 
 Input.defaultProps = {
     value: '',
+    updateValidSection: () => {},
 };
 
 Input.propTypes = {

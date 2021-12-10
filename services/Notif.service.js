@@ -57,7 +57,10 @@ const NotifService = {
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        return toast(message, {
+        toast.remove('toast-info');
+
+        toast(message, {
+            id: 'toast-info',
             position: 'top-right',
             icon: typeObject[type].icon,
             className: `cy-notif-${type}`,
@@ -76,7 +79,8 @@ const NotifService = {
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        return toast(message, {
+        toast(message, {
+            id: 'toast-tech-info',
             position: 'bottom-right',
             duration,
             style: {

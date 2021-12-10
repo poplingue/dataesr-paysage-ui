@@ -28,7 +28,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
 import { AppContext } from '../../context/GlobalState';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
@@ -52,7 +51,12 @@ export default function Layout({ children, headTitle }) {
             if (userConnected) {
                 dispatch({
                     type: 'UPDATE_USER',
-                    payload: { user: {}, userConnected: false },
+                    payload: { user: {} },
+                });
+
+                dispatch({
+                    type: 'UPDATE_USER_CONNECTION',
+                    payload: { userConnected: false },
                 });
             }
         });
@@ -194,7 +198,6 @@ export default function Layout({ children, headTitle }) {
                     <Col>{children}</Col>
                 </Row>
             </Container>
-            <Toaster />
             <Footer>
                 <FooterTop>
                     <FooterTopCategory title="Liens utiles">

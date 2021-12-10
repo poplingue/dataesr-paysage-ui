@@ -38,11 +38,6 @@ async function handleResponse(response) {
                 }
             }
 
-            if ([401, 403].includes(response.status)) {
-                // TODO Add signOut
-                // userService.signOut();
-            }
-
             return Promise.reject(errorMsg);
         }
 

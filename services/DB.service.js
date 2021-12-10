@@ -11,7 +11,14 @@ const DBService = {
     },
 
     async asyncDeleteDB(dbName) {
-        await NotifService.promise(deleteDB(dbName), 'IndexDB deleted');
+        return NotifService.promise(
+            deleteDB(dbName).catch((err) => {
+                console.error('==== deleteDB ==== ', err);
+
+                return Promise.reject('Service IndexDB en erreur');
+            }),
+            'IndexDB deleted'
+        );
     },
 
     async getDBNames() {
@@ -58,11 +65,7 @@ const DBService = {
                 },
             });
         } catch (err) {
-            console.log('==== err ==== ', err);
-            await NotifService.promise(
-                this.asyncDeleteDB(getVal('IDB_DATABASE_NAME')),
-                err
-            );
+            await this.asyncDeleteDB(getVal('IDB_DATABASE_NAME'));
         }
     },
 

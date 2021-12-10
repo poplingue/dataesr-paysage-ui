@@ -1,10 +1,8 @@
 import cookie from 'cookie';
 import { NextResponse } from 'next/server';
-import { connectToActivateMsg } from '../../../helpers/internalMessages';
 
-export async function middleware(req) {
-    const headersCookies = req.headers.get('cookie');
-
+export async function middleware(ctx) {
+    const headersCookies = ctx.headers.get('cookie');
     // TODO refacto cookies
     const cookies = cookie.parse(headersCookies ? headersCookies : '');
     let tokens = {};
@@ -14,11 +12,8 @@ export async function middleware(req) {
     }
 
     if (tokens.accessToken) {
-        return NextResponse.next();
+        return NextResponse.redirect('/');
     }
 
-    return NextResponse.redirect('/user/sign-in').cookie(
-        'user-info',
-        connectToActivateMsg
-    );
+    return NextResponse.next();
 }

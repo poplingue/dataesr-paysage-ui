@@ -1,11 +1,11 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 import {
+    codeSendByEmailMsg,
     emailErrorMsg,
     emailMandatoryMsg,
 } from '../../helpers/internalMessages';
@@ -35,12 +35,14 @@ export default function ForgotPassword() {
         userService
             .forgotPassword(account)
             .then(() => {
-                router.push('/user/reset-password').then(() => {
-                    NotifService.info(
-                        'Un email contenant un code à 6 chiffres vous a été envoyé',
-                        'valid'
-                    );
-                });
+                router
+                    .push({
+                        pathname: '/user/reset-password',
+                        query: { email: account },
+                    })
+                    .then(() => {
+                        NotifService.info(codeSendByEmailMsg, 'valid');
+                    });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -63,7 +65,6 @@ export default function ForgotPassword() {
                     </Col>
                 </Row>
             </Container>
-            <Toaster />
         </Layout>
     );
 }

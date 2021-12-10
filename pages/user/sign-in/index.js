@@ -1,17 +1,20 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
-import { useEffect } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
 import NavLink from '../../../components/NavLink';
+import { AppContext } from '../../../context/GlobalState';
 import {
+    connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
     emailPatternHint,
+    lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
 import NotifService from '../../../services/Notif.service';
@@ -33,7 +36,9 @@ const formSchema = [
 ];
 
 function SignIn() {
+    const router = useRouter();
     const cookieInfo = Cookies.get('user-info');
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     useEffect(() => {
         if (cookieInfo) {
@@ -55,7 +60,16 @@ function SignIn() {
         userService
             .signIn(formData)
             .then(() => {
-                window.location = '/';
+                dispatch({
+                    type: 'UPDATE_USER_CONNECTION',
+                    payload: { userConnected: true },
+                });
+
+                router.push('/').then(() => {
+                    NotifService.info(connectedMsg, 'valid');
+                    // TODO really needed? to reload ?
+                    router.reload();
+                });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -81,12 +95,11 @@ function SignIn() {
                     </Col>
                     <Col n="12">
                         <NavLink href="/user/forgot-password">
-                            {`J'ai perdu mon mot de passe`}
+                            {lostPasswordMsg}
                         </NavLink>
                     </Col>
                 </Row>
             </Container>
-            <Toaster />
         </Layout>
     );
 }

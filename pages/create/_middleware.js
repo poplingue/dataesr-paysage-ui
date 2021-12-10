@@ -1,5 +1,6 @@
 import cookie from 'cookie';
 import { NextResponse } from 'next/server';
+import { connectToAccessMsg } from '../../helpers/internalMessages';
 
 export async function middleware(ctx) {
     const headersCookies = ctx.headers.get('cookie');
@@ -15,5 +16,8 @@ export async function middleware(ctx) {
         return NextResponse.next();
     }
 
-    return NextResponse.redirect('/user/sign-in');
+    return NextResponse.redirect('/user/sign-in').cookie(
+        'user-info',
+        connectToAccessMsg
+    );
 }

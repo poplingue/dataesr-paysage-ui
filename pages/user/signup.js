@@ -1,11 +1,11 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 import NavLink from '../../components/NavLink';
+
 import {
     emailErrorMsg,
     emailMandatoryMsg,
@@ -135,7 +135,6 @@ function Signup() {
                     </Col>
                 </Row>
             </Container>
-            <Toaster />
         </Layout>
     );
 }

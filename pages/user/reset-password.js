@@ -1,12 +1,15 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { Toaster } from 'react-hot-toast';
+import { useContext } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
+import { AppContext } from '../../context/GlobalState';
 import {
+    activationCodePattern,
     codeMandatoryMsg,
+    connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
@@ -40,6 +43,8 @@ const formSchema = [
 
 export default function ResetPassword() {
     const router = useRouter();
+    const { email } = router.query;
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -47,23 +52,36 @@ export default function ResetPassword() {
             .email(`${emailErrorMsg}`),
         code: Yup.string()
             .required(codeMandatoryMsg)
-            .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
+            .matches(activationCodePattern, 'Code non valide'),
         password: Yup.string()
             .required(`${passwordMandatoryMsg}`)
             .matches(`${emailPattern}`, `${emailPatternHint}`),
     });
 
     const onSubmit = (formData) => {
-        const { code, account, password } = formData;
+        const { code, password, account } = formData;
+
         userService
             .resetPassword({ code, account, password })
             .then(() => {
-                router.push('/user/sign-in').then(() => {
-                    NotifService.info(
-                        'Votre mot de pass a été modifié',
-                        'valid'
-                    );
-                });
+                userService
+                    .signIn({ account, password })
+                    .then(() => {
+                        dispatch({
+                            type: 'UPDATE_USER_CONNECTION',
+                            payload: { userConnected: true },
+                        });
+
+                        router.push('/').then(() => {
+                            NotifService.info(connectedMsg, 'valid');
+
+                            // TODO /me instead of reload
+                            router.reload();
+                        });
+                    })
+                    .catch((err) => {
+                        NotifService.info(err, 'error');
+                    });
             })
             .catch((err) => {
                 NotifService.info(err, 'error');
@@ -79,14 +97,21 @@ export default function ResetPassword() {
                 <Row gutters>
                     <Col n="6">
                         <AuthForm
-                            schema={formSchema}
+                            schema={formSchema.map((elm) => {
+                                return elm.name === 'account'
+                                    ? {
+                                          ...elm,
+                                          value: email,
+                                          disabled: !!email,
+                                      }
+                                    : elm;
+                            })}
                             validationSchema={validationSchema}
                             onSubmit={onSubmit}
                         />
                     </Col>
                 </Row>
             </Container>
-            <Toaster />
         </Layout>
     );
 }
