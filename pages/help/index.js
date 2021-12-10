@@ -19,16 +19,11 @@ export default function Help() {
                         <NavLink
                             href={
                                 userConnected
-                                    ? '/user/renewal-code'
+                                    ? '/user/activate-account'
                                     : '/user/sign-in'
                             }
                         >
-                            Recevoir un nouveau code d&apos;activation
-                        </NavLink>
-                    </Col>
-                    <Col n="12">
-                        <NavLink href="/user/activate-account">
-                            Activer mon compte avec le code à 6 chiffres
+                            Activer mon compte
                         </NavLink>
                     </Col>
                 </Row>

@@ -2,12 +2,13 @@ import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
-import AuthForm from '../../components/AuthForm';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
-import NavLink from '../../components/NavLink';
-import NotifService from '../../services/Notif.service';
-import { userService } from '../../services/User.service';
+import AuthForm from '../../../components/AuthForm';
+import FieldButton from '../../../components/FieldButton';
+import HeaderLayout from '../../../components/HeaderLayout';
+import Layout from '../../../components/Layout';
+import { tokenMissingError } from '../../../helpers/internalMessages';
+import NotifService from '../../../services/Notif.service';
+import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
@@ -20,11 +21,34 @@ const formSchema = [
 
 export default function Activate() {
     const router = useRouter();
+
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
             .required('Code d&apos;activation obligatoire')
             .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
     });
+
+    const getNewCode = () => {
+        userService
+            .renewActivationCode()
+            .then((response) => {
+                NotifService.info(
+                    "Un nouveau code d'activation vous a été envoyé par mail",
+                    'valid'
+                );
+            })
+            .catch((err) => {
+                if (err === tokenMissingError) {
+                    router.push('/user/sign-in').then(() => {
+                        NotifService.info(
+                            'Connectez-vous pour recevoir un nouveau code',
+                            'neutral',
+                            6000
+                        );
+                    });
+                }
+            });
+    };
 
     const onSubmit = (formData) => {
         userService
@@ -64,9 +88,10 @@ export default function Activate() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/renewal-code">
-                            Recevoir un nouveau code d&apos;activation
-                        </NavLink>
+                        <FieldButton
+                            title="Recevoir un nouveau code d'activation"
+                            onClick={getNewCode}
+                        />
                     </Col>
                 </Row>
             </Container>

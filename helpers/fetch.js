@@ -20,17 +20,15 @@ function authHeader(tokens) {
 async function handleResponse(response) {
     return response.text().then((text) => {
         let data;
-        let errorMsg = genericErrorMsg;
+        let errorMsg = text || genericErrorMsg;
 
         try {
             data = text && JSON.parse(text);
         } catch (strError) {
-            return Promise.reject(strError);
+            return Promise.reject(text || strError);
         }
 
         if (!response.ok) {
-            debugger; // eslint-disable-line
-
             if (!!Object.keys(data).length) {
                 errorMsg = data.error || genericErrorMsg;
 
@@ -47,6 +45,6 @@ async function handleResponse(response) {
             return Promise.reject(errorMsg);
         }
 
-        return { response, data };
+        return Promise.resolve({ response, data });
     });
 }

@@ -6,7 +6,7 @@ import reducersPage from './ReducersPage';
 
 export const AppContext = createContext();
 
-export const DataProvider = ({ user, children }) => {
+export const DataProvider = ({ user, error, children }) => {
     const initialState = {
         darkTheme: false,
         storeObjects: [],
@@ -25,6 +25,7 @@ export const DataProvider = ({ user, children }) => {
         sideMode: 'on',
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
+        error: error || null,
         user: user && !user.error ? user : {},
         userConnected:
             (user && Object.keys(user).length > 0 && !user.error) || false,

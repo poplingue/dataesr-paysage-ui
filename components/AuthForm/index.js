@@ -3,7 +3,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 // TODO add proptypes
-export default function AuthForm({ schema, onSubmit, validationSchema }) {
+export default function AuthForm({
+    schema,
+    onSubmit,
+    validationSchema,
+    disable,
+}) {
     const formOptions = {
         resolver: yupResolver(validationSchema),
         mode: 'onChange',
@@ -18,8 +23,8 @@ export default function AuthForm({ schema, onSubmit, validationSchema }) {
         <form onSubmit={handleSubmit(onSubmit)}>
             {schema.map((schema) => {
                 const { name, label, type, required, hint } = schema;
-                
-return (
+
+                return (
                     <TextInput
                         {...register(name, { required: true })}
                         key={name}
@@ -37,7 +42,7 @@ return (
                     />
                 );
             })}
-            <Button title="Valider" submit disabled={isSubmitting}>
+            <Button title="Valider" submit disabled={disable || isSubmitting}>
                 Valider
             </Button>
         </form>

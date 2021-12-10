@@ -1,4 +1,6 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
@@ -31,6 +33,15 @@ const formSchema = [
 ];
 
 function SignIn() {
+    const cookieInfo = Cookies.get('user-info');
+
+    useEffect(() => {
+        if (cookieInfo) {
+            NotifService.info(cookieInfo, 'neutral');
+            Cookies.remove('user-info');
+        }
+    }, [cookieInfo]);
+
     const validationSchema = Yup.object().shape({
         account: Yup.string()
             .required(`${emailMandatoryMsg}`)

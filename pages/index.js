@@ -1,7 +1,7 @@
 import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import HeaderLayout from '../components/HeaderLayout';
 import Layout from '../components/Layout';
 import { AppContext } from '../context/GlobalState';
@@ -10,17 +10,29 @@ import NotifService from '../services/Notif.service';
 function Home() {
     const router = useRouter();
     const tokens = Cookies.get('tokens');
+    const [test, setTest] = useState(null);
     const {
-        statePage: { user, userConnected },
+        statePage: { user, userConnected, error },
     } = useContext(AppContext);
 
     useEffect(() => {
+        if (error && error === 'Utilisateur inactif') {
+            router.push('/user/activate-account').then(() => {
+                NotifService.info(
+                    "Vous n'avez pas encore activé votre compte",
+                    'valid'
+                );
+            });
+        }
+    }, [error, router]);
+
+    useEffect(() => {
+        // TODO check useful?
         if (
             user.error &&
             user.error === 'Utilisateur inactif' &&
             !!Object.keys(tokens).length
         ) {
-            debugger; // eslint-disable-line
             router.push('/user/sign-in').then(() => {
                 NotifService.info(
                     'Connectez vous pour activer votre compte',
@@ -88,5 +100,9 @@ function Home() {
         </Layout>
     );
 }
+
+Home.getInitialProps = async ({ ctx }) => {
+    console.debug('==== HOME getInitialProps ==== ', ctx);
+};
 
 export default Home;

@@ -4,12 +4,11 @@ import { memo } from 'react';
 import { DataProvider } from '../context/GlobalState';
 import { userService } from '../services/User.service';
 
-function MyApp({ Component, pageProps, user }) {
+function MyApp({ Component, pageProps, user, error }) {
     const MemoizedComponent = memo(Component);
-    console.log('==== MyApp ==== ', user);
-    
-return (
-        <DataProvider user={user}>
+
+    return (
+        <DataProvider user={user} error={error}>
             <MemoizedComponent {...pageProps} />
         </DataProvider>
     );
@@ -29,12 +28,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
     return await userService
         .me(tokens)
-        .then((data) => {
+        .then(({ data }) => {
             return Promise.resolve({ user: data, tokens });
         })
         .catch((error) => {
-            if (error === 'No tokens') {
-                return { error: 'You must log in' };
+            if (error === 'Utilisateur inactif' || error === 'No tokens') {
+                return { error };
             }
 
             return Promise.reject(error);

@@ -15,8 +15,8 @@ export const userService = {
     signup,
     activate,
     me,
+    renewActivationCode,
     signIn,
-    renewalCode,
     signOut,
     resetPassword,
     refreshAccessToken,
@@ -68,6 +68,43 @@ async function resetPassword(userData) {
             return { response, data };
         })
         .catch((err) => {
+            return Promise.reject(err);
+        });
+}
+
+async function renewActivationCode() {
+    const url = `${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
+
+    // TODO Tidy options
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+    };
+
+    const response = await fetch(url, requestOptions);
+
+    return fetchHelper
+        .handleResponse(response)
+        .then(({ response, data }) => {
+            return { response, data };
+        })
+        .catch((err) => {
+            if (err === tokenError) {
+                userService.refreshAccessToken().then(async () => {
+                    const response = await fetch(url, requestOptions);
+
+                    return fetchHelper
+                        .handleResponse(response)
+                        .then(async (response) => {
+                            return response;
+                        })
+                        .catch((err) => {
+                            return Promise.reject(err);
+                        });
+                });
+            }
+
             return Promise.reject(err);
         });
 }
@@ -183,28 +220,6 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
         });
 }
 
-async function renewalCode(email) {
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/renewal-code`;
-
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(email),
-        credentials: 'include',
-    };
-
-    const response = await fetch(url, requestOptions);
-
-    return fetchHelper
-        .handleResponse(response)
-        .then((response) => {
-            return response;
-        })
-        .catch((err) => {
-            return Promise.reject(err);
-        });
-}
-
 async function forgotPassword(email) {
     const url = `${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
 
@@ -232,6 +247,7 @@ async function me(tokens) {
         return Promise.reject('No tokens');
     }
 
+    // TODO refacto options
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

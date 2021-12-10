@@ -7,6 +7,8 @@ export const passwordErrorMsg = 'Mot de passe incorrect';
 export const emailErrorMsg = 'Email incorrect';
 export const passwordMandatoryMsg = 'Le mot de passe est obligatoire';
 export const emailMandatoryMsg = "L'email est obligatoire";
+export const tokenMissingError = 'Tokens cookie missing';
+export const disconnectedMsg = 'Vous êtes déconnecté';
 
 // External errors
 export const combinationError = 'Mauvaise combinaison utilisateur/mot de passe';

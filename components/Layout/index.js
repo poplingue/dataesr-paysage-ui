@@ -30,6 +30,7 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AppContext } from '../../context/GlobalState';
+import { disconnectedMsg } from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 import NavLink from '../NavLink';
@@ -46,7 +47,7 @@ export default function Layout({ children, headTitle }) {
 
     const signOut = () => {
         userService.signOut().then(() => {
-            NotifService.info('Vous êtes déconnecté', 'valid');
+            NotifService.info(disconnectedMsg, 'valid');
 
             if (userConnected) {
                 dispatch({
