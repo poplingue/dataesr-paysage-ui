@@ -68,6 +68,23 @@ const NotifService = {
             },
         });
     },
+
+    techInfo(message, type = 'neutral', duration = 4000) {
+        const typeObject = {
+            error: { background: bgError, icon: iconError },
+            valid: { background: bgValid, icon: iconValid },
+            neutral: { background: bgNeutral, icon: iconNeutral },
+        };
+
+        return toast(message, {
+            position: 'bottom-right',
+            duration,
+            style: {
+                fontSize: 14,
+                background: typeObject[type].background,
+            },
+        });
+    },
 };
 
 export default NotifService;

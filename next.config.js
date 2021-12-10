@@ -12,7 +12,7 @@ module.exports = {
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
-        baseApiUrl: 'http://localhost:3002/api',
+        baseApiUrl: '/api',
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,

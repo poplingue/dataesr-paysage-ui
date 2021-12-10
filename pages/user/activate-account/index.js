@@ -6,7 +6,11 @@ import AuthForm from '../../../components/AuthForm';
 import FieldButton from '../../../components/FieldButton';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
-import { tokenMissingError } from '../../../helpers/internalMessages';
+import {
+    codeMandatoryMsg,
+    connectAdviceMsg,
+    tokenMissingError,
+} from '../../../helpers/internalMessages';
 import NotifService from '../../../services/Notif.service';
 import { userService } from '../../../services/User.service';
 
@@ -24,27 +28,26 @@ export default function Activate() {
 
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
-            .required('Code d&apos;activation obligatoire')
+            .required(codeMandatoryMsg)
             .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
     });
 
     const getNewCode = () => {
         userService
             .renewActivationCode()
-            .then((response) => {
+            .then(({ data }) => {
+                const a = data.message.split(' ');
+                const email = a[a.length - 1];
+
                 NotifService.info(
-                    "Un nouveau code d'activation vous a été envoyé par mail",
+                    `Un nouveau code a été envoyé à ${email}`,
                     'valid'
                 );
             })
             .catch((err) => {
                 if (err === tokenMissingError) {
                     router.push('/user/sign-in').then(() => {
-                        NotifService.info(
-                            'Connectez-vous pour recevoir un nouveau code',
-                            'neutral',
-                            6000
-                        );
+                        NotifService.info(connectAdviceMsg, 'neutral', 6000);
                     });
                 }
             });

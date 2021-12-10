@@ -20,7 +20,6 @@ function authHeader(tokens) {
 async function handleResponse(response) {
     return response.text().then((text) => {
         let data;
-        let errorMsg = text || genericErrorMsg;
 
         try {
             data = text && JSON.parse(text);
@@ -29,6 +28,8 @@ async function handleResponse(response) {
         }
 
         if (!response.ok) {
+            let errorMsg = data.message || genericErrorMsg;
+
             if (!!Object.keys(data).length) {
                 errorMsg = data.error || genericErrorMsg;
 

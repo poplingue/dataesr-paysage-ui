@@ -49,11 +49,14 @@ export default function DynamicBreadcrumb() {
     }, [category, id]);
     const active = !!pages[router.asPath];
 
-    const breadCrumbsActive = useCallback(display => {
-        dispatch({ type: 'UPDATE_HAS_BREADCRUMBS', payload: display });
+    const breadCrumbsActive = useCallback(
+        (display) => {
+            dispatch({ type: 'UPDATE_HAS_BREADCRUMBS', payload: display });
 
-        return null;
-    }, [dispatch]);
+            return null;
+        },
+        [dispatch]
+    );
 
     useEffect(() => {
         if (hasBreadCrumbs !== active) {

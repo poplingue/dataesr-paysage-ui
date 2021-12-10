@@ -25,6 +25,7 @@ export const userService = {
 
 async function signup(userData) {
     const url = `${publicRuntimeConfig.baseApiUrl}/user/signup`;
+
     // TODO Tidy options
     const requestOptions = {
         method: 'POST',

@@ -22,7 +22,9 @@ const DBService = {
         try {
             return await openDB(dbName, version, {
                 upgrade(db, oldVersion, newVersion, transaction) {
-                    NotifService.info(`IndexDB version ${db.version} upgraded`);
+                    NotifService.techInfo(
+                        `IndexDB version ${db.version} upgraded`
+                    );
 
                     if (objectStoreNames) {
                         let names = [];
@@ -76,7 +78,7 @@ const DBService = {
             cb(db.objectStoreNames, db.version);
         }
 
-        NotifService.info(`IndexDB version ${db.version} connected`);
+        NotifService.techInfo(`IndexDB version ${db.version} connected`);
     },
 
     async set(objValue, objectStoreName) {

@@ -28,7 +28,7 @@ export default function ExportList({ children, selection }) {
         window.URL.revokeObjectURL(url);
     };
 
-    const s2ab = s => {
+    const s2ab = (s) => {
         const buf = new ArrayBuffer(s.length);
 
         const view = new Uint8Array(buf);
@@ -38,7 +38,7 @@ export default function ExportList({ children, selection }) {
         return buf;
     };
 
-    const exportJson = filename => {
+    const exportJson = (filename) => {
         const wb = new Workbook();
         const ws = XLSX.utils.json_to_sheet(selection);
 
@@ -77,7 +77,7 @@ export default function ExportList({ children, selection }) {
                 {exportMode && (
                     <Col n="4">
                         <List>
-                            {selection.map(s => {
+                            {selection.map((s) => {
                                 return <li key={s.name}>{s.name}</li>;
                             })}
                         </List>

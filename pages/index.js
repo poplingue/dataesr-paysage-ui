@@ -1,16 +1,20 @@
 import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import HeaderLayout from '../components/HeaderLayout';
 import Layout from '../components/Layout';
 import { AppContext } from '../context/GlobalState';
+import {
+    connectedMsg,
+    connectToActivateMsg,
+} from '../helpers/internalMessages';
 import NotifService from '../services/Notif.service';
 
 function Home() {
     const router = useRouter();
     const tokens = Cookies.get('tokens');
-    const [test, setTest] = useState(null);
+
     const {
         statePage: { user, userConnected, error },
     } = useContext(AppContext);
@@ -34,15 +38,12 @@ function Home() {
             !!Object.keys(tokens).length
         ) {
             router.push('/user/sign-in').then(() => {
-                NotifService.info(
-                    'Connectez vous pour activer votre compte',
-                    'error'
-                );
+                NotifService.info(connectToActivateMsg, 'error');
             });
         }
 
         if (userConnected) {
-            NotifService.info('Vous êtes connecté', 'valid');
+            NotifService.info(connectedMsg, 'valid');
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

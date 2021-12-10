@@ -6,6 +6,7 @@ import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
 import Layout from '../../components/Layout';
 import {
+    codeMandatoryMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
@@ -45,7 +46,7 @@ export default function ResetPassword() {
             .required(`${emailMandatoryMsg}`)
             .email(`${emailErrorMsg}`),
         code: Yup.string()
-            .required('Code d&apos;activation obligatoire')
+            .required(codeMandatoryMsg)
             .matches('^(?=.*[0-9]).{6}$', 'Code non valide'),
         password: Yup.string()
             .required(`${passwordMandatoryMsg}`)

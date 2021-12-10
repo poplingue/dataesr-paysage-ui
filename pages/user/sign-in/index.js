@@ -76,12 +76,12 @@ function SignIn() {
                     </Col>
                     <Col n="12">
                         <NavLink href="/user/signup">
-                            Je n&apos;ai pas encore de compte
+                            {`Je n'ai pas encore de compte`}
                         </NavLink>
                     </Col>
                     <Col n="12">
                         <NavLink href="/user/forgot-password">
-                            J&apos;ai perdu mon mot de passe
+                            {`J'ai perdu mon mot de passe`}
                         </NavLink>
                     </Col>
                 </Row>

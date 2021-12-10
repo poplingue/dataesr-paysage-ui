@@ -102,14 +102,15 @@ function Signup() {
                 .then(() => {
                     router.push('/user/activate-account').then(() => {
                         NotifService.info(
-                            `Vous avez reçu un code d&apos;activation par mail`,
+                            'Vous avez reçu un code par mail',
                             'valid'
                         );
                     });
                 })
                 .catch((err) => {
-                    const field = err.indexOf('email') > 0 ? email : username;
+                    const field = err.indexOf('email') >= 0 ? email : username;
                     const errorFr = errorsIntl[err](field);
+
                     NotifService.info(errorFr, 'error');
                 });
         }
@@ -129,7 +130,7 @@ function Signup() {
                     </Col>
                     <Col n="12">
                         <NavLink href="/user/sign-in">
-                            J&apos;ai déjà un compte
+                            {`J'ai déjà un compte`}
                         </NavLink>
                     </Col>
                 </Row>

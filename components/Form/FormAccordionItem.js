@@ -94,7 +94,7 @@ export default function FormAccordionItem({
             });
 
             const { msg, type } = notif[valid ? 'valid' : 'error'];
-            NotifService.info(msg, type);
+            NotifService.techInfo(msg, type);
         }
     };
 

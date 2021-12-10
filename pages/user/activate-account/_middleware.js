@@ -1,5 +1,6 @@
 import cookie from 'cookie';
 import { NextResponse } from 'next/server';
+import { connectToActivateMsg } from '../../../helpers/internalMessages';
 
 export async function middleware(req) {
     const headersCookies = req.headers.get('cookie');
@@ -18,6 +19,6 @@ export async function middleware(req) {
 
     return NextResponse.redirect('/user/sign-in').cookie(
         'user-info',
-        'Connectez vous pour activer votre compte'
+        connectToActivateMsg
     );
 }

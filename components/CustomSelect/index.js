@@ -60,7 +60,7 @@ export default function CustomSelect({
                 dispatch({ type: 'DELETE_FORM_FIELD', payload });
                 // TODO Make it async
                 await DBService.delete(uid, formName);
-                NotifService.info('Select field deleted');
+                NotifService.techInfo('Select field deleted');
             }
         },
         [dispatch, formName, storeObjects, uid]

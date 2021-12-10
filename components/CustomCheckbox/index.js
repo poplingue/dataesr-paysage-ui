@@ -66,7 +66,7 @@ function CustomCheckbox({
         if (!newValues.length) {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
             await DBService.delete(uid, formName);
-            NotifService.info('Checkbox field deleted');
+            NotifService.techInfo('Checkbox field deleted');
         } else {
             dispatch({
                 type: 'UPDATE_FORM_FIELD',

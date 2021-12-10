@@ -80,7 +80,7 @@ function InfiniteField({ children, title, section }) {
             setNumber(number - 1);
 
             await DBService.delete(uidToDelete, formName);
-            NotifService.info('Field deleted');
+            NotifService.techInfo('Field deleted');
         }
     };
 
