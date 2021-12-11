@@ -1,7 +1,9 @@
+const baseUrl = Cypress.env('baseUrl');
+
 context('Structure form page', () => {
     beforeEach(() => {
         cy.deleteIndexDB();
-        cy.visit('http://localhost:3000/create/structure');
+        cy.visit(`${baseUrl}/tests/structure`);
     });
 
     it('should display notification error on save section data', () => {
@@ -14,7 +16,7 @@ context('Structure form page', () => {
         cy.get('[data-testid="Siret"] input').type('8765');
         cy.get('[data-testid="RNSR"] input').type('545454');
         cy.get('[data-testid="informations-save-button"]').click();
-        cy.get('.cy-notif-valid').should('exist');
+        cy.get('.cy-notif-neutral').should('exist');
     });
 
     it('should display warning section on change data', () => {

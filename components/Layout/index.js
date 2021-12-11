@@ -117,6 +117,7 @@ export default function Layout({ children, headTitle }) {
                                 <ToolItem
                                     onClick={signOut}
                                     icon="ri-user-3-line"
+                                    data-cy="sign-out"
                                 >
                                     Se déconnecter
                                 </ToolItem>

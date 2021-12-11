@@ -9,8 +9,6 @@ import {
     tokenError,
 } from '../helpers/internalMessages';
 
-const { publicRuntimeConfig } = getConfig();
-
 export const userService = {
     signup,
     activate,
@@ -24,6 +22,7 @@ export const userService = {
 };
 
 async function signup(userData) {
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/signup`;
 
     // TODO Tidy options
@@ -111,9 +110,10 @@ async function renewActivationCode() {
 }
 
 async function signIn(userData) {
-    // TODO Tidy options
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/sign-in`;
 
+    // TODO Tidy options
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -146,6 +146,7 @@ async function signIn(userData) {
 }
 
 async function activate(code) {
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/activate-account`;
 
     const requestOptions = {
@@ -187,6 +188,7 @@ async function activate(code) {
 }
 
 async function refreshAccessToken(refreshToken, refreshTokenUrl) {
+    const { publicRuntimeConfig } = getConfig();
     const url =
         refreshTokenUrl ||
         `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
@@ -222,6 +224,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
 }
 
 async function forgotPassword(email) {
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
 
     const requestOptions = {
@@ -256,8 +259,8 @@ async function me(tokens) {
         body: JSON.stringify(tokens.accessToken),
     };
 
+    const { publicRuntimeConfig } = getConfig();
     const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
-    console.log('==== meUrl ==== ', meUrl);
     const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
 
     const response = await fetch(meUrl, requestOptions);
@@ -302,6 +305,7 @@ async function me(tokens) {
 }
 
 async function signOut() {
+    // TODO auth/signout
     Cookies.remove('tokens');
 
     return 'Tokens removed';

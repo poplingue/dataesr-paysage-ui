@@ -10,7 +10,23 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('signIn', () => {
+    const baseUrl = Cypress.env('baseUrl');
+    cy.visit(`${baseUrl}/user/sign-in`);
+    cy.get('[type="email"]').type('martha@mailinator.com');
+    cy.get('[type="password"]').type('Polk000!');
+    cy.get('[type="submit"]').click();
+
+    cy.wait(2000);
+});
+
+Cypress.Commands.add('signOut', () => {
+    const baseUrl = Cypress.env('baseUrl');
+    cy.visit(`${baseUrl}`);
+    cy.get('[data-cy="sign-out"]').click();
+
+    cy.wait(2000);
+});
 //
 //
 // -- This is a child command --

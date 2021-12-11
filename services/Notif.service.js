@@ -82,6 +82,7 @@ const NotifService = {
         toast(message, {
             id: 'toast-tech-info',
             position: 'bottom-right',
+            className: `cy-notif-${type}`,
             duration,
             style: {
                 fontSize: 14,

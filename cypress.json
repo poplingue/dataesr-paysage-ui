@@ -5,5 +5,8 @@
   "projectId": "9ymqdh",
   "viewportWidth": 1920,
   "viewportHeight": 1080,
-  "browser": "firefox"
+  "browser": "firefox",
+  "env": {
+    "baseUrl": "http://localhost:3000"
+  }
 }

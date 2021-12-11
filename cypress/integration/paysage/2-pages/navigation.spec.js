@@ -1,6 +1,8 @@
+const baseUrl = Cypress.env('baseUrl');
+
 context('Person page', () => {
     beforeEach(() => {
-        cy.visit('http://localhost:3000/object/person/1');
+        cy.visit(`${baseUrl}/object/person/1`);
     });
 
     it('should display Navigation', () => {
