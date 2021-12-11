@@ -257,6 +257,7 @@ async function me(tokens) {
     };
 
     const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
+    console.log('==== meUrl ==== ', meUrl);
     const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
 
     const response = await fetch(meUrl, requestOptions);

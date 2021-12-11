@@ -24,6 +24,7 @@ import {
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
 
+import getConfig from 'next/config';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -33,6 +34,8 @@ import { disconnectedMsg } from '../../helpers/internalMessages';
 import NotifService from '../../services/Notif.service';
 import { userService } from '../../services/User.service';
 import NavLink from '../NavLink';
+
+const { publicRuntimeConfig } = getConfig();
 
 // TODO add propTypes
 export default function Layout({ children, headTitle }) {
@@ -66,32 +69,35 @@ export default function Layout({ children, headTitle }) {
         <>
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
-                <link rel="icon" href="/favicon/favicon.ico" />
+                <link
+                    rel="icon"
+                    href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
+                />
                 <link
                     href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
                     rel="stylesheet"
                 />
                 <link
                     rel="preload"
-                    href="/fonts/Marianne-Regular.woff"
+                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
                     as="font"
                     crossOrigin=""
                 />
                 <link
                     rel="preload"
-                    href="/fonts/Marianne-Regular.woff2"
+                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
                     as="font"
                     crossOrigin=""
                 />
                 <link
                     rel="preload"
-                    href="/fonts/Marianne-Bold.woff"
+                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
                     as="font"
                     crossOrigin=""
                 />
                 <link
                     rel="preload"
-                    href="/fonts/Marianne-Bold.woff2"
+                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
                     as="font"
                     crossOrigin=""
                 />
