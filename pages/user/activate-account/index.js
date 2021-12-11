@@ -47,6 +47,11 @@ export default function Activate() {
                 );
             })
             .catch((err) => {
+                console.error(
+                    '==== userService.renewActivationCode ==== ',
+                    err
+                );
+
                 if (err === tokenMissingError) {
                     router.push('/user/sign-in').then(() => {
                         NotifService.info(connectAdviceMsg, 'neutral', 6000);
@@ -69,6 +74,7 @@ export default function Activate() {
                 });
             })
             .catch((err) => {
+                console.error('==== userService.activate ==== ', err);
                 NotifService.info(err, 'error');
 
                 return Promise.reject(err);
@@ -76,11 +82,11 @@ export default function Activate() {
     };
 
     return (
-        <Layout>
+        <Layout headTitle="Paysage - Activer mon compte">
             <HeaderLayout pageTitle="Activer mon compte" />
             <Container>
                 <Row gutters>
-                    <Col n="6">
+                    <Col n="12 md-6">
                         <AuthForm
                             schema={formSchema}
                             onSubmit={onSubmit}

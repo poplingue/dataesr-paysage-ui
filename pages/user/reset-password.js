@@ -80,10 +80,12 @@ export default function ResetPassword() {
                         });
                     })
                     .catch((err) => {
+                        console.error('==== userService.signIn ==== ', err);
                         NotifService.info(err, 'error');
                     });
             })
             .catch((err) => {
+                console.error('==== userService.resetPassword ==== ', err);
                 NotifService.info(err, 'error');
 
                 return Promise.reject(err);
@@ -95,7 +97,7 @@ export default function ResetPassword() {
             <HeaderLayout pageTitle="Renouveler mon mot de passe : étape 2/2" />
             <Container>
                 <Row gutters>
-                    <Col n="6">
+                    <Col n="12 md-6">
                         <AuthForm
                             schema={formSchema.map((elm) => {
                                 return elm.name === 'account'

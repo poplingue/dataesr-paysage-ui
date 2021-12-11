@@ -72,16 +72,17 @@ function SignIn() {
                 });
             })
             .catch((err) => {
+                console.error('==== userService.signIn ==== ', err);
                 NotifService.info(err, 'error');
             });
     };
 
     return (
-        <Layout>
+        <Layout headTitle="Paysage - Se connecter">
             <HeaderLayout pageTitle="Se connecter" />
             <Container>
                 <Row gutters>
-                    <Col n="6">
+                    <Col n="12 md-6">
                         <AuthForm
                             schema={formSchema}
                             onSubmit={onSubmit}

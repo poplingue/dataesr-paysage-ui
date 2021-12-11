@@ -45,6 +45,8 @@ async function signup(userData) {
             return response;
         })
         .catch((err) => {
+            console.error('==== Err ==== ', err);
+
             return Promise.reject(err);
         });
 }
@@ -91,18 +93,26 @@ async function renewActivationCode() {
         })
         .catch((err) => {
             if (err === tokenError) {
-                userService.refreshAccessToken().then(async () => {
-                    const response = await fetch(url, requestOptions);
+                userService
+                    .refreshAccessToken()
+                    .then(async () => {
+                        const response = await fetch(url, requestOptions);
 
-                    return fetchHelper
-                        .handleResponse(response)
-                        .then(async (response) => {
-                            return response;
-                        })
-                        .catch((err) => {
-                            return Promise.reject(err);
-                        });
-                });
+                        return fetchHelper
+                            .handleResponse(response)
+                            .then(async (response) => {
+                                return response;
+                            })
+                            .catch((err) => {
+                                return Promise.reject(err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.error(
+                            '==== userService.refreshAccessToken ==== ',
+                            err
+                        );
+                    });
             }
 
             return Promise.reject(err);
@@ -133,6 +143,8 @@ async function signIn(userData) {
             return response;
         })
         .catch((err) => {
+            console.error('==== Err ==== ', err);
+
             if (err === genericErrorMsg) {
                 return Promise.reject(emailErrorMsg);
             }
@@ -165,6 +177,8 @@ async function activate(code) {
                 return { response, data };
             })
             .catch((err) => {
+                console.error('==== Err ==== ', err);
+
                 if (err === tokenError) {
                     userService.refreshAccessToken().then(async (response) => {
                         await fetch(url, requestOptions);
@@ -175,6 +189,8 @@ async function activate(code) {
                                 return response;
                             })
                             .catch((err) => {
+                                console.error('==== Err ==== ', err);
+
                                 return Promise.reject(err);
                             });
                     });
@@ -283,13 +299,11 @@ async function me(tokens) {
                         return Promise.resolve(
                             fetchHelper
                                 .handleResponse(resp)
-                                .then(async ({ data }) => {
-                                    console.log('==== /me ==== ', data);
-
+                                .then(async (data) => {
                                     return Promise.resolve(data);
                                 })
                                 .catch((err) => {
-                                    console.log('==== LOG ==== ', err);
+                                    console.error('==== Err ==== ', err);
 
                                     return Promise.reject(err);
                                 })
@@ -306,6 +320,7 @@ async function me(tokens) {
 
 async function signOut() {
     // TODO auth/signout
+    console.log('==== signOut ==== ');
     Cookies.remove('tokens');
 
     return 'Tokens removed';

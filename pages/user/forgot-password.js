@@ -45,6 +45,7 @@ export default function ForgotPassword() {
                     });
             })
             .catch((err) => {
+                console.error('==== userService.forgotPassword ==== ', err);
                 NotifService.info(err, 'error');
 
                 return Promise.reject(err);
@@ -56,7 +57,7 @@ export default function ForgotPassword() {
             <HeaderLayout pageTitle="Renouveler mon mot de passe : étape 1/2" />
             <Container>
                 <Row gutters>
-                    <Col n="6">
+                    <Col n="12 md-6">
                         <AuthForm
                             schema={formSchema}
                             validationSchema={validationSchema}

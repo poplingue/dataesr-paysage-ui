@@ -108,6 +108,7 @@ function Signup() {
                     });
                 })
                 .catch((err) => {
+                    console.error('==== userService.signup ==== ', err);
                     const field = err.indexOf('email') >= 0 ? email : username;
                     const errorFr = errorsIntl[err](field);
 
@@ -117,11 +118,11 @@ function Signup() {
     };
 
     return (
-        <Layout>
+        <Layout headTitle="Paysage - Créer un compte">
             <HeaderLayout pageTitle="Créer un compte Paysage" />
             <Container>
                 <Row gutters>
-                    <Col n="6">
+                    <Col n="12 md-6">
                         <AuthForm
                             schema={formSchema}
                             onSubmit={onSubmit}
