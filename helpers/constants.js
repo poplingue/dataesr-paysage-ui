@@ -82,3 +82,74 @@ export const PersonPageSkeleton = [
         component: 'identifier',
     },
 ];
+
+export const StructurePageSkeleton = [
+    {
+        title: 'Présentation',
+        content: [
+            { title: 'Historique & Dates', component: 'functions' },
+            { title: 'Composition', component: 'contact' },
+            { title: 'Structures internes' },
+            { title: 'Catégories' },
+            { title: 'Participations' },
+            { title: 'Palmarès & Classements' },
+            { title: 'Présence sur le web' },
+        ],
+        component: 'presentation',
+    },
+    {
+        title: 'Gouvernance & Référents',
+        content: [],
+        component: 'responsability',
+    },
+    {
+        title: 'Chiffres-clés',
+        content: [],
+        component: 'web',
+    },
+    {
+        title: 'Ressources humaines',
+        content: [],
+        component: 'price',
+    },
+    {
+        title: 'Budget',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Analyse',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Suivi DGESIP-Etablissements',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Actualités',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Immobilier',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Etudiants',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Thèmes',
+        content: [],
+        component: 'identifier',
+    },
+    {
+        title: 'Projets',
+        content: [],
+        component: 'identifier',
+    },
+];
