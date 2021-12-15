@@ -19,8 +19,8 @@ import {
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
+import { authService } from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
-import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
@@ -41,7 +41,6 @@ function SignIn() {
     const router = useRouter();
     const {
         statePage: { error, user },
-        dispatchPage: dispatch,
     } = useContext(AppContext);
 
     useEffect(() => {
@@ -64,7 +63,7 @@ function SignIn() {
     });
 
     const onSubmit = (formData) => {
-        userService
+        authService
             .signIn(formData)
             .then(async () => {
                 router.push('/').then(() => {
@@ -74,7 +73,7 @@ function SignIn() {
                 });
             })
             .catch((err) => {
-                console.error('==== userService.signIn ==== ', err);
+                console.error('==== authService.signIn ==== ', err);
                 NotifService.info(err, 'error');
 
                 if (err === inactiveUserError) {

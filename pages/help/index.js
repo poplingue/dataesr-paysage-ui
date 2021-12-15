@@ -8,7 +8,7 @@ import Layout from '../../components/Layout';
 import NavLink from '../../components/NavLink';
 import { AppContext } from '../../context/GlobalState';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
-import { userService } from '../../services/User.service';
+import { authService } from '../../services/Auth.service';
 
 export default function Help() {
     const router = useRouter();
@@ -20,7 +20,7 @@ export default function Help() {
     const lostPassword = () => {
         // TODO refacto
         if (userConnected) {
-            userService.signOut().then(() => {
+            authService.signOut().then(() => {
                 dispatch({
                     type: 'UPDATE_USER',
                     payload: { user: {} },

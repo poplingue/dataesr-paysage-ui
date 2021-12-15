@@ -32,8 +32,8 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { disconnectedMsg } from '../../helpers/internalMessages';
+import { authService } from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
-import { userService } from '../../services/User.service';
 import NavLink from '../NavLink';
 
 const { publicRuntimeConfig } = getConfig();
@@ -50,7 +50,7 @@ export default function Layout({ children, headTitle }) {
     } = useContext(AppContext);
 
     const signOut = () => {
-        userService.signOut().then(() => {
+        authService.signOut().then(() => {
             NotifService.info(disconnectedMsg, 'valid');
 
             if (userConnected) {

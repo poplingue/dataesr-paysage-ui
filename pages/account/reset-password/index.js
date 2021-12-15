@@ -1,12 +1,10 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
-import { AppContext } from '../../../context/GlobalState';
 import {
     activationCodePattern,
     codeMandatoryMsg,
@@ -16,8 +14,8 @@ import {
     emailPatternHint,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
+import { authService } from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
-import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
@@ -44,10 +42,6 @@ const formSchema = [
 export default function Index() {
     const router = useRouter();
     const { email } = router.query;
-    const {
-        statePage: { error },
-        dispatchPage: dispatch,
-    } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -64,10 +58,10 @@ export default function Index() {
     const onSubmit = (formData) => {
         const { code, password, account } = formData;
 
-        userService
+        authService
             .resetPassword({ code, account, password })
             .then(() => {
-                userService.signIn({ account, password }).then(async () => {
+                authService.signIn({ account, password }).then(async () => {
                     router.push('/').then(() => {
                         Cookies.set('userConnected', true);
                         NotifService.info('Mot de passe mis à jour', 'valid');

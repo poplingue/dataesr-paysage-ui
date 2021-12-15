@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
-import { userService } from '../services/User.service';
+import { accountService } from '../services/Account.service';
 
 function MyApp({ Component, pageProps, user, error }) {
     const MemoizedComponent = memo(Component);
@@ -33,7 +33,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
         tokens = JSON.parse(cookiesHeader.tokens);
     }
 
-    return await userService
+    return await accountService
         .me(tokens)
         .then(({ data }) => {
             console.log('==== getInitialProps User ==== ', data);

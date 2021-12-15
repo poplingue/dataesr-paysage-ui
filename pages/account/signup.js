@@ -15,8 +15,8 @@ import {
     emailPatternHint,
     passwordMandatoryMsg,
 } from '../../helpers/internalMessages';
+import { authService } from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
-import { userService } from '../../services/User.service';
 
 const formSchema = [
     {
@@ -105,7 +105,7 @@ function Signup() {
         } = formData;
 
         if (password === confirm_password) {
-            userService
+            authService
                 .signup({ email, password, firstName, lastName, username })
                 .then(() => {
                     router.push('/account/activate-account').then(() => {

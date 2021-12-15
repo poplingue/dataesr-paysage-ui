@@ -9,8 +9,8 @@ import {
     emailErrorMsg,
     emailMandatoryMsg,
 } from '../../helpers/internalMessages';
+import { authService } from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
-import { userService } from '../../services/User.service';
 
 const formSchema = [
     {
@@ -32,7 +32,7 @@ export default function ForgotPassword() {
     const onSubmit = (formData) => {
         const { account } = formData;
 
-        userService
+        authService
             .forgotPassword(account)
             .then(() => {
                 router
@@ -45,7 +45,7 @@ export default function ForgotPassword() {
                     });
             })
             .catch((err) => {
-                console.error('==== userService.forgotPassword ==== ', err);
+                console.error('==== authService.forgotPassword ==== ', err);
                 NotifService.info(err, 'error');
 
                 return Promise.reject(err);

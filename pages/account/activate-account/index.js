@@ -14,8 +14,8 @@ import {
     connectAdviceMsg,
     tokenMissingError,
 } from '../../../helpers/internalMessages';
+import { authService } from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
-import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
@@ -37,7 +37,7 @@ export default function Activate() {
     });
 
     const getNewCode = () => {
-        userService
+        authService
             .renewActivationCode()
             .then(({ data }) => {
                 const a = data.message.split(' ');
@@ -50,7 +50,7 @@ export default function Activate() {
             })
             .catch((err) => {
                 console.error(
-                    '==== userService.renewActivationCode ==== ',
+                    '==== authService.renewActivationCode ==== ',
                     err
                 );
 
@@ -64,7 +64,7 @@ export default function Activate() {
     };
 
     const onSubmit = (formData) => {
-        userService
+        authService
             .activate(formData)
             .then(() => {
                 Cookies.remove('tokens');
@@ -87,7 +87,7 @@ export default function Activate() {
                 });
             })
             .catch((err) => {
-                console.error('==== userService.activate ==== ', err);
+                console.error('==== authService.activate ==== ', err);
                 NotifService.info(err, 'error');
 
                 return Promise.reject(err);
