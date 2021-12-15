@@ -1,6 +1,7 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
 import HeaderLayout from '../../../components/HeaderLayout';
@@ -9,7 +10,6 @@ import { AppContext } from '../../../context/GlobalState';
 import {
     activationCodePattern,
     codeMandatoryMsg,
-    connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
@@ -61,76 +61,43 @@ export default function Index() {
             .matches(`${emailPattern}`, `${emailPatternHint}`),
     });
 
-    useEffect(() => {
-        console.log('==== useEffect ERROR ==== ', error);
-
-        if (error === 'No tokens') {
-            // router.push('/forgot-password').then(() => {
-            NotifService.info(error, 'neutral');
-            // });
-        }
-    }, [error, router]);
-
     const onSubmit = (formData) => {
         const { code, password, account } = formData;
 
-        userService.resetPassword({ code, account, password }).then(() => {
-            router.push('/').then(() => {
-                NotifService.info('Mot de passe mis à jour', 'valid');
-                // window.location.reload();
-                console.log('==== Mot de passe mis à jour ==== ');
-                // try {
-                userService.signIn({ account, password }).then((response) => {
-                    debugger; // eslint-disable-line
+        userService
+            .resetPassword({ code, account, password })
+            .then(() => {
+                userService.signIn({ account, password }).then(async () => {
+                    const { data } = await userService.me(
+                        Cookies.get('tokens')
+                    );
 
-                    NotifService.info(connectedMsg, 'valid');
+                    dispatch({
+                        type: 'UPDATE_USER_CONNECTION',
+                        payload: { userConnected: true },
+                    });
 
-                    console.log('==== signIn ==== ', response);
+                    dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: { error: '' },
+                    });
 
-                    // dispatch({
-                    //     type: 'UPDATE_ERROR',
-                    //     payload: { error: '' },
-                    // });
-                    //
-                    // dispatch({
-                    //     type: 'UPDATE_USER_CONNECTION',
-                    //     payload: { userConnected: true },
-                    // });
+                    dispatch({
+                        type: 'UPDATE_USER',
+                        payload: { user: data },
+                    });
 
-                    // Cookies.set('userConnected', true);
+                    Cookies.set('userConnected', true);
 
-                    // console.log('==== Cookies userConnected ==== ');
-
-                    // const { data } = userService.me(Cookies.get('tokens')).then(() => {
-                    //
-                    //     console.log('==== DATA /me ==== ', data);
-                    //
-                    //     dispatch({
-                    //         type: 'UPDATE_USER',
-                    //         payload: { user: data },
-                    //     });
-                    //
-                    //     return Promise.resolve(response);
-                    // });
-
-                    // }).catch((err) => {
-                    //     debugger; // eslint-disable-line
-                    //     console.log('==== signIn Error ==== ', err);
-                    //     NotifService.info(err, 'error');
-                    //
-                    //     return Promise.reject(err);
+                    router.push('/').then(() => {
+                        NotifService.info('Mot de passe mis à jour', 'valid');
+                    });
                 });
-                // } catch (err) {
-                //     debugger; // eslint-disable-line
-                //     console.log('==== me Error ==== ', err);
-                //
-                //     return Promise.reject(err);
-                // }
+            })
+            .catch((err) => {
+                console.log('==== resetPassword error ==== ', err);
+                NotifService.info(err, 'error');
             });
-            // }).catch((err) => {
-            // console.log('==== resetPassword error ==== ', err);
-            // NotifService.info(err, 'error');
-        });
     };
 
     return (

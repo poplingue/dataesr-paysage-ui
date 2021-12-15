@@ -18,7 +18,6 @@ export const connectedMsg = 'Vous êtes connecté';
 export const codeMandatoryMsg = "Code d'activation obligatoire";
 export const connectAdviceMsg = 'Connectez-vous pour recevoir un nouveau code';
 export const activateAdviceMsg = 'Activez votre compte';
-export const connectToActivateMsg = 'Connectez-vous pour activer votre compte';
 export const connectToAccessMsg = 'Connectez-vous pour accéder';
 
 // External errors

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 
 export function middleware(req) {
     const headersCookies = req.headers.get('cookie');
+
     // TODO refacto cookies
     const cookies = cookie.parse(headersCookies ? headersCookies : '') || {};
 
