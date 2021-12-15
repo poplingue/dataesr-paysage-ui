@@ -116,9 +116,6 @@ function Signup() {
                     });
                 })
                 .catch((err) => {
-                    console.error('==== userService.signup ==== ', err);
-                    NotifService.info(err, 'error');
-
                     const field = err.indexOf('email') >= 0 ? email : username;
                     const errorFr = errorsIntl[err](field);
 

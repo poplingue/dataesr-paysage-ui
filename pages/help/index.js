@@ -18,6 +18,7 @@ export default function Help() {
     } = useContext(AppContext);
 
     const lostPassword = () => {
+        // TODO refacto
         if (userConnected) {
             userService.signOut().then(() => {
                 dispatch({

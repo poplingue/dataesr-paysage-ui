@@ -262,8 +262,8 @@ async function forgotPassword(email) {
         });
 }
 
-async function me(t) {
-    const tokens = t || Cookies.get('tokens') || {};
+async function me(cookieTokens) {
+    const tokens = cookieTokens || Cookies.get('tokens') || {};
 
     if ((tokens && !Object.keys(tokens).length) || !tokens) {
         return Promise.reject('No tokens');
@@ -289,6 +289,7 @@ async function me(t) {
             return Promise.resolve(response);
         })
         .catch((err) => {
+            // TODO still useful??
             if (err === inactiveUserError) {
                 return Promise.reject(err);
             }

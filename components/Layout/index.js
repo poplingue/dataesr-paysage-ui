@@ -64,6 +64,7 @@ export default function Layout({ children, headTitle }) {
                     payload: { userConnected: false },
                 });
 
+                // TODO still useful??
                 dispatch({
                     type: 'UPDATE_ERROR',
                     payload: { error: '' },

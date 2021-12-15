@@ -59,8 +59,6 @@ const NotifService = {
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        toast.remove('toast-info');
-
         if (!typeof message === 'string' || !message instanceof String) {
             stringMessage = JSON.stringify(message);
         }
