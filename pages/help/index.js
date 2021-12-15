@@ -1,4 +1,5 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import FieldButton from '../../components/FieldButton';
@@ -30,6 +31,8 @@ export default function Help() {
                     type: 'UPDATE_USER_CONNECTION',
                     payload: { userConnected: false },
                 });
+
+                Cookies.set('userConnected', false);
 
                 router.push({
                     pathname: '/user/forgot-password',

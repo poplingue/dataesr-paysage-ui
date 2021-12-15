@@ -1,10 +1,12 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
+
 import {
     combinationError,
     emailErrorMsg,
     genericErrorMsg,
+    inactiveUserError,
     passwordErrorMsg,
     tokenError,
 } from '../helpers/internalMessages';
@@ -52,9 +54,10 @@ async function signup(userData) {
 }
 
 async function resetPassword(userData) {
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/reset-password`;
-    // TODO Tidy options
 
+    // TODO Tidy options
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,6 +78,7 @@ async function resetPassword(userData) {
 }
 
 async function renewActivationCode() {
+    const { publicRuntimeConfig } = getConfig();
     const url = `${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
 
     // TODO Tidy options
@@ -108,10 +112,9 @@ async function renewActivationCode() {
                             });
                     })
                     .catch((err) => {
-                        console.error(
-                            '==== userService.refreshAccessToken ==== ',
-                            err
-                        );
+                        userService.signOut();
+
+                        return Promise.reject(err);
                     });
             }
 
@@ -132,6 +135,8 @@ async function signIn(userData) {
     };
 
     const response = await fetch(url, requestOptions);
+
+    debugger; // eslint-disable-line
 
     return fetchHelper
         .handleResponse(response)
@@ -177,8 +182,6 @@ async function activate(code) {
                 return { response, data };
             })
             .catch((err) => {
-                console.error('==== Err ==== ', err);
-
                 if (err === tokenError) {
                     userService.refreshAccessToken().then(async (response) => {
                         await fetch(url, requestOptions);
@@ -189,8 +192,6 @@ async function activate(code) {
                                 return response;
                             })
                             .catch((err) => {
-                                console.error('==== Err ==== ', err);
-
                                 return Promise.reject(err);
                             });
                     });
@@ -208,6 +209,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
     const url =
         refreshTokenUrl ||
         `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+
     const tokens = Cookies.get('tokens')
         ? JSON.parse(Cookies.get('tokens'))
         : null;
@@ -262,8 +264,10 @@ async function forgotPassword(email) {
         });
 }
 
-async function me(tokens) {
-    if (!Object.keys(tokens).length) {
+async function me(t) {
+    const tokens = t || Cookies.get('tokens') || {};
+
+    if ((tokens && !Object.keys(tokens).length) || !tokens) {
         return Promise.reject('No tokens');
     }
 
@@ -271,8 +275,8 @@ async function me(tokens) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(tokens.accessToken),
+        credentials: 'include',
     };
 
     const { publicRuntimeConfig } = getConfig();
@@ -287,41 +291,43 @@ async function me(tokens) {
             return Promise.resolve(response);
         })
         .catch((err) => {
-            if (err === tokenError) {
-                return userService
-                    .refreshAccessToken(tokens.refreshToken, tokenUrl)
-                    .then(async ({ data }) => {
-                        const resp = await fetch(meUrl, {
-                            ...requestOptions,
-                            body: JSON.stringify(data.accessToken),
-                        });
-
-                        return Promise.resolve(
-                            fetchHelper
-                                .handleResponse(resp)
-                                .then(async (data) => {
-                                    return Promise.resolve(data);
-                                })
-                                .catch((err) => {
-                                    console.error('==== Err ==== ', err);
-
-                                    return Promise.reject(err);
-                                })
-                        );
-                    })
-                    .catch((err) => {
-                        return Promise.reject(err);
-                    });
-            } else {
+            if (err === inactiveUserError) {
                 return Promise.reject(err);
             }
+
+            return userService
+                .refreshAccessToken(tokens.refreshToken, tokenUrl)
+                .then(async ({ data }) => {
+                    const resp = await fetch(meUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data.accessToken),
+                    });
+
+                    return Promise.resolve(
+                        fetchHelper
+                            .handleResponse(resp)
+                            .then(async (data) => {
+                                return Promise.resolve(data);
+                            })
+                            .catch((err) => {
+                                return Promise.reject(err);
+                            })
+                    );
+                })
+                .catch((err) => {
+                    return Promise.reject(err);
+                });
         });
 }
 
 async function signOut() {
     // TODO auth/signout
-    console.log('==== signOut ==== ');
-    Cookies.remove('tokens');
+    try {
+        Cookies.remove('tokens');
 
-    return 'Tokens removed';
+        return 'Cookie tokens removed';
+    } catch (err) {
+        return Promise.reject(err);
+    }
 }

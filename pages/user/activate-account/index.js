@@ -1,4 +1,5 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import * as Yup from 'yup';
@@ -27,7 +28,10 @@ const formSchema = [
 
 export default function Activate() {
     const router = useRouter();
-    const { dispatchPage: dispatch } = useContext(AppContext);
+    const {
+        statePage: { userConnected },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
@@ -41,6 +45,7 @@ export default function Activate() {
             .then(({ data }) => {
                 const a = data.message.split(' ');
                 const email = a[a.length - 1];
+
                 NotifService.info(
                     `Un nouveau code a été envoyé à ${email}`,
                     'valid'
@@ -63,14 +68,21 @@ export default function Activate() {
     const onSubmit = (formData) => {
         userService
             .activate(formData)
-            .then((resp) => {
-                dispatch({ type: 'UPDATE_ERROR', payload: '' });
+            .then(() => {
+                Cookies.remove('tokens');
+
+                dispatch({
+                    type: 'UPDATE_ERROR',
+                    payload: { error: '' },
+                });
+
+                dispatch({
+                    type: 'UPDATE_USER_CONNECTION',
+                    payload: { userConnected: false },
+                });
 
                 router.push('/user/sign-in').then(() => {
-                    NotifService.info(
-                        'Votre compte est actif, connectez-vous !',
-                        'valid'
-                    );
+                    NotifService.info('Compte activé', 'valid');
                 });
             })
             .catch((err) => {

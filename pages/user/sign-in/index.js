@@ -9,11 +9,13 @@ import Layout from '../../../components/Layout';
 import NavLink from '../../../components/NavLink';
 import { AppContext } from '../../../context/GlobalState';
 import {
+    activateAdviceMsg,
     connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
     emailPatternHint,
+    inactiveUserError,
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
@@ -37,15 +39,20 @@ const formSchema = [
 
 function SignIn() {
     const router = useRouter();
-    const cookieInfo = Cookies.get('user-info');
-    const { dispatchPage: dispatch } = useContext(AppContext);
+    const {
+        statePage: { error, user },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
 
     useEffect(() => {
-        if (cookieInfo) {
-            NotifService.info(cookieInfo, 'neutral');
-            Cookies.remove('user-info');
+        console.log('==== USER ==== ', user);
+
+        if (error && error === inactiveUserError) {
+            router.push('/user/activate-account').then(() => {
+                NotifService.info(activateAdviceMsg, 'neutral', 10000);
+            });
         }
-    }, [cookieInfo]);
+    }, [error, router, user]);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -59,21 +66,34 @@ function SignIn() {
     const onSubmit = (formData) => {
         userService
             .signIn(formData)
-            .then(() => {
+            .then(async () => {
                 dispatch({
                     type: 'UPDATE_USER_CONNECTION',
                     payload: { userConnected: true },
                 });
 
+                Cookies.set('userConnected', true);
+
+                const { data } = await userService.me(Cookies.get('tokens'));
+
+                dispatch({
+                    type: 'UPDATE_USER',
+                    payload: { user: data },
+                });
+
                 router.push('/').then(() => {
                     NotifService.info(connectedMsg, 'valid');
-                    // TODO really needed? to reload ?
-                    router.reload();
                 });
             })
             .catch((err) => {
                 console.error('==== userService.signIn ==== ', err);
                 NotifService.info(err, 'error');
+
+                if (err === inactiveUserError) {
+                    router.push('/user/activate-account').then(() => {
+                        NotifService.info('Activez votre compte', 'valid');
+                    });
+                }
             });
     };
 

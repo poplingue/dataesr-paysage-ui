@@ -3,17 +3,15 @@ import { NextResponse } from 'next/server';
 
 export function middleware(req) {
     const headersCookies = req.headers.get('cookie');
-
     // TODO refacto cookies
     const cookies = cookie.parse(headersCookies ? headersCookies : '') || {};
 
     if (
         Object.keys(cookies).length > 0 &&
-        Object.keys(cookies).includes('userConnected') &&
-        cookies.userConnected === 'true'
+        Object.keys(cookies).includes('tokens')
     ) {
-        return NextResponse.redirect('/');
-    } else {
         return NextResponse.next();
+    } else {
+        return NextResponse.redirect('/user/sign-in');
     }
 }

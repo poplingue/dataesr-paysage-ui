@@ -1,6 +1,7 @@
 import '../styles/styles.scss';
 import cookie from 'cookie';
 import { memo } from 'react';
+
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
 import { userService } from '../services/User.service';
@@ -24,21 +25,25 @@ MyApp.getInitialProps = async ({ ctx }) => {
         cookiesHeader = cookie.parse(ctx.req.headers.cookie);
     }
 
-    if (Object.keys(cookiesHeader).includes('tokens')) {
+    if (
+        cookiesHeader &&
+        Object.keys(cookiesHeader).includes('tokens') &&
+        cookiesHeader.tokens
+    ) {
         tokens = JSON.parse(cookiesHeader.tokens);
     }
 
     return await userService
         .me(tokens)
         .then(({ data }) => {
+            console.log('==== getInitialProps User ==== ', data);
+
             return Promise.resolve({ user: data });
         })
         .catch((error) => {
-            if (error === 'Utilisateur inactif' || error === 'No tokens') {
-                return { user: { error } };
-            }
+            console.log('==== getInitialProps ERROR ==== ', error);
 
-            return Promise.reject(error);
+            return { error };
         });
 };
 

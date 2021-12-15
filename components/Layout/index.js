@@ -24,6 +24,7 @@ import {
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
 
+import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -40,6 +41,7 @@ const { publicRuntimeConfig } = getConfig();
 // TODO add propTypes
 export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
@@ -61,7 +63,11 @@ export default function Layout({ children, headTitle }) {
                     type: 'UPDATE_USER_CONNECTION',
                     payload: { userConnected: false },
                 });
+
+                Cookies.set('userConnected', false);
             }
+
+            router.push('/user/sign-in');
         });
     };
 
