@@ -37,7 +37,7 @@ export default function ForgotPassword() {
             .then(() => {
                 router
                     .push({
-                        pathname: '/user/reset-password',
+                        pathname: '/account/reset-password',
                         query: { email: account },
                     })
                     .then(() => {

@@ -38,12 +38,12 @@ export default function Help() {
                 Cookies.set('userConnected', false);
 
                 router.push({
-                    pathname: '/user/forgot-password',
+                    pathname: '/account/forgot-password',
                     query: { email: user.email },
                 });
             });
         } else {
-            router.push('/user/forgot-password');
+            router.push('/account/forgot-password');
         }
     };
 
@@ -56,8 +56,8 @@ export default function Help() {
                         <NavLink
                             href={
                                 userConnected
-                                    ? '/user/activate-account'
-                                    : '/user/sign-in'
+                                    ? '/account/activate-account'
+                                    : '/account/sign-in'
                             }
                         >
                             Activer mon compte

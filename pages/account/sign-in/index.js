@@ -47,7 +47,7 @@ function SignIn() {
         console.log('==== USER ==== ', user);
 
         if (error && error === inactiveUserError) {
-            router.push('/user/activate-account').then(() => {
+            router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
@@ -76,7 +76,7 @@ function SignIn() {
                 NotifService.info(err, 'error');
 
                 if (err === inactiveUserError) {
-                    router.push('/user/activate-account').then(() => {
+                    router.push('/account/activate-account').then(() => {
                         NotifService.info('Activez votre compte', 'valid');
                     });
                 }
@@ -96,12 +96,12 @@ function SignIn() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/signup">
+                        <NavLink href="/account/signup">
                             {`Je n'ai pas encore de compte`}
                         </NavLink>
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/forgot-password">
+                        <NavLink href="/account/forgot-password">
                             {lostPasswordMsg}
                         </NavLink>
                     </Col>

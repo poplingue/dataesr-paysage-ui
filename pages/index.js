@@ -30,7 +30,7 @@ function Home() {
         const error = user && user.error;
 
         if (error && error === inactiveUserError && tokens) {
-            router.push('/user/activate-account').then(() => {
+            router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }

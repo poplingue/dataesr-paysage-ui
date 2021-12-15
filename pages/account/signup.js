@@ -108,7 +108,7 @@ function Signup() {
             userService
                 .signup({ email, password, firstName, lastName, username })
                 .then(() => {
-                    router.push('/user/activate-account').then(() => {
+                    router.push('/account/activate-account').then(() => {
                         NotifService.info(
                             'Vous avez reçu un code par mail',
                             'valid'
@@ -140,7 +140,7 @@ function Signup() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/sign-in">
+                        <NavLink href="/account/sign-in">
                             {`J'ai déjà un compte`}
                         </NavLink>
                     </Col>

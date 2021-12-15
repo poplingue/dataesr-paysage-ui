@@ -12,6 +12,6 @@ export function middleware(req) {
     ) {
         return NextResponse.next();
     } else {
-        return NextResponse.redirect('/user/sign-in');
+        return NextResponse.redirect('/account/sign-in');
     }
 }

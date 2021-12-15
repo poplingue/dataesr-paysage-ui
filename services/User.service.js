@@ -25,7 +25,7 @@ export const userService = {
 
 async function signup(userData) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/signup`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/signup`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -55,7 +55,7 @@ async function signup(userData) {
 
 async function resetPassword(userData) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/reset-password`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/reset-password`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -79,7 +79,7 @@ async function resetPassword(userData) {
 
 async function renewActivationCode() {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/renew-activation-code`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -124,7 +124,7 @@ async function renewActivationCode() {
 
 async function signIn(userData) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/sign-in`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/sign-in`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -162,7 +162,7 @@ async function signIn(userData) {
 
 async function activate(code) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/activate-account`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/activate-account`;
 
     const requestOptions = {
         method: 'POST',
@@ -206,7 +206,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
     const { publicRuntimeConfig } = getConfig();
     const url =
         refreshTokenUrl ||
-        `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+        `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
     const tokens = Cookies.get('tokens')
         ? JSON.parse(Cookies.get('tokens'))
@@ -241,7 +241,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
 
 async function forgotPassword(email) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/send-password-renewal-code`;
 
     const requestOptions = {
         method: 'POST',
@@ -279,7 +279,7 @@ async function me(t) {
 
     const { publicRuntimeConfig } = getConfig();
     const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
-    const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+    const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
     const response = await fetch(meUrl, requestOptions);
 

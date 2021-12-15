@@ -72,7 +72,7 @@ export default function Layout({ children, headTitle }) {
                 Cookies.set('userConnected', false);
             }
 
-            router.push('/user/sign-in');
+            router.push('/account/sign-in');
         });
     };
 
@@ -135,7 +135,7 @@ export default function Layout({ children, headTitle }) {
                             ) : (
                                 <ToolItem
                                     icon="ri-user-3-line"
-                                    asLink={<NavLink href="/user/sign-in" />}
+                                    asLink={<NavLink href="/account/sign-in" />}
                                 >
                                     Se connecter
                                 </ToolItem>
