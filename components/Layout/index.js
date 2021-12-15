@@ -64,6 +64,11 @@ export default function Layout({ children, headTitle }) {
                     payload: { userConnected: false },
                 });
 
+                dispatch({
+                    type: 'UPDATE_ERROR',
+                    payload: { error: '' },
+                });
+
                 Cookies.set('userConnected', false);
             }
 

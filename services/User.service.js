@@ -136,8 +136,6 @@ async function signIn(userData) {
 
     const response = await fetch(url, requestOptions);
 
-    debugger; // eslint-disable-line
-
     return fetchHelper
         .handleResponse(response)
         .then(({ response, data }) => {
@@ -148,7 +146,7 @@ async function signIn(userData) {
             return response;
         })
         .catch((err) => {
-            console.error('==== Err ==== ', err);
+            console.error('==== SignIn Error ==== ', err);
 
             if (err === genericErrorMsg) {
                 return Promise.reject(emailErrorMsg);
@@ -324,7 +322,9 @@ async function me(t) {
 async function signOut() {
     // TODO auth/signout
     try {
-        Cookies.remove('tokens');
+        if (Cookies.get('tokens')) {
+            Cookies.remove('tokens');
+        }
 
         return 'Cookie tokens removed';
     } catch (err) {

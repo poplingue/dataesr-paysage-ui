@@ -1,5 +1,7 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
@@ -85,6 +87,12 @@ function Signup() {
                 'Les mots de passe ne sont pas identiques'
             ),
     });
+
+    useEffect(() => {
+        if (Cookies.get('tokens')) {
+            Cookies.remove('tokens');
+        }
+    }, []);
 
     const onSubmit = (formData) => {
         const {

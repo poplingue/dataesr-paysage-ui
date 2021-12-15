@@ -57,6 +57,7 @@ export default function Activate() {
                     err
                 );
 
+                // Todo still useful??
                 if (err === tokenMissingError) {
                     router.push('/user/sign-in').then(() => {
                         NotifService.info(connectAdviceMsg, 'neutral', 6000);
@@ -83,6 +84,7 @@ export default function Activate() {
 
                 router.push('/user/sign-in').then(() => {
                     NotifService.info('Compte activé', 'valid');
+                    window.location.reload();
                 });
             })
             .catch((err) => {

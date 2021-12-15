@@ -1,5 +1,4 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import * as Yup from 'yup';
@@ -68,29 +67,9 @@ export default function Index() {
             .resetPassword({ code, account, password })
             .then(() => {
                 userService.signIn({ account, password }).then(async () => {
-                    const { data } = await userService.me(
-                        Cookies.get('tokens')
-                    );
-
-                    dispatch({
-                        type: 'UPDATE_USER_CONNECTION',
-                        payload: { userConnected: true },
-                    });
-
-                    dispatch({
-                        type: 'UPDATE_ERROR',
-                        payload: { error: '' },
-                    });
-
-                    dispatch({
-                        type: 'UPDATE_USER',
-                        payload: { user: data },
-                    });
-
-                    Cookies.set('userConnected', true);
-
                     router.push('/').then(() => {
                         NotifService.info('Mot de passe mis à jour', 'valid');
+                        window.location.reload();
                     });
                 });
             })

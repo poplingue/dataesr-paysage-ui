@@ -20,11 +20,14 @@ export default function Help() {
     const lostPassword = () => {
         if (userConnected) {
             userService.signOut().then(() => {
-                // TODO move to service??
-
                 dispatch({
                     type: 'UPDATE_USER',
                     payload: { user: {} },
+                });
+
+                dispatch({
+                    type: 'UPDATE_ERROR',
+                    payload: { error: '' },
                 });
 
                 dispatch({

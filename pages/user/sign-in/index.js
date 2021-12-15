@@ -1,5 +1,4 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
@@ -67,22 +66,9 @@ function SignIn() {
         userService
             .signIn(formData)
             .then(async () => {
-                dispatch({
-                    type: 'UPDATE_USER_CONNECTION',
-                    payload: { userConnected: true },
-                });
-
-                Cookies.set('userConnected', true);
-
-                const { data } = await userService.me(Cookies.get('tokens'));
-
-                dispatch({
-                    type: 'UPDATE_USER',
-                    payload: { user: data },
-                });
-
                 router.push('/').then(() => {
                     NotifService.info(connectedMsg, 'valid');
+                    window.location.reload();
                 });
             })
             .catch((err) => {
