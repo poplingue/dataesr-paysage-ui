@@ -1,5 +1,7 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../components/AuthForm';
 import HeaderLayout from '../../components/HeaderLayout';
@@ -86,6 +88,12 @@ function Signup() {
             ),
     });
 
+    useEffect(() => {
+        if (Cookies.get('tokens')) {
+            Cookies.remove('tokens');
+        }
+    }, []);
+
     const onSubmit = (formData) => {
         const {
             password,
@@ -100,7 +108,7 @@ function Signup() {
             userService
                 .signup({ email, password, firstName, lastName, username })
                 .then(() => {
-                    router.push('/user/activate-account').then(() => {
+                    router.push('/account/activate-account').then(() => {
                         NotifService.info(
                             'Vous avez reçu un code par mail',
                             'valid'
@@ -108,7 +116,6 @@ function Signup() {
                     });
                 })
                 .catch((err) => {
-                    console.error('==== userService.signup ==== ', err);
                     const field = err.indexOf('email') >= 0 ? email : username;
                     const errorFr = errorsIntl[err](field);
 
@@ -130,7 +137,7 @@ function Signup() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/sign-in">
+                        <NavLink href="/account/sign-in">
                             {`J'ai déjà un compte`}
                         </NavLink>
                     </Col>

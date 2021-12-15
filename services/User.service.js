@@ -1,10 +1,12 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
+
 import {
     combinationError,
     emailErrorMsg,
     genericErrorMsg,
+    inactiveUserError,
     passwordErrorMsg,
     tokenError,
 } from '../helpers/internalMessages';
@@ -23,7 +25,7 @@ export const userService = {
 
 async function signup(userData) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/signup`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/signup`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -52,9 +54,10 @@ async function signup(userData) {
 }
 
 async function resetPassword(userData) {
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/reset-password`;
-    // TODO Tidy options
+    const { publicRuntimeConfig } = getConfig();
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/reset-password`;
 
+    // TODO Tidy options
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,7 +78,8 @@ async function resetPassword(userData) {
 }
 
 async function renewActivationCode() {
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/renew-activation-code`;
+    const { publicRuntimeConfig } = getConfig();
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/renew-activation-code`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -108,10 +112,9 @@ async function renewActivationCode() {
                             });
                     })
                     .catch((err) => {
-                        console.error(
-                            '==== userService.refreshAccessToken ==== ',
-                            err
-                        );
+                        userService.signOut();
+
+                        return Promise.reject(err);
                     });
             }
 
@@ -121,7 +124,7 @@ async function renewActivationCode() {
 
 async function signIn(userData) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/sign-in`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/sign-in`;
 
     // TODO Tidy options
     const requestOptions = {
@@ -143,7 +146,7 @@ async function signIn(userData) {
             return response;
         })
         .catch((err) => {
-            console.error('==== Err ==== ', err);
+            console.error('==== SignIn Error ==== ', err);
 
             if (err === genericErrorMsg) {
                 return Promise.reject(emailErrorMsg);
@@ -159,7 +162,7 @@ async function signIn(userData) {
 
 async function activate(code) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/activate-account`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/activate-account`;
 
     const requestOptions = {
         method: 'POST',
@@ -177,8 +180,6 @@ async function activate(code) {
                 return { response, data };
             })
             .catch((err) => {
-                console.error('==== Err ==== ', err);
-
                 if (err === tokenError) {
                     userService.refreshAccessToken().then(async (response) => {
                         await fetch(url, requestOptions);
@@ -189,8 +190,6 @@ async function activate(code) {
                                 return response;
                             })
                             .catch((err) => {
-                                console.error('==== Err ==== ', err);
-
                                 return Promise.reject(err);
                             });
                     });
@@ -207,7 +206,8 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
     const { publicRuntimeConfig } = getConfig();
     const url =
         refreshTokenUrl ||
-        `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+        `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
+
     const tokens = Cookies.get('tokens')
         ? JSON.parse(Cookies.get('tokens'))
         : null;
@@ -241,7 +241,7 @@ async function refreshAccessToken(refreshToken, refreshTokenUrl) {
 
 async function forgotPassword(email) {
     const { publicRuntimeConfig } = getConfig();
-    const url = `${publicRuntimeConfig.baseApiUrl}/user/send-password-renewal-code`;
+    const url = `${publicRuntimeConfig.baseApiUrl}/auth/send-password-renewal-code`;
 
     const requestOptions = {
         method: 'POST',
@@ -262,8 +262,10 @@ async function forgotPassword(email) {
         });
 }
 
-async function me(tokens) {
-    if (!Object.keys(tokens).length) {
+async function me(cookieTokens) {
+    const tokens = cookieTokens || Cookies.get('tokens') || {};
+
+    if ((tokens && !Object.keys(tokens).length) || !tokens) {
         return Promise.reject('No tokens');
     }
 
@@ -271,13 +273,13 @@ async function me(tokens) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(tokens.accessToken),
+        credentials: 'include',
     };
 
     const { publicRuntimeConfig } = getConfig();
     const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
-    const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/user/refresh-access-token`;
+    const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
     const response = await fetch(meUrl, requestOptions);
 
@@ -287,41 +289,46 @@ async function me(tokens) {
             return Promise.resolve(response);
         })
         .catch((err) => {
-            if (err === tokenError) {
-                return userService
-                    .refreshAccessToken(tokens.refreshToken, tokenUrl)
-                    .then(async ({ data }) => {
-                        const resp = await fetch(meUrl, {
-                            ...requestOptions,
-                            body: JSON.stringify(data.accessToken),
-                        });
-
-                        return Promise.resolve(
-                            fetchHelper
-                                .handleResponse(resp)
-                                .then(async (data) => {
-                                    return Promise.resolve(data);
-                                })
-                                .catch((err) => {
-                                    console.error('==== Err ==== ', err);
-
-                                    return Promise.reject(err);
-                                })
-                        );
-                    })
-                    .catch((err) => {
-                        return Promise.reject(err);
-                    });
-            } else {
+            // TODO still useful??
+            if (err === inactiveUserError) {
                 return Promise.reject(err);
             }
+
+            return userService
+                .refreshAccessToken(tokens.refreshToken, tokenUrl)
+                .then(async ({ data }) => {
+                    const resp = await fetch(meUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data.accessToken),
+                    });
+
+                    return Promise.resolve(
+                        fetchHelper
+                            .handleResponse(resp)
+                            .then(async (data) => {
+                                return Promise.resolve(data);
+                            })
+                            .catch((err) => {
+                                return Promise.reject(err);
+                            })
+                    );
+                })
+                .catch((err) => {
+                    return Promise.reject(err);
+                });
         });
 }
 
 async function signOut() {
     // TODO auth/signout
-    console.log('==== signOut ==== ');
-    Cookies.remove('tokens');
+    try {
+        if (Cookies.get('tokens')) {
+            Cookies.remove('tokens');
+        }
 
-    return 'Tokens removed';
+        return 'Cookie tokens removed';
+    } catch (err) {
+        return Promise.reject(err);
+    }
 }

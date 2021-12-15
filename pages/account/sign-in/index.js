@@ -1,5 +1,4 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
@@ -9,11 +8,13 @@ import Layout from '../../../components/Layout';
 import NavLink from '../../../components/NavLink';
 import { AppContext } from '../../../context/GlobalState';
 import {
+    activateAdviceMsg,
     connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
     emailPatternHint,
+    inactiveUserError,
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
@@ -37,15 +38,20 @@ const formSchema = [
 
 function SignIn() {
     const router = useRouter();
-    const cookieInfo = Cookies.get('user-info');
-    const { dispatchPage: dispatch } = useContext(AppContext);
+    const {
+        statePage: { error, user },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
 
     useEffect(() => {
-        if (cookieInfo) {
-            NotifService.info(cookieInfo, 'neutral');
-            Cookies.remove('user-info');
+        console.log('==== USER ==== ', user);
+
+        if (error && error === inactiveUserError) {
+            router.push('/account/activate-account').then(() => {
+                NotifService.info(activateAdviceMsg, 'neutral', 10000);
+            });
         }
-    }, [cookieInfo]);
+    }, [error, router, user]);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -59,21 +65,21 @@ function SignIn() {
     const onSubmit = (formData) => {
         userService
             .signIn(formData)
-            .then(() => {
-                dispatch({
-                    type: 'UPDATE_USER_CONNECTION',
-                    payload: { userConnected: true },
-                });
-
+            .then(async () => {
                 router.push('/').then(() => {
                     NotifService.info(connectedMsg, 'valid');
-                    // TODO really needed? to reload ?
-                    router.reload();
+                    window.location.reload();
                 });
             })
             .catch((err) => {
                 console.error('==== userService.signIn ==== ', err);
                 NotifService.info(err, 'error');
+
+                if (err === inactiveUserError) {
+                    router.push('/account/activate-account').then(() => {
+                        NotifService.info('Activez votre compte', 'valid');
+                    });
+                }
             });
     };
 
@@ -90,12 +96,12 @@ function SignIn() {
                         />
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/signup">
+                        <NavLink href="/account/signup">
                             {`Je n'ai pas encore de compte`}
                         </NavLink>
                     </Col>
                     <Col n="12">
-                        <NavLink href="/user/forgot-password">
+                        <NavLink href="/account/forgot-password">
                             {lostPasswordMsg}
                         </NavLink>
                     </Col>

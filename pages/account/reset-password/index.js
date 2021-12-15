@@ -2,22 +2,21 @@ import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import * as Yup from 'yup';
-import AuthForm from '../../components/AuthForm';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
-import { AppContext } from '../../context/GlobalState';
+import AuthForm from '../../../components/AuthForm';
+import HeaderLayout from '../../../components/HeaderLayout';
+import Layout from '../../../components/Layout';
+import { AppContext } from '../../../context/GlobalState';
 import {
     activationCodePattern,
     codeMandatoryMsg,
-    connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
     emailPatternHint,
     passwordMandatoryMsg,
-} from '../../helpers/internalMessages';
-import NotifService from '../../services/Notif.service';
-import { userService } from '../../services/User.service';
+} from '../../../helpers/internalMessages';
+import NotifService from '../../../services/Notif.service';
+import { userService } from '../../../services/User.service';
 
 const formSchema = [
     {
@@ -41,10 +40,13 @@ const formSchema = [
     },
 ];
 
-export default function ResetPassword() {
+export default function Index() {
     const router = useRouter();
     const { email } = router.query;
-    const { dispatchPage: dispatch } = useContext(AppContext);
+    const {
+        statePage: { error },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -64,31 +66,16 @@ export default function ResetPassword() {
         userService
             .resetPassword({ code, account, password })
             .then(() => {
-                userService
-                    .signIn({ account, password })
-                    .then(() => {
-                        dispatch({
-                            type: 'UPDATE_USER_CONNECTION',
-                            payload: { userConnected: true },
-                        });
-
-                        router.push('/').then(() => {
-                            NotifService.info(connectedMsg, 'valid');
-
-                            // TODO /me instead of reload
-                            router.reload();
-                        });
-                    })
-                    .catch((err) => {
-                        console.error('==== userService.signIn ==== ', err);
-                        NotifService.info(err, 'error');
+                userService.signIn({ account, password }).then(async () => {
+                    router.push('/').then(() => {
+                        NotifService.info('Mot de passe mis à jour', 'valid');
+                        window.location.reload();
                     });
+                });
             })
             .catch((err) => {
-                console.error('==== userService.resetPassword ==== ', err);
+                console.log('==== resetPassword error ==== ', err);
                 NotifService.info(err, 'error');
-
-                return Promise.reject(err);
             });
     };
 

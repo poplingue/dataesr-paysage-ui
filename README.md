@@ -17,7 +17,7 @@ Run the development server:
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3002](http://localhost:3002)
 
 ## Tests
 
@@ -80,16 +80,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 * button to reset data from current form
 * add unit tests for complex components
-* move form pages to a test page
 * add possibility of comments to section/field
 * adding link to section/field 
 * improve DynamicBreadcrumb system
-* dark theme ToolBox and Navigation components
 * add middleware functions for theme
 * Forms: compare data from DB and data from IndexDB
   * check validation field
   * check validation section
-* http://www.tabulator.info/
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
 * add spinner
 * manage dark mode

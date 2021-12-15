@@ -8,7 +8,7 @@ import { AppContext } from '../context/GlobalState';
 import {
     activateAdviceMsg,
     connectedMsg,
-    connectToActivateMsg,
+    inactiveUserError,
 } from '../helpers/internalMessages';
 import NotifService from '../services/Notif.service';
 
@@ -17,27 +17,20 @@ function Home() {
     const tokens = Cookies.get('tokens');
 
     const {
-        statePage: { user, userConnected },
+        statePage: { user, error, userConnected },
     } = useContext(AppContext);
 
     useEffect(() => {
-        const error = user && user.error;
-
         if (!error && userConnected) {
             NotifService.info(connectedMsg, 'valid');
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [error, userConnected]);
 
     useEffect(() => {
         const error = user && user.error;
 
-        if (error && error === 'Utilisateur inactif' && !tokens) {
-            router.push('/user/sign-in').then(() => {
-                NotifService.info(connectToActivateMsg, 'neutral', 10000);
-            });
-        } else if (error && error === 'Utilisateur inactif' && tokens) {
-            router.push('/user/activate-account').then(() => {
+        if (error && error === inactiveUserError && tokens) {
+            router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }

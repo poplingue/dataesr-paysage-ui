@@ -51,15 +51,19 @@ const NotifService = {
     },
 
     info(message, type = 'valid', duration = 4000) {
+        let stringMessage = message;
+
         const typeObject = {
             error: { background: bgError, icon: iconError },
             valid: { background: bgValid, icon: iconValid },
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        toast.remove('toast-info');
+        if (!typeof message === 'string' || !message instanceof String) {
+            stringMessage = JSON.stringify(message);
+        }
 
-        toast(message, {
+        toast(stringMessage, {
             id: 'toast-info',
             position: 'top-right',
             icon: typeObject[type].icon,

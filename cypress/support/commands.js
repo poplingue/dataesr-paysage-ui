@@ -12,7 +12,7 @@
 // -- This is a parent command --
 Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
-    cy.visit(`${baseUrl}/user/sign-in`);
+    cy.visit(`${baseUrl}/account/sign-in`);
     cy.get('[type="email"]').type('martha@mailinator.com');
     cy.get('[type="password"]').type('Polk000!');
     cy.get('[type="submit"]').click();

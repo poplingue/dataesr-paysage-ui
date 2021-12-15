@@ -5,11 +5,11 @@ module.exports = withSass();
 
 const baseApiUrl =
     process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000/api'
+        ? 'http://localhost:3002/api'
         : process.env.API_URL;
 const basePath =
     process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3000'
+        ? 'http://localhost:3002'
         : process.env.BASE_PATH;
 
 module.exports = withTM();

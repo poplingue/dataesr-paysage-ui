@@ -1,4 +1,5 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import FieldButton from '../../components/FieldButton';
@@ -17,13 +18,17 @@ export default function Help() {
     } = useContext(AppContext);
 
     const lostPassword = () => {
+        // TODO refacto
         if (userConnected) {
             userService.signOut().then(() => {
-                // TODO move to service??
-
                 dispatch({
                     type: 'UPDATE_USER',
                     payload: { user: {} },
+                });
+
+                dispatch({
+                    type: 'UPDATE_ERROR',
+                    payload: { error: '' },
                 });
 
                 dispatch({
@@ -31,13 +36,15 @@ export default function Help() {
                     payload: { userConnected: false },
                 });
 
+                Cookies.set('userConnected', false);
+
                 router.push({
-                    pathname: '/user/forgot-password',
+                    pathname: '/account/forgot-password',
                     query: { email: user.email },
                 });
             });
         } else {
-            router.push('/user/forgot-password');
+            router.push('/account/forgot-password');
         }
     };
 
@@ -50,8 +57,8 @@ export default function Help() {
                         <NavLink
                             href={
                                 userConnected
-                                    ? '/user/activate-account'
-                                    : '/user/sign-in'
+                                    ? '/account/activate-account'
+                                    : '/account/sign-in'
                             }
                         >
                             Activer mon compte

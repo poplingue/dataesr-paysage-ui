@@ -31,7 +31,7 @@ export const DataProvider = ({ user, error, children }) => {
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
         error: error || null,
-        user: user && !user.error ? user : {},
+        user: user || {},
         userConnected:
             (user && Object.keys(user).length > 0 && !user.error) || false,
     };
