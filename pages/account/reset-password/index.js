@@ -1,4 +1,5 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import * as Yup from 'yup';
@@ -68,6 +69,7 @@ export default function Index() {
             .then(() => {
                 userService.signIn({ account, password }).then(async () => {
                     router.push('/').then(() => {
+                        Cookies.set('userConnected', true);
                         NotifService.info('Mot de passe mis à jour', 'valid');
                         window.location.reload();
                     });

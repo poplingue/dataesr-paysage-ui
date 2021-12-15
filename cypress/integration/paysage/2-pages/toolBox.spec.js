@@ -2,6 +2,7 @@ const baseUrl = Cypress.env('baseUrl');
 
 context('Person page', () => {
     beforeEach(() => {
+        cy.signIn();
         cy.visit(`${baseUrl}/object/person/1`);
     });
 

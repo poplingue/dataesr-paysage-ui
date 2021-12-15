@@ -1,4 +1,5 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
@@ -67,6 +68,7 @@ function SignIn() {
             .signIn(formData)
             .then(async () => {
                 router.push('/').then(() => {
+                    Cookies.set('userConnected', true);
                     NotifService.info(connectedMsg, 'valid');
                     window.location.reload();
                 });

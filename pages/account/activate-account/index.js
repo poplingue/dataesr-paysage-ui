@@ -28,10 +28,7 @@ const formSchema = [
 
 export default function Activate() {
     const router = useRouter();
-    const {
-        statePage: { userConnected },
-        dispatchPage: dispatch,
-    } = useContext(AppContext);
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
@@ -81,6 +78,8 @@ export default function Activate() {
                     type: 'UPDATE_USER_CONNECTION',
                     payload: { userConnected: false },
                 });
+
+                Cookies.set('userConnected', false);
 
                 router.push('/account/sign-in').then(() => {
                     NotifService.info('Compte activé', 'valid');
