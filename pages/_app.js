@@ -4,6 +4,11 @@ import { memo } from 'react';
 
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
+import {
+    genericErrorMsg,
+    inactiveUserError,
+    noTokensError,
+} from '../helpers/internalMessages';
 import { accountService } from '../services/Account.service';
 
 function MyApp({ Component, pageProps, user, error }) {
@@ -41,9 +46,13 @@ MyApp.getInitialProps = async ({ ctx }) => {
             return Promise.resolve({ user: data });
         })
         .catch((error) => {
+            if (error === inactiveUserError || error === noTokensError) {
+                return { error };
+            }
+
             console.log('==== getInitialProps ERROR ==== ', error);
 
-            return { error };
+            return Promise.reject(genericErrorMsg);
         });
 };
 

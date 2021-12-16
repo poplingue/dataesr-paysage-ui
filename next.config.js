@@ -12,8 +12,8 @@ module.exports = {
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
-        basePath: process.env.API_URL,
-        baseApiUrl: process.env.BASE_PATH,
+        basePath: process.env.BASE_PATH,
+        baseApiUrl: process.env.API_URL,
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,

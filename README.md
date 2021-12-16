@@ -48,8 +48,16 @@ yarn dev
 yarn cy:run-rec
 ```
 
-Account creation cypress test uses Mollie (firstName) Dickinson (lastName) as user.
+`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
 
+```
+{
+    email: 'mollie.dickinson@email.com',
+    firstName: 'Mollie',
+    lastName: 'Dickinson',
+    username: 'mollieD'
+}
+```
 ## IndexDB
 
 IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.

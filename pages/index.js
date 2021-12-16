@@ -45,7 +45,7 @@ function Home() {
                 </Row>
                 <Row>
                     <Col n="12" spacing="mb-3w">
-                        <Icon name="ri-user-3-line" size="xs">
+                        <Icon name="ri-user-3-line" size="xs" data-cy="user">
                             <h1 className="fs-28-32 m-0">
                                 {userConnected
                                     ? `Salut à toi ${user.username || ''}`

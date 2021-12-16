@@ -1,7 +1,7 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Person form page', () => {
-    it('should create a Mollie', () => {
+context('Account manager', () => {
+    it('should signup a Mollie user', () => {
         cy.visit(`${baseUrl}/account/signup`);
 
         const d = new Date();
@@ -25,12 +25,25 @@ context('Person form page', () => {
             .should('have.text', 'Activer mon compte');
     });
 
-    it('should signIn as Mollie', () => {
+    it('should signIn as Mollie Dickinson Inactive', () => {
         // cy.signup();
 
         cy.visit(`${baseUrl}/account/sign-in`);
 
         cy.get('[name="account"]').type('mollie.dickinson@email.com');
+        cy.get('[name="password"]').type('Polk000!');
+        cy.get('form').submit();
+
+        cy.wait(1000);
+        cy.get('.psg-header-page')
+            .find('h2')
+            .should('have.text', 'Activer mon compte');
+    });
+
+    it('should signIn as Mollie Dickinson Active', () => {
+        cy.visit(`${baseUrl}/account/sign-in`);
+
+        cy.get('[name="account"]').type('mollie-active.dickinson@email.com');
         cy.get('[name="password"]').type('Polk000!');
         cy.get('form').submit();
 

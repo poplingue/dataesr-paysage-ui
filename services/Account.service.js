@@ -1,8 +1,7 @@
-import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
-import { inactiveUserError } from '../helpers/internalMessages';
+import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import { authService } from './Auth.service';
 
 export const accountService = {
@@ -13,7 +12,7 @@ async function me(cookieTokens) {
     const tokens = cookieTokens || Cookies.get('tokens') || {};
 
     if ((tokens && !Object.keys(tokens).length) || !tokens) {
-        return Promise.reject('No tokens');
+        return Promise.reject(noTokensError);
     }
 
     // TODO refacto options
