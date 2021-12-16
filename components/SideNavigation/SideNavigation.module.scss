@@ -1,6 +1,6 @@
 .SideNav {
     &.Active {
-        background: #fff;
+        background: var(--grey-1000-75);
         box-shadow: 2px 2px 6px 1px rgb(0 0 0 / 0.3);
     }
 
@@ -14,7 +14,7 @@
     left: 1px;
     top: 7px;
     padding: 8px;
-    background: #fff;
+    background: var(--grey-1000-75);
 
     &.Active {
         border: 1px solid var(--grey-975);
