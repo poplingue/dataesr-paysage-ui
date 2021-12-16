@@ -35,8 +35,8 @@ Cypress.Commands.add('signup', () => {
 
     const firstName = `Mollie`;
     const lastName = `Dickinson`;
-    const email = `mollie.dickinson@email.com`;
-    const username = `mollieD`;
+    const email = `mollie-inactive.dickinson@email.com`;
+    const username = `mollie-inactive`;
 
     cy.get('[name="firstName"]').type(firstName);
     cy.get('[name="lastName"]').type(lastName);

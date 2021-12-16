@@ -48,14 +48,22 @@ yarn dev
 yarn cy:run-rec
 ```
 
-`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
+`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
 
 ```
 {
-    email: 'mollie.dickinson@email.com',
-    firstName: 'Mollie',
-    lastName: 'Dickinson',
-    username: 'mollieD'
+  email: 'mollie-active.dickinson@email.com',
+  password: '$2a$10$q5zK0MG.sO4KBlGfppof8OyZl/aPsbt7m0U9OwV5EWPJZk.5uL7Y2',
+  firstName: 'Mollie',
+  lastName: 'Dickinson',
+  username: 'mollie-active',
+}
+
+{
+  email: 'mollie-inactive.dickinson@email.com',
+  firstName: 'Mollie',
+  lastName: 'Dickinson',
+  username: 'mollie-inactive',
 }
 ```
 ## IndexDB

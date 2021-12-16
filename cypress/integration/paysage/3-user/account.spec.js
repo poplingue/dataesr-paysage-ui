@@ -30,7 +30,7 @@ context('Account manager', () => {
 
         cy.visit(`${baseUrl}/account/sign-in`);
 
-        cy.get('[name="account"]').type('mollie.dickinson@email.com');
+        cy.get('[name="account"]').type('mollie-inactive.dickinson@email.com');
         cy.get('[name="password"]').type('Polk000!');
         cy.get('form').submit();
 
@@ -48,8 +48,9 @@ context('Account manager', () => {
         cy.get('form').submit();
 
         cy.wait(1000);
-        cy.get('.psg-header-page')
-            .find('h2')
-            .should('have.text', 'Activer mon compte');
+        cy.get('[data-cy=user]').should(
+            'have.text',
+            'Salut à toi mollie-active'
+        );
     });
 });
