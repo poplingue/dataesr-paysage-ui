@@ -48,6 +48,8 @@ yarn dev
 yarn cy:run-rec
 ```
 
+Account creation cypress test uses Mollie (firstName) Dickinson (lastName) as user.
+
 ## IndexDB
 
 IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.

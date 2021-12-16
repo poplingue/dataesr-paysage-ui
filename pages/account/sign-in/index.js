@@ -44,8 +44,6 @@ function SignIn() {
     } = useContext(AppContext);
 
     useEffect(() => {
-        console.log('==== USER ==== ', user);
-
         if (error && error === inactiveUserError) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);

@@ -27,14 +27,12 @@ function Home() {
     }, [error, userConnected]);
 
     useEffect(() => {
-        const error = user && user.error;
-
         if (error && error === inactiveUserError && tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, tokens, user, user.error, userConnected]);
+    }, [router, tokens, error, userConnected]);
 
     return (
         <Layout>

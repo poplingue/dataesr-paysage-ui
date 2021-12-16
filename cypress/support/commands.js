@@ -27,6 +27,27 @@ Cypress.Commands.add('signOut', () => {
 
     cy.wait(2000);
 });
+
+Cypress.Commands.add('signup', () => {
+    const baseUrl = Cypress.env('baseUrl');
+
+    cy.visit(`${baseUrl}/account/signup`);
+
+    const firstName = `Mollie`;
+    const lastName = `Dickinson`;
+    const email = `mollie.dickinson@email.com`;
+    const username = `mollieD`;
+
+    cy.get('[name="firstName"]').type(firstName);
+    cy.get('[name="lastName"]').type(lastName);
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('Polk000!');
+    cy.get('[name="confirm_password"]').type('Polk000!');
+    cy.get('[name="username"]').type(username);
+
+    cy.get('form').submit();
+});
+
 //
 //
 // -- This is a child command --

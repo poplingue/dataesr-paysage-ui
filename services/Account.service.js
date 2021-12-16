@@ -3,6 +3,7 @@ import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
 import { inactiveUserError } from '../helpers/internalMessages';
+import { authService } from './Auth.service';
 
 export const accountService = {
     me,

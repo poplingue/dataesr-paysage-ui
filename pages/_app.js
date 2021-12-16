@@ -36,7 +36,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
     return await accountService
         .me(tokens)
         .then(({ data }) => {
-            console.log('==== getInitialProps User ==== ', data);
+            console.log('==== getInitialProps USER ==== ', data);
 
             return Promise.resolve({ user: data });
         })
