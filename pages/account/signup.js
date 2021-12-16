@@ -67,7 +67,7 @@ function Signup() {
     const validationSchema = Yup.object().shape({
         username: Yup.string()
             .required('Le pseudo est obligatoire')
-            .matches('^(?=.*[aA-zZ]).{2,18}$', 'Format invalide'),
+            .matches('^(?=.*[aA-zZ]).{2,26}$', 'Format invalide'),
         email: Yup.string()
             .required(`${emailMandatoryMsg}`)
             .email(`${emailErrorMsg}`),
@@ -76,10 +76,10 @@ function Signup() {
             .matches(`${emailPattern}`, `${emailPatternHint}`),
         firstName: Yup.string()
             .required('Le prénom est obligatoire')
-            .matches('^(?=.*[aA-zZ]).{2,18}$', 'Format invalide'),
+            .matches('^(?=.*[aA-zZ]).{2,26}$', 'Format invalide'),
         lastName: Yup.string()
             .required('Le nom est obligatoire')
-            .matches('^(?=.*[aA-zZ]).{2,18}$', 'Format invalide'),
+            .matches('^(?=.*[aA-zZ]).{2,26}$', 'Format invalide'),
         confirm_password: Yup.string()
             .required()
             .oneOf(

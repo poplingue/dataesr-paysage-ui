@@ -48,6 +48,23 @@ yarn dev
 yarn cy:run-rec
 ```
 
+`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
+
+```
+{
+  email: 'mollie-active.dickinson@email.com',
+  firstName: 'Mollie',
+  lastName: 'Dickinson',
+  username: 'mollie-active',
+}
+
+{
+  email: 'mollie-inactive.dickinson@email.com',
+  firstName: 'Mollie',
+  lastName: 'Dickinson',
+  username: 'mollie-inactive',
+}
+```
 ## IndexDB
 
 IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.

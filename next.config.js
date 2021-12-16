@@ -3,15 +3,6 @@ const withTM = require('@vercel/edge-functions-ui/transpile')();
 const withSass = require('@zeit/next-sass');
 module.exports = withSass();
 
-const baseApiUrl =
-    process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3002/api'
-        : process.env.API_URL;
-const basePath =
-    process.env.NODE_ENV === 'development'
-        ? 'http://localhost:3002'
-        : process.env.BASE_PATH;
-
 module.exports = withTM();
 module.exports = {
     serverRuntimeConfig: {
@@ -21,8 +12,8 @@ module.exports = {
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
-        basePath,
-        baseApiUrl,
+        basePath: process.env.BASE_PATH,
+        baseApiUrl: process.env.API_URL,
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,

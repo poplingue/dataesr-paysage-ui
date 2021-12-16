@@ -1,4 +1,4 @@
-import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
@@ -27,14 +27,12 @@ function Home() {
     }, [error, userConnected]);
 
     useEffect(() => {
-        const error = user && user.error;
-
         if (error && error === inactiveUserError && tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, tokens, user, user.error, userConnected]);
+    }, [router, tokens, error, userConnected]);
 
     return (
         <Layout>
@@ -47,13 +45,11 @@ function Home() {
                 </Row>
                 <Row>
                     <Col n="12" spacing="mb-3w">
-                        <Icon name="ri-user-3-line" size="xs">
-                            <h1 className="fs-28-32 m-0">
-                                {userConnected
-                                    ? `Salut à toi ${user.username || ''}`
-                                    : 'Salut'}
-                            </h1>
-                        </Icon>
+                        <h2 data-cy="user">
+                            {userConnected
+                                ? `Salut à toi ${user.username || ''}`
+                                : 'Salut'}
+                        </h2>
                     </Col>
                     <Col n="12">
                         <Row gutters>

@@ -24,7 +24,7 @@ async function handleResponse(response) {
         try {
             data = text && JSON.parse(text);
         } catch (strError) {
-            return Promise.reject(text || strError);
+            return Promise.reject(strError || text);
         }
 
         if (!response.ok) {

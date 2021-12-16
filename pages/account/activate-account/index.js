@@ -1,17 +1,20 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import AuthForm from '../../../components/AuthForm';
 import FieldButton from '../../../components/FieldButton';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
 import { AppContext } from '../../../context/GlobalState';
+
 import {
+    activateAdviceMsg,
     activationCodePattern,
     codeMandatoryMsg,
     connectAdviceMsg,
+    inactiveUserError,
     tokenMissingError,
 } from '../../../helpers/internalMessages';
 import { authService } from '../../../services/Auth.service';
@@ -28,13 +31,22 @@ const formSchema = [
 
 export default function Activate() {
     const router = useRouter();
-    const { dispatchPage: dispatch } = useContext(AppContext);
+    const {
+        statePage: { error },
+        dispatchPage: dispatch,
+    } = useContext(AppContext);
 
     const validationSchema = Yup.object().shape({
         activationCode: Yup.string()
             .required(codeMandatoryMsg)
             .matches(activationCodePattern, 'Code non valide'),
     });
+
+    useEffect(() => {
+        if (error && error === inactiveUserError) {
+            NotifService.info(activateAdviceMsg, 'neutral', 10000);
+        }
+    }, [error, router]);
 
     const getNewCode = () => {
         authService
@@ -67,23 +79,27 @@ export default function Activate() {
         authService
             .activate(formData)
             .then(() => {
-                Cookies.remove('tokens');
+                authService.signOut().then(() => {
+                    dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: { error: '' },
+                    });
 
-                dispatch({
-                    type: 'UPDATE_ERROR',
-                    payload: { error: '' },
-                });
+                    dispatch({
+                        type: 'UPDATE_USER_CONNECTION',
+                        payload: { userConnected: false },
+                    });
 
-                dispatch({
-                    type: 'UPDATE_USER_CONNECTION',
-                    payload: { userConnected: false },
-                });
+                    if (Cookies && Cookies.get('userConnected')) {
+                        Cookies.set('userConnected', false);
+                    }
 
-                Cookies.set('userConnected', false);
-
-                router.push('/account/sign-in').then(() => {
-                    NotifService.info('Compte activé', 'valid');
-                    window.location.reload();
+                    router.push('/account/sign-in').then(() => {
+                        NotifService.info(
+                            'Compte activé, connectez-vous',
+                            'valid'
+                        );
+                    });
                 });
             })
             .catch((err) => {
