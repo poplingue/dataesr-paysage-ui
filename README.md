@@ -53,7 +53,6 @@ yarn cy:run-rec
 ```
 {
   email: 'mollie-active.dickinson@email.com',
-  password: '$2a$10$q5zK0MG.sO4KBlGfppof8OyZl/aPsbt7m0U9OwV5EWPJZk.5uL7Y2',
   firstName: 'Mollie',
   lastName: 'Dickinson',
   username: 'mollie-active',
