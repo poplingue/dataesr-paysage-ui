@@ -29,8 +29,8 @@ context('IndexDB', () => {
 
     it('should save selected values on structure form page', () => {
         cy.visit(`${baseUrl}/tests/structure`);
-        cy.get('[data-cy="aisne-1"]').find('label').click({ force: true });
-        cy.get('[data-cy="allier-2"]').find('label').click({ force: true });
+        cy.get('[data-cy="aisne-1"]').find('input').check({ force: true });
+        cy.get('[data-cy="allier-2"]').find('input').check({ force: true });
         cy.reload();
         cy.wait(3000);
         cy.get('[data-cy="aisne-1"]').find('input').should('be.checked');
