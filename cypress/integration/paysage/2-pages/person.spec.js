@@ -7,6 +7,10 @@ context('Person form page', () => {
         cy.visit(`${baseUrl}/create/person`);
     });
 
+    afterEach(() => {
+        cy.signOut();
+    });
+
     it('should display current page BreadCrumbs', () => {
         cy.get('[data-cy="current-page"]')
             .find('a')

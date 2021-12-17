@@ -7,6 +7,10 @@ context('Structure form page', () => {
         cy.visit(`${baseUrl}/create/structure`);
     });
 
+    afterEach(() => {
+        cy.signOut();
+    });
+
     it('should display current page BreadCrumbs', () => {
         cy.get('[data-cy="current-page"]')
             .find('a')
