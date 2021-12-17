@@ -20,9 +20,7 @@ context('Account manager', () => {
         cy.get('form').submit();
 
         cy.wait(1000);
-        cy.get('.psg-header-page')
-            .find('h2')
-            .should('have.text', 'Activer mon compte');
+        cy.get('.cy-notif-valid').should('exist');
     });
 
     it('should signIn as Mollie Dickinson Inactive', () => {
