@@ -67,7 +67,7 @@ function SignIn() {
                 router.push('/').then(() => {
                     Cookies.set('userConnected', true);
                     NotifService.info(connectedMsg, 'valid');
-                    window.location.reload();
+                    window.location = '/';
                 });
             })
             .catch((err) => {

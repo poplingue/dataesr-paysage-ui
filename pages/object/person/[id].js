@@ -7,21 +7,34 @@ import SideNavigation from '../../../components/SideNavigation';
 import ToolBox from '../../../components/ToolBox';
 import { PersonPageSkeleton } from '../../../helpers/constants';
 
-export default function Object() {
+export default function Object(props) {
     const router = useRouter();
     const { id } = router.query;
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Une Personne"
-                          highlight="Last update on Tuesday 5th of September 2020"/>
+            <HeaderLayout
+                pageTitle="Une Personne"
+                highlight="Last update on Tuesday 5th of September 2020"
+            />
             <SideNavigation items={PersonPageSkeleton}>
-                <Person id={id}>
+                <Person id={id} fame={props.fame} name={props.name}>
                     <ToolBox>
-                        <FieldButton title="Tools"/>
+                        <FieldButton title="Tools" />
                     </ToolBox>
                 </Person>
             </SideNavigation>
         </Layout>
     );
+}
+
+export async function getServerSideProps() {
+    // fetch data Person by id
+    return {
+        props: {
+            id: 0,
+            name: 'Personne 0',
+            fame: true,
+        },
+    };
 }

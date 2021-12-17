@@ -18,7 +18,7 @@ const components = {
     price: Price,
 };
 
-export default function Person({ children }) {
+export default function Person({ fame, children }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
     return (
@@ -56,3 +56,11 @@ export default function Person({ children }) {
         </PageTheme>
     );
 }
+
+Person.getServerSideProps = () => {
+    return {
+        props: {
+            name: 'Sœur Emmanuelle',
+        },
+    };
+};

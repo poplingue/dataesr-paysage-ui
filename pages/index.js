@@ -46,7 +46,7 @@ function Home() {
                 <Row>
                     <Col n="12" spacing="mb-3w">
                         <h2 data-cy="user">
-                            {userConnected
+                            {userConnected && user
                                 ? `Salut à toi ${user.username || ''}`
                                 : 'Salut'}
                         </h2>

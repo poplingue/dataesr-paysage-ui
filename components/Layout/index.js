@@ -53,27 +53,27 @@ export default function Layout({ children, headTitle }) {
         authService.signOut().then(() => {
             NotifService.info(disconnectedMsg, 'valid');
 
-            if (userConnected) {
-                dispatch({
-                    type: 'UPDATE_USER',
-                    payload: { user: {} },
-                });
+            dispatch({
+                type: 'UPDATE_USER',
+                payload: { user: {} },
+            });
 
-                dispatch({
-                    type: 'UPDATE_USER_CONNECTION',
-                    payload: { userConnected: false },
-                });
+            dispatch({
+                type: 'UPDATE_USER_CONNECTION',
+                payload: { userConnected: false },
+            });
 
-                // TODO still useful??
-                dispatch({
-                    type: 'UPDATE_ERROR',
-                    payload: { error: '' },
-                });
+            // TODO still useful??
+            dispatch({
+                type: 'UPDATE_ERROR',
+                payload: { error: '' },
+            });
 
+            if (Cookies && Cookies.get('userConnected')) {
                 Cookies.set('userConnected', false);
             }
 
-            router.push('/account/sign-in');
+            window.location = '/account/sign-in';
         });
     };
 

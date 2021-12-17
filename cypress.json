@@ -7,6 +7,6 @@
   "viewportHeight": 1080,
   "browser": "firefox",
   "env": {
-    "baseUrl": "http://localhost:3002"
+    "baseUrl": "https://dataesr-paysage.vercel.app"
   }
 }
