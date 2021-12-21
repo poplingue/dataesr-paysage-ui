@@ -6,6 +6,9 @@
 .ShowMore,
 .ShowLess {
     margin: 0 10px 10px 0;
+    .ri-lg {
+        vertical-align: middle;
+    }
 }
 
 .ShowMore:focus {

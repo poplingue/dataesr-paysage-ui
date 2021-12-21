@@ -1,14 +1,14 @@
 import { Col, Container, Icon, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import FieldButton from '../../../components/FieldButton';
-import HeaderLayout from '../../../components/HeaderLayout';
-import Layout from '../../../components/Layout';
-import NavLink from '../../../components/NavLink';
-import Person from '../../../components/Person';
-import SideNavigation from '../../../components/SideNavigation';
-import ToolBox from '../../../components/ToolBox';
-import { PersonPageSkeleton } from '../../../helpers/constants';
-import useCSSProperty from '../../../hooks/useCSSProperty';
+import FieldButton from '../../../../components/FieldButton';
+import HeaderLayout from '../../../../components/HeaderLayout';
+import Layout from '../../../../components/Layout';
+import NavLink from '../../../../components/NavLink';
+import Person from '../../../../components/Person';
+import SideNavigation from '../../../../components/SideNavigation';
+import ToolBox from '../../../../components/ToolBox';
+import { PersonPageSkeleton } from '../../../../helpers/constants';
+import useCSSProperty from '../../../../hooks/useCSSProperty';
 
 export default function Object(props) {
     const router = useRouter();

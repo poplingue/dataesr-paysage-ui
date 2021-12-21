@@ -1,10 +1,14 @@
 import { Col, Container, Row } from '@dataesr/react-dsfr';
-import { goToSection, sectionUniqueId } from '../../../helpers/utils';
+import { useRouter } from 'next/router';
 import CardInfo from '../../CardInfo';
-import IconButton from '../../IconButton';
+import LinkTo from '../../LinkTo';
 import ShowMoreList from '../../ShowMoreList';
 
 export default function News() {
+    const {
+        query: { id },
+    } = useRouter();
+
     return (
         <>
             <Container fluid>
@@ -67,17 +71,9 @@ export default function News() {
                     </ShowMoreList>
                 </Row>
                 <Row gutters spacing="px-2w">
-                    <IconButton
-                        size="medium"
-                        square={false}
-                        onClick={(e) =>
-                            goToSection(
-                                e,
-                                sectionUniqueId('Présence sur le web')
-                            )
-                        }
-                        title="Accéder à toutes les dépêches"
-                        icon="ri-arrow-down-line"
+                    <LinkTo
+                        text="Voir toutes les dépêches"
+                        href={`/object/person/${id}/news`}
                     />
                 </Row>
             </Container>

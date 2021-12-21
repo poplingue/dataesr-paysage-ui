@@ -22,7 +22,6 @@ export default function IconButton({
             >
                 <div>
                     <Icon
-                        verticalAlign={!square}
                         color={color}
                         name={icon}
                         size="lg"

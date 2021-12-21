@@ -35,7 +35,6 @@ export default function CardInfo({ link, date, title, source, externalLink }) {
                         <div className={`fs-12-12 ${styles.LinkLabel}`}>
                             <Icon
                                 name="ri-arrow-right-line"
-                                verticalAlign
                                 size="lg"
                                 as="span"
                                 iconPosition="right"

@@ -7,7 +7,7 @@ export default function LinkTo({ href, text, icon }) {
     return (
         <div className={styles.LinkTo}>
             <NavLink href={href}>
-                <Icon verticalAlign iconPosition="right" name={icon} size="lg">
+                <Icon iconPosition="right" name={icon} size="lg">
                     <>{text}</>
                 </Icon>
             </NavLink>
