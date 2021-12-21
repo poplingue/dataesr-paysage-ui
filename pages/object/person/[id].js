@@ -1,15 +1,19 @@
+import { Col, Container, Icon, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import FieldButton from '../../../components/FieldButton';
 import HeaderLayout from '../../../components/HeaderLayout';
 import Layout from '../../../components/Layout';
+import NavLink from '../../../components/NavLink';
 import Person from '../../../components/Person';
 import SideNavigation from '../../../components/SideNavigation';
 import ToolBox from '../../../components/ToolBox';
 import { PersonPageSkeleton } from '../../../helpers/constants';
+import useCSSProperty from '../../../hooks/useCSSProperty';
 
 export default function Object(props) {
     const router = useRouter();
     const { id } = router.query;
+    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
     return (
         <Layout>
@@ -20,7 +24,23 @@ export default function Object(props) {
             <SideNavigation items={PersonPageSkeleton}>
                 <Person id={id} fame={props.fame} name={props.name}>
                     <ToolBox>
-                        <FieldButton title="Tools" />
+                        <Container>
+                            <Row gutters spacing="pb-2w">
+                                <Col n="12">
+                                    <FieldButton title="Tools" />
+                                </Col>
+                                <Col>
+                                    <Icon name="ri-edit-line" color={pink}>
+                                        <NavLink
+                                            className="fs-14-24"
+                                            href={`/update/person/${id}`}
+                                        >
+                                            Modifier
+                                        </NavLink>
+                                    </Icon>
+                                </Col>
+                            </Row>
+                        </Container>
                     </ToolBox>
                 </Person>
             </SideNavigation>

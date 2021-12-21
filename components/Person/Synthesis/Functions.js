@@ -3,7 +3,7 @@ import CardLink from '../../CardLink';
 
 export default function Functions() {
     return (
-        <Container>
+        <Container fluid>
             <Row gutters>
                 <Col>
                     <CardLink

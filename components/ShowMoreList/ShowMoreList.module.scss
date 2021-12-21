@@ -1,0 +1,23 @@
+.Panel {
+    height: 250px;
+    overflow: hidden;
+}
+
+.ShowMore,
+.ShowLess {
+    margin: 0 10px 10px 0;
+}
+
+.ShowMore:focus {
+    & + .ShowLess + .Panel {
+        height: auto;
+        overflow: visible;
+    }
+}
+
+.ShowLess:focus {
+    & + .Panel {
+        height: 250px;
+        overflow: hidden;
+    }
+}

@@ -1,11 +1,13 @@
-import { Col, Title } from '@dataesr/react-dsfr';
+import { Col, Container, Row, Title } from '@dataesr/react-dsfr';
 import { sectionUniqueId } from '../../../helpers/utils';
 import Contact from './Contact';
 import Functions from './Functions';
+import News from './News';
 
 const components = {
     functions: Functions,
     contact: Contact,
+    news: News,
 };
 
 export default function Synthesis({ content }) {
@@ -19,10 +21,20 @@ export default function Synthesis({ content }) {
 
                 return (
                     <div key={title} data-section={dataSection}>
-                        <Title as="h3" look="h6">
-                            {title}
-                        </Title>
-                        <Col spacing="pb-8w">{Component && <Component />}</Col>
+                        <Container fluid>
+                            <Row spacing="px-2w">
+                                <Col>
+                                    <Title as="h3" look="h6">
+                                        {title}
+                                    </Title>
+                                </Col>
+                            </Row>
+                            <Row spacing="px-2w">
+                                <Col spacing="pb-8w">
+                                    {Component && <Component />}
+                                </Col>
+                            </Row>
+                        </Container>
                     </div>
                 );
             })}

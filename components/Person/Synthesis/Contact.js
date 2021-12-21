@@ -1,9 +1,9 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import { Col, Container, Row, Tag } from '@dataesr/react-dsfr';
 import CalloutPerson from '../../CalloutPerson';
 
 export default function Contact() {
     return (
-        <Container>
+        <Container fluid>
             <Row gutters>
                 <Col>
                     <CalloutPerson
@@ -16,6 +16,37 @@ export default function Contact() {
                         title="Email"
                         description="madameBilly@email.com"
                     />
+                </Col>
+                <Col n="12" spacing="py-2w">
+                    <Row>
+                        <Col n="2">
+                            <Tag
+                                title="Linkedin"
+                                href="www.linkedin.com"
+                                icon="ri-external-link-line"
+                            >
+                                Linkedin
+                            </Tag>
+                        </Col>
+                        <Col n="2">
+                            <Tag
+                                title="Wikipédia"
+                                href="www.wikipedia.com"
+                                icon="ri-external-link-line"
+                            >
+                                Wikipédia
+                            </Tag>
+                        </Col>
+                        <Col n="2">
+                            <Tag
+                                title="Twitter"
+                                href="www.twitter.com"
+                                icon="ri-external-link-line"
+                            >
+                                Twitter
+                            </Tag>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
         </Container>

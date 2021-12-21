@@ -7,7 +7,7 @@ import {
 } from '@dataesr/react-dsfr';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { sectionUniqueId } from '../../helpers/utils';
+import { goToSection, sectionUniqueId } from '../../helpers/utils';
 import useScroll from '../../hooks/useScroll';
 import useViewport from '../../hooks/useViewport';
 import styles from './SideNavigation.module.scss';
@@ -23,12 +23,6 @@ export default function Navigation({ items }) {
     const [offsetTop, setOffsetTop] = useState(null);
     const [initOffsetTop, setInitOffsetTop] = useState(null);
     const { scrollTop, scrollingDown } = useScroll();
-
-    const goToSection = (e, dataSection) => {
-        const section = document.querySelector(`[data-section=${dataSection}]`);
-        const { left, top } = section.getBoundingClientRect();
-        window.scrollTo(left, top + window.scrollY);
-    };
 
     useEffect(() => {
         if (!initOffsetTop) {
@@ -147,7 +141,7 @@ export default function Navigation({ items }) {
                                                             )
                                                         )
                                                     }
-                                                    href="/"
+                                                    href=""
                                                     key={subSectionTitle}
                                                 >
                                                     {subSectionTitle}
@@ -170,7 +164,7 @@ export default function Navigation({ items }) {
                                             )
                                         )
                                     }
-                                    href="/"
+                                    href=""
                                     key={`${title}-${content.length}-${i}`}
                                 >
                                     {title}

@@ -169,3 +169,14 @@ export function getCSSValue(property) {
 export function setCSSProperty(property, value) {
     document.documentElement.style.setProperty(property, value);
 }
+
+/**
+ *
+ * @param e
+ * @param dataSection
+ */
+export const goToSection = (e, dataSection) => {
+    const section = document.querySelector(`[data-section=${dataSection}]`);
+    const { left, top } = section.getBoundingClientRect();
+    window.scrollTo(left, top + window.scrollY);
+};
