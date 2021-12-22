@@ -4,7 +4,7 @@ context('Person form page', () => {
     beforeEach(() => {
         cy.deleteIndexDB();
         cy.signIn();
-        cy.visit(`${baseUrl}/create/person`);
+        cy.visit(`${baseUrl}/update/person`);
     });
 
     afterEach(() => {

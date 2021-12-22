@@ -158,6 +158,13 @@ const reducersForm = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_UPDATE_OBJECT_ID: {
+            return {
+                ...state,
+                updateObjectId: action.payload.updateObjectId,
+            };
+        }
+
         default:
             break;
     }

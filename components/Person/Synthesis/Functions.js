@@ -7,7 +7,7 @@ export default function Functions() {
             <Row gutters>
                 <Col>
                     <CardLink
-                        link="/object/structure/1"
+                        link="/object/structure/0"
                         date="du 01/01/2019 au 31/12/2022"
                         title="Une fonction très très importante"
                         structure="Université de Nanterre"

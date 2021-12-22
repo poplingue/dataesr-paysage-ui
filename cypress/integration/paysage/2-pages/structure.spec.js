@@ -4,7 +4,7 @@ context('Structure form page', () => {
     beforeEach(() => {
         cy.deleteIndexDB();
         cy.signIn();
-        cy.visit(`${baseUrl}/create/structure`);
+        cy.visit(`${baseUrl}/update/structure`);
     });
 
     afterEach(() => {

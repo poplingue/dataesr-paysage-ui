@@ -7,8 +7,8 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/create/person',
-    pathname: '/create/[object]',
+    route: '/update/person',
+    pathname: '/update/[object]',
     query: { object: 'person' },
 }));
 

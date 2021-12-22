@@ -3,31 +3,39 @@ import React from 'react';
 import { AppContext } from '../context/GlobalState';
 
 const Providers = (props, options) => {
-    return <AppContext.Provider value={{
-        stateList: options.stateList || {
-            exportMode: true,
-        },
-        stateForm: options.stateForm || {
-            darkTheme: false,
-            storeObjects: ['create/person'],
-            departments: [],
-            formName: 'create/person',
-            forms: {
-                'create/person': {
-                    'create/person@section/infinite#0': 'test 1',
-                    'create/person@section/infinite#1': 'test 2',
-                    'create/person@section/infinite#2': 'test 3'
-                }, 'create/structure': {}
-            }
-        },
-        dispatchForm: () => {
-        }
-    }
-    }>{props.children}</AppContext.Provider>;
+    return (
+        <AppContext.Provider
+            value={{
+                stateList: options.stateList || {
+                    exportMode: true,
+                },
+                stateForm: options.stateForm || {
+                    darkTheme: false,
+                    storeObjects: ['update/person'],
+                    departments: [],
+                    formName: 'update/person',
+                    forms: {
+                        'update/person': {
+                            'update/person@section/infinite#0': 'test 1',
+                            'update/person@section/infinite#1': 'test 2',
+                            'update/person@section/infinite#2': 'test 3',
+                        },
+                        'update/structure': {},
+                    },
+                },
+                dispatchForm: () => {},
+            }}
+        >
+            {props.children}
+        </AppContext.Provider>
+    );
 };
 
 const customRender = (ui, options = {}) => {
-    return render(ui, { wrapper: props => Providers(props, options), ...options });
+    return render(ui, {
+        wrapper: (props) => Providers(props, options),
+        ...options,
+    });
 };
 
 // re-export everything
