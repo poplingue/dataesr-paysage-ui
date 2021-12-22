@@ -32,7 +32,7 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { disconnectedMsg } from '../../helpers/internalMessages';
-import { authService } from '../../services/Auth.service';
+import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import NavLink from '../NavLink';
 
@@ -41,7 +41,6 @@ const { publicRuntimeConfig } = getConfig();
 // TODO add propTypes
 export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
-    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {

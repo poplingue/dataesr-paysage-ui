@@ -9,7 +9,7 @@ import {
     inactiveUserError,
     noTokensError,
 } from '../helpers/internalMessages';
-import { accountService } from '../services/Account.service';
+import accountService from '../services/Account.service';
 
 function MyApp({ Component, pageProps, user, error }) {
     const MemoizedComponent = memo(Component);

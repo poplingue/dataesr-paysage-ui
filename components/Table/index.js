@@ -11,10 +11,11 @@ export default function Table({ columns, data }) {
 
     const DeleteButton = (props) => {
         const { style: red } = useCSSProperty('--error-main-525');
+        const { style: white } = useCSSProperty('--grey-1000');
 
         return (
             <FieldButton
-                colors={[red, '#fff']}
+                colors={[red, white]}
                 onClick={() => deleteRow(props)}
                 title="Supprimer"
             />

@@ -20,7 +20,7 @@ export const configValidator = {
     genre: {
         required: true,
     },
-    firstname: {
+    firstName: {
         required: true,
         validators: [
             (value) => ({
@@ -32,7 +32,7 @@ export const configValidator = {
     satisfaction: {
         required: true,
     },
-    lastname: {
+    lastName: {
         required: false,
         validators: [
             (value) => ({

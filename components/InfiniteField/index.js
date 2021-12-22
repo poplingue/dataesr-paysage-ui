@@ -26,6 +26,7 @@ function InfiniteField({ children, title, section }) {
     } = useRouter();
     const formName = getFormName(pathname, object);
     const { style: dark } = useCSSProperty('--grey-425');
+    const { style: white } = useCSSProperty('--grey-1000');
 
     const deleteField = async (ref) => {
         const element = ref.querySelectorAll('[data-field]');
@@ -127,7 +128,7 @@ function InfiniteField({ children, title, section }) {
                     </Col>
                     <Col>
                         <FieldButton
-                            colors={[dark, '#fff']}
+                            colors={[dark, white]}
                             icon="ri-add-line"
                             dataTestId="btn-add"
                             onClick={() => setNumber(number + 1)}

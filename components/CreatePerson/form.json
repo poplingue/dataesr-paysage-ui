@@ -33,12 +33,12 @@
           {
             "title": "Nom",
             "type": "text",
-            "validatorId": "lastname"
+            "validatorId": "lastName"
           },
           {
             "title": "Prénom",
             "type": "text",
-            "validatorId": "firstname"
+            "validatorId": "firstName"
           },
           {
             "title": "Autre dénomination",

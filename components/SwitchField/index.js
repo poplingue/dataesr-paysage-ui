@@ -18,6 +18,7 @@ const config = {
 
 export default function SwitchField({
     type,
+    value,
     validatorId,
     title,
     infinite,
@@ -42,6 +43,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
+                        value={value}
                         infinite={infinite}
                         index={index}
                         section={section}

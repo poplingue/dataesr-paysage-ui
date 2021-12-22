@@ -1,5 +1,6 @@
 import { Button, Icon } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './IconButton.module.scss';
 
 export default function IconButton({
@@ -10,12 +11,14 @@ export default function IconButton({
     square,
     size,
 }) {
+    const { style: white } = useCSSProperty('--grey-1000');
+
     return (
         <div className={`${styles.Button} ${square ? styles.Square : ''}`}>
             <Button
                 onClick={onClick}
                 title={title}
-                colors={[color, '#fff']}
+                colors={[color, white]}
                 secondary
                 size={size === 'medium' && 'sm'}
                 className={size === 'medium' && styles.Medium}

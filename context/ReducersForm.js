@@ -5,6 +5,7 @@ const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
             const { value, formName, uid } = action.payload;
+
             const formIndex = state.forms.findIndex(
                 (obj) => Object.keys(obj)[0] === formName
             );
@@ -93,7 +94,7 @@ const reducersForm = (state, action) => {
         }
 
         case ACTIONS.DELETE_FORM_FIELD_LIST: {
-            const { formName, uids, fieldsNumber } = action.payload;
+            const { formName, uids } = action.payload;
             const currentForm = getForm(state.forms, formName);
             let formIndex;
             let indexes = [];
@@ -163,6 +164,23 @@ const reducersForm = (state, action) => {
                 ...state,
                 updateObjectId: action.payload.updateObjectId,
             };
+        }
+
+        case ACTIONS.CLEAR_FORM: {
+            const { formName } = action.payload;
+
+            const x = {
+                ...state,
+                forms: [
+                    ...state.forms.map((form) => {
+                        return Object.keys(form)[0] === formName
+                            ? { [formName]: [] }
+                            : form;
+                    }),
+                ],
+            };
+
+            return x;
         }
 
         default:

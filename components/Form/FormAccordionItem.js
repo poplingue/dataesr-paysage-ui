@@ -30,6 +30,7 @@ export default function FormAccordionItem({
     } = useContext(AppContext);
 
     const { style: green } = useCSSProperty('--success-main-525');
+    const { style: white } = useCSSProperty('--grey-1000');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
@@ -93,7 +94,7 @@ export default function FormAccordionItem({
             });
 
             const { msg, type } = notif[valid ? 'valid' : 'error'];
-            NotifService.techInfo(msg, type);
+            NotifService.info(msg, type);
         }
     };
 
@@ -105,6 +106,7 @@ export default function FormAccordionItem({
                     infinite,
                     staticValues,
                     validatorId,
+                    value,
                 } = field;
                 const fieldTitle = field.title;
 
@@ -116,6 +118,7 @@ export default function FormAccordionItem({
                                     <SwitchField
                                         updateValidSection={updateValidSection}
                                         validatorId={validatorId}
+                                        value={value}
                                         section={newTitle}
                                         type={fieldType}
                                         title={fieldTitle}
@@ -147,7 +150,7 @@ export default function FormAccordionItem({
                         <Col n="2" className="txt-right">
                             <FieldButton
                                 disabled={disabled}
-                                colors={disabled ? [] : ['#fff', green]}
+                                colors={disabled ? [] : [white, green]}
                                 onClick={save}
                                 title="Sauvegarder"
                                 dataTestId={`${cleanString(
