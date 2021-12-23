@@ -26,11 +26,11 @@ export default function CustomSelect({
     updateCheck,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [options, setOptions] = useState([]);
-    const [selectValue, setSelectValue] = useState('');
+    const [selectValue, setSelectValue] = useState(newValue || '');
     const {
         pathname,
         query: { object },
@@ -78,6 +78,7 @@ export default function CustomSelect({
         const mustBeUpdated = selectValue !== fieldValue;
 
         if (
+            !updateObjectId &&
             formName &&
             getForm(forms, formName) &&
             (!selectValue || mustBeUpdated)
@@ -90,6 +91,7 @@ export default function CustomSelect({
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
+            // TODO rto emove
             fetch(getUrl(title))
                 .then((res) => res.json())
                 .then(() => {
@@ -138,7 +140,8 @@ export default function CustomSelect({
                 data-field={uid}
                 data-testid={uid}
                 onChange={onChange}
-                selected={selectValue}
+                selected={selectValue || newValue}
+                hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={title}
                 options={options}
             />

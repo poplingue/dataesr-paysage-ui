@@ -16,6 +16,11 @@
             "validatorId": "idref"
           },
           {
+            "title": "Uai",
+            "type": "text",
+            "validatorId": "uai"
+          },
+          {
             "title": "Satisfaction",
             "type": "checkbox",
             "validatorId": "satisfaction",
@@ -49,7 +54,12 @@
           {
             "title": "Genre",
             "type": "select",
-            "validatorId": "genre"
+            "validatorId": "gender",
+            "staticValues": [
+              "m",
+              "f",
+              "n"
+            ]
           }
         ]
       }

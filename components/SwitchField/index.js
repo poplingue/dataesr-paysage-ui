@@ -52,6 +52,7 @@ export default function SwitchField({
             case 'select':
                 return (
                     <CustomSelect
+                        newValue={value}
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}

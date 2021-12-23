@@ -1,65 +1,79 @@
+const mapFields = {
+    wikidata: 'identifiers',
+    idref: 'identifiers',
+    uai: 'identifiers',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    gender: 'gender.type',
+};
+
 export const dataFormService = {
     mapping: ({ form }, data) => {
-        const o = {
-            wikidata: 'identifiers',
-            firstName: 'firstName',
-        };
+        let copy = [...form];
+        let newForm = [];
+        let section = {};
 
-        let newForm = [...form];
-        let f = [];
-        let v = {};
+        for (let i = 0; i < copy.length; i++) {
+            let contentSection = copy[i].content;
+            section = { ...copy[i] };
+            let fieldWithValue;
+            let newContent = [];
 
-        for (let i = 0; i < newForm.length; i++) {
-            let section = newForm[i].content;
-            v = { ...newForm[i] };
-            let w;
-
-            for (let j = 0; j < section.length; j++) {
-                const path = o[section[j].validatorId];
+            for (let k = 0; k < contentSection.length; k++) {
+                let newField = null;
+                const path = mapFields[contentSection[k].validatorId];
 
                 if (path) {
-                    const d = getProp(data, path.split('.'));
+                    let dataValue = dataFormService.getProp(
+                        data,
+                        path.split('.')
+                    );
 
-                    if (d.indexOf('') < 0) {
-                        const data = d.find(
-                            (elm) => elm.type === section[j].validatorId
+                    // Case array
+                    if (dataValue && dataValue.indexOf('') < 0) {
+                        const dataField = dataValue.find(
+                            (elm) => elm.type === contentSection[k].validatorId
                         );
-                        const s = { ...section[j], value: data.value };
-                        const o = Object.assign({}, section[j], s);
-                        // w = [...newForm[i].content, o];
-
-                        w = newForm[i].content.map((elm) => {
-                            return elm.validatorId === o.validatorId ? o : elm;
-                        });
-                    } else {
-                        const s = { ...section[j], value: d };
-                        // w = [...newForm[i].content, Object.assign({}, section[j], s)];
-                        w = newForm[i].content.map((elm) => {
-                            return elm.validatorId === o.validatorId ? s : elm;
-                        });
+                        dataValue = dataField ? dataField.value : '';
                     }
+
+                    fieldWithValue = { ...contentSection[k], value: dataValue };
+
+                    contentSection.map((field, k) => {
+                        if (field.validatorId === fieldWithValue.validatorId) {
+                            newField = fieldWithValue;
+                        } else if (
+                            k === contentSection[k].length &&
+                            field.validatorId !== fieldWithValue.validatorId
+                        ) {
+                            newField = field;
+                        }
+                    });
+
+                    newContent.push(newField);
                 }
             }
 
-            v.content = w;
-            f.push(v);
+            section.content = newContent;
+            newForm.push(section);
         }
 
-        return { form: f };
+        return { form: newForm };
     },
-};
 
-const getProp = (o, path) => {
-    const object = Object.assign(o, {});
+    getProp: (o, path) => {
+        const object = Object.assign(o, {});
 
-    if (path.length === 1) return object[path[0]];
-    else if (path.length === 0) throw error;
-    else {
-        if (object[path[0]]) return getProp(object[path[0]], path.slice(1));
+        if (path.length === 1) return object[path[0]];
+        else if (path.length === 0) throw error;
         else {
-            object[path[0]] = {};
+            if (object[path[0]])
+                return dataFormService.getProp(object[path[0]], path.slice(1));
+            else {
+                object[path[0]] = {};
 
-            return getProp(object[path[0]], path.slice(1));
+                return dataFormService.getProp(object[path[0]], path.slice(1));
+            }
         }
-    }
+    },
 };

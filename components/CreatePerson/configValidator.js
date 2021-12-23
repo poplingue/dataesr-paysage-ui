@@ -17,7 +17,16 @@ export const configValidator = {
             }),
         ],
     },
-    genre: {
+    uai: {
+        required: false,
+        validators: [
+            (value) => ({
+                valid: value.length > 2 && !!value.match(/^\d+(\.\d{1,2})?$/),
+                errorMsg: '3 caractères minimum, uniquement numériques',
+            }),
+        ],
+    },
+    gender: {
         required: true,
     },
     firstName: {
@@ -33,7 +42,7 @@ export const configValidator = {
         required: true,
     },
     lastName: {
-        required: false,
+        required: true,
         validators: [
             (value) => ({
                 valid: value.length > 2,

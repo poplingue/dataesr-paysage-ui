@@ -70,12 +70,31 @@ export default function CreatePerson({ data, id }) {
                         updatedBy: 'string',
                         updatedAt: '14:15:22Z',
                     },
+                    {
+                        type: 'idref',
+                        value: '09876',
+                        active: true,
+                        startDate: {
+                            day: 'string',
+                            month: 'string',
+                            year: 'string',
+                        },
+                        endDate: {
+                            day: 'string',
+                            month: 'string',
+                            year: 'string',
+                        },
+                        createdBy: 'string',
+                        createdAt: '14:15:22Z',
+                        updatedBy: 'string',
+                        updatedAt: '14:15:22Z',
+                    },
                 ],
                 firstName: 'Toutou',
                 lastName: 'Youtou',
                 otherName: ['string'],
                 gender: {
-                    type: 'Homme',
+                    type: 'f',
                 },
                 birthDate: {
                     day: 'string',
