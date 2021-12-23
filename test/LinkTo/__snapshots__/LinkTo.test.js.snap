@@ -5,7 +5,7 @@ exports[`<LinkTo /> renders correctly LinkTo 1`] = `
   className="LinkTo"
 >
   <a
-    href="/create/structure"
+    href="/update/structure"
     onClick={[Function]}
     onMouseEnter={[Function]}
   >
