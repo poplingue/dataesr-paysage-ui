@@ -13,48 +13,27 @@ export const dataFormService = {
     mapping: ({ form }, data) => {
         let copy = [...form];
         let newForm = [];
-        let section = {};
 
         for (let i = 0; i < copy.length; i++) {
+            let newContent = [];
+            let section = { ...copy[i] };
             let contentSection = copy[i].content;
             let infiniteSection = copy[i].infinite;
-            section = { ...copy[i] };
-            let fieldWithValue;
-            let newContent = [];
 
             if (infiniteSection) {
-                let x = [];
-                let o = {};
-                let s = [];
+                // TODO make it generic
+                if (Object.keys(data).indexOf('socialMedia') > -1) {
+                    const frontSections = dataFormService.socialMediaSection(
+                        data.socialMedia,
+                        contentSection,
+                        copy[i]
+                    );
+                    newForm = [...frontSections];
+                }
+            } else {
+                let fieldWithValue;
 
-                data.socialMedia.map((m) => {
-                    s = [];
-                    let g = {};
-
-                    const z = contentSection.map((c) => {
-                        const path = mapFields[c.validatorId];
-
-                        if (path === 'socialMedia.account') {
-                            return { ...c, value: m.account };
-                        }
-
-                        if (path === 'socialMedia.type') {
-                            return { ...c, value: m.type };
-                        }
-                    });
-
-                    o = { ...copy[i], content: z };
-
-                    debugger; // eslint-disable-line
-
-                    if (Object.keys(o).length > 0) {
-                        newForm.push(o);
-                    }
-                });
-            }
-
-            for (let k = 0; k < contentSection.length; k++) {
-                if (!infiniteSection) {
+                for (let k = 0; k < contentSection.length; k++) {
                     let newField = null;
                     const path = mapFields[contentSection[k].validatorId];
 
@@ -98,15 +77,31 @@ export const dataFormService = {
                 }
             }
 
-            section.content = newContent;
-            newForm.push(section);
+            if (!!newContent.length) {
+                section.content = newContent;
+                newForm.push(section);
+            }
         }
-
-        console.log('==== LOG ==== ', newForm);
 
         return { form: newForm };
     },
-    getPosition: () => {},
+    socialMediaSection: (data, contentSection, copy) => {
+        return data.map((m) => {
+            const z = contentSection.map((c) => {
+                const path = mapFields[c.validatorId];
+
+                if (path === 'socialMedia.account') {
+                    return { ...c, value: m.account };
+                }
+
+                if (path === 'socialMedia.type') {
+                    return { ...c, value: m.type };
+                }
+            });
+
+            return { ...copy, content: z };
+        });
+    },
     getProp: (o, path) => {
         if (path.indexOf('x') >= 0) {
         }
