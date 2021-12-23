@@ -11,12 +11,13 @@ export default function DeleteButton({
     label = '',
 }) {
     const { style: red } = useCSSProperty('--error-main-525');
+    const { style: white } = useCSSProperty('--grey-1000');
 
     return (
         display && (
             <Col n="2" className="txt-right">
                 <FieldButton
-                    colors={[red, '#fff']}
+                    colors={[red, white]}
                     dataTestId={`btn-delete-${cleanString(label || title)}${
                         index ? `#${index}` : ''
                     }`}

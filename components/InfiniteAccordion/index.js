@@ -34,6 +34,7 @@ export default function InfiniteAccordion({
         '--green-tilleul-verveine-main-707'
     );
     const { style: dark } = useCSSProperty('--grey-425');
+    const { style: white } = useCSSProperty('--grey-1000');
 
     const {
         stateForm: { forms, storeObjects },
@@ -199,7 +200,7 @@ export default function InfiniteAccordion({
                     </Col>
                     <Col spacing="pb-4w">
                         <FieldButton
-                            colors={[dark, '#fff']}
+                            colors={[dark, white]}
                             icon="ri-add-line"
                             title={`Ajouter un(e) « ${title} »`}
                             dataTestId={`btn-add-${cleanString(type)}`}

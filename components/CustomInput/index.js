@@ -4,6 +4,7 @@ import Input from './Input';
 
 function CustomInput({
     title,
+    value,
     infinite,
     section,
     validatorConfig,
@@ -25,6 +26,7 @@ function CustomInput({
                     ) : (
                         <Col spacing="py-1w">
                             <Input
+                                value={value}
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
                                 title={title}

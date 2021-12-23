@@ -5,8 +5,8 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/create/person',
-    pathname: '/create/person',
+    route: '/update/person',
+    pathname: '/update/person',
 }));
 
 jest.mock('react', () => ({

@@ -32,7 +32,7 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { disconnectedMsg } from '../../helpers/internalMessages';
-import { authService } from '../../services/Auth.service';
+import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import NavLink from '../NavLink';
 
@@ -41,11 +41,11 @@ const { publicRuntimeConfig } = getConfig();
 // TODO add propTypes
 export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
-    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
         statePage: { userConnected },
+        stateForm: { updateObjectId },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -161,20 +161,23 @@ export default function Layout({ children, headTitle }) {
                     />
                     <NavItem
                         title="Je contribue"
-                        current={asPath.startsWith('/create')}
+                        current={asPath.startsWith('/update')}
                     >
                         <NavSubItem
                             current={
-                                asPath.startsWith('/create') &&
-                                !asPath.startsWith('/create/person')
+                                asPath.startsWith('/update/structure') &&
+                                !updateObjectId
                             }
                             title="Ajouter une structure"
-                            asLink={<NavLink href="/create" />}
+                            asLink={<NavLink href="/update" />}
                         />
                         <NavSubItem
-                            current={asPath.startsWith('/create/person')}
+                            current={
+                                asPath.startsWith('/update/person') &&
+                                !updateObjectId
+                            }
                             title="Ajouter une personne"
-                            asLink={<NavLink href="/create/person" />}
+                            asLink={<NavLink href="/update" />}
                         />
                     </NavItem>
                     <NavItem title="Annuaire">

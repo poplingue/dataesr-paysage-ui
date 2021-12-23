@@ -19,7 +19,7 @@ import {
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
-import { authService } from '../../../services/Auth.service';
+import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
 const formSchema = [

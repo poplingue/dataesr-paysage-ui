@@ -57,7 +57,6 @@ export default function AccordionForm({
                 color={colorIcon[sectionStatus]}
                 size="1x"
                 name="ri-shield-check-line"
-                verticalAlign
             >
                 {newTitle}
             </Icon>

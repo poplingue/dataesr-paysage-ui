@@ -13,9 +13,10 @@ export const DataProvider = ({ user, error, children }) => {
         objectFormType: '',
         validSections: [],
         departments: [],
+        updateObjectId: '',
         forms: [
-            { 'create/person': [] },
-            { 'create/structure': [] },
+            { 'update/person': [] },
+            { 'update/structure': [] },
             { 'tests/structure': [] },
             { 'tests/person': [] },
         ],
@@ -56,8 +57,8 @@ export const DataProvider = ({ user, error, children }) => {
     useEffect(() => {
         DBService.init(
             [
-                'create/person',
-                'create/structure',
+                'update/person',
+                'update/structure',
                 'tests/person',
                 'tests/structure',
             ],

@@ -57,7 +57,7 @@ export const PersonPageSkeleton = [
         content: [
             { title: 'Fonctions actuelles', component: 'functions' },
             { title: 'Contact', component: 'contact' },
-            { title: 'Les dernières dépêches' },
+            { title: 'Les dernières dépêches', component: 'news' },
         ],
         component: 'synthesis',
     },

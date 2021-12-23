@@ -8,7 +8,7 @@ import Layout from '../../components/Layout';
 import NavLink from '../../components/NavLink';
 import { AppContext } from '../../context/GlobalState';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
-import { authService } from '../../services/Auth.service';
+import authService from '../../services/Auth.service';
 
 export default function Help() {
     const router = useRouter();

@@ -7,6 +7,10 @@
 
     button {
         padding: 20px;
+
+        &.Medium {
+            padding: 4px 10px;
+        }
     }
 
     .Icon {

@@ -5,8 +5,8 @@ import { useState } from 'react';
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
-import BigButton from '../../../components/BigButton';
 import HeaderLayout from '../../../components/HeaderLayout';
+import IconButton from '../../../components/IconButton';
 import Layout from '../../../components/Layout';
 import Table from '../../../components/Table';
 
@@ -63,7 +63,7 @@ export default function Object() {
                         <Table columns={columns} data={data} />
                     </Col>
                     <Col>
-                        <BigButton
+                        <IconButton
                             square={false}
                             onClick={() => {}}
                             title="Ajouter un nouveau texte"

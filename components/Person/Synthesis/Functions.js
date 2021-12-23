@@ -1,30 +1,27 @@
-import {
-  Card,
-  CardDescription,
-  CardDetail,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "@dataesr/react-dsfr";
+import { Col, Container, Row } from '@dataesr/react-dsfr';
+import CardLink from '../../CardLink';
 
 export default function Functions() {
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <Card>
-            <CardDetail>Detail</CardDetail>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Uenim
-              ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat.
-            </CardDescription>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+    return (
+        <Container fluid>
+            <Row gutters>
+                <Col>
+                    <CardLink
+                        link="/object/structure/0"
+                        date="du 01/01/2019 au 31/12/2022"
+                        title="Une fonction très très importante"
+                        structure="Université de Nanterre"
+                    />
+                </Col>
+                <Col>
+                    <CardLink
+                        link="/object/structure/1"
+                        date="du 01/01/2019 au 31/12/2022"
+                        title="Une autre fonction très très importante"
+                        structure="Université de Saclay"
+                    />
+                </Col>
+            </Row>
+        </Container>
+    );
 }

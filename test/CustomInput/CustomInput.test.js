@@ -5,8 +5,8 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/create/person',
-    pathname: '/create/[object]',
+    route: '/update/person',
+    pathname: '/update/[object]',
     query: { object: 'person' },
 }));
 
@@ -53,7 +53,7 @@ describe('Field component', () => {
     // });
     //
     // it('should have Title as data-field', () => {
-    //     const uniqueId = getUniqueId('create/person', 'Section', 'Title', 1);
+    //     const uniqueId = getUniqueId('update/person', 'Section', 'Title', 1);
     //     expect(screen.getByTestId('Title')).toHaveAttribute(
     //         'data-field',
     //         uniqueId

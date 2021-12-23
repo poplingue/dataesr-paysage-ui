@@ -156,6 +156,16 @@ const DBService = {
         }
     },
 
+    async clear(objectStoreName) {
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
+
+        const tx = db.transaction(objectStoreName, 'readwrite');
+        await NotifService.promise(tx.store.clear(), 'Store cleared');
+    },
+
     async delete(uid, objectStoreName) {
         // TODO async
         let DBOpenRequest = await this.getDB(),

@@ -16,6 +16,11 @@
             "validatorId": "idref"
           },
           {
+            "title": "Uai",
+            "type": "text",
+            "validatorId": "uai"
+          },
+          {
             "title": "Satisfaction",
             "type": "checkbox",
             "validatorId": "satisfaction",
@@ -27,18 +32,39 @@
         ]
       },
       {
+        "title": "Média Social",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Compte",
+            "type": "text",
+            "validatorId": "socialAccount"
+          },
+          {
+            "title": "Type",
+            "type": "select",
+            "validatorId": "media",
+            "staticValues": [
+              "Facebook",
+              "Twitter",
+              "Linkedin"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Dénomination",
         "position": 1,
         "content": [
           {
             "title": "Nom",
             "type": "text",
-            "validatorId": "lastname"
+            "validatorId": "lastName"
           },
           {
             "title": "Prénom",
             "type": "text",
-            "validatorId": "firstname"
+            "validatorId": "firstName"
           },
           {
             "title": "Autre dénomination",
@@ -49,7 +75,12 @@
           {
             "title": "Genre",
             "type": "select",
-            "validatorId": "genre"
+            "validatorId": "gender",
+            "staticValues": [
+              "m",
+              "f",
+              "n"
+            ]
           }
         ]
       }

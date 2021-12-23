@@ -205,7 +205,7 @@ Object {
               >
                 <span>
                   <span
-                    class="ri-2x icon-left ri-checkbox-line"
+                    class="ri-2x icon-left ds-fr--v-middle ri-checkbox-line"
                     style="color: rgb(0, 0, 145);"
                   />
                 </span>
@@ -260,7 +260,7 @@ Object {
             >
               <span>
                 <span
-                  class="ri-2x icon-left ri-checkbox-line"
+                  class="ri-2x icon-left ds-fr--v-middle ri-checkbox-line"
                   style="color: rgb(0, 0, 145);"
                 />
               </span>

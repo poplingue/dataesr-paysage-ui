@@ -6,25 +6,26 @@ import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
+import NotifService from '../../services/Notif.service';
 
 function Input({
     label,
     index,
     title,
     section,
-    value = '',
+    value: initValue,
     validatorConfig,
     updateValidSection,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const { checkField, message, type } = useValidator(validatorConfig);
-    const [textValue, setTextValue] = useState(value);
+    const [textValue, setTextValue] = useState(initValue || '');
 
-    const inputRef = useRef(null);
+    const inputRef = useRef(initValue || '');
     // TODO put in globals ?
     const {
         pathname,
@@ -42,9 +43,10 @@ function Input({
                 uid,
                 formName,
             };
+
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-            if (checkStoreObject) {
+            if (checkStoreObject && !updateObjectId) {
                 await DBService.set(
                     {
                         value,
@@ -53,8 +55,14 @@ function Input({
                     formName
                 );
             }
+
+            if (!value) {
+                dispatch({ type: 'DELETE_FORM_FIELD', payload });
+                await DBService.delete(uid, formName);
+                NotifService.techInfo('Input field deleted');
+            }
         },
-        [dispatch, formName, storeObjects, uid]
+        [dispatch, formName, storeObjects, uid, updateObjectId]
     );
 
     const onChange = async (e) => {
@@ -65,29 +73,26 @@ function Input({
     };
 
     useEffect(() => {
+        if (!textValue) {
+            setTextValue(initValue);
+        }
+    }, [textValue, initValue, inputValue]);
+
+    useEffect(() => {
         async function save() {
-            await saveValue(textValue, inputRef);
+            await saveValue(textValue);
         }
 
         const current = getFieldValue(forms, formName, uid);
 
-        if (textValue !== current) {
+        if (textValue !== current || initValue) {
             save();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [textValue]);
+    }, [textValue, initValue, saveValue, uid]);
 
     useEffect(() => {
-        // check fields validity on init
-        checkField(inputValue || '');
-
-        if (inputValue) {
-            setTextValue(inputValue);
-        }
-    }, [checkField, inputValue]);
-
-    useEffect(() => {
-        updateValidSection(uid, type);
+        updateValidSection(uid, 'text');
     }, [type, uid, updateValidSection]);
 
     return (
@@ -99,7 +104,7 @@ function Input({
                 data-testid={title}
                 ref={inputRef}
                 onChange={onChange}
-                value={textValue || ''}
+                value={textValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={label}
             />

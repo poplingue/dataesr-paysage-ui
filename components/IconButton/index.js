@@ -1,19 +1,30 @@
 import { Button, Icon } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
-import styles from './BigButton.module.scss';
+import useCSSProperty from '../../hooks/useCSSProperty';
+import styles from './IconButton.module.scss';
 
-export default function BigButton({ onClick, title, icon, color, square }) {
+export default function IconButton({
+    onClick,
+    title,
+    icon,
+    color,
+    square,
+    size,
+}) {
+    const { style: white } = useCSSProperty('--grey-1000');
+
     return (
         <div className={`${styles.Button} ${square ? styles.Square : ''}`}>
             <Button
                 onClick={onClick}
                 title={title}
-                colors={[color, '#fff']}
+                colors={[color, white]}
                 secondary
+                size={size === 'medium' && 'sm'}
+                className={size === 'medium' && styles.Medium}
             >
                 <div>
                     <Icon
-                        verticalAlign={!square}
                         color={color}
                         name={icon}
                         size="lg"
@@ -28,14 +39,16 @@ export default function BigButton({ onClick, title, icon, color, square }) {
     );
 }
 
-BigButton.defaultProps = {
+IconButton.defaultProps = {
     color: '000091',
+    size: 'large',
     square: true,
 };
-BigButton.propTypes = {
+IconButton.propTypes = {
     onClick: PropTypes.func.isRequired,
     square: PropTypes.bool,
     title: PropTypes.string.isRequired,
+    size: PropTypes.oneOf(['large', 'medium']),
     icon: PropTypes.string.isRequired,
     color: PropTypes.string,
 };

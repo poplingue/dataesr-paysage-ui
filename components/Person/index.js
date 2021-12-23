@@ -4,7 +4,6 @@ import { cleanString, sectionUniqueId } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import PageTheme from '../PageTheme';
 import Identifier from './Identifier';
-import styles from './Person.module.scss';
 import Price from './Price';
 import Responsability from './Responsability';
 import Synthesis from './Synthesis/index';
@@ -24,7 +23,7 @@ export default function Person({ fame, children }) {
     return (
         <PageTheme color={pink}>
             {children}
-            <Col className={styles.Person}>
+            <Col>
                 <Accordion size="lg" color={pink} keepOpen>
                     {PersonPageSkeleton.map((elm) => {
                         const { content, title, component } = elm;

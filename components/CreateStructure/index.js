@@ -5,9 +5,9 @@ import { AppContext } from '../../context/GlobalState';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
-import CreateStructure from './form.json';
+import CreateStructureForm from './form.json';
 
-export default function Create({ data }) {
+export default function CreateStructure({ data }) {
     const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
@@ -21,9 +21,9 @@ export default function Create({ data }) {
     return (
         <Layout>
             <HeaderLayout pageTitle="Ajouter une structure" />
-            <SideNavigation items={CreateStructure[0].form}>
+            <SideNavigation items={CreateStructureForm[0].form}>
                 <CreateForm
-                    jsonForm={CreateStructure[0]}
+                    jsonForm={CreateStructureForm[0]}
                     color={yellow}
                     objectFormType="structure"
                 />

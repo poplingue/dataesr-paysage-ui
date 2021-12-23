@@ -15,9 +15,10 @@ import FormAccordionItem from './FormAccordionItem';
 
 const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const {
-        stateForm: { storeObjects },
+        stateForm: { storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
+
     const {
         pathname,
         query: { object },
@@ -59,7 +60,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 payload: { value, uid, formName },
             });
 
-            if (checkStoreObject) {
+            if (checkStoreObject && !updateObjectId) {
                 await DBService.set(
                     {
                         value,
@@ -69,7 +70,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 );
             }
         },
-        [dispatch, formName, storeObjects]
+        [dispatch, formName, storeObjects, updateObjectId]
     );
 
     useEffect(() => {

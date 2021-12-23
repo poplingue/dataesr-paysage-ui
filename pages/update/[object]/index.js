@@ -1,5 +1,8 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../../../context/GlobalState';
 
 const CreatePerson = dynamic(() =>
     import('./../../../components/CreatePerson')
@@ -15,9 +18,26 @@ export default function Create({ data }) {
         person: CreatePerson,
         structure: CreateStructure,
     };
+
+    const {
+        stateForm: { updateObjectId },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+
     const Component = object ? components[object] : null;
 
-    return Component && <Component data={data} />;
+    useEffect(() => {
+        const updateObjectId = Cookies.get('updateObjectId');
+
+        if (updateObjectId && object) {
+            dispatch({
+                type: 'UPDATE_UPDATE_OBJECT_ID',
+                payload: { updateObjectId },
+            });
+        }
+    }, [dispatch, object]);
+
+    return Component && <Component data={data} id={updateObjectId} />;
 }
 
 export async function getStaticProps() {
@@ -36,7 +56,7 @@ export async function getStaticProps() {
 
 export async function getStaticPaths() {
     return {
-        paths: ['/create/person', '/create/structure'],
+        paths: ['/update/person', '/update/structure'],
         fallback: true,
     };
 }
