@@ -32,6 +32,27 @@
         ]
       },
       {
+        "title": "Média Social",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Compte",
+            "type": "text",
+            "validatorId": "socialAccount"
+          },
+          {
+            "title": "Type",
+            "type": "select",
+            "validatorId": "media",
+            "staticValues": [
+              "Facebook",
+              "Twitter",
+              "Linkedin"
+            ]
+          }
+        ]
+      },
+      {
         "title": "Dénomination",
         "position": 1,
         "content": [

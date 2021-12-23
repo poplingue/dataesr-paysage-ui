@@ -25,7 +25,7 @@ function Input({
     const { checkField, message, type } = useValidator(validatorConfig);
     const [textValue, setTextValue] = useState(initValue || '');
 
-    const inputRef = useRef(null);
+    const inputRef = useRef(initValue || '');
     // TODO put in globals ?
     const {
         pathname,
@@ -92,7 +92,7 @@ function Input({
     }, [textValue, initValue, saveValue, uid]);
 
     useEffect(() => {
-        updateValidSection(uid, type);
+        updateValidSection(uid, 'text');
     }, [type, uid, updateValidSection]);
 
     return (

@@ -41,6 +41,12 @@ export const configValidator = {
     satisfaction: {
         required: true,
     },
+    socialAccount: {
+        required: true,
+    },
+    media: {
+        required: true,
+    },
     lastName: {
         required: true,
         validators: [

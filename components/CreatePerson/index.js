@@ -23,6 +23,7 @@ export default function CreatePerson({ data, id }) {
     } = useContext(AppContext);
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
     const [personForm, setPersonForm] = useState(CreatePersonForm[0]);
+    const [init, setInit] = useState(true);
     const {
         pathname,
         query: { object },
@@ -35,14 +36,15 @@ export default function CreatePerson({ data, id }) {
     }
 
     useEffect(() => {
-        if (id && currentForm.length > 0) {
+        if (id && currentForm.length > 0 && init) {
             DBService.clear('update/person');
             dispatch({
                 type: 'CLEAR_FORM',
                 payload: { formName: 'update/person' },
             });
+            setInit(false);
         }
-    }, [currentForm.length, dispatch, id]);
+    }, [currentForm.length, dispatch, id, init]);
 
     useEffect(() => {
         async function fetchPerson(id) {
@@ -190,7 +192,15 @@ export default function CreatePerson({ data, id }) {
                 socialMedia: [
                     {
                         type: 'Facebook',
-                        account: 'string',
+                        account: 'www.facebook.com/mmebrelock',
+                        createdBy: 'string',
+                        createdAt: '14:15:22Z',
+                        updatedBy: 'string',
+                        updatedAt: '14:15:22Z',
+                    },
+                    {
+                        type: 'Twitter',
+                        account: 'www.twitter.com/mmebrelock',
                         createdBy: 'string',
                         createdAt: '14:15:22Z',
                         updatedBy: 'string',

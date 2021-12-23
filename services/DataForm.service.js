@@ -5,6 +5,8 @@ const mapFields = {
     firstName: 'firstName',
     lastName: 'lastName',
     gender: 'gender.type',
+    media: 'socialMedia.type',
+    socialAccount: 'socialMedia.account',
 };
 
 export const dataFormService = {
@@ -15,42 +17,84 @@ export const dataFormService = {
 
         for (let i = 0; i < copy.length; i++) {
             let contentSection = copy[i].content;
+            let infiniteSection = copy[i].infinite;
             section = { ...copy[i] };
             let fieldWithValue;
             let newContent = [];
 
-            for (let k = 0; k < contentSection.length; k++) {
-                let newField = null;
-                const path = mapFields[contentSection[k].validatorId];
+            if (infiniteSection) {
+                let x = [];
+                let o = {};
+                let s = [];
 
-                if (path) {
-                    let dataValue = dataFormService.getProp(
-                        data,
-                        path.split('.')
-                    );
+                data.socialMedia.map((m) => {
+                    s = [];
+                    let g = {};
 
-                    // Case array
-                    if (dataValue && dataValue.indexOf('') < 0) {
-                        const dataField = dataValue.find(
-                            (elm) => elm.type === contentSection[k].validatorId
-                        );
-                        dataValue = dataField ? dataField.value : '';
-                    }
+                    const z = contentSection.map((c) => {
+                        const path = mapFields[c.validatorId];
 
-                    fieldWithValue = { ...contentSection[k], value: dataValue };
+                        if (path === 'socialMedia.account') {
+                            return { ...c, value: m.account };
+                        }
 
-                    contentSection.map((field, k) => {
-                        if (field.validatorId === fieldWithValue.validatorId) {
-                            newField = fieldWithValue;
-                        } else if (
-                            k === contentSection[k].length &&
-                            field.validatorId !== fieldWithValue.validatorId
-                        ) {
-                            newField = field;
+                        if (path === 'socialMedia.type') {
+                            return { ...c, value: m.type };
                         }
                     });
 
-                    newContent.push(newField);
+                    o = { ...copy[i], content: z };
+
+                    debugger; // eslint-disable-line
+
+                    if (Object.keys(o).length > 0) {
+                        newForm.push(o);
+                    }
+                });
+            }
+
+            for (let k = 0; k < contentSection.length; k++) {
+                if (!infiniteSection) {
+                    let newField = null;
+                    const path = mapFields[contentSection[k].validatorId];
+
+                    if (path) {
+                        let dataValue = dataFormService.getProp(
+                            data,
+                            path.split('.')
+                        );
+
+                        // Case array
+                        if (dataValue && dataValue.indexOf('') < 0) {
+                            const dataField = dataValue.find((elm) => {
+                                return (
+                                    elm.type === contentSection[k].validatorId
+                                );
+                            });
+
+                            dataValue = dataField ? dataField.value : '';
+                        }
+
+                        fieldWithValue = {
+                            ...contentSection[k],
+                            value: dataValue,
+                        };
+
+                        contentSection.map((field, k) => {
+                            if (
+                                field.validatorId === fieldWithValue.validatorId
+                            ) {
+                                newField = fieldWithValue;
+                            } else if (
+                                k === contentSection[k].length &&
+                                field.validatorId !== fieldWithValue.validatorId
+                            ) {
+                                newField = field;
+                            }
+                        });
+
+                        newContent.push(newField);
+                    }
                 }
             }
 
@@ -58,10 +102,15 @@ export const dataFormService = {
             newForm.push(section);
         }
 
+        console.log('==== LOG ==== ', newForm);
+
         return { form: newForm };
     },
-
+    getPosition: () => {},
     getProp: (o, path) => {
+        if (path.indexOf('x') >= 0) {
+        }
+
         const object = Object.assign(o, {});
 
         if (path.length === 1) return object[path[0]];
