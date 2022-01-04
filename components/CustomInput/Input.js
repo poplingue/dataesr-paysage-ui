@@ -74,6 +74,12 @@ function Input({
     };
 
     useEffect(() => {
+        if (!textValue) {
+            setTextValue(initValue);
+        }
+    }, [textValue, initValue, inputValue]);
+
+    useEffect(() => {
         if (!textValue && initValue) {
             setTextValue(initValue);
         }

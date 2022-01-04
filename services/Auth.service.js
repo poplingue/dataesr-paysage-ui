@@ -164,7 +164,7 @@ const authService = {
                 return Promise.reject(err);
             });
     },
-    signOut: async () => {
+    signOut: () => {
         // TODO auth/signout
         try {
             if (Cookies.get('tokens')) {

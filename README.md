@@ -107,3 +107,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
 * add spinner
 * manage dark mode
+* Navigation focus accessibility
