@@ -19,7 +19,7 @@ jobs:
       - name: Run unit tests
         run: yarn run test
       - name: Run Cypress tests
-        run: yarn run cy:run
+        run: yarn run cy:run-only:prod
       - name: Notify Slack
         uses: act10ns/slack@v1
         with:

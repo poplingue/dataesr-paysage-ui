@@ -24,7 +24,7 @@ Cypress.Commands.add('signIn', () => {
 Cypress.Commands.add('signOut', () => {
     const baseUrl = Cypress.env('baseUrl');
     cy.visit(`${baseUrl}`);
-    cy.get('[data-cy="sign-out"]').click();
+    cy.get('[data-cy="sign-out"]').find('a').click();
 
     cy.wait(2000);
 });

@@ -21,6 +21,7 @@ function CustomInput({
                                 validatorConfig={validatorConfig}
                                 title={title}
                                 section={section}
+                                label={title}
                             />
                         </InfiniteField>
                     ) : (

@@ -12,7 +12,7 @@ context('Person page', () => {
 
     it('should display Navigation', () => {
         cy.get('[data-cy="nav-header-text"]')
-            .find('.fr-text--md')
+            .find('.fr-text--md span')
             .should('have.text', 'Navigation');
     });
 
