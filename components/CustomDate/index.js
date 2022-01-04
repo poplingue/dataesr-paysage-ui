@@ -13,7 +13,7 @@ export default function CustomDate({
 }) {
     const days = range(1, 31, true);
     const months = range(1, 12, true);
-    const years = range(1900, 2021, true);
+    const years = range(1900, 2022, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const [dateData, setDateData] = useState([
         {

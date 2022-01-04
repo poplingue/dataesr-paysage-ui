@@ -1,12 +1,8 @@
 {
-  "baseUrl": "https://dataesr-paysage.vercel.app",
   "integrationFolder": "cypress/integration/paysage",
   "video": false,
   "projectId": "9ymqdh",
   "viewportWidth": 1920,
   "viewportHeight": 1080,
-  "browser": "firefox",
-  "env": {
-    "baseUrl": "https://dataesr-paysage.vercel.app"
-  }
+  "browser": "firefox"
 }

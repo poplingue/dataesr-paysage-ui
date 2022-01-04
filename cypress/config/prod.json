@@ -1,0 +1,6 @@
+{
+  "baseUrl": "https://dataesr-paysage.vercel.app",
+  "env": {
+    "baseUrl": "https://dataesr-paysage.vercel.app"
+  }
+}

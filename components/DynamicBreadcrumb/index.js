@@ -20,8 +20,8 @@ export default function DynamicBreadcrumb() {
 
     const pages = useMemo(() => {
         return {
-            '/update/structure': [{ label: 'Structure' }],
-            '/update/person': [{ label: 'Personne' }],
+            '/update/structure': [{ label: 'Ajouter une structure' }],
+            '/update/person': [{ label: 'Ajouter une personne' }],
             '/list': [{ label: 'Listes qualifiées' }],
             [`/list/${category}/${id}`]: [
                 {

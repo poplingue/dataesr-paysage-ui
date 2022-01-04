@@ -55,19 +55,21 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
             const { value, uid } = field;
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-            dispatch({
-                type: 'UPDATE_FORM_FIELD',
-                payload: { value, uid, formName },
-            });
+            if (value) {
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD',
+                    payload: { value, uid, formName },
+                });
 
-            if (checkStoreObject && !updateObjectId) {
-                await DBService.set(
-                    {
-                        value,
-                        uid,
-                    },
-                    formName
-                );
+                if (checkStoreObject && !updateObjectId) {
+                    await DBService.set(
+                        {
+                            value,
+                            uid,
+                        },
+                        formName
+                    );
+                }
             }
         },
         [dispatch, formName, storeObjects, updateObjectId]

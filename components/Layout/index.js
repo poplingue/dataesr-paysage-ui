@@ -164,19 +164,7 @@ export default function Layout({ children, headTitle }) {
                         current={asPath.startsWith('/update')}
                     >
                         <NavSubItem
-                            current={
-                                asPath.startsWith('/update/structure') &&
-                                !updateObjectId
-                            }
-                            title="Ajouter une structure"
-                            asLink={<NavLink href="/update" />}
-                        />
-                        <NavSubItem
-                            current={
-                                asPath.startsWith('/update/person') &&
-                                !updateObjectId
-                            }
-                            title="Ajouter une personne"
+                            title="Ajouter un nouvel object"
                             asLink={<NavLink href="/update" />}
                         />
                     </NavItem>

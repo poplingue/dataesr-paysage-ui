@@ -72,6 +72,7 @@ function InfiniteField({ children, title, section }) {
             }
 
             const uidToDelete = getUniqueId(formName, section, title, key);
+
             const payload = {
                 uid: uidToDelete,
                 formName,

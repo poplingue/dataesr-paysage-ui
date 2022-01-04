@@ -33,7 +33,6 @@ function Input({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, section, title, index);
-    const inputValue = getFieldValue(forms, formName, uid);
 
     const saveValue = useCallback(
         async (value) => {
@@ -70,29 +69,31 @@ function Input({
         checkField(value);
         setTextValue(value);
         updateValidSection(null, null);
+
+        await saveValue(value);
     };
 
     useEffect(() => {
-        if (!textValue) {
+        if (!textValue && initValue) {
             setTextValue(initValue);
         }
-    }, [textValue, initValue, inputValue]);
+    }, [textValue, initValue]);
 
     useEffect(() => {
-        async function save() {
-            await saveValue(textValue);
-        }
+        // init check validity field
+        checkField(textValue);
+    }, [checkField, textValue]);
 
+    useEffect(() => {
         const current = getFieldValue(forms, formName, uid);
 
-        if (textValue !== current || initValue) {
-            save();
+        if (current && textValue !== current) {
+            setTextValue(current);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [textValue, initValue, saveValue, uid]);
+    }, [formName, forms, textValue, uid]);
 
     useEffect(() => {
-        updateValidSection(uid, 'text');
+        updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
     return (
