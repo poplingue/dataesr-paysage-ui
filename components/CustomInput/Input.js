@@ -87,7 +87,7 @@ function Input({
 
     useEffect(() => {
         // init check validity field
-        checkField(textValue);
+        checkField(textValue || '');
     }, [checkField, textValue]);
 
     useEffect(() => {

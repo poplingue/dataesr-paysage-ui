@@ -1,6 +1,8 @@
+import { fireEvent } from '@testing-library/react';
 import * as nextRouter from 'next/router';
 import React from 'react';
 import Input from '../../components/CustomInput/Input';
+import { getUniqueId } from '../../helpers/utils';
 import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
@@ -47,27 +49,28 @@ describe('Field component', () => {
     it('should render the input label', () => {
         expect(screen.getByText('Label')).toBeVisible();
     });
-    //
-    // it('should fill the Input value', () => {
-    //     expect(screen.getByDisplayValue('Content value')).toBeVisible();
-    // });
-    //
-    // it('should have Title as data-field', () => {
-    //     const uniqueId = getUniqueId('update/person', 'Section', 'Title', 1);
-    //     expect(screen.getByTestId('Title')).toHaveAttribute(
-    //         'data-field',
-    //         uniqueId
-    //     );
-    // });
-    //
-    // it('should change the Input value', () => {
-    //     const input = screen.getByDisplayValue('Content value');
-    //     fireEvent.change(input, {
-    //         target: {
-    //             value: 'New value',
-    //         },
-    //     });
-    //     const newInput = screen.getByDisplayValue('Content value');
-    //     expect(newInput).toBeVisible();
-    // });
+
+    it('should fill the Input value', () => {
+        expect(screen.getByDisplayValue('Content value')).toBeVisible();
+    });
+
+    it('should have Title as data-field', () => {
+        const uniqueId = getUniqueId('update/person', 'Section', 'Title', 1);
+
+        expect(screen.getByTestId('Title')).toHaveAttribute(
+            'data-field',
+            uniqueId
+        );
+    });
+
+    it('should change the Input value', () => {
+        const input = screen.getByDisplayValue('Content value');
+        fireEvent.change(input, {
+            target: {
+                value: 'New value',
+            },
+        });
+        const newInput = screen.getByDisplayValue('Content value');
+        expect(newInput).toBeVisible();
+    });
 });

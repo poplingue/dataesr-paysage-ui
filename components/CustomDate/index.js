@@ -11,9 +11,10 @@ export default function CustomDate({
     validatorConfig,
     updateValidSection,
 }) {
+    const d = new Date();
     const days = range(1, 31, true);
     const months = range(1, 12, true);
-    const years = range(1900, 2022, true);
+    const years = range(1900, d.getFullYear(), true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const [dateData, setDateData] = useState([
         {
