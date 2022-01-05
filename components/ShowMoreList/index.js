@@ -1,32 +1,37 @@
 import { Button, Row } from '@dataesr/react-dsfr';
+import { useState } from 'react';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './ShowMoreList.module.scss';
 
 export default function ShowMoreList({ children }) {
     const { style: grey } = useCSSProperty('--grey-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
+    const [active, setActive] = useState(false);
+    const activeObj = {
+        true: {
+            myCass: styles.ShowLess,
+            icon: 'ri-subtract-line',
+            text: 'Voir moins',
+        },
+        false: {
+            myCass: styles.ShowMore,
+            icon: 'ri-add-line',
+            text: 'Voir plus',
+        },
+    };
 
     return (
         <>
             <Button
-                className={styles.ShowMore}
+                onClick={() => setActive(!active)}
+                className={activeObj[active].myCass}
                 size="sm"
-                icon="ri-add-line"
+                icon={activeObj[active].icon}
                 secondary
                 iconPosition="right"
                 colors={[grey, white]}
             >
-                Voir plus
-            </Button>
-            <Button
-                colors={[grey, white]}
-                className={styles.ShowLess}
-                icon="ri-subtract-line"
-                size="sm"
-                iconPosition="right"
-                secondary
-            >
-                Voir moins
+                {activeObj[active].text}
             </Button>
             <Row gutters className={styles.Panel}>
                 {children}
