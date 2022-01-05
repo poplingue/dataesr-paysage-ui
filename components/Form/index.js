@@ -1,16 +1,15 @@
 import { Col, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import useExpandAccordions from '../../hooks/useExpandAccordions';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import FieldButton from '../FieldButton';
 import InfiniteAccordion from '../InfiniteAccordion';
 import PageTheme from '../PageTheme';
 import AccordionForm from './AccordionForm';
-import styles from './Form.module.scss';
 import FormAccordionItem from './FormAccordionItem';
 
 const CreateForm = ({ jsonForm, color, objectFormType }) => {
@@ -24,31 +23,8 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const [accordionsExpanded, setAccordionsExpanded] = useState(true);
-
-    const simulateClick = (elem) => {
-        const evt = new MouseEvent('click', {
-            bubbles: true,
-            cancelable: true,
-            view: window,
-        });
-
-        // If cancelled, don't dispatch our event
-        const canceled = !elem.dispatchEvent(evt);
-
-        setAccordionsExpanded(!accordionsExpanded);
-    };
-
-    const expandCloseAll = () => {
-        const open = accordionsExpanded ? 'true' : 'false';
-        const btnAccordions = document.querySelectorAll(
-            `.fr-accordion__btn[aria-expanded="${open}"]`
-        );
-
-        for (let i = 0; i < btnAccordions.length; i = i + 1) {
-            simulateClick(btnAccordions[i]);
-        }
-    };
+    const { accordionsExpanded, Button: ExpandButton } =
+        useExpandAccordions(true);
 
     const retrieveField = useCallback(
         async (field) => {
@@ -102,14 +78,9 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
 
     return (
         <PageTheme color={color}>
-            <Row>
+            <Row gutters>
                 <Col offset="10" n="2" className="p-relative">
-                    <FieldButton
-                        className={styles.Button}
-                        dataTestId="btn-expand-close"
-                        title="Réduire / Étendre"
-                        onClick={expandCloseAll}
-                    />
+                    {ExpandButton}
                 </Col>
                 <Col n="12">
                     {jsonForm.form.map((section, i) => {
@@ -143,7 +114,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             <AccordionForm
                                 key={i}
                                 color={color}
-                                keepOpen
                                 initExpand={accordionsExpanded}
                                 dataSection={dataSection}
                                 newTitle={sectionTitle}
