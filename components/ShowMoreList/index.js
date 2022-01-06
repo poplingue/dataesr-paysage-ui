@@ -1,6 +1,7 @@
-import { Button, Row } from '@dataesr/react-dsfr';
+import { Row } from '@dataesr/react-dsfr';
 import { useState } from 'react';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import FieldButton from '../FieldButton';
 import styles from './ShowMoreList.module.scss';
 
 export default function ShowMoreList({ children }) {
@@ -22,7 +23,7 @@ export default function ShowMoreList({ children }) {
 
     return (
         <>
-            <Button
+            <FieldButton
                 onClick={() => setActive(!active)}
                 className={activeObj[active].myCass}
                 size="sm"
@@ -30,9 +31,8 @@ export default function ShowMoreList({ children }) {
                 secondary
                 iconPosition="right"
                 colors={[grey, white]}
-            >
-                {activeObj[active].text}
-            </Button>
+                title={activeObj[active].text}
+            />
             <Row gutters className={styles.Panel}>
                 {children}
             </Row>

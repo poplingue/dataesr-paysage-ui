@@ -180,3 +180,24 @@ export const goToSection = (e, dataSection) => {
     const { left, top } = section.getBoundingClientRect();
     window.scrollTo(left, top + window.scrollY);
 };
+
+/**
+ *
+ * @param pageId
+ * @returns {Node}
+ */
+export function cleanedPrintPage(pageId) {
+    const page = document.getElementById(pageId);
+    const clonePage = page.cloneNode('deep');
+
+    const elements = clonePage.getElementsByClassName(noPrintClass);
+
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+
+    return clonePage;
+}
+
+export const idToPrint = 'page-to-print';
+export const noPrintClass = 'no-print';

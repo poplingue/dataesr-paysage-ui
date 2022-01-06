@@ -1,31 +1,22 @@
-import { forwardRef, useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import { cleanedPrintPage, idToPrint } from '../../helpers/utils';
 
-const Component = ({ children }) => {
-    const printPageRef = useRef(null);
-    const {
-        stateForm: { printPage },
-        dispatchPage: dispatch,
-    } = useContext(AppContext);
+const ToPrint = ({ children }) => {
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     useEffect(() => {
-        if (printPageRef && printPage !== printPageRef.current) {
-            dispatch({
-                type: 'UPDATE_PRINT_PAGE',
-                payload: {
-                    printPage: printPageRef.current,
-                },
-            });
-        }
-    }, [dispatch, printPage]);
+        const printPage = cleanedPrintPage(idToPrint);
 
-    return (
-        <section ref={printPageRef} id="page-to-print">
-            {children}
-        </section>
-    );
+        dispatch({
+            type: 'UPDATE_PRINT_PAGE',
+            payload: {
+                printPage,
+            },
+        });
+    }, [dispatch]);
+
+    return <section id={idToPrint}>{children}</section>;
 };
-
-const ToPrint = forwardRef(Component);
 
 export default ToPrint;

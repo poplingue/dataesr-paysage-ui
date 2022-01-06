@@ -1,4 +1,4 @@
-import { Col } from '@dataesr/react-dsfr';
+import { Col, Row } from '@dataesr/react-dsfr';
 import { PersonPageSkeleton } from '../../helpers/constants';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import useExpandAccordions from '../../hooks/useExpandAccordions';
@@ -27,20 +27,22 @@ export default function Person({ fame, children }) {
 
     return (
         <PageTheme color={pink}>
-            {children}
-            <Col offset="10" n="2" className="p-relative">
-                {ExpandButton}
-            </Col>
-            <Col>
-                <ToPrint>
-                    <AccordionObject
-                        components={components}
-                        initExpand={accordionsExpanded}
-                        color={pink}
-                        skeleton={PersonPageSkeleton}
-                    />
-                </ToPrint>
-            </Col>
+            <Row gutters>
+                {children}
+                <Col offset="10" n="2" className="p-relative">
+                    {ExpandButton}
+                </Col>
+                <Col>
+                    <ToPrint>
+                        <AccordionObject
+                            components={components}
+                            initExpand={accordionsExpanded}
+                            color={pink}
+                            skeleton={PersonPageSkeleton}
+                        />
+                    </ToPrint>
+                </Col>
+            </Row>
         </PageTheme>
     );
 }

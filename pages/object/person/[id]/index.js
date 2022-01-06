@@ -1,7 +1,7 @@
 import { Col, Container, Icon, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { useReactToPrint } from 'react-to-print';
+import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import FieldButton from '../../../../components/FieldButton';
 import HeaderLayout from '../../../../components/HeaderLayout';
 import Layout from '../../../../components/Layout';
@@ -34,12 +34,20 @@ export default function Object(props) {
                         <Container>
                             <Row gutters spacing="pb-2w">
                                 <Col n="12">
-                                    <FieldButton
-                                        title="Exporter en pdf"
-                                        onClick={useReactToPrint({
-                                            content: () => printPage,
-                                        })}
-                                    />
+                                    <ReactToPrint content={() => printPage}>
+                                        <PrintContextConsumer>
+                                            {({ handlePrint }) => (
+                                                <FieldButton
+                                                    title="Exporter en pdf"
+                                                    onClick={() => {
+                                                        if (printPage) {
+                                                            handlePrint();
+                                                        }
+                                                    }}
+                                                />
+                                            )}
+                                        </PrintContextConsumer>
+                                    </ReactToPrint>
                                 </Col>
                                 <Col>
                                     <Icon name="ri-edit-line" color={pink}>

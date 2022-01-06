@@ -10,6 +10,7 @@ import {
     Tag,
 } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
+import { noPrintClass } from '../../helpers/utils';
 import NavLink from '../NavLink';
 import styles from './CardInfo.module.scss';
 
@@ -34,7 +35,9 @@ export default function CardInfo({
                             <CardTitle>{title}</CardTitle>
                             <CardDescription>{source}</CardDescription>
                         </Card>
-                        <div className={`fs-12-12 ${styles.LinkLabel}`}>
+                        <div
+                            className={`fs-12-12 ${styles.LinkLabel} ${noPrintClass}`}
+                        >
                             <Icon
                                 name="ri-arrow-right-line"
                                 size="lg"
