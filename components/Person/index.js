@@ -1,5 +1,4 @@
 import { Col, Row } from '@dataesr/react-dsfr';
-import { PersonPageSkeleton } from '../../helpers/constants';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import useExpandAccordions from '../../hooks/useExpandAccordions';
 import AccordionObject from '../AccordionObject';
@@ -19,7 +18,7 @@ const components = {
     price: Price,
 };
 
-export default function Person({ fame, children }) {
+export default function Person({ fame, children, skeleton }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
     const { accordionsExpanded, Button: ExpandButton } =
@@ -38,7 +37,7 @@ export default function Person({ fame, children }) {
                             components={components}
                             initExpand={accordionsExpanded}
                             color={pink}
-                            skeleton={PersonPageSkeleton}
+                            skeleton={skeleton}
                         />
                     </ToPrint>
                 </Col>

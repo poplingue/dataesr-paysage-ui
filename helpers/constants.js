@@ -60,25 +60,30 @@ export const PersonPageSkeleton = [
             { title: 'Les dernières dépêches', component: 'news' },
         ],
         component: 'synthesis',
+        print: true,
     },
     {
         title: 'Fonctions et responsabilités',
         content: [],
         component: 'responsability',
+        print: true,
     },
     {
         title: 'Présence sur le web',
         content: [],
         component: 'web',
+        print: false,
     },
     {
         title: 'Prix et distinctions',
         content: [],
         component: 'price',
+        print: true,
     },
     {
         title: 'Identifiants',
         content: [],
         component: 'identifier',
+        print: true,
     },
 ];
