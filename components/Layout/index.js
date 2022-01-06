@@ -45,7 +45,6 @@ export default function Layout({ children, headTitle }) {
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
         statePage: { userConnected },
-        stateForm: { updateObjectId },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 

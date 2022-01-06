@@ -43,6 +43,7 @@
     "react-hot-toast": "^2.1.0",
     "react-tabulator": "^0.16.1",
     "react-test-renderer": "^17.0.2",
+    "react-to-print": "^2.14.3",
     "sass": "^1.36.0",
     "xlsx": "^0.17.1",
     "yup": "^0.32.11"

@@ -1,6 +1,7 @@
 import { Button } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
+import { noPrintClass } from '../../helpers/utils';
 
-// TODO add proptypes
 export default function FieldButton({
     title,
     onClick,
@@ -13,7 +14,7 @@ export default function FieldButton({
     return (
         <Button
             disabled={disabled}
-            className={className}
+            className={`${className} ${noPrintClass}`}
             icon={icon}
             data-testid={dataTestId}
             size="sm"
@@ -25,3 +26,22 @@ export default function FieldButton({
         </Button>
     );
 }
+
+FieldButton.defaultProps = {
+    onClick: () => {},
+    dataTestId: '',
+    icon: '',
+    className: '',
+    disabled: false,
+    colors: [],
+};
+
+FieldButton.propTypes = {
+    title: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+    dataTestId: PropTypes.string,
+    icon: PropTypes.string,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    colors: PropTypes.arrayOf(PropTypes.string),
+};

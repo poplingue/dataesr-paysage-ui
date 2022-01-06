@@ -165,13 +165,16 @@ const authService = {
             });
     },
     signOut: async () => {
-        // TODO auth/signout
+        // TODO route auth/signout
+        let resp = 'No Cookie tokens to remove';
+
         try {
             if (Cookies.get('tokens')) {
                 Cookies.remove('tokens');
+                resp = 'Cookie tokens removed';
             }
 
-            return 'Cookie tokens removed';
+            return resp;
         } catch (err) {
             return Promise.reject(err);
         }

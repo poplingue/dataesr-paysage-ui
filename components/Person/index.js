@@ -1,8 +1,10 @@
-import { Accordion, AccordionItem, Col } from '@dataesr/react-dsfr';
+import { Col, Row } from '@dataesr/react-dsfr';
 import { PersonPageSkeleton } from '../../helpers/constants';
-import { cleanString, sectionUniqueId } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import useExpandAccordions from '../../hooks/useExpandAccordions';
+import AccordionObject from '../AccordionObject';
 import PageTheme from '../PageTheme';
+import ToPrint from '../ToPrint';
 import Identifier from './Identifier';
 import Price from './Price';
 import Responsability from './Responsability';
@@ -20,38 +22,27 @@ const components = {
 export default function Person({ fame, children }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
+    const { accordionsExpanded, Button: ExpandButton } =
+        useExpandAccordions(true);
+
     return (
         <PageTheme color={pink}>
-            {children}
-            <Col>
-                <Accordion size="lg" color={pink} keepOpen>
-                    {PersonPageSkeleton.map((elm) => {
-                        const { content, title, component } = elm;
-
-                        const dataSection = sectionUniqueId(
-                            cleanString(title),
-                            content.length
-                        );
-                        const Component = components[component];
-
-                        return (
-                            <AccordionItem
-                                initExpand
-                                title={title}
-                                key={title}
-                                data-section={dataSection}
-                            >
-                                {Component && (
-                                    <Component
-                                        title={title}
-                                        content={content}
-                                    />
-                                )}
-                            </AccordionItem>
-                        );
-                    })}
-                </Accordion>
-            </Col>
+            <Row gutters>
+                {children}
+                <Col offset="10" n="2" className="p-relative">
+                    {ExpandButton}
+                </Col>
+                <Col>
+                    <ToPrint>
+                        <AccordionObject
+                            components={components}
+                            initExpand={accordionsExpanded}
+                            color={pink}
+                            skeleton={PersonPageSkeleton}
+                        />
+                    </ToPrint>
+                </Col>
+            </Row>
         </PageTheme>
     );
 }

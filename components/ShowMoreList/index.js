@@ -1,6 +1,7 @@
-import { Button, Row } from '@dataesr/react-dsfr';
+import { Row } from '@dataesr/react-dsfr';
 import { useState } from 'react';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import FieldButton from '../FieldButton';
 import styles from './ShowMoreList.module.scss';
 
 export default function ShowMoreList({ children }) {
@@ -9,12 +10,12 @@ export default function ShowMoreList({ children }) {
     const [active, setActive] = useState(false);
     const activeObj = {
         true: {
-            myCass: styles.ShowLess,
+            myClass: styles.ShowLess,
             icon: 'ri-subtract-line',
             text: 'Voir moins',
         },
         false: {
-            myCass: styles.ShowMore,
+            myClass: styles.ShowMore,
             icon: 'ri-add-line',
             text: 'Voir plus',
         },
@@ -22,17 +23,16 @@ export default function ShowMoreList({ children }) {
 
     return (
         <>
-            <Button
+            <FieldButton
                 onClick={() => setActive(!active)}
-                className={activeObj[active].myCass}
+                className={activeObj[active].myClass}
                 size="sm"
                 icon={activeObj[active].icon}
                 secondary
                 iconPosition="right"
                 colors={[grey, white]}
-            >
-                {activeObj[active].text}
-            </Button>
+                title={activeObj[active].text}
+            />
             <Row gutters className={styles.Panel}>
                 {children}
             </Row>
