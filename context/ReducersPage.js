@@ -35,6 +35,13 @@ const reducersPage = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_PRINT_PAGE: {
+            return {
+                ...state,
+                printPage: action.payload.printPage,
+            };
+        }
+
         default:
             break;
     }

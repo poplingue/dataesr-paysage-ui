@@ -1,5 +1,7 @@
 import { Col, Container, Icon, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import FieldButton from '../../../../components/FieldButton';
 import HeaderLayout from '../../../../components/HeaderLayout';
 import Layout from '../../../../components/Layout';
@@ -7,10 +9,15 @@ import NavLink from '../../../../components/NavLink';
 import Person from '../../../../components/Person';
 import SideNavigation from '../../../../components/SideNavigation';
 import ToolBox from '../../../../components/ToolBox';
+import { AppContext } from '../../../../context/GlobalState';
 import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
 
 export default function Object(props) {
+    const {
+        statePage: { printPage },
+    } = useContext(AppContext);
+
     const router = useRouter();
     const { id } = router.query;
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
@@ -27,7 +34,12 @@ export default function Object(props) {
                         <Container>
                             <Row gutters spacing="pb-2w">
                                 <Col n="12">
-                                    <FieldButton title="Tools" />
+                                    <FieldButton
+                                        title="Exporter en pdf"
+                                        onClick={useReactToPrint({
+                                            content: () => printPage,
+                                        })}
+                                    />
                                 </Col>
                                 <Col>
                                     <Icon name="ri-edit-line" color={pink}>

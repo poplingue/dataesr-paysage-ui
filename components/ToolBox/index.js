@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './ToolBox.module.scss';
 
 export default function ToolBox({ children }) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <div

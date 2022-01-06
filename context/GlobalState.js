@@ -29,6 +29,7 @@ export const DataProvider = ({ user, error, children }) => {
 
     const initialStatePage = {
         sideMode: 'on',
+        printPage: null,
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
         error: error || null,

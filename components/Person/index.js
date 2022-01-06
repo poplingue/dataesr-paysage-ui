@@ -1,6 +1,4 @@
 import { Col } from '@dataesr/react-dsfr';
-import { useRef } from 'react';
-import { useReactToPrint } from 'react-to-print';
 import { PersonPageSkeleton } from '../../helpers/constants';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import useExpandAccordions from '../../hooks/useExpandAccordions';
@@ -23,10 +21,7 @@ const components = {
 
 export default function Person({ fame, children }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const componentRef = useRef(null);
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-    });
+
     const { accordionsExpanded, Button: ExpandButton } =
         useExpandAccordions(true);
 
@@ -37,8 +32,7 @@ export default function Person({ fame, children }) {
                 {ExpandButton}
             </Col>
             <Col>
-                <button onClick={handlePrint}>Print this out!</button>
-                <ToPrint ref={componentRef}>
+                <ToPrint>
                     <AccordionObject
                         components={components}
                         initExpand={accordionsExpanded}
