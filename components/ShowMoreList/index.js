@@ -10,12 +10,12 @@ export default function ShowMoreList({ children }) {
     const [active, setActive] = useState(false);
     const activeObj = {
         true: {
-            myCass: styles.ShowLess,
+            myClass: styles.ShowLess,
             icon: 'ri-subtract-line',
             text: 'Voir moins',
         },
         false: {
-            myCass: styles.ShowMore,
+            myClass: styles.ShowMore,
             icon: 'ri-add-line',
             text: 'Voir plus',
         },
@@ -25,7 +25,7 @@ export default function ShowMoreList({ children }) {
         <>
             <FieldButton
                 onClick={() => setActive(!active)}
-                className={activeObj[active].myCass}
+                className={activeObj[active].myClass}
                 size="sm"
                 icon={activeObj[active].icon}
                 secondary
