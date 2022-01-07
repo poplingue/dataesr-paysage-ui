@@ -1,6 +1,6 @@
 import { Col, Row } from '@dataesr/react-dsfr';
+import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import useExpandAccordions from '../../hooks/useExpandAccordions';
 import AccordionObject from '../AccordionObject';
 import PageTheme from '../PageTheme';
 import ToPrint from '../ToPrint';
@@ -20,17 +20,12 @@ const components = {
 
 export default function Person({ fame, children, skeleton }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-
-    const { accordionsExpanded, Button: ExpandButton } =
-        useExpandAccordions(true);
+    const { accordionsExpanded } = useAccordions(true);
 
     return (
         <PageTheme color={pink}>
             <Row gutters>
                 {children}
-                <Col offset="10" n="2" className="p-relative">
-                    {ExpandButton}
-                </Col>
                 <Col>
                     <ToPrint>
                         <AccordionObject

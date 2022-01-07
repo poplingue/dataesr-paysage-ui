@@ -267,7 +267,7 @@ export default function CreatePerson({ data, id }) {
                 pageTitle={id ? `Modifier ${id}` : 'Ajouter une personne'}
             />
             <SideNavigation items={CreatePersonForm[0].form}>
-                <ToolBox>
+                <ToolBox accordions>
                     <Container>
                         <Row gutters spacing="pb-2w">
                             <Col>

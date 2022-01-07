@@ -1,8 +1,27 @@
 import { useState } from 'react';
 import FieldButton from '../components/FieldButton';
+import useCSSProperty from './useCSSProperty';
 
-const useExpandAccordions = (init) => {
+const useAccordions = (init) => {
     const [accordionsExpanded, setAccordionsExpanded] = useState(init);
+
+    const actionAll = (expand) => {
+        const btnAccordions = document.querySelectorAll(
+            `.fr-accordion__btn[aria-expanded=${expand}]`
+        );
+
+        for (let i = 0; i < btnAccordions.length; i = i + 1) {
+            simulateClick(btnAccordions[i]);
+        }
+    };
+
+    const closeAll = () => {
+        actionAll('true');
+    };
+
+    const expandAll = () => {
+        actionAll('false');
+    };
 
     const simulateClick = (elem) => {
         const evt = new MouseEvent('click', {
@@ -28,15 +47,19 @@ const useExpandAccordions = (init) => {
         }
     };
 
+    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
+    const { style: white } = useCSSProperty('--grey-1000');
+
     const Button = (
         <FieldButton
+            colors={[pink, white]}
             dataTestId="btn-expand-close"
             title="Réduire / Ouvrir"
             onClick={expandCloseAll}
         />
     );
 
-    return { accordionsExpanded, Button };
+    return { accordionsExpanded, Button, closeAll, expandAll };
 };
 
-export default useExpandAccordions;
+export default useAccordions;
