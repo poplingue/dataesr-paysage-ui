@@ -29,7 +29,7 @@ export default function AccordionObject({
 
                         return (
                             <Accordion
-                                className={!print && 'no-print'}
+                                className={!print ? 'no-print' : ''}
                                 size="lg"
                                 keepOpen
                                 color={color}

@@ -5,6 +5,7 @@ import {
     SideMenuLink,
     Text,
 } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { goToSection, sectionUniqueId } from '../../helpers/utils';
@@ -12,7 +13,7 @@ import useScroll from '../../hooks/useScroll';
 import useViewport from '../../hooks/useViewport';
 import styles from './SideNavigation.module.scss';
 
-export default function Navigation({ items }) {
+export default function Navigation({ items, color }) {
     const {
         statePage: { sideMode },
         dispatchPage: dispatch,
@@ -120,7 +121,11 @@ export default function Navigation({ items }) {
                                 return (
                                     <SideMenuItem
                                         key={title}
-                                        className={sideOpened ? '' : 'hidden'}
+                                        className={
+                                            sideOpened
+                                                ? `${styles[color]}`
+                                                : `${styles[color]} hidden`
+                                        }
                                         title={title}
                                         expandedDefault
                                     >
@@ -177,3 +182,24 @@ export default function Navigation({ items }) {
         </SideMenu>
     );
 }
+
+Navigation.defaultProps = {
+    color: '',
+};
+
+Navigation.propTypes = {
+    color: PropTypes.oneOf(['Yellow', 'Pink', '']),
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            title: PropTypes.string,
+            content: PropTypes.arrayOf(
+                PropTypes.shape({
+                    title: PropTypes.string,
+                    component: PropTypes.string,
+                })
+            ),
+            component: PropTypes.string,
+            print: PropTypes.bool,
+        })
+    ).isRequired,
+};

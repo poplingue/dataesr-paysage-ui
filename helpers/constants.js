@@ -87,3 +87,12 @@ export const PersonPageSkeleton = [
         print: true,
     },
 ];
+
+export const StructurePageSkeleton = [
+    {
+        title: 'Présentation',
+        content: [{ title: 'Historique', component: 'history' }],
+        component: 'synthesis',
+        print: true,
+    },
+];

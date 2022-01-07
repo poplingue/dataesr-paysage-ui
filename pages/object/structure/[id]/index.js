@@ -1,29 +1,30 @@
-import { Icon } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+
+import 'react-tabulator/css/tabulator_materialize.min.css';
+import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
+
 import { useContext, useEffect } from 'react';
 import HeaderLayout from '../../../../components/HeaderLayout';
 import Layout from '../../../../components/Layout';
-import NavLink from '../../../../components/NavLink';
-import Person from '../../../../components/Person';
 import SideNavigation from '../../../../components/SideNavigation';
+import Structure from '../../../../components/Structure';
 import ToolBox from '../../../../components/ToolBox';
 import { AppContext } from '../../../../context/GlobalState';
-import { PersonPageSkeleton } from '../../../../helpers/constants';
-import useCSSProperty from '../../../../hooks/useCSSProperty';
+import { StructurePageSkeleton } from '../../../../helpers/constants';
 
 export default function Object(props) {
+    const router = useRouter();
+    const { id } = router.query;
+
     const {
         statePage: { accordionSkeleton: skeleton },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
-    const router = useRouter();
-    const { id } = router.query;
-    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-
     // TODO refacto - make a hook?
     useEffect(() => {
         return () => {
+            console.log('==== CLEAN accordionSkeleton==== ');
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
                 payload: {
@@ -38,7 +39,7 @@ export default function Object(props) {
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
                 payload: {
-                    accordionSkeleton: PersonPageSkeleton,
+                    accordionSkeleton: StructurePageSkeleton,
                 },
             });
         }
@@ -46,12 +47,9 @@ export default function Object(props) {
 
     return (
         <Layout>
-            <HeaderLayout
-                pageTitle="Une Personne"
-                highlight="Last update on Tuesday 5th of September 2020"
-            />
-            <SideNavigation items={skeleton} color="Pink">
-                <Person
+            <HeaderLayout pageTitle="Une Structure" />
+            <SideNavigation items={skeleton} color="Yellow">
+                <Structure
                     id={id}
                     fame={props.fame}
                     name={props.name}
@@ -60,30 +58,10 @@ export default function Object(props) {
                     <ToolBox
                         printer
                         accordions
-                        initialSkeleton={PersonPageSkeleton}
-                    >
-                        <Icon name="ri-edit-line" color={pink}>
-                            <NavLink
-                                className="fs-14-24"
-                                href={`/update/person/${id}`}
-                            >
-                                Modifier
-                            </NavLink>
-                        </Icon>
-                    </ToolBox>
-                </Person>
+                        initialSkeleton={StructurePageSkeleton}
+                    />
+                </Structure>
             </SideNavigation>
         </Layout>
     );
-}
-
-export async function getServerSideProps() {
-    // fetch data Person by id
-    return {
-        props: {
-            id: 0,
-            name: 'Personne 0',
-            fame: true,
-        },
-    };
 }

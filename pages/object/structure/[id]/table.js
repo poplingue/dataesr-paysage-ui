@@ -5,10 +5,10 @@ import { useState } from 'react';
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
-import HeaderLayout from '../../../components/HeaderLayout';
-import IconButton from '../../../components/IconButton';
-import Layout from '../../../components/Layout';
-import Table from '../../../components/Table';
+import HeaderLayout from '../../../../components/HeaderLayout';
+import IconButton from '../../../../components/IconButton';
+import Layout from '../../../../components/Layout';
+import Table from '../../../../components/Table';
 
 export default function Object() {
     const router = useRouter();

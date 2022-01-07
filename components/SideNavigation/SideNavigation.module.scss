@@ -40,11 +40,19 @@
     right: 50px;
 }
 
-#Sticky {
+.Sticky {
     width: 100vw;
     position: fixed;
     top: 0;
     z-index: 100;
+}
+
+.Yellow button {
+    color: var(--green-tilleul-verveine-main-707);
+}
+
+.Pink button {
+    color: var(--pink-tuile-main-556);
 }
 
 @media (min-width: 767px) {
