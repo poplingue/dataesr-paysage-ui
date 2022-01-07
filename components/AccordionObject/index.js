@@ -19,7 +19,7 @@ export default function AccordionObject({
             <Row>
                 <Col spacing="mb-3w">
                     {skeleton.map((elm) => {
-                        const { content, title, component } = elm;
+                        const { content, title, component, print } = elm;
 
                         const dataSection = sectionUniqueId(
                             cleanString(title),
@@ -29,6 +29,7 @@ export default function AccordionObject({
 
                         return (
                             <Accordion
+                                className={!print && 'no-print'}
                                 size="lg"
                                 keepOpen
                                 color={color}

@@ -42,6 +42,13 @@ const reducersPage = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_ACCORDION_SKELETON: {
+            return {
+                ...state,
+                accordionSkeleton: action.payload.accordionSkeleton,
+            };
+        }
+
         default:
             break;
     }

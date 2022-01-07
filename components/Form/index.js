@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
-import useExpandAccordions from '../../hooks/useExpandAccordions';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import InfiniteAccordion from '../InfiniteAccordion';
@@ -23,8 +22,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const { accordionsExpanded, Button: ExpandButton } =
-        useExpandAccordions(true);
 
     const retrieveField = useCallback(
         async (field) => {
@@ -79,9 +76,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     return (
         <PageTheme color={color}>
             <Row gutters>
-                <Col offset="10" n="2" className="p-relative">
-                    {ExpandButton}
-                </Col>
                 <Col n="12">
                     {jsonForm.form.map((section, i) => {
                         const {
@@ -103,7 +97,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 key={`${sectionTitle}-${i}`}
                             >
                                 <InfiniteAccordion
-                                    accordionsExpanded={accordionsExpanded}
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
                                     content={content}
@@ -114,7 +107,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             <AccordionForm
                                 key={i}
                                 color={color}
-                                initExpand={accordionsExpanded}
                                 dataSection={dataSection}
                                 newTitle={sectionTitle}
                             >

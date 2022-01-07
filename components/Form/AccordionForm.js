@@ -9,13 +9,13 @@ import {
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { cleanString } from '../../helpers/utils';
+import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './Form.module.scss';
 
 // TODO add proptypes
 export default function AccordionForm({
     size = 'lg',
-    initExpand,
     newTitle,
     children,
     dataSection,
@@ -27,6 +27,7 @@ export default function AccordionForm({
     const { style: orange } = useCSSProperty('--warning-main-525');
 
     const [sectionStatus, setSectionStatus] = useState('neutral');
+    const { expanded } = useAccordions(true);
 
     const {
         stateForm: { validSections },
@@ -76,7 +77,7 @@ export default function AccordionForm({
                         data-section={dataSection}
                     >
                         <AccordionItem
-                            initExpand={initExpand}
+                            initExpand={expanded}
                             className={styles.Item}
                             title={renderTitle()}
                         >

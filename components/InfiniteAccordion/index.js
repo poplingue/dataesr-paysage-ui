@@ -24,12 +24,7 @@ import FormAccordionItem from '../Form/FormAccordionItem';
 import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
-export default function InfiniteAccordion({
-    title,
-    content,
-    dataAttSection,
-    accordionsExpanded,
-}) {
+export default function InfiniteAccordion({ title, content, dataAttSection }) {
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
@@ -37,16 +32,18 @@ export default function InfiniteAccordion({
     const { style: white } = useCSSProperty('--grey-1000');
 
     const {
-        stateForm: { forms, storeObjects },
-        dispatchForm: dispatch,
-    } = useContext(AppContext);
-    const {
         pathname,
         query: { object },
     } = useRouter();
     const [sections, setSections] = useState({});
     const type = cleanString(title);
     const formName = getFormName(pathname, object);
+
+    const {
+        stateForm: { forms, storeObjects },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+
     const sectionRefs = useMemo(
         () =>
             Array(sections[type] || 1)
@@ -178,7 +175,6 @@ export default function InfiniteAccordion({
                                                 }
                                                 color={yellow}
                                                 keepOpen
-                                                initExpand={accordionsExpanded}
                                                 newTitle={newTitle}
                                             >
                                                 <FormAccordionItem

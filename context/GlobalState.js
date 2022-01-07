@@ -30,6 +30,7 @@ export const DataProvider = ({ user, error, children }) => {
     const initialStatePage = {
         sideMode: 'on',
         printPage: null,
+        accordionSkeleton: [],
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
         error: error || null,
