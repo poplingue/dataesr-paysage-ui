@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
-import useAccordions from '../../hooks/useAccordions';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import InfiniteAccordion from '../InfiniteAccordion';
@@ -23,7 +22,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const { accordionsExpanded } = useAccordions(true);
 
     const retrieveField = useCallback(
         async (field) => {
@@ -99,7 +97,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 key={`${sectionTitle}-${i}`}
                             >
                                 <InfiniteAccordion
-                                    accordionsExpanded={accordionsExpanded}
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
                                     content={content}
@@ -110,7 +107,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             <AccordionForm
                                 key={i}
                                 color={color}
-                                initExpand={accordionsExpanded}
                                 dataSection={dataSection}
                                 newTitle={sectionTitle}
                             >

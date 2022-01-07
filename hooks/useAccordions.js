@@ -3,7 +3,10 @@ import FieldButton from '../components/FieldButton';
 import useCSSProperty from './useCSSProperty';
 
 const useAccordions = (init) => {
-    const [accordionsExpanded, setAccordionsExpanded] = useState(init);
+    const [expanded, setExpanded] = useState(init);
+
+    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
+    const { style: white } = useCSSProperty('--grey-1000');
 
     const actionAll = (expand) => {
         const btnAccordions = document.querySelectorAll(
@@ -33,11 +36,11 @@ const useAccordions = (init) => {
         // If cancelled, don't dispatch our event
         const canceled = !elem.dispatchEvent(evt);
 
-        setAccordionsExpanded(!accordionsExpanded);
+        setExpanded(!expanded);
     };
 
     const expandCloseAll = () => {
-        const open = accordionsExpanded ? 'true' : 'false';
+        const open = expanded ? 'true' : 'false';
         const btnAccordions = document.querySelectorAll(
             `.fr-accordion__btn[aria-expanded="${open}"]`
         );
@@ -46,9 +49,6 @@ const useAccordions = (init) => {
             simulateClick(btnAccordions[i]);
         }
     };
-
-    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const { style: white } = useCSSProperty('--grey-1000');
 
     const Button = (
         <FieldButton
@@ -59,7 +59,7 @@ const useAccordions = (init) => {
         />
     );
 
-    return { accordionsExpanded, Button, closeAll, expandAll };
+    return { expanded, Button, closeAll, expandAll };
 };
 
 export default useAccordions;

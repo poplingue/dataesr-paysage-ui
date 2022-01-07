@@ -25,17 +25,15 @@ export default function ToolBox({
     accordions,
     initialSkeleton,
 }) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const { Button } = useAccordions(true);
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const { expandAll } = useAccordions(true);
 
     const {
         statePage: { printPage, accordionSkeleton },
         dispatchPage: dispatch,
     } = useContext(AppContext);
-
-    const [isOpenModal, setIsOpenModal] = useState(false);
-
-    const { expandAll } = useAccordions(true);
 
     const printThisOut = async (cb) => {
         validPrint().then((response) => {

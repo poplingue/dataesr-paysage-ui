@@ -20,7 +20,7 @@ const components = {
 
 export default function Person({ fame, children, skeleton }) {
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const { accordionsExpanded } = useAccordions(true);
+    const { expanded } = useAccordions(true);
 
     return (
         <PageTheme color={pink}>
@@ -30,7 +30,7 @@ export default function Person({ fame, children, skeleton }) {
                     <ToPrint>
                         <AccordionObject
                             components={components}
-                            initExpand={accordionsExpanded}
+                            initExpand={expanded}
                             color={pink}
                             skeleton={skeleton}
                         />
