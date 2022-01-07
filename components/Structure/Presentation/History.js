@@ -1,8 +1,15 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import {
+    Card,
+    CardDetail,
+    CardTitle,
+    Col,
+    Container,
+    Row,
+} from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../context/GlobalState';
-import CardInfo from '../../CardInfo';
+import IconButton from '../../IconButton';
 
 export default function History({ section }) {
     const [history, setHistory] = useState([]);
@@ -41,23 +48,35 @@ export default function History({ section }) {
                 },
             ]);
         }
-    }, [history, accordionSections]);
+    }, [history, accordionSections, section]);
+
+    const onClick = () => {
+        console.log('==== LOG ==== ');
+    };
 
     return (
         <Container>
-            <Row>
-                <Col>History Structure {id}</Col>
-                <Col n="12">
-                    {history.map((h) => {
-                        return (
-                            <CardInfo
-                                key={h.title}
-                                link="/"
-                                title={h.title}
-                                date={h.date}
-                            />
-                        );
-                    })}
+            <Row gutters>
+                <Col n="12">History Structure {id}</Col>
+
+                {history.slice(0, 4).map((historyCard) => {
+                    const { date, event } = historyCard;
+
+                    return (
+                        <Col n="4" key={event}>
+                            <Card onClick={onClick} href="#">
+                                <CardDetail>{event}</CardDetail>
+                                <CardTitle>{date}</CardTitle>
+                            </Card>
+                        </Col>
+                    );
+                })}
+                <Col n="4">
+                    <IconButton
+                        onClick={() => {}}
+                        title={`Voir tout l'historique`}
+                        icon="ri-eye-2-line"
+                    />
                 </Col>
             </Row>
         </Container>

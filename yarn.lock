@@ -589,10 +589,10 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@dataesr/react-dsfr@0.9.5":
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.9.5.tgz#99b0787b7e2174f28434fbea76919855d18d84e9"
-  integrity sha512-mn1UCsxo4mxl9gYm64jrrgvLoH4XWQNkFKiFhhPHMpb3R8reRYSc4b5AyYPGqNQbOFNWzbEMDvi1uxEEsJq7UA==
+"@dataesr/react-dsfr@0.9.6":
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.9.6.tgz#227369229fe01f71a2abfbf91e7b147919dd87d8"
+  integrity sha512-3+ZySzYijONCEBEIbtH+Cj2Mf+V/zH0VwrDWab5VGbyPvRZQkCwBzn2iwmIcO8Lc7ybbZV1JyfGcmBk8qUnaXw==
   dependencies:
     "@babel/runtime" "^7.16.3"
     "@gouvfr/dsfr" "1.2.1"

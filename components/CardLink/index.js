@@ -7,19 +7,19 @@ import {
 import PropTypes from 'prop-types';
 import NavLink from '../NavLink';
 
-export default function CardLink({ link, date, title, structure }) {
+export default function CardLink({ link, supInfo, info, subInfo }) {
     return (
         <Card asLink={<NavLink href={link}>Structure</NavLink>}>
-            <CardDetail>{date}</CardDetail>
-            <CardTitle>{title}</CardTitle>
-            <CardDescription>{structure}</CardDescription>
+            <CardDetail>{supInfo}</CardDetail>
+            <CardTitle>{info}</CardTitle>
+            <CardDescription>{subInfo}</CardDescription>
         </Card>
     );
 }
 
 CardLink.propTypes = {
     link: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    structure: PropTypes.string.isRequired,
+    supInfo: PropTypes.string.isRequired,
+    info: PropTypes.string.isRequired,
+    subInfo: PropTypes.string,
 };

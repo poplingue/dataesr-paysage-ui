@@ -27,6 +27,7 @@ export default function Category(props) {
         });
     });
 
+    // TODO replace by <Card>
     const onTileClick = (id) => {
         if (!exportMode) {
             router.push(`/object/${getObjectType(category).name}/${id}`);
