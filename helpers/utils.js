@@ -177,8 +177,11 @@ export function setCSSProperty(property, value) {
  */
 export const goToSection = (e, dataSection) => {
     const section = document.querySelector(`[data-section=${dataSection}]`);
-    const { left, top } = section.getBoundingClientRect();
-    window.scrollTo(left, top + window.scrollY);
+
+    if (section) {
+        const { left, top } = section.getBoundingClientRect();
+        window.scrollTo(left, top + window.scrollY);
+    }
 };
 
 /**

@@ -49,6 +49,13 @@ const reducersPage = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_ACCORDION_SECTIONS: {
+            return {
+                ...state,
+                accordionSections: action.payload.accordionSections,
+            };
+        }
+
         default:
             break;
     }

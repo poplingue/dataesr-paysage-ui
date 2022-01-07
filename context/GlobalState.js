@@ -28,7 +28,7 @@ export const DataProvider = ({ user, error, children }) => {
     };
 
     const initialStatePage = {
-        sideMode: 'on',
+        sideMode: 'off',
         printPage: null,
         accordionSkeleton: [],
         hasBreadCrumbs: false,

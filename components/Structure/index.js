@@ -3,11 +3,13 @@ import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import AccordionObject from '../AccordionObject';
 import PageTheme from '../PageTheme';
-import Synthesis from '../Structure/Synthesis';
 import ToPrint from '../ToPrint';
+import Governance from './Governance';
+import Presentation from './Presentation';
 
 const components = {
-    synthesis: Synthesis,
+    presentation: Presentation,
+    governance: Governance,
 };
 
 export default function Structure({ children, skeleton }) {

@@ -6,6 +6,7 @@ import {
     Row,
 } from '@dataesr/react-dsfr';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import useAccordions from '../../hooks/useAccordions';
 
 // TODO add proptypes
 export default function AccordionObject({
@@ -14,6 +15,8 @@ export default function AccordionObject({
     color,
     skeleton,
 }) {
+    const { accordionClick } = useAccordions();
+
     return (
         <Container fluid>
             <Row>
@@ -36,6 +39,7 @@ export default function AccordionObject({
                                 key={title}
                             >
                                 <AccordionItem
+                                    onClick={() => accordionClick(dataSection)}
                                     initExpand={initExpand}
                                     keepOpen
                                     title={title}
@@ -43,7 +47,7 @@ export default function AccordionObject({
                                 >
                                     {Component && (
                                         <Component
-                                            title={title}
+                                            section={dataSection}
                                             content={content}
                                         />
                                     )}

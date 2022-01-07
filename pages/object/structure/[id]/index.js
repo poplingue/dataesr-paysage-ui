@@ -24,7 +24,6 @@ export default function Object(props) {
     // TODO refacto - make a hook?
     useEffect(() => {
         return () => {
-            console.log('==== CLEAN accordionSkeleton==== ');
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
                 payload: {
@@ -47,7 +46,7 @@ export default function Object(props) {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Une Structure" />
+            <HeaderLayout pageTitle={props.name} status={props.status} />
             <SideNavigation items={skeleton} color="Yellow">
                 <Structure
                     id={id}
@@ -64,4 +63,16 @@ export default function Object(props) {
             </SideNavigation>
         </Layout>
     );
+}
+
+export async function getServerSideProps() {
+    // fetch data Structure by id
+    return {
+        props: {
+            id: 0,
+            name: "IEA de Nantes Institut d'études avancées de Nantes ",
+            fame: true,
+            status: 'open',
+        },
+    };
 }
