@@ -1,4 +1,4 @@
-import { Col } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../helpers/imports';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import FieldButton from '../FieldButton';
@@ -10,6 +10,8 @@ export default function DeleteButton({
     onclick,
     label = '',
 }) {
+    const { Col } = dsfrGrid();
+
     const { style: red } = useCSSProperty('--error-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
 

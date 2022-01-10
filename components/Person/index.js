@@ -1,4 +1,4 @@
-import { Col, Row } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../helpers/imports';
 import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import AccordionObject from '../AccordionObject';
@@ -19,6 +19,8 @@ const components = {
 };
 
 export default function Person({ fame, children, skeleton }) {
+    const { Col, Row } = dsfrGrid();
+
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
     const { expanded } = useAccordions(true);
 

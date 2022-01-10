@@ -1,7 +1,7 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 import {
     getFieldValue,
     getForm,
@@ -15,6 +15,8 @@ import Field from '../Field';
 import FieldButton from '../FieldButton';
 
 function InfiniteField({ children, title, section }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,

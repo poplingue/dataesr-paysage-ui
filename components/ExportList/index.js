@@ -1,11 +1,14 @@
-import { Col, Container, Row, Toggle } from '@dataesr/react-dsfr';
+import { Toggle } from '@dataesr/react-dsfr';
 import { useContext } from 'react';
 import XLSX from 'xlsx';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 import FieldButton from '../FieldButton';
 import List from '../List';
 
 function Workbook() {
+    const { Col, Row, Container } = dsfrGrid();
+
     if (!(this instanceof Workbook)) return new Workbook();
 
     this.SheetNames = [];

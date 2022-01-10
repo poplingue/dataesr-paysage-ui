@@ -1,8 +1,17 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import HeaderLayout from '../../../../components/HeaderLayout';
-import Layout from '../../../../components/Layout';
 import { getObjectType } from '../../../../helpers/constants';
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+
+const Layout = dynamic(() => import('./../../../../components/Layout'));
+const HeaderLayout = dynamic(() =>
+    import('./../../../../components/HeaderLayout')
+);
 
 // TODO to remove??
 export default function Object() {
@@ -13,15 +22,11 @@ export default function Object() {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle={title}/>
+            <HeaderLayout pageTitle={title} />
             <Container>
                 <Row>
-                    <Col n='12'>
-                        Structure : {id}
-                    </Col>
-                    <Col>
-                        Object Type : {name}
-                    </Col>
+                    <Col n="12">Structure : {id}</Col>
+                    <Col>Object Type : {name}</Col>
                 </Row>
             </Container>
         </Layout>

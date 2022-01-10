@@ -1,9 +1,6 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
-import AuthForm from '../../components/AuthForm';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
 import {
     codeSendByEmailMsg,
     emailErrorMsg,
@@ -11,6 +8,16 @@ import {
 } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
+
+const AuthForm = dynamic(() => import('../../components/AuthForm'));
+const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
+const Layout = dynamic(() => import('../../components/Layout'));
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
 
 const formSchema = [
     {

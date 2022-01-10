@@ -1,12 +1,8 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
-import AuthForm from '../../components/AuthForm';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
-import NavLink from '../../components/NavLink';
 
 import {
     emailErrorMsg,
@@ -17,6 +13,17 @@ import {
 } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+
+const AuthForm = dynamic(() => import('../../components/AuthForm'));
+const NavLink = dynamic(() => import('../../components/NavLink'));
+const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
+const Layout = dynamic(() => import('../../components/Layout'));
 
 const formSchema = [
     {

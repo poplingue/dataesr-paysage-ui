@@ -1,4 +1,3 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import {
     createRef,
@@ -9,6 +8,7 @@ import {
     useState,
 } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 import {
     cleanString,
     getForm,
@@ -25,6 +25,8 @@ import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
 export default function InfiniteAccordion({ title, content, dataAttSection }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );

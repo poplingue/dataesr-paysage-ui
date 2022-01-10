@@ -1,9 +1,7 @@
-import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import HeaderLayout from '../components/HeaderLayout';
-import Layout from '../components/Layout';
 import { AppContext } from '../context/GlobalState';
 import {
     activateAdviceMsg,
@@ -11,6 +9,20 @@ import {
     inactiveUserError,
 } from '../helpers/internalMessages';
 import NotifService from '../services/Notif.service';
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Tile = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Tile)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+const TileBody = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.TileBody)
+);
+const HeaderLayout = dynamic(() => import('../components/HeaderLayout'));
+const Layout = dynamic(() => import('../components/Layout'));
 
 function Home() {
     const router = useRouter();

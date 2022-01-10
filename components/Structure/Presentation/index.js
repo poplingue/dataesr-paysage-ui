@@ -1,4 +1,5 @@
-import { Col, Container, Row, Title } from '@dataesr/react-dsfr';
+import { Title } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
 import History from './History';
 
@@ -7,6 +8,8 @@ const components = {
 };
 
 export default function Presentation({ content, section, expand }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     return (
         <>
             {content.map((subSection) => {

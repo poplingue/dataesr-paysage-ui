@@ -1,16 +1,22 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
 import { useContext, useEffect } from 'react';
-import HeaderLayout from '../../../../components/HeaderLayout';
-import Layout from '../../../../components/Layout';
-import SideNavigation from '../../../../components/SideNavigation';
-import Structure from '../../../../components/Structure';
-import ToolBox from '../../../../components/ToolBox';
 import { AppContext } from '../../../../context/GlobalState';
 import { StructurePageSkeleton } from '../../../../helpers/constants';
+
+const Structure = dynamic(() => import('../../../../components/Structure'));
+const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
+const SideNavigation = dynamic(() =>
+    import('../../../../components/SideNavigation')
+);
+const HeaderLayout = dynamic(() =>
+    import('../../../../components/HeaderLayout')
+);
+const Layout = dynamic(() => import('../../../../components/Layout'));
 
 export default function Object(props) {
     const router = useRouter();

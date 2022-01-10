@@ -1,10 +1,5 @@
-import {
-    Accordion,
-    AccordionItem,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../helpers/imports';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 
@@ -16,6 +11,7 @@ export default function AccordionObject({
     skeleton,
 }) {
     const { accordionClick } = useAccordions();
+    const { Col, Row, Container } = dsfrGrid();
 
     return (
         <Container fluid>

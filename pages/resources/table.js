@@ -1,13 +1,19 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
-import HeaderLayout from '../../components/HeaderLayout';
-import IconButton from '../../components/IconButton';
-import Layout from '../../components/Layout';
-import Table from '../../components/Table';
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+
+const Table = dynamic(() => import('./../../components/Table'));
+const Layout = dynamic(() => import('./../../components/Layout'));
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const IconButton = dynamic(() => import('./../../components/IconButton'));
 
 export default function Example() {
     const [data] = useState([

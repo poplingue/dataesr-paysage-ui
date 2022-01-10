@@ -1,8 +1,10 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import CardInfo from '../../components/CardInfo';
+import dsfrGrid from '../../helpers/imports';
 
 export default function Identifiers() {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         query: { id },
     } = useRouter();

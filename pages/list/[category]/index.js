@@ -1,14 +1,24 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
+
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
-import ExportList from '../../../components/ExportList';
-import HeaderLayout from '../../../components/HeaderLayout';
-import Layout from '../../../components/Layout';
-import List from '../../../components/List';
-import TileElement from '../../../components/TileElement';
 import { AppContext } from '../../../context/GlobalState';
 import { getObjectType } from '../../../helpers/constants';
 import useCSSProperty from '../../../hooks/useCSSProperty';
+
+const Layout = dynamic(() => import('./../../../components/Layout'));
+const ExportList = dynamic(() => import('./../../../components/ExportList'));
+const HeaderLayout = dynamic(() =>
+    import('./../../../components/HeaderLayout')
+);
+const List = dynamic(() => import('./../../../components/List'));
+const TileElement = dynamic(() => import('./../../../components/TileElement'));
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 export default function Category(props) {
     const router = useRouter();
@@ -68,7 +78,9 @@ export default function Category(props) {
                                                 body={desc}
                                                 onClick={onTileClick}
                                                 id={id}
-                                            ></TileElement>
+                                            >
+                                                Test
+                                            </TileElement>
                                         </li>
                                     );
                                 })}

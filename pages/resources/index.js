@@ -1,5 +1,7 @@
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
+import dynamic from 'next/dynamic';
+
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const Layout = dynamic(() => import('./../../components/Layout'));
 
 export default function Resources() {
     return (

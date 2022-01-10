@@ -3,13 +3,11 @@ import {
     CardDescription,
     CardDetail,
     CardTitle,
-    Col,
-    Container,
     Icon,
-    Row,
     Tag,
 } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
+import dsfrGrid from '../../helpers/imports';
 import { noPrintClass } from '../../helpers/utils';
 import NavLink from '../NavLink';
 import styles from './CardInfo.module.scss';
@@ -22,6 +20,8 @@ export default function CardInfo({
     externalLink,
     id,
 }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     return (
         <Container fluid>
             <Row>

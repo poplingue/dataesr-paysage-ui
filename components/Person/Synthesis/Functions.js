@@ -1,7 +1,9 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../../helpers/imports';
 import CardLink from '../../CardLink';
 
 export default function Functions() {
+    const { Col, Row, Container } = dsfrGrid();
+
     return (
         <Container fluid>
             <Row gutters>

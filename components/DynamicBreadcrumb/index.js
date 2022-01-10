@@ -1,16 +1,13 @@
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import { Breadcrumb, BreadcrumbItem } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 import NavLink from '../NavLink';
 
 export default function DynamicBreadcrumb() {
+    const { Col, Row, Container } = dsfrGrid();
+
     const router = useRouter();
     const { category, id } = router.query;
     const {

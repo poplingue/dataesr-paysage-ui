@@ -1,24 +1,11 @@
 import {
-    Col,
-    Container,
-    Footer,
-    FooterBody,
     FooterBodyItem,
-    FooterBottom,
     FooterCopy,
     FooterLink,
-    FooterTop,
-    FooterTopCategory,
-    Header,
-    HeaderBody,
-    HeaderNav,
-    Link,
     Logo,
     NavItem,
     NavSubItem,
-    Row,
     Service,
-    SwitchTheme,
     Tool,
     ToolItem,
     ToolItemGroup,
@@ -26,15 +13,49 @@ import {
 
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
-import NavLink from '../NavLink';
+
+const NavLink = dynamic(() => import('./../NavLink'));
+
+const Link = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Link)
+);
+const SwitchTheme = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.SwitchTheme)
+);
+const FooterTop = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.FooterTop)
+);
+const FooterTopCategory = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.FooterTopCategory)
+);
+const HeaderNav = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.HeaderNav)
+);
+const Header = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Header)
+);
+const HeaderBody = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.HeaderBody)
+);
+const Footer = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Footer)
+);
+const FooterBody = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.FooterBody)
+);
+const FooterBottom = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.FooterBottom)
+);
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -76,42 +97,78 @@ export default function Layout({ children, headTitle }) {
         });
     };
 
+    // TODO use it everywhere
+    const { Col, Row, Container } = dsfrGrid();
+
     return (
         <>
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
                 <link
+                    rel="preload"
+                    href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+                    as="style"
+                    onLoad="this.onload=null;this.rel='stylesheet'"
+                />
+                <noscript>
+                    <link
+                        rel="stylesheet"
+                        href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+                    />
+                </noscript>
+                <link
                     rel="icon"
                     href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
-                />
-                <link
-                    href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-                    rel="stylesheet"
                 />
                 <link
                     rel="preload"
                     href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
                     as="font"
-                    crossOrigin=""
+                    onLoad="this.onload=null;this.rel='font'"
                 />
+                <noscript>
+                    <link
+                        rel="font"
+                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
+                    />
+                </noscript>
                 <link
                     rel="preload"
                     href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
                     as="font"
-                    crossOrigin=""
+                    onLoad="this.onload=null;this.rel='font'"
                 />
+
+                <noscript>
+                    <link
+                        rel="font"
+                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
+                    />
+                </noscript>
                 <link
                     rel="preload"
                     href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
                     as="font"
-                    crossOrigin=""
+                    onLoad="this.onload=null;this.rel='font'"
                 />
+                <noscript>
+                    <link
+                        rel="font"
+                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
+                    />
+                </noscript>
                 <link
                     rel="preload"
                     href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
                     as="font"
-                    crossOrigin=""
+                    onLoad="this.onload=null;this.rel='font'"
                 />
+                <noscript>
+                    <link
+                        rel="font"
+                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
+                    />
+                </noscript>
             </Head>
             <Header>
                 <HeaderBody>

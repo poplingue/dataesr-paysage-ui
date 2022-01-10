@@ -1,8 +1,9 @@
-import { Col, Container, Radio, RadioGroup, Row } from '@dataesr/react-dsfr';
+import { Radio, RadioGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
+import dsfrGrid from '../../helpers/imports';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
@@ -14,6 +15,8 @@ function CustomRadio({
     validatorConfig,
     updateValidSection,
 }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const [radioValues, setRadioValues] = useState([]);
     const {
         stateForm: { forms, storeObjects },

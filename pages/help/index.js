@@ -1,14 +1,21 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import FieldButton from '../../components/FieldButton';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
-import NavLink from '../../components/NavLink';
 import { AppContext } from '../../context/GlobalState';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
+
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const Layout = dynamic(() => import('./../../components/Layout'));
+const NavLink = dynamic(() => import('./../../components/NavLink'));
+const FieldButton = dynamic(() => import('./../../components/FieldButton'));
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 export default function Help() {
     const router = useRouter();

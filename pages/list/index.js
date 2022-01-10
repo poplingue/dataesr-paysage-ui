@@ -1,14 +1,23 @@
-import {
-    Card,
-    CardDetail,
-    CardTitle,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
+
+const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
+const Layout = dynamic(() => import('../../components/Layout'));
+
+const Card = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Card)
+);
+const CardDetail = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.CardDetail)
+);
+const CardTitle = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.CardTitle)
+);
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 export default function List() {
     return (

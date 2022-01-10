@@ -589,10 +589,10 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@dataesr/react-dsfr@0.9.6":
-  version "0.9.6"
-  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.9.6.tgz#227369229fe01f71a2abfbf91e7b147919dd87d8"
-  integrity sha512-3+ZySzYijONCEBEIbtH+Cj2Mf+V/zH0VwrDWab5VGbyPvRZQkCwBzn2iwmIcO8Lc7ybbZV1JyfGcmBk8qUnaXw==
+"@dataesr/react-dsfr@0.9.7":
+  version "0.9.7"
+  resolved "https://registry.yarnpkg.com/@dataesr/react-dsfr/-/react-dsfr-0.9.7.tgz#819ca4c089750b0cdfbf162ea2440d870a12bdeb"
+  integrity sha512-/t1bGP4dPG8OIe/MtRIeSqNbvo2t318wjVzG0uMTrqzy+951qubMHjHJ8PEV9gLiHLjWSh7DLY+6bLL8esRrjA==
   dependencies:
     "@babel/runtime" "^7.16.3"
     "@gouvfr/dsfr" "1.2.1"
@@ -2561,9 +2561,9 @@ camelcase@^6.2.0:
   integrity sha512-tVI4q5jjFV5CavAU8DXfza/TJcZutVKo/5Foskmsqcm0MsL91moHvwiGNnqaa2o6PF/7yT5ikDRcVcl8Rj6LCA==
 
 caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001228, caniuse-lite@^1.0.30001248, caniuse-lite@^1.0.30001280:
-  version "1.0.30001296"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001296.tgz"
-  integrity sha512-WfrtPEoNSoeATDlf4y3QvkwiELl9GyPLISV5GejTbbQRtQx4LhsXmc9IQ6XCL2d7UxCyEzToEZNMeqR79OUw8Q==
+  version "1.0.30001298"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001298.tgz"
+  integrity sha512-AcKqikjMLlvghZL/vfTHorlQsLDhGRalYf1+GmWCf5SCMziSGjRYQW/JEksj14NaYHIR6KIhrFAy0HV5C25UzQ==
 
 capture-exit@^2.0.0:
   version "2.0.0"

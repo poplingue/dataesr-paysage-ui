@@ -1,10 +1,12 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import dsfrGrid from '../../../helpers/imports';
 import CardInfo from '../../CardInfo';
 import LinkTo from '../../LinkTo';
 import ShowMoreList from '../../ShowMoreList';
 
 export default function News() {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         query: { id },
     } = useRouter();

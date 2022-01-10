@@ -1,15 +1,23 @@
-import { Icon } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import HeaderLayout from '../../../../components/HeaderLayout';
-import Layout from '../../../../components/Layout';
-import NavLink from '../../../../components/NavLink';
-import Person from '../../../../components/Person';
-import SideNavigation from '../../../../components/SideNavigation';
-import ToolBox from '../../../../components/ToolBox';
 import { AppContext } from '../../../../context/GlobalState';
 import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
+
+const Layout = dynamic(() => import('./../../../../components/Layout'));
+const HeaderLayout = dynamic(() =>
+    import('./../../../../components/HeaderLayout')
+);
+const ToolBox = dynamic(() => import('./../../../../components/ToolBox'));
+const SideNavigation = dynamic(() =>
+    import('./../../../../components/SideNavigation')
+);
+const NavLink = dynamic(() => import('./../../../../components/NavLink'));
+const Person = dynamic(() => import('./../../../../components/Person'));
+const Icon = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Icon)
+);
 
 export default function Object(props) {
     const {

@@ -1,7 +1,8 @@
-import { Col, Container, Icon, Row, Tile, TileBody } from '@dataesr/react-dsfr';
+import { Icon, Tile, TileBody } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import dsfrGrid from '../../helpers/imports';
 
 export default function TileElement({
     color,
@@ -13,6 +14,8 @@ export default function TileElement({
     checked,
     defaultIcon,
 }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         stateList: { exportMode },
     } = useContext(AppContext);

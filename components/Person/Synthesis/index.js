@@ -1,4 +1,5 @@
-import { Col, Container, Row, Title } from '@dataesr/react-dsfr';
+import { Title } from '@dataesr/react-dsfr';
+import dsfrGrid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
 import Contact from './Contact';
 import Functions from './Functions';
@@ -11,6 +12,8 @@ const components = {
 };
 
 export default function Synthesis({ content }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     // TODO wrapper dynamic component
     return (
         <>

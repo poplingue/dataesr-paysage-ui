@@ -1,11 +1,18 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
+
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const Layout = dynamic(() => import('./../../components/Layout'));
+
+const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
+const Container = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Container)
+);
+const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 export default function Create() {
     const router = useRouter();

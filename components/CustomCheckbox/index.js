@@ -1,14 +1,9 @@
-import {
-    Checkbox,
-    CheckboxGroup,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import { Checkbox, CheckboxGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
+import dsfrGrid from '../../helpers/imports';
 import {
     cleanString,
     getFieldValue,
@@ -26,6 +21,8 @@ function CustomCheckbox({
     validatorConfig,
     updateValidSection,
 }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
