@@ -10,7 +10,6 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
-
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
@@ -21,6 +20,7 @@ import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
+import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
@@ -309,7 +309,9 @@ export default function Layout({ children, headTitle }) {
                     </FooterCopy>
                 </FooterBottom>
             </Footer>
-            <ModalDetail />
+            <NoSsrWrapper>
+                <ModalDetail />
+            </NoSsrWrapper>
         </>
     );
 }

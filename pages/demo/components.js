@@ -139,7 +139,10 @@ export default function Components() {
                             onClick={() => {
                                 dispatch({
                                     type: 'UPDATE_MODAL_DETAIL',
-                                    payload: { open: true },
+                                    payload: {
+                                        content: 'content',
+                                        title: 'title',
+                                    },
                                 });
                             }}
                             title="TileElement"
