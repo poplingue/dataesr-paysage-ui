@@ -1,38 +1,38 @@
-import {
-    Card,
-    CardDetail,
-    CardTitle,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
-import Link from 'next/link';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
+import dynamic from 'next/dynamic';
+import grid from '../../helpers/imports';
+
+const CardLink = dynamic(() => import('../../components/CardLink'));
+const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
+const Layout = dynamic(() => import('../../components/Layout'));
 
 export default function List() {
+    const { Col, Row, Container } = grid();
+
     return (
         <Layout>
             <HeaderLayout pageTitle={`Listes qualifiées`} />
             <Container>
                 <Row gutters>
                     <Col n="3">
-                        <Card asLink={<Link href="/list/0" />}>
-                            <CardDetail>Liste qualifiée</CardDetail>
-                            <CardTitle>Liste 0</CardTitle>
-                        </Card>
+                        <CardLink
+                            link="/list/0"
+                            supInfo="Liste qualifiée"
+                            info="Liste 0"
+                        />
                     </Col>
                     <Col n="3">
-                        <Card asLink={<Link href="/list/1" />}>
-                            <CardDetail>Liste qualifiée</CardDetail>
-                            <CardTitle>Liste 1</CardTitle>
-                        </Card>
+                        <CardLink
+                            link="/list/1"
+                            supInfo="Liste qualifiée"
+                            info="Liste 1"
+                        />
                     </Col>
                     <Col n="3">
-                        <Card asLink={<Link href="/list/2" />}>
-                            <CardDetail>Liste qualifiée</CardDetail>
-                            <CardTitle>Liste 2</CardTitle>
-                        </Card>
+                        <CardLink
+                            link="/list/2"
+                            supInfo="Liste qualifiée"
+                            info="Liste 2"
+                        />
                     </Col>
                 </Row>
             </Container>

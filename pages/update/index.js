@@ -1,13 +1,17 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
+
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const Layout = dynamic(() => import('./../../components/Layout'));
 
 export default function Create() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const { dispatchForm: dispatch } = useContext(AppContext);
 

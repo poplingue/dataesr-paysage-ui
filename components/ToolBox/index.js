@@ -1,18 +1,16 @@
 import {
-    Col,
-    Container,
     Icon,
     Modal,
     ModalContent,
     ModalFooter,
     ModalTitle,
-    Row,
     Text,
 } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useState } from 'react';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { cleanedPrintPage, idToPrint } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 import FieldButton from '../FieldButton';
@@ -25,6 +23,8 @@ export default function ToolBox({
     accordions,
     initialSkeleton,
 }) {
+    const { Col, Row, Container } = grid();
+
     const [open, setOpen] = useState(false);
     const { Button } = useAccordions(true);
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -49,9 +49,7 @@ export default function ToolBox({
 
             dispatch({
                 type: 'UPDATE_PRINT_PAGE',
-                payload: {
-                    printPage,
-                },
+                payload: printPage,
             });
 
             resolve(printPage);
@@ -61,9 +59,7 @@ export default function ToolBox({
     const updateSkeleton = (skeleton) => {
         dispatch({
             type: 'UPDATE_ACCORDION_SKELETON',
-            payload: {
-                accordionSkeleton: skeleton,
-            },
+            payload: skeleton,
         });
     };
 

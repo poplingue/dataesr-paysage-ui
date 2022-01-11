@@ -1,10 +1,12 @@
-import { Row } from '@dataesr/react-dsfr';
 import { useState } from 'react';
+import grid from '../../helpers/imports';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import FieldButton from '../FieldButton';
 import styles from './ShowMoreList.module.scss';
 
 export default function ShowMoreList({ children }) {
+    const { Row } = grid();
+
     const { style: grey } = useCSSProperty('--grey-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
     const [active, setActive] = useState(false);

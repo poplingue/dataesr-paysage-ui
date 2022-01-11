@@ -1,28 +1,23 @@
-import { Col, Container, Row, Tile, TileBody } from '@dataesr/react-dsfr';
-import HeaderLayout from '../../components/HeaderLayout';
-import Layout from '../../components/Layout';
-import NavLink from '../../components/NavLink';
+import dynamic from 'next/dynamic';
+import grid from '../../helpers/imports';
+
+const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
+const CardLink = dynamic(() => import('../../components/CardLink'));
+const Layout = dynamic(() => import('../../components/Layout'));
 
 export default function Search() {
+    const { Col, Row, Container } = grid();
+
     return (
         <Layout>
             <HeaderLayout pageTitle="Recherche" />
             <Container>
                 <Row>
                     <Col>
-                        <Tile className="w-100" horizontal>
-                            <TileBody
-                                title="Une Personne"
-                                linkHref="/object/person/8"
-                                asLink={
-                                    <NavLink href="/object/person/8">
-                                        Accueil
-                                    </NavLink>
-                                }
-                            >
-                                <p>Fonction</p>
-                            </TileBody>
-                        </Tile>
+                        <CardLink
+                            link={`/object/person/8`}
+                            info="Une personne"
+                        />
                     </Col>
                 </Row>
             </Container>

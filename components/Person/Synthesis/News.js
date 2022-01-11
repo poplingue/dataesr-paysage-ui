@@ -1,10 +1,12 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import grid from '../../../helpers/imports';
 import CardInfo from '../../CardInfo';
 import LinkTo from '../../LinkTo';
 import ShowMoreList from '../../ShowMoreList';
 
 export default function News() {
+    const { Col, Row, Container } = grid();
+
     const {
         query: { id },
     } = useRouter();
@@ -17,54 +19,54 @@ export default function News() {
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                 </ShowMoreList>

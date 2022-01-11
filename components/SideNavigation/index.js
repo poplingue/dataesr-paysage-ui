@@ -1,10 +1,12 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import Navigation from './Navigation';
 
-export default function SideNavigation({ children, items }) {
+export default function SideNavigation({ children, items, color }) {
+    const { Col, Row, Container } = grid();
+
     const {
         statePage: { sideMode },
     } = useContext(AppContext);
@@ -14,7 +16,7 @@ export default function SideNavigation({ children, items }) {
         <Container className="p-relative" fluid>
             <Row>
                 <Col n={`12 ${sideOpened ? 'md-3' : 'md-1'}`}>
-                    <Navigation items={items} />
+                    <Navigation items={items} color={color} />
                 </Col>
                 <Col n={`12 ${sideOpened ? 'md-9' : 'md-11'}`}>
                     <Container>

@@ -1,3 +1,4 @@
+import preloadAll from 'jest-next-dynamic';
 import * as nextRouter from 'next/router';
 import React from 'react';
 // Using render and screen from test-utils.js instead of
@@ -19,6 +20,11 @@ jest.mock('react', () => ({
 
 describe('InfiniteField component', () => {
     const setState = jest.fn();
+
+    beforeAll(async () => {
+        await preloadAll();
+    });
+
     beforeEach(() => {
         React.useState.mockImplementation((init) => [init, setState]);
         render(

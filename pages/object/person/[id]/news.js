@@ -1,9 +1,15 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
-import CardInfo from '../../../../components/CardInfo';
-import HeaderLayout from '../../../../components/HeaderLayout';
-import Layout from '../../../../components/Layout';
+import dynamic from 'next/dynamic';
+import grid from '../../../../helpers/imports';
+
+const HeaderLayout = dynamic(() =>
+    import('./../../../../components/HeaderLayout')
+);
+const CardInfo = dynamic(() => import('./../../../../components/CardInfo'));
+const Layout = dynamic(() => import('./../../../../components/Layout'));
 
 export default function PersonNews({ news }) {
+    const { Col, Row, Container } = grid();
+
     return (
         <Layout>
             <HeaderLayout pageTitle="Les Dépêches" />
@@ -18,9 +24,9 @@ export default function PersonNews({ news }) {
                                     <CardInfo
                                         externalLink={link}
                                         link="/update/person/1"
-                                        date={date}
+                                        supInfo={date}
                                         title={title}
-                                        source={source}
+                                        subInfo={source}
                                     />
                                 </Col>
                             );

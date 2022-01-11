@@ -6,7 +6,7 @@ context('IndexDB', () => {
     });
 
     beforeEach(() => {
-        cy.visit(`${baseUrl}/tests/person`);
+        cy.visit(`${baseUrl}/demo/person`);
     });
 
     it('should save input text value', () => {
@@ -18,17 +18,17 @@ context('IndexDB', () => {
     });
 
     it('should save input radio choice', () => {
-        cy.get('[data-testid="tests/person@denomination/genre#0"]')
+        cy.get('[data-testid="demo/person@denomination/genre#0"]')
             .find('select')
             .select('n');
         cy.reload();
-        cy.get('[data-testid="tests/person@denomination/genre#0"]')
+        cy.get('[data-testid="demo/person@denomination/genre#0"]')
             .find('select')
             .should('have.value', 'n');
     });
 
     it('should save selected values on structure form page', () => {
-        cy.visit(`${baseUrl}/tests/structure`);
+        cy.visit(`${baseUrl}/demo/structure`);
         cy.get('[data-cy="aisne-1"]').find('input').check({ force: true });
         cy.get('[data-cy="allier-2"]').find('input').check({ force: true });
 

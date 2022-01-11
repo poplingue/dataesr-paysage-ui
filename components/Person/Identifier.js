@@ -1,8 +1,10 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import CardInfo from '../../components/CardInfo';
+import grid from '../../helpers/imports';
 
 export default function Identifiers() {
+    const { Col, Row, Container } = grid();
+
     const {
         query: { id },
     } = useRouter();
@@ -14,7 +16,7 @@ export default function Identifiers() {
                     <Col>
                         <CardInfo
                             link={`/update/person/${id}`}
-                            date="Wikipédia"
+                            supInfo="Wikipédia"
                             title="090909"
                         />
                     </Col>

@@ -1,10 +1,10 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { getForm, getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
@@ -16,6 +16,8 @@ import ToolBox from '../ToolBox';
 import CreatePersonForm from './form.json';
 
 export default function CreatePerson({ data, id }) {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const {
         stateForm: { forms },

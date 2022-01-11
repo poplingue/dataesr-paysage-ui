@@ -1,4 +1,4 @@
-import { Container, Row, Col } from '@dataesr/react-dsfr';
+import grid from '../../helpers/imports';
 import InfiniteField from '../InfiniteField';
 import Input from './Input';
 
@@ -10,6 +10,8 @@ function CustomInput({
     validatorConfig,
     updateValidSection,
 }) {
+    const { Col, Row, Container } = grid();
+
     return (
         <Container fluid>
             <section className="wrapper-input">

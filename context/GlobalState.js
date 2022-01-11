@@ -17,8 +17,8 @@ export const DataProvider = ({ user, error, children }) => {
         forms: [
             { 'update/person': [] },
             { 'update/structure': [] },
-            { 'tests/structure': [] },
-            { 'tests/person': [] },
+            { 'demo/structure': [] },
+            { 'demo/person': [] },
         ],
     };
 
@@ -31,6 +31,12 @@ export const DataProvider = ({ user, error, children }) => {
         sideMode: 'on',
         printPage: null,
         accordionSkeleton: [],
+        accordionItems: [],
+        modalDetail: {
+            title: '',
+            open: false,
+            content: null,
+        },
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
         error: error || null,
@@ -61,8 +67,8 @@ export const DataProvider = ({ user, error, children }) => {
             [
                 'update/person',
                 'update/structure',
-                'tests/person',
-                'tests/structure',
+                'demo/person',
+                'demo/structure',
             ],
             cbInit
         );

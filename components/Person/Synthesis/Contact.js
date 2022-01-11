@@ -1,7 +1,10 @@
-import { Col, Container, Row, Tag } from '@dataesr/react-dsfr';
+import { Tag } from '@dataesr/react-dsfr';
+import grid from '../../../helpers/imports';
 import CalloutPerson from '../../CalloutPerson';
 
 export default function Contact() {
+    const { Col, Row, Container } = grid();
+
     return (
         <Container fluid>
             <Row gutters>

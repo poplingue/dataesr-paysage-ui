@@ -3,48 +3,66 @@ import {
     CardDescription,
     CardDetail,
     CardTitle,
-    Col,
-    Container,
     Icon,
-    Row,
     Tag,
 } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { noPrintClass } from '../../helpers/utils';
 import NavLink from '../NavLink';
 import styles from './CardInfo.module.scss';
 
 export default function CardInfo({
     link,
-    date,
+    supInfo,
     title,
-    source,
+    subInfo,
     externalLink,
     id,
+    icon,
+    checked,
+    onClick,
+    actionLabel,
 }) {
+    const { Col, Row, Container } = grid();
+    const iconCheck = checked ? 'ri-checkbox-line' : 'ri-checkbox-blank-line';
+    const {
+        stateList: { exportMode },
+    } = useContext(AppContext);
+
     return (
         <Container fluid>
             <Row>
                 <Col spacing="py-1w">
                     <div className="p-relative">
                         <Card
-                            asLink={<NavLink id={id} href={link} />}
+                            onClick={() => {
+                                onClick(id);
+                            }}
+                            href={onClick ? '#' : link}
+                            asLink={
+                                onClick ? undefined : (
+                                    <NavLink id={id} href={link} />
+                                )
+                            }
                             hasArrow={false}
                         >
-                            <CardDetail>{date}</CardDetail>
+                            <CardDetail>{supInfo}</CardDetail>
                             <CardTitle>{title}</CardTitle>
-                            <CardDescription>{source}</CardDescription>
+                            <CardDescription>{subInfo}</CardDescription>
                         </Card>
                         <div
                             className={`fs-12-12 ${styles.LinkLabel} ${noPrintClass}`}
                         >
                             <Icon
-                                name="ri-arrow-right-line"
+                                name={exportMode ? iconCheck : icon}
                                 size="lg"
                                 as="span"
                                 iconPosition="right"
                             >
-                                Modifier
+                                {actionLabel}
                             </Icon>
                         </div>
                     </div>
@@ -67,13 +85,20 @@ export default function CardInfo({
 
 CardInfo.defaultProps = {
     externalLink: '',
-    source: '',
+    subInfo: '',
+    actionLabel: 'Modifier',
+    link: undefined,
+    onClick: () => {},
+    icon: 'ri-arrow-right-line',
 };
 
 CardInfo.propTypes = {
-    link: PropTypes.string.isRequired,
-    date: PropTypes.string.isRequired,
+    link: PropTypes.string,
+    actionLabel: PropTypes.string,
+    onClick: PropTypes.func,
+    supInfo: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    source: PropTypes.string,
+    subInfo: PropTypes.string,
+    icon: PropTypes.string,
     externalLink: PropTypes.string,
 };

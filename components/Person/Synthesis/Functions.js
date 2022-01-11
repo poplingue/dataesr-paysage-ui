@@ -1,24 +1,26 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import grid from '../../../helpers/imports';
 import CardLink from '../../CardLink';
 
 export default function Functions() {
+    const { Col, Row, Container } = grid();
+
     return (
         <Container fluid>
             <Row gutters>
                 <Col>
                     <CardLink
                         link="/object/structure/0"
-                        date="du 01/01/2019 au 31/12/2022"
-                        title="Une fonction très très importante"
-                        structure="Université de Nanterre"
+                        supInfo="du 01/01/2019 au 31/12/2022"
+                        info="Une fonction très très importante"
+                        subInfo="Université de Nanterre"
                     />
                 </Col>
                 <Col>
                     <CardLink
                         link="/object/structure/1"
-                        date="du 01/01/2019 au 31/12/2022"
-                        title="Une autre fonction très très importante"
-                        structure="Université de Saclay"
+                        supInfo="du 01/01/2019 au 31/12/2022"
+                        info="Une autre fonction très très importante"
+                        subInfo="Université de Saclay"
                     />
                 </Col>
             </Row>

@@ -1,15 +1,18 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
+import grid from '../../helpers/imports';
 
-import HeaderLayout from '../../components/HeaderLayout';
-import IconButton from '../../components/IconButton';
-import Layout from '../../components/Layout';
-import Table from '../../components/Table';
+const Table = dynamic(() => import('./../../components/Table'));
+const Layout = dynamic(() => import('./../../components/Layout'));
+const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const IconButton = dynamic(() => import('./../../components/IconButton'));
 
 export default function Example() {
+    const { Col, Row, Container } = grid();
+
     const [data] = useState([
         { id: 1, name: 'Oli Bob', age: '12', col: 'red', dob: '' },
         { id: 2, name: 'Mary May', age: '1', col: 'blue', dob: '14/05/1982' },

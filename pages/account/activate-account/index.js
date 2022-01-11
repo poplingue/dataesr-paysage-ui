@@ -1,14 +1,10 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
-import AuthForm from '../../../components/AuthForm';
-import FieldButton from '../../../components/FieldButton';
-import HeaderLayout from '../../../components/HeaderLayout';
-import Layout from '../../../components/Layout';
 import { AppContext } from '../../../context/GlobalState';
-
+import grid from '../../../helpers/imports';
 import {
     activateAdviceMsg,
     activationCodePattern,
@@ -20,6 +16,11 @@ import {
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
+const AuthForm = dynamic(() => import('../../../components/AuthForm'));
+const FieldButton = dynamic(() => import('../../../components/FieldButton'));
+const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
+const Layout = dynamic(() => import('../../../components/Layout'));
+
 const formSchema = [
     {
         required: true,
@@ -30,6 +31,8 @@ const formSchema = [
 ];
 
 export default function Activate() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const {
         statePage: { error },
@@ -82,12 +85,12 @@ export default function Activate() {
                 authService.signOut().then(() => {
                     dispatch({
                         type: 'UPDATE_ERROR',
-                        payload: { error: '' },
+                        payload: '',
                     });
 
                     dispatch({
                         type: 'UPDATE_USER_CONNECTION',
-                        payload: { userConnected: false },
+                        payload: false,
                     });
 
                     if (Cookies && Cookies.get('userConnected')) {

@@ -1,11 +1,12 @@
+import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import {
-    Accordion,
-    AccordionItem,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+    PersonPageSkeletonPropType,
+    StructurePageSkeletonPropType,
+} from '../../helpers/constants';
+import grid from '../../helpers/imports';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import useAccordions from '../../hooks/useAccordions';
 
 // TODO add proptypes
 export default function AccordionObject({
@@ -14,6 +15,9 @@ export default function AccordionObject({
     color,
     skeleton,
 }) {
+    const { accordionClick } = useAccordions();
+    const { Col, Row, Container } = grid();
+
     return (
         <Container fluid>
             <Row>
@@ -28,27 +32,30 @@ export default function AccordionObject({
                         const Component = components[component];
 
                         return (
-                            <Accordion
-                                className={!print && 'no-print'}
-                                size="lg"
-                                keepOpen
-                                color={color}
-                                key={title}
-                            >
-                                <AccordionItem
-                                    initExpand={initExpand}
+                            Component && (
+                                <Accordion
+                                    className={!print ? 'no-print' : ''}
+                                    size="lg"
                                     keepOpen
-                                    title={title}
-                                    data-section={dataSection}
+                                    color={color}
+                                    key={title}
                                 >
-                                    {Component && (
+                                    <AccordionItem
+                                        onClick={() =>
+                                            accordionClick(dataSection)
+                                        }
+                                        initExpand={initExpand}
+                                        keepOpen
+                                        title={title}
+                                        data-section={dataSection}
+                                    >
                                         <Component
-                                            title={title}
+                                            section={dataSection}
                                             content={content}
                                         />
-                                    )}
-                                </AccordionItem>
-                            </Accordion>
+                                    </AccordionItem>
+                                </Accordion>
+                            )
                         );
                     })}
                 </Col>
@@ -56,3 +63,31 @@ export default function AccordionObject({
         </Container>
     );
 }
+
+AccordionObject.defaultPorps = {
+    color: '',
+    initExpand: false,
+};
+
+AccordionObject.propTypes = {
+    components: PropTypes.oneOfType([
+        PersonPageSkeletonPropType,
+        StructurePageSkeletonPropType,
+    ]).isRequired,
+    initExpand: PropTypes.bool,
+    color: PropTypes.string,
+    skeleton: PropTypes.arrayOf(
+        PropTypes.shape({
+            content: PropTypes.arrayOf(
+                PropTypes.shape({
+                    title: PropTypes.string,
+                    type: PropTypes.string,
+                    validatorId: PropTypes.string,
+                })
+            ).isRequired,
+            print: PropTypes.bool,
+            component: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+};

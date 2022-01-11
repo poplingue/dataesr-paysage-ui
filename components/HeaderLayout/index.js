@@ -1,10 +1,17 @@
-import { Col, Container, Highlight, Row, Title } from '@dataesr/react-dsfr';
+import {
+    Col,
+    Container,
+    Highlight,
+    Row,
+    Tag,
+    Title,
+} from '@dataesr/react-dsfr';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 
 // TODO add proptypes
-export default function HeaderLayout({ highlight, pageTitle }) {
+export default function HeaderLayout({ highlight, pageTitle, status }) {
     const {
         statePage: { hasBreadCrumbs },
     } = useContext(AppContext);
@@ -35,9 +42,22 @@ export default function HeaderLayout({ highlight, pageTitle }) {
                                                 {highlight}
                                             </Highlight>
                                         )}
-                                        <Title as="h2" look="h3">
-                                            {pageTitle}
-                                        </Title>
+                                        <Row gutters>
+                                            <Col n="6">
+                                                <Title as="h2" look="h3">
+                                                    {pageTitle}
+                                                </Title>
+                                            </Col>
+                                            {status && (
+                                                <Col n="12">
+                                                    <Tag colorFamily="green-bourgeon">
+                                                        {status === 'open'
+                                                            ? 'Structure ouverte'
+                                                            : 'Structure fermée'}
+                                                    </Tag>
+                                                </Col>
+                                            )}
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Container>

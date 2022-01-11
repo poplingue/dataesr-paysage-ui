@@ -1,16 +1,23 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
-import ExportList from '../../../components/ExportList';
-import HeaderLayout from '../../../components/HeaderLayout';
-import Layout from '../../../components/Layout';
-import List from '../../../components/List';
-import TileElement from '../../../components/TileElement';
+import React, { useContext, useState } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 import { getObjectType } from '../../../helpers/constants';
+import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 
+const CardInfo = dynamic(() => import('./../../../components/CardInfo'));
+const CardLink = dynamic(() => import('./../../../components/CardLink'));
+const Layout = dynamic(() => import('./../../../components/Layout'));
+const ExportList = dynamic(() => import('./../../../components/ExportList'));
+const HeaderLayout = dynamic(() =>
+    import('./../../../components/HeaderLayout')
+);
+const List = dynamic(() => import('./../../../components/List'));
+
 export default function Category(props) {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const {
         stateList: { exportMode },
@@ -27,6 +34,7 @@ export default function Category(props) {
         });
     });
 
+    // TODO replace by <Card>
     const onTileClick = (id) => {
         if (!exportMode) {
             router.push(`/object/${getObjectType(category).name}/${id}`);
@@ -58,16 +66,27 @@ export default function Category(props) {
 
                                     return (
                                         <li key={name}>
-                                            <TileElement
-                                                defaultIcon="ri-arrow-right-line"
-                                                color={color}
-                                                checked={checked}
-                                                title={name}
-                                                subTitle="subTitle"
-                                                body={desc}
-                                                onClick={onTileClick}
-                                                id={id}
-                                            ></TileElement>
+                                            {exportMode ? (
+                                                <CardInfo
+                                                    actionLabel="Sélectionner"
+                                                    checked={checked}
+                                                    supInfo={name}
+                                                    title={name}
+                                                    onClick={onTileClick}
+                                                    icon="ri-arrow-right-line"
+                                                    id={id}
+                                                    subInfo={desc}
+                                                />
+                                            ) : (
+                                                <Col spacing="py-1w">
+                                                    <CardLink
+                                                        link={`/structure/${id}`}
+                                                        supInfo={name}
+                                                        subInfo={desc}
+                                                        info={name}
+                                                    />
+                                                </Col>
+                                            )}
                                         </li>
                                     );
                                 })}

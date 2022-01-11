@@ -1,6 +1,6 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import NotifService from '../../services/Notif.service';
@@ -24,6 +24,8 @@ export default function FormAccordionItem({
     index,
     deleteSection,
 }) {
+    const { Col, Row, Container } = grid();
+
     const {
         stateForm: { validSections },
         dispatchForm: dispatch,

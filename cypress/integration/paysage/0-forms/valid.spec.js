@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure form page', () => {
     beforeEach(() => {
         cy.deleteIndexDB();
-        cy.visit(`${baseUrl}/tests/structure`);
+        cy.visit(`${baseUrl}/demo/structure`);
     });
 
     it('should display notification error on save section data', () => {

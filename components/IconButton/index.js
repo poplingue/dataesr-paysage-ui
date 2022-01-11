@@ -20,8 +20,8 @@ export default function IconButton({
                 title={title}
                 colors={[color, white]}
                 secondary
-                size={size === 'medium' && 'sm'}
-                className={size === 'medium' && styles.Medium}
+                size={size === 'medium' ? 'sm' : 'lg'}
+                className={size === 'medium' ? styles.Medium : ''}
             >
                 <div>
                     <Icon

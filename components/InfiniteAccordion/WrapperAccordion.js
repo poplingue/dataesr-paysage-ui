@@ -1,4 +1,4 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import grid from '../../helpers/imports';
 
 export default function WrapperAccordion({
     sectionRef,
@@ -6,6 +6,8 @@ export default function WrapperAccordion({
     colSize,
     children,
 }) {
+    const { Col, Row, Container } = grid();
+
     return (
         <li key={key}>
             <section ref={sectionRef}>

@@ -1,15 +1,23 @@
-import { Icon } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
-import HeaderLayout from '../../../../components/HeaderLayout';
-import Layout from '../../../../components/Layout';
-import NavLink from '../../../../components/NavLink';
-import Person from '../../../../components/Person';
-import SideNavigation from '../../../../components/SideNavigation';
-import ToolBox from '../../../../components/ToolBox';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../../../context/GlobalState';
 import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
+
+const Layout = dynamic(() => import('./../../../../components/Layout'));
+const HeaderLayout = dynamic(() =>
+    import('./../../../../components/HeaderLayout')
+);
+const ToolBox = dynamic(() => import('./../../../../components/ToolBox'));
+const SideNavigation = dynamic(() =>
+    import('./../../../../components/SideNavigation')
+);
+const NavLink = dynamic(() => import('./../../../../components/NavLink'));
+const Person = dynamic(() => import('./../../../../components/Person'));
+const Icon = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Icon)
+);
 
 export default function Object(props) {
     const {
@@ -21,16 +29,27 @@ export default function Object(props) {
     const { id } = router.query;
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
-    useEffect(() => {
-        if (!skeleton.length) {
+    const updateAccordionSkeleton = useCallback(
+        (payload) => {
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
-                payload: {
-                    accordionSkeleton: PersonPageSkeleton,
-                },
+                payload,
             });
+        },
+        [dispatch]
+    );
+
+    useEffect(() => {
+        return () => {
+            updateAccordionSkeleton([]);
+        };
+    }, [updateAccordionSkeleton]);
+
+    useEffect(() => {
+        if (!skeleton.length) {
+            updateAccordionSkeleton(PersonPageSkeleton);
         }
-    }, [dispatch, skeleton]);
+    }, [skeleton, updateAccordionSkeleton]);
 
     return (
         <Layout>
@@ -38,7 +57,7 @@ export default function Object(props) {
                 pageTitle="Une Personne"
                 highlight="Last update on Tuesday 5th of September 2020"
             />
-            <SideNavigation items={skeleton}>
+            <SideNavigation items={skeleton} color="Pink">
                 <Person
                     id={id}
                     fame={props.fame}
