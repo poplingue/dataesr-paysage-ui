@@ -35,7 +35,7 @@ export async function getStaticProps() {
 
 export async function getStaticPaths() {
     return {
-        paths: ['/tests/person', '/tests/structure'],
+        paths: ['/demo/person', '/demo/structure'],
         fallback: true,
     };
 }

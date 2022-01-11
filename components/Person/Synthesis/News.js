@@ -19,54 +19,54 @@ export default function News() {
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
                             link="/update/person/1"
-                            date="du 01/01/2019 au 31/12/2022"
+                            supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
-                            source="source"
+                            subInfo="subInfo"
                         />
                     </Col>
                 </ShowMoreList>

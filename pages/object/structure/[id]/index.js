@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../../../context/GlobalState';
 import { StructurePageSkeleton } from '../../../../helpers/constants';
 
@@ -27,28 +27,27 @@ export default function Object(props) {
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
-    // TODO refacto - make a hook?
-    useEffect(() => {
-        return () => {
+    const updateSkeleton = useCallback(
+        (payload) => {
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
-                payload: {
-                    accordionSkeleton: [],
-                },
+                payload: { accordionSkeleton: payload },
             });
+        },
+        [dispatch]
+    );
+
+    useEffect(() => {
+        return () => {
+            updateSkeleton([]);
         };
-    }, [dispatch]);
+    }, [updateSkeleton]);
 
     useEffect(() => {
         if (!skeleton.length) {
-            dispatch({
-                type: 'UPDATE_ACCORDION_SKELETON',
-                payload: {
-                    accordionSkeleton: StructurePageSkeleton,
-                },
-            });
+            updateSkeleton(StructurePageSkeleton);
         }
-    }, [dispatch, skeleton]);
+    }, [skeleton, updateSkeleton]);
 
     return (
         <Layout>

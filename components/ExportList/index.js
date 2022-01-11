@@ -7,8 +7,6 @@ import FieldButton from '../FieldButton';
 import List from '../List';
 
 function Workbook() {
-    const { Col, Row, Container } = dsfrGrid();
-
     if (!(this instanceof Workbook)) return new Workbook();
 
     this.SheetNames = [];
@@ -17,6 +15,8 @@ function Workbook() {
 }
 
 export default function ExportList({ children, selection }) {
+    const { Col, Row, Container } = dsfrGrid();
+
     const {
         stateList: { exportMode },
         dispatchList: dispatch,

@@ -1,7 +1,9 @@
 import dynamic from 'next/dynamic';
 
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import CardInfo from '../../../components/CardInfo';
+import CardLink from '../../../components/CardLink';
 import { AppContext } from '../../../context/GlobalState';
 import { getObjectType } from '../../../helpers/constants';
 import useCSSProperty from '../../../hooks/useCSSProperty';
@@ -69,18 +71,27 @@ export default function Category(props) {
 
                                     return (
                                         <li key={name}>
-                                            <TileElement
-                                                defaultIcon="ri-arrow-right-line"
-                                                color={color}
-                                                checked={checked}
-                                                title={name}
-                                                subTitle="subTitle"
-                                                body={desc}
-                                                onClick={onTileClick}
-                                                id={id}
-                                            >
-                                                Test
-                                            </TileElement>
+                                            {exportMode ? (
+                                                <CardInfo
+                                                    actionLabel="Sélectionner"
+                                                    checked={checked}
+                                                    supInfo={name}
+                                                    title={name}
+                                                    onClick={onTileClick}
+                                                    icon="ri-arrow-right-line"
+                                                    id={id}
+                                                    subInfo={desc}
+                                                />
+                                            ) : (
+                                                <Col spacing="py-1w">
+                                                    <CardLink
+                                                        link={`/structure/${id}`}
+                                                        supInfo={name}
+                                                        subInfo={desc}
+                                                        info={name}
+                                                    />
+                                                </Col>
+                                            )}
                                         </li>
                                     );
                                 })}

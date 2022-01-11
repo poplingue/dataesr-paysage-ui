@@ -30,17 +30,17 @@ export default function Help() {
             authService.signOut().then(() => {
                 dispatch({
                     type: 'UPDATE_USER',
-                    payload: { user: {} },
+                    payload: {},
                 });
 
                 dispatch({
                     type: 'UPDATE_ERROR',
-                    payload: { error: '' },
+                    payload: '',
                 });
 
                 dispatch({
                     type: 'UPDATE_USER_CONNECTION',
-                    payload: { userConnected: false },
+                    payload: false,
                 });
 
                 Cookies.set('userConnected', false);

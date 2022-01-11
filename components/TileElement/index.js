@@ -1,64 +1,27 @@
 import { Icon, Tile, TileBody } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { AppContext } from '../../context/GlobalState';
 import dsfrGrid from '../../helpers/imports';
 
-export default function TileElement({
-    color,
-    title,
-    subTitle,
-    body,
-    onClick,
-    id,
-    checked,
-    defaultIcon,
-}) {
+export default function TileElement({ color, title, subTitle, body, onClick }) {
     const { Col, Row, Container } = dsfrGrid();
 
-    const {
-        stateList: { exportMode },
-    } = useContext(AppContext);
-
     return (
-        <Tile
-            color={color}
-            className="w-100"
-            horizontal
-            onClick={() => onClick(id)}
-        >
+        <Tile color={color} className="w-100" horizontal onClick={onClick}>
             <TileBody title={title} description={subTitle}>
                 <Container fluid className="w-100">
                     <Row alignItems="top">
                         <Col n="11">
                             <div>{body}</div>
                         </Col>
-                        <Col n="1" className="txt-right">
-                            {!exportMode && defaultIcon && (
+                        {onClick && (
+                            <Col n="1" className="txt-right">
                                 <Icon
-                                    name={defaultIcon}
+                                    name="ri-focus-2-fill"
                                     size="2x"
                                     color={color}
                                 />
-                            )}
-                            {exportMode && (
-                                <>
-                                    {checked ? (
-                                        <Icon
-                                            name="ri-checkbox-line"
-                                            size="2x"
-                                            color={color}
-                                        />
-                                    ) : (
-                                        <Icon
-                                            name="ri-checkbox-blank-line"
-                                            size="2x"
-                                            color={color}
-                                        />
-                                    )}
-                                </>
-                            )}
-                        </Col>
+                            </Col>
+                        )}
                     </Row>
                 </Container>
             </TileBody>
@@ -68,7 +31,6 @@ export default function TileElement({
 
 TileElement.defaultProps = {
     color: '#000091',
-    defaultIcon: '',
     checked: false,
 };
 TileElement.propTypes = {

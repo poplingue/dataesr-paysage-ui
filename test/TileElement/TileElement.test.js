@@ -1,3 +1,4 @@
+import preloadAll from 'jest-next-dynamic';
 import React from 'react';
 
 import TileElement from '../../components/TileElement';
@@ -5,6 +6,10 @@ import { fireEvent, render, screen } from '../test-utils';
 
 describe('TileElement component', () => {
     let wrapper;
+
+    beforeAll(async () => {
+        await preloadAll();
+    });
 
     beforeEach(() => {
         const func = () => {};
@@ -15,8 +20,6 @@ describe('TileElement component', () => {
                     title={props.title}
                     body={props.body || 'body'}
                     subTitle={props.sub || 'subTitle'}
-                    id="1"
-                    checked={props.checked}
                     onClick={props.onClick || func}
                 />,
                 context
@@ -29,14 +32,6 @@ describe('TileElement component', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    it('renders correctly TileElement with exportMode', () => {
-        const component = wrapper(
-            { stateList: { exportMode: true } },
-            { title: 'Title 1', checked: true }
-        );
-        expect(component).toMatchSnapshot();
-    });
-
     it('should display Texts', () => {
         wrapper(
             { stateList: { exportMode: true } },
@@ -44,7 +39,6 @@ describe('TileElement component', () => {
                 title: 'Title 1',
                 body: 'Bobody',
                 subTitle: 'subTitle',
-                checked: true,
             }
         );
         const title = screen.getByText('Title 1');
@@ -55,7 +49,7 @@ describe('TileElement component', () => {
 
     it('should trigger onClick', () => {
         const mockClick = jest.fn();
-        wrapper({}, { onClick: mockClick, title: 'Title', checked: false });
+        wrapper({}, { onClick: mockClick, title: 'Title' });
         const tile = screen.getByText('Title');
         fireEvent.click(tile, {});
         expect(mockClick).toHaveBeenCalledTimes(1);

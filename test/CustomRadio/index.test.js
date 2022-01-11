@@ -1,3 +1,4 @@
+import preloadAll from 'jest-next-dynamic';
 import * as nextRouter from 'next/router';
 import React from 'react';
 // Using render and screen from test-utils.js instead of
@@ -13,6 +14,10 @@ nextRouter.useRouter.mockImplementation(() => ({
 }));
 
 describe('Custom Radio', () => {
+    beforeAll(async () => {
+        await preloadAll();
+    });
+
     it('should render the title', () => {
         render(
             <CustomRadio
@@ -23,7 +28,7 @@ describe('Custom Radio', () => {
             />
         );
 
-        const radio = screen.getByText(/Radio Star/i);
+        const radio = screen.getByText('Radio Star');
 
         // we can only use toBeInTheDocument because it was imported
         // in the jest.setup.js and configured in jest.setup.js

@@ -38,11 +38,13 @@ export function getObjectType(id) {
             name: 'structure',
             title: 'Établissement',
             color: '--green-tilleul-verveine-main-707',
+            colorClassName: 'Yellow',
         },
         1: {
             name: 'person',
             title: 'Personne',
             color: '--pink-tuile-main-556',
+            colorClassName: 'Pink',
         },
         2: { name: 'project', title: 'Projet' },
         3: { name: 'category', title: 'Catégorie' },

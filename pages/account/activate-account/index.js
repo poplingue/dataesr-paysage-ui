@@ -88,12 +88,12 @@ export default function Activate() {
                 authService.signOut().then(() => {
                     dispatch({
                         type: 'UPDATE_ERROR',
-                        payload: { error: '' },
+                        payload: '',
                     });
 
                     dispatch({
                         type: 'UPDATE_USER_CONNECTION',
-                        payload: { userConnected: false },
+                        payload: false,
                     });
 
                     if (Cookies && Cookies.get('userConnected')) {

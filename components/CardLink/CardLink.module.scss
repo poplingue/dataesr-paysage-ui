@@ -1,0 +1,9 @@
+.CardLink {
+    &.Yellow {
+        border-bottom: 3px solid var(--green-tilleul-verveine-main-707);
+    }
+
+    &.Pink {
+        border-bottom: 3px solid var(--pink-tuile-main-556);
+    }
+}

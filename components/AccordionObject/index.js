@@ -27,28 +27,30 @@ export default function AccordionObject({
                         const Component = components[component];
 
                         return (
-                            <Accordion
-                                className={!print ? 'no-print' : ''}
-                                size="lg"
-                                keepOpen
-                                color={color}
-                                key={title}
-                            >
-                                <AccordionItem
-                                    onClick={() => accordionClick(dataSection)}
-                                    initExpand={initExpand}
+                            Component && (
+                                <Accordion
+                                    className={!print ? 'no-print' : ''}
+                                    size="lg"
                                     keepOpen
-                                    title={title}
-                                    data-section={dataSection}
+                                    color={color}
+                                    key={title}
                                 >
-                                    {Component && (
+                                    <AccordionItem
+                                        onClick={() =>
+                                            accordionClick(dataSection)
+                                        }
+                                        initExpand={initExpand}
+                                        keepOpen
+                                        title={title}
+                                        data-section={dataSection}
+                                    >
                                         <Component
                                             section={dataSection}
                                             content={content}
                                         />
-                                    )}
-                                </AccordionItem>
-                            </Accordion>
+                                    </AccordionItem>
+                                </Accordion>
+                            )
                         );
                     })}
                 </Col>

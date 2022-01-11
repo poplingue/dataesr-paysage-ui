@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import CardLink from '../../components/CardLink';
 
 const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
 const Container = dynamic(() =>
@@ -23,19 +24,10 @@ export default function Search() {
             <Container>
                 <Row>
                     <Col>
-                        <Tile className="w-100" horizontal>
-                            <TileBody
-                                title="Une Personne"
-                                linkHref="/object/person/8"
-                                asLink={
-                                    <NavLink href="/object/person/8">
-                                        Accueil
-                                    </NavLink>
-                                }
-                            >
-                                <p>Fonction</p>
-                            </TileBody>
-                        </Tile>
+                        <CardLink
+                            link={`/object/person/8`}
+                            info="Une personne"
+                        />
                     </Col>
                 </Row>
             </Container>

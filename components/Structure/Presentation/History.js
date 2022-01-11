@@ -1,21 +1,19 @@
-import {
-    Card,
-    CardDetail,
-    CardTitle,
-    Col,
-    Container,
-    Row,
-} from '@dataesr/react-dsfr';
+import { Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../context/GlobalState';
+import CardInfo from '../../CardInfo';
 import IconButton from '../../IconButton';
 
 export default function History({ section }) {
     const [history, setHistory] = useState([]);
 
     const {
-        statePage: { accordionSections },
+        statePage: {
+            accordionSections,
+            modalDetail: { content },
+        },
+        dispatchPage: dispatch,
     } = useContext(AppContext);
 
     const router = useRouter();
@@ -50,8 +48,11 @@ export default function History({ section }) {
         }
     }, [history, accordionSections, section]);
 
-    const onClick = () => {
-        console.log('==== LOG ==== ');
+    const onClick = (date) => {
+        dispatch({
+            type: 'UPDATE_MODAL_DETAIL',
+            payload: { title: date, content: 'Toutouyoutou' },
+        });
     };
 
     return (
@@ -62,12 +63,16 @@ export default function History({ section }) {
                 {history.slice(0, 4).map((historyCard) => {
                     const { date, event } = historyCard;
 
+                    // TODO this is not a Card
                     return (
                         <Col n="4" key={event}>
-                            <Card onClick={onClick} href="#">
-                                <CardDetail>{event}</CardDetail>
-                                <CardTitle>{date}</CardTitle>
-                            </Card>
+                            <CardInfo
+                                onClick={() => onClick(date)}
+                                supInfo={event}
+                                title={date}
+                                icon=""
+                                actionLabel="En savoir plus"
+                            />
                         </Col>
                     );
                 })}

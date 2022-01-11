@@ -23,6 +23,7 @@ import dsfrGrid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
+import ModalDetail from '../ModalDetail';
 
 const NavLink = dynamic(() => import('./../NavLink'));
 
@@ -75,18 +76,18 @@ export default function Layout({ children, headTitle }) {
 
             dispatch({
                 type: 'UPDATE_USER',
-                payload: { user: {} },
+                payload: {},
             });
 
             dispatch({
                 type: 'UPDATE_USER_CONNECTION',
-                payload: { userConnected: false },
+                payload: false,
             });
 
             // TODO still useful??
             dispatch({
                 type: 'UPDATE_ERROR',
-                payload: { error: '' },
+                payload: '',
             });
 
             if (Cookies && Cookies.get('userConnected')) {
@@ -105,17 +106,9 @@ export default function Layout({ children, headTitle }) {
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
                 <link
-                    rel="preload"
+                    rel="stylesheet"
                     href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-                    as="style"
-                    onLoad="this.onload=null;this.rel='stylesheet'"
                 />
-                <noscript>
-                    <link
-                        rel="stylesheet"
-                        href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-                    />
-                </noscript>
                 <link
                     rel="icon"
                     href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
@@ -138,7 +131,6 @@ export default function Layout({ children, headTitle }) {
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
-
                 <noscript>
                     <link
                         rel="font"
@@ -317,6 +309,7 @@ export default function Layout({ children, headTitle }) {
                     </FooterCopy>
                 </FooterBottom>
             </Footer>
+            <ModalDetail />
         </>
     );
 }

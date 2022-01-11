@@ -16,7 +16,7 @@ export default function Identifiers() {
                     <Col>
                         <CardInfo
                             link={`/update/person/${id}`}
-                            date="Wikipédia"
+                            supInfo="Wikipédia"
                             title="090909"
                         />
                     </Col>

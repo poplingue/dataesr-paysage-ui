@@ -49,9 +49,7 @@ export default function ToolBox({
 
             dispatch({
                 type: 'UPDATE_PRINT_PAGE',
-                payload: {
-                    printPage,
-                },
+                payload: printPage,
             });
 
             resolve(printPage);
