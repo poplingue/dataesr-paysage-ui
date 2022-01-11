@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 import { getObjectType } from '../../../helpers/constants';
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 
 const CardInfo = dynamic(() => import('./../../../components/CardInfo'));
@@ -16,7 +16,7 @@ const HeaderLayout = dynamic(() =>
 const List = dynamic(() => import('./../../../components/List'));
 
 export default function Category(props) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const router = useRouter();
     const {

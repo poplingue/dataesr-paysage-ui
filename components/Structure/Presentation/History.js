@@ -10,7 +10,7 @@ export default function History({ section }) {
 
     const {
         statePage: {
-            accordionSections,
+            accordionItems,
             modalDetail: { content },
         },
         dispatchPage: dispatch,
@@ -20,15 +20,15 @@ export default function History({ section }) {
     const { id } = router.query;
 
     useEffect(() => {
-        const index = accordionSections.findIndex(
+        const index = accordionItems.findIndex(
             (accordion) => accordion.section === section
         );
 
         // Check section is open before fetching data
         if (
             !history.length &&
-            accordionSections[index] &&
-            accordionSections[index].expanded
+            accordionItems[index] &&
+            accordionItems[index].expanded
         ) {
             // Fetch Data
             setHistory([
@@ -46,7 +46,7 @@ export default function History({ section }) {
                 },
             ]);
         }
-    }, [history, accordionSections, section]);
+    }, [history, accordionItems, section]);
 
     const onClick = (date) => {
         dispatch({

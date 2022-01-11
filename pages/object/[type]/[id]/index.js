@@ -1,12 +1,7 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { getObjectType } from '../../../../helpers/constants';
-
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
+import grid from '../../../../helpers/imports';
 
 const Layout = dynamic(() => import('./../../../../components/Layout'));
 const HeaderLayout = dynamic(() =>
@@ -15,6 +10,8 @@ const HeaderLayout = dynamic(() =>
 
 // TODO to remove??
 export default function Object() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const { type, id } = router.query;
     const title = getObjectType(type) ? getObjectType(type).title : type;

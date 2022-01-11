@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 
@@ -11,13 +12,9 @@ const Layout = dynamic(() => import('./../../components/Layout'));
 const NavLink = dynamic(() => import('./../../components/NavLink'));
 const FieldButton = dynamic(() => import('./../../components/FieldButton'));
 
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
-
 export default function Help() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const {
         statePage: { user, userConnected },

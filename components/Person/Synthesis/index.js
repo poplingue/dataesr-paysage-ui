@@ -1,5 +1,5 @@
 import { Title } from '@dataesr/react-dsfr';
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
 import Contact from './Contact';
 import Functions from './Functions';
@@ -12,7 +12,7 @@ const components = {
 };
 
 export default function Synthesis({ content }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     // TODO wrapper dynamic component
     return (

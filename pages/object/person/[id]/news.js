@@ -1,17 +1,15 @@
 import dynamic from 'next/dynamic';
+import grid from '../../../../helpers/imports';
 
 const HeaderLayout = dynamic(() =>
     import('./../../../../components/HeaderLayout')
 );
 const CardInfo = dynamic(() => import('./../../../../components/CardInfo'));
 const Layout = dynamic(() => import('./../../../../components/Layout'));
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 export default function PersonNews({ news }) {
+    const { Col, Row, Container } = grid();
+
     return (
         <Layout>
             <HeaderLayout pageTitle="Les Dépêches" />

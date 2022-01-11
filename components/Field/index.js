@@ -1,5 +1,5 @@
 import { Children, cloneElement, useRef } from 'react';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './Field.module.scss';
 
@@ -12,7 +12,7 @@ export default function Field({
     children,
     value,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
     const ref = useRef(null);
 
     const deleteCurrentField = () => {

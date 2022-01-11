@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { cleanString } from './utils';
 
 export function getUrl(key) {
@@ -53,6 +54,14 @@ export function getObjectType(id) {
     return objectTypes[id];
 }
 
+export const PersonPageSkeletonPropType = PropTypes.shape({
+    web: PropTypes.func.isRequired,
+    responsability: PropTypes.func.isRequired,
+    identifier: PropTypes.func.isRequired,
+    price: PropTypes.func.isRequired,
+    synthesis: PropTypes.func.isRequired,
+});
+
 export const PersonPageSkeleton = [
     {
         title: 'Synthèse',
@@ -89,6 +98,22 @@ export const PersonPageSkeleton = [
         print: true,
     },
 ];
+
+// TODO add isRequired to all
+export const StructurePageSkeletonPropType = PropTypes.shape({
+    presentation: PropTypes.func.isRequired,
+    governance: PropTypes.func.isRequired,
+    keyNumbers: PropTypes.func,
+    hr: PropTypes.func,
+    budget: PropTypes.func,
+    analyse: PropTypes.func,
+    followUp: PropTypes.func,
+    news: PropTypes.func,
+    estate: PropTypes.func,
+    students: PropTypes.func,
+    thema: PropTypes.func,
+    project: PropTypes.func,
+});
 
 export const StructurePageSkeleton = [
     {

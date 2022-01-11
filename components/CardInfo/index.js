@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { noPrintClass } from '../../helpers/utils';
 import NavLink from '../NavLink';
 import styles from './CardInfo.module.scss';
@@ -26,7 +26,7 @@ export default function CardInfo({
     onClick,
     actionLabel,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
     const iconCheck = checked ? 'ri-checkbox-line' : 'ri-checkbox-blank-line';
     const {
         stateList: { exportMode },

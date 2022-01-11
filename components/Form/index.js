@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { getFormName, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
@@ -12,7 +12,7 @@ import AccordionForm from './AccordionForm';
 import FormAccordionItem from './FormAccordionItem';
 
 const CreateForm = ({ jsonForm, color, objectFormType }) => {
-    const { Col, Row } = dsfrGrid();
+    const { Col, Row } = grid();
 
     const {
         stateForm: { storeObjects, updateObjectId },

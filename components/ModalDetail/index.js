@@ -11,18 +11,21 @@ export default function ModalDetail() {
     } = useContext(AppContext);
 
     return (
-        <Modal
-            isOpen={open}
-            hide={() => {
-                dispatch({
-                    type: 'UPDATE_MODAL_DETAIL',
-                    payload: { open: false },
-                });
-            }}
-            title={title}
-        >
-            <ModalTitle>{title}</ModalTitle>
-            <ModalContent>{content}</ModalContent>
-        </Modal>
+        content &&
+        title && (
+            <Modal
+                isOpen={open}
+                hide={() => {
+                    dispatch({
+                        type: 'UPDATE_MODAL_DETAIL',
+                        payload: { open: false },
+                    });
+                }}
+                title={title}
+            >
+                <ModalTitle>{title}</ModalTitle>
+                <ModalContent>{content}</ModalContent>
+            </Modal>
+        )
     );
 }

@@ -31,7 +31,7 @@ export const DataProvider = ({ user, error, children }) => {
         sideMode: 'on',
         printPage: null,
         accordionSkeleton: [],
-        accordionSections: [],
+        accordionItems: [],
         modalDetail: {
             title: '',
             open: false,

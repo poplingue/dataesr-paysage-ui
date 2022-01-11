@@ -1,8 +1,8 @@
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 import CardLink from '../../CardLink';
 
 export default function Functions() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Container fluid>

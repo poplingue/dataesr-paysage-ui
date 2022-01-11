@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { getObjectType } from '../../../helpers/constants';
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 
 const CardLink = dynamic(() => import('../../../components/CardLink'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../../components/Layout'));
 
 export default function SearchObject() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const router = useRouter();
     const { object } = router.query;

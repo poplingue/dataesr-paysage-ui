@@ -1,4 +1,4 @@
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import InfiniteField from '../InfiniteField';
 import Input from './Input';
 
@@ -10,7 +10,7 @@ function CustomInput({
     validatorConfig,
     updateValidSection,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Container fluid>

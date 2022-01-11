@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import Navigation from './Navigation';
 
 export default function SideNavigation({ children, items, color }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const {
         statePage: { sideMode },

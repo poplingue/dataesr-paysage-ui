@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
 const CardLink = dynamic(() => import('../../components/CardLink'));
 const Layout = dynamic(() => import('../../components/Layout'));
 
 export default function Search() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Layout>

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useState } from 'react';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { cleanedPrintPage, idToPrint } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 import FieldButton from '../FieldButton';
@@ -23,7 +23,7 @@ export default function ToolBox({
     accordions,
     initialSkeleton,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const [open, setOpen] = useState(false);
     const { Button } = useAccordions(true);
@@ -59,9 +59,7 @@ export default function ToolBox({
     const updateSkeleton = (skeleton) => {
         dispatch({
             type: 'UPDATE_ACCORDION_SKELETON',
-            payload: {
-                accordionSkeleton: skeleton,
-            },
+            payload: skeleton,
         });
     };
 

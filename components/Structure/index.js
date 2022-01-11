@@ -1,4 +1,4 @@
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import AccordionObject from '../AccordionObject';
@@ -13,7 +13,7 @@ const components = {
 };
 
 export default function Structure({ children, skeleton }) {
-    const { Col, Row } = dsfrGrid();
+    const { Col, Row } = grid();
 
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'

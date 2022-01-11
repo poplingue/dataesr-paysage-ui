@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { cleanString } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
@@ -15,7 +15,7 @@ export default function AccordionForm({
     dataSection,
     spacing,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: grey } = useCSSProperty('--grey-850');

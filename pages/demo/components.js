@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 import React, { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getObjectType } from '../../helpers/constants';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import useCSSProperty from '../../hooks/useCSSProperty';
 
 const ShowMoreList = dynamic(() => import('./../../components/ShowMoreList'));
@@ -19,8 +19,9 @@ const Title = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.Title)
 );
 
+// TODO add cypress tests
 export default function Components() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
     const { dispatchPage: dispatch } = useContext(AppContext);
     const { style: green } = useCSSProperty('--success-main-525');
 

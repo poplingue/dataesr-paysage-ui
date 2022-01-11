@@ -2,7 +2,7 @@ import { Toggle } from '@dataesr/react-dsfr';
 import { useContext } from 'react';
 import XLSX from 'xlsx';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import FieldButton from '../FieldButton';
 import List from '../List';
 
@@ -15,7 +15,7 @@ function Workbook() {
 }
 
 export default function ExportList({ children, selection }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const {
         stateList: { exportMode },

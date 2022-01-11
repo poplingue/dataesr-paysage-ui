@@ -45,14 +45,14 @@ const reducersPage = (state, action) => {
         case ACTIONS.UPDATE_ACCORDION_SKELETON: {
             return {
                 ...state,
-                accordionSkeleton: action.payload.accordionSkeleton,
+                accordionSkeleton: action.payload,
             };
         }
 
-        case ACTIONS.UPDATE_ACCORDION_SECTIONS: {
+        case ACTIONS.UPDATE_ACCORDION_ITEMS: {
             return {
                 ...state,
-                accordionSections: action.payload,
+                accordionItems: action.payload,
             };
         }
 

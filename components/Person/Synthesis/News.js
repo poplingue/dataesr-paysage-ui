@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 import CardInfo from '../../CardInfo';
 import LinkTo from '../../LinkTo';
 import ShowMoreList from '../../ShowMoreList';
 
 export default function News() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const {
         query: { id },

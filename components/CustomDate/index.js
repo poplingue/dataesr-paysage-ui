@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { cleanString, range } from '../../helpers/utils';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
@@ -11,7 +11,7 @@ export default function CustomDate({
     validatorConfig,
     updateValidSection,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const d = new Date();
     const days = range(1, 31, true);

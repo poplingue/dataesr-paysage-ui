@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../../../context/GlobalState';
 import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
@@ -29,28 +29,27 @@ export default function Object(props) {
     const { id } = router.query;
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
 
-    // TODO refacto - make a hook?
-    useEffect(() => {
-        return () => {
+    const updateAccordionSkeleton = useCallback(
+        (payload) => {
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
-                payload: {
-                    accordionSkeleton: [],
-                },
+                payload,
             });
+        },
+        [dispatch]
+    );
+
+    useEffect(() => {
+        return () => {
+            updateAccordionSkeleton([]);
         };
-    }, [dispatch]);
+    }, [updateAccordionSkeleton]);
 
     useEffect(() => {
         if (!skeleton.length) {
-            dispatch({
-                type: 'UPDATE_ACCORDION_SKELETON',
-                payload: {
-                    accordionSkeleton: PersonPageSkeleton,
-                },
-            });
+            updateAccordionSkeleton(PersonPageSkeleton);
         }
-    }, [dispatch, skeleton]);
+    }, [skeleton, updateAccordionSkeleton]);
 
     return (
         <Layout>

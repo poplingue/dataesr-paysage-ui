@@ -1,9 +1,9 @@
 import { Icon, Tile, TileBody } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 
 export default function TileElement({ color, title, subTitle, body, onClick }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Tile color={color} className="w-100" horizontal onClick={onClick}>

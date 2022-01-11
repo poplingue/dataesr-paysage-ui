@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import { AppContext } from '../../../context/GlobalState';
+import grid from '../../../helpers/imports';
 import {
     activateAdviceMsg,
     activationCodePattern,
@@ -14,12 +15,6 @@ import {
 } from '../../../helpers/internalMessages';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
-
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 const AuthForm = dynamic(() => import('../../../components/AuthForm'));
 const FieldButton = dynamic(() => import('../../../components/FieldButton'));
@@ -36,6 +31,8 @@ const formSchema = [
 ];
 
 export default function Activate() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const {
         statePage: { error },

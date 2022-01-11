@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
+import grid from '../../helpers/imports';
 import {
     codeSendByEmailMsg,
     emailErrorMsg,
@@ -13,12 +14,6 @@ const AuthForm = dynamic(() => import('../../components/AuthForm'));
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../components/Layout'));
 
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-
 const formSchema = [
     {
         required: true,
@@ -29,6 +24,8 @@ const formSchema = [
 ];
 
 export default function ForgotPassword() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const validationSchema = Yup.object().shape({
         account: Yup.string()

@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
+import grid from '../../../helpers/imports';
 import {
     activationCodePattern,
     codeMandatoryMsg,
@@ -13,12 +14,6 @@ import {
 } from '../../../helpers/internalMessages';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
-
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 const AuthForm = dynamic(() => import('../../../components/AuthForm'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
@@ -47,6 +42,8 @@ const formSchema = [
 ];
 
 export default function Index() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const { email } = router.query;
 

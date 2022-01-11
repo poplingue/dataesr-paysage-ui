@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import CardInfo from '../../components/CardInfo';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 
 export default function Identifiers() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const {
         query: { id },

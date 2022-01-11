@@ -1,5 +1,10 @@
 import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
-import dsfrGrid from '../../helpers/imports';
+import PropTypes from 'prop-types';
+import {
+    PersonPageSkeletonPropType,
+    StructurePageSkeletonPropType,
+} from '../../helpers/constants';
+import grid from '../../helpers/imports';
 import { cleanString, sectionUniqueId } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 
@@ -11,7 +16,7 @@ export default function AccordionObject({
     skeleton,
 }) {
     const { accordionClick } = useAccordions();
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Container fluid>
@@ -58,3 +63,31 @@ export default function AccordionObject({
         </Container>
     );
 }
+
+AccordionObject.defaultPorps = {
+    color: '',
+    initExpand: false,
+};
+
+AccordionObject.propTypes = {
+    components: PropTypes.oneOfType([
+        PersonPageSkeletonPropType,
+        StructurePageSkeletonPropType,
+    ]).isRequired,
+    initExpand: PropTypes.bool,
+    color: PropTypes.string,
+    skeleton: PropTypes.arrayOf(
+        PropTypes.shape({
+            content: PropTypes.arrayOf(
+                PropTypes.shape({
+                    title: PropTypes.string,
+                    type: PropTypes.string,
+                    validatorId: PropTypes.string,
+                })
+            ).isRequired,
+            print: PropTypes.bool,
+            component: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+};

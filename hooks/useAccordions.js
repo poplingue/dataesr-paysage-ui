@@ -78,7 +78,7 @@ const useAccordions = (init = false) => {
 
     useEffect(() => {
         dispatch({
-            type: 'UPDATE_ACCORDION_SECTIONS',
+            type: 'UPDATE_ACCORDION_ITEMS',
             payload: list,
         });
     }, [dispatch, list]);

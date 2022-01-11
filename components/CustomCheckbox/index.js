@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getUrl } from '../../helpers/constants';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import {
     cleanString,
     getFieldValue,
@@ -21,7 +21,7 @@ function CustomCheckbox({
     validatorConfig,
     updateValidSection,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     const {
         stateForm: { forms, storeObjects },

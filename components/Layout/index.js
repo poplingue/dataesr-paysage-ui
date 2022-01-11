@@ -19,7 +19,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
@@ -99,7 +99,7 @@ export default function Layout({ children, headTitle }) {
     };
 
     // TODO use it everywhere
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <>

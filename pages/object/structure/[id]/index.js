@@ -31,7 +31,7 @@ export default function Object(props) {
         (payload) => {
             dispatch({
                 type: 'UPDATE_ACCORDION_SKELETON',
-                payload: { accordionSkeleton: payload },
+                payload,
             });
         },
         [dispatch]

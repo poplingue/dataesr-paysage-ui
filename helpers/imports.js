@@ -6,6 +6,6 @@ const Container = dynamic(() =>
 );
 const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
-export default function dsfrGrid() {
+export default function grid() {
     return { Col, Row, Container };
 }

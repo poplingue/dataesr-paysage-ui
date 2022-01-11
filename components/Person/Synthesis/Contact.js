@@ -1,9 +1,9 @@
 import { Tag } from '@dataesr/react-dsfr';
-import dsfrGrid from '../../../helpers/imports';
+import grid from '../../../helpers/imports';
 import CalloutPerson from '../../CalloutPerson';
 
 export default function Contact() {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <Container fluid>

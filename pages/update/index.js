@@ -4,17 +4,14 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
-
 export default function Create() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
     const { dispatchForm: dispatch } = useContext(AppContext);
 

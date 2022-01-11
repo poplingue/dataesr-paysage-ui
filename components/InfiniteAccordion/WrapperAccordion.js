@@ -1,4 +1,4 @@
-import dsfrGrid from '../../helpers/imports';
+import grid from '../../helpers/imports';
 
 export default function WrapperAccordion({
     sectionRef,
@@ -6,7 +6,7 @@ export default function WrapperAccordion({
     colSize,
     children,
 }) {
-    const { Col, Row, Container } = dsfrGrid();
+    const { Col, Row, Container } = grid();
 
     return (
         <li key={key}>

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
 
+import grid from '../../helpers/imports';
 import {
     emailErrorMsg,
     emailMandatoryMsg,
@@ -13,12 +14,6 @@ import {
 } from '../../helpers/internalMessages';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
-
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
 
 const AuthForm = dynamic(() => import('../../components/AuthForm'));
 const NavLink = dynamic(() => import('../../components/NavLink'));
@@ -69,6 +64,8 @@ const errorsIntl = {
 };
 
 function Signup() {
+    const { Col, Row, Container } = grid();
+
     const router = useRouter();
 
     const validationSchema = Yup.object().shape({
