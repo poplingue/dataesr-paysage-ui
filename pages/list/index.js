@@ -1,16 +1,13 @@
 import dynamic from 'next/dynamic';
-import CardLink from '../../components/CardLink';
+import dsfrGrid from '../../helpers/imports';
 
+const CardLink = dynamic(() => import('../../components/CardLink'));
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../components/Layout'));
 
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
-
 export default function List() {
+    const { Col, Row, Container } = dsfrGrid();
+
     return (
         <Layout>
             <HeaderLayout pageTitle={`Listes qualifiées`} />

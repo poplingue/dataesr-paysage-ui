@@ -1,18 +1,15 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import CardLink from '../../../components/CardLink';
 import { getObjectType } from '../../../helpers/constants';
+import dsfrGrid from '../../../helpers/imports';
 
+const CardLink = dynamic(() => import('../../../components/CardLink'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../../components/Layout'));
 
-const Col = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Col));
-const Container = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Container)
-);
-const Row = dynamic(() => import('@dataesr/react-dsfr').then((mod) => mod.Row));
-
 export default function SearchObject() {
+    const { Col, Row, Container } = dsfrGrid();
+
     const router = useRouter();
     const { object } = router.query;
     const title = getObjectType(object) ? getObjectType(object).title : object;

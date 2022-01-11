@@ -1,22 +1,23 @@
-import { Title } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import React, { useContext } from 'react';
-import CalloutPerson from '../../components/CalloutPerson';
-import CardInfo from '../../components/CardInfo';
-import CardLink from '../../components/CardLink';
-import Field from '../../components/Field';
-import FieldButton from '../../components/FieldButton';
-import IconButton from '../../components/IconButton';
-import ShowMoreList from '../../components/ShowMoreList';
-import TileElement from '../../components/TileElement';
 import { AppContext } from '../../context/GlobalState';
 import { getObjectType } from '../../helpers/constants';
 import dsfrGrid from '../../helpers/imports';
 import useCSSProperty from '../../hooks/useCSSProperty';
 
+const ShowMoreList = dynamic(() => import('./../../components/ShowMoreList'));
+const CalloutPerson = dynamic(() => import('./../../components/CalloutPerson'));
+const CardInfo = dynamic(() => import('./../../components/CardInfo'));
+const CardLink = dynamic(() => import('./../../components/CardLink'));
+const TileElement = dynamic(() => import('./../../components/TileElement'));
+const IconButton = dynamic(() => import('./../../components/IconButton'));
+const FieldButton = dynamic(() => import('./../../components/FieldButton'));
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 const List = dynamic(() => import('./../../components/List'));
+const Title = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Title)
+);
 
 export default function Components() {
     const { Col, Row, Container } = dsfrGrid();
@@ -27,18 +28,9 @@ export default function Components() {
         <Layout>
             <HeaderLayout pageTitle={`Components`} />
             <Container>
-                <Field
-                    label="Field"
-                    index={1}
-                    section="Section"
-                    title="Field"
-                    value="Content field"
-                >
-                    <p>Test</p>
-                </Field>
                 <Row gutters>
                     <Col n="12">
-                        <Title as="h2">To display lists</Title>
+                        <Title as="h2">Display lists</Title>
                     </Col>
                     <Col n="8">
                         <List>
@@ -139,7 +131,7 @@ export default function Components() {
                 </Row>
                 <Row gutters>
                     <Col n="12">
-                        <Title as="h2">To display informations</Title>
+                        <Title as="h2">Display informations</Title>
                     </Col>
                     <Col n="8">
                         <TileElement
@@ -210,7 +202,7 @@ export default function Components() {
                 </Row>
                 <Row gutters>
                     <Col n="12">
-                        <Title as="h2">To display buttons</Title>
+                        <Title as="h2">Display buttons</Title>
                     </Col>
                     <Col>
                         <FieldButton
