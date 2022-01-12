@@ -31,7 +31,7 @@ export default function CreatePerson({ data, id }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const currentForm = getForm(forms, formName);
+    const currentForm = getForm(forms, formName) || [];
 
     function delay(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));

@@ -131,7 +131,11 @@ function MultiSearch({ title, section, validatorConfig, updateValidSection }) {
                         {selectedValues.length > 0 && (
                             <ul>
                                 {selectedValues.map((selected) => {
-                                    return <li key={uuidv4()}>{selected}</li>;
+                                    return (
+                                        <li key={uuidv4()} data-cy={selected}>
+                                            {selected}
+                                        </li>
+                                    );
                                 })}
                             </ul>
                         )}
