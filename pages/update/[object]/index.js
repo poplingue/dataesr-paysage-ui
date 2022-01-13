@@ -4,20 +4,18 @@ import { parseCookies } from 'nookies';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 
-const CreatePerson = dynamic(() =>
-    import('./../../../components/CreatePerson')
-);
-const CreateStructure = dynamic(() =>
-    import('./../../../components/CreateStructure')
+const UpdatePerson = dynamic(() => import('../../../components/UpdatePerson'));
+const UpdateStructure = dynamic(() =>
+    import('../../../components/UpdateStructure')
 );
 
-export default function Create({ data }) {
+export default function UpdateObject({ data }) {
     const router = useRouter();
     const cookies = parseCookies();
     const { object } = router.query;
     const components = {
-        person: CreatePerson,
-        structure: CreateStructure,
+        person: UpdatePerson,
+        structure: UpdateStructure,
     };
 
     const {
@@ -38,7 +36,14 @@ export default function Create({ data }) {
         }
     }, [cookies.updateObjectId, dispatch, object]);
 
-    return Component && <Component data={data} id={updateObjectId} />;
+    return (
+        Component && (
+            <Component
+                data={data}
+                id={cookies.updateObjectId || updateObjectId}
+            />
+        )
+    );
 }
 
 export async function getStaticProps() {

@@ -58,8 +58,6 @@ export const accountService = {
                             fetchHelper
                                 .handleResponse(resp)
                                 .then(async ({ data }) => {
-                                    console.log('==== LOG ==== ', data);
-
                                     return Promise.resolve({
                                         user: data,
                                         newTokens,

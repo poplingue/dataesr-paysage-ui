@@ -26,28 +26,21 @@ self.addEventListener('fetch', function (event) {
 });
 
 self.addEventListener('message', async (event) => {
-    console.log('worker event message', event.data);
-
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(event.data.accessToken),
+        body: JSON.stringify({ status: 'active' }),
         credentials: 'include',
     };
 
-    const response = await fetch(`api/structures/create`, requestOptions).then(
-        (resp) => {
-            setTimeout(() => {
-                console.log('==== RESP ==== ', resp);
-
-                if (resp.status < 400 && resp.status >= 200) {
-                    self.postMessage(JSON.stringify(resp));
-                } else {
-                    console.log('==== ERR ==== ');
-                }
-            }, 2000);
-        }
-    );
+    if (event.target.name === 'New_object') {
+        await fetch(`api/${event.data.type}/new`, requestOptions).then(
+            async (resp) => {
+                const data = await resp.clone().json();
+                self.postMessage(JSON.stringify({ status: resp.status, data }));
+            }
+        );
+    }
 });
 
 self.addEventListener('push', (event) => {

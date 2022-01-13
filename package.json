@@ -31,7 +31,6 @@
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.5",
     "@zeit/next-sass": "^1.0.1",
     "babel-jest": "^27.4.2",
-    "babel-plugin-dynamic-import-node": "^2.3.3",
     "cookie": "^0.4.1",
     "fs-extra": "^10.0.0",
     "idb": "^6.1.2",

@@ -1,20 +1,35 @@
+import cookie from 'cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
+    // TODO refacto cookieHeaders
+    let cookiesHeader = '';
+    let tokens = null;
+
+    if (req && req.headers && req.headers.cookie) {
+        cookiesHeader = cookie.parse(req.headers.cookie);
+    }
+
+    if (!cookiesHeader) {
+        throw Error('Cookie missing');
+    } else if (Object.keys(cookiesHeader).includes('tokens')) {
+        tokens = JSON.parse(cookiesHeader.tokens);
+    }
+
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/structures`;
-        const headers = fetchHelper.authHeader({ accessToken: req.body });
 
         const request = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                ...headers,
+                ...fetchHelper.authHeader(tokens),
             },
-            body: JSON.stringify({ status: 'active' }),
+            body: JSON.stringify(req.body),
         });
 
         const response = await request.text();

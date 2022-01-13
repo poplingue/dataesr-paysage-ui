@@ -1,8 +1,14 @@
-export const objectService = {
-    new: async (r) => {
-        console.log('==== objectService NEW ==== ', r);
+import { genericErrorMsg } from '../helpers/internalMessages';
 
-        return true;
+export const objectService = {
+    newId: async (r) => {
+        const message = JSON.parse(r);
+
+        if (message.status < 400 && message.status >= 200) {
+            return message.data.id;
+        } else {
+            throw genericErrorMsg;
+        }
     },
 };
 

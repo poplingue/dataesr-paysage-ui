@@ -13,9 +13,9 @@ import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import LinkClick from '../LinkClick';
 import ToolBox from '../ToolBox';
-import CreatePersonForm from './form.json';
+import UpdatePersonForm from './form.json';
 
-export default function CreatePerson({ data, id }) {
+export default function UpdatePerson({ data, id }) {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
@@ -24,7 +24,7 @@ export default function CreatePerson({ data, id }) {
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const [personForm, setPersonForm] = useState(CreatePersonForm[0]);
+    const [personForm, setPersonForm] = useState(UpdatePersonForm[0]);
     const [init, setInit] = useState(true);
     const {
         pathname,
@@ -236,7 +236,7 @@ export default function CreatePerson({ data, id }) {
         if (id) {
             fetchPerson(id).then((data) => {
                 setPersonForm(
-                    dataFormService.mapping(CreatePersonForm[0], data)
+                    dataFormService.mapping(UpdatePersonForm[0], data)
                 );
             });
         }
@@ -268,7 +268,7 @@ export default function CreatePerson({ data, id }) {
                 highlight={id ? 'Dernière modification le 23/03/2021' : ''}
                 pageTitle={id ? `Modifier ${id}` : 'Ajouter une personne'}
             />
-            <SideNavigation items={CreatePersonForm[0].form}>
+            <SideNavigation items={UpdatePersonForm[0].form}>
                 <ToolBox accordions>
                     <Container>
                         <Row gutters spacing="pb-2w">
@@ -285,7 +285,7 @@ export default function CreatePerson({ data, id }) {
                     </Container>
                 </ToolBox>
                 <CreateForm
-                    jsonForm={id ? personForm : CreatePersonForm[0]}
+                    jsonForm={id ? personForm : UpdatePersonForm[0]}
                     color={pink}
                     objectFormType="person"
                 />

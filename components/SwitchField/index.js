@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { configValidator as configValidatorPerson } from '../CreatePerson/configValidator';
-import { configValidator as configValidatorStructure } from '../CreateStructure/configValidator';
 
 import CustomCheckbox from '../CustomCheckbox';
 import CustomDate from '../CustomDate';
@@ -10,6 +8,8 @@ import CustomRadio from '../CustomRadio';
 import CustomSelect from '../CustomSelect';
 import CustomToggle from '../CustomToggle';
 import MultiSearch from '../MultiSearch';
+import { configValidator as configValidatorPerson } from '../UpdatePerson/configValidator';
+import { configValidator as configValidatorStructure } from '../UpdateStructure/configValidator';
 
 const config = {
     structure: configValidatorStructure,

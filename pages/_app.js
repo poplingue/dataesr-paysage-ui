@@ -10,9 +10,16 @@ import {
     noTokensError,
 } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
+import NotifService from '../services/Notif.service';
 
-function MyApp({ Component, pageProps, user, error }) {
+function MyApp({ Component, pageProps, user, error, technicalError }) {
     const MemoizedComponent = memo(Component);
+
+    useEffect(() => {
+        if (technicalError) {
+            NotifService.techInfo(genericErrorMsg, 'error');
+        }
+    }, [technicalError]);
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
@@ -68,9 +75,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
                 return { error };
             }
 
-            console.log('==== getInitialProps ERROR ==== ', error);
-
-            return Promise.reject(genericErrorMsg);
+            return { technicalError: error };
         });
 };
 
