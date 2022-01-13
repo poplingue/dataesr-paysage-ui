@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../context/GlobalState';
 import grid from '../helpers/imports';
@@ -24,7 +24,7 @@ function Home() {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
-    const tokens = Cookies.get('tokens');
+    const cookies = parseCookies();
 
     const {
         statePage: { user, error, userConnected },
@@ -37,12 +37,12 @@ function Home() {
     }, [error, userConnected]);
 
     useEffect(() => {
-        if (error && error === inactiveUserError && tokens) {
+        if (error && error === inactiveUserError && cookies.tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, tokens, error, userConnected]);
+    }, [router, error, userConnected, cookies.tokens]);
 
     return (
         <Layout>

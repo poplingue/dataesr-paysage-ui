@@ -1,4 +1,5 @@
 import getConfig from 'next/config';
+import { parseCookies } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 
 import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
@@ -6,7 +7,9 @@ import authService from './Auth.service';
 
 export const accountService = {
     me: async (cookieTokens) => {
-        const tokens = cookieTokens || Cookies.get('tokens') || {};
+        const cookie = parseCookies();
+        const tokens =
+            cookieTokens || (cookie.tokens && JSON.parse(cookie.tokens)) || {};
 
         if ((tokens && !Object.keys(tokens).length) || !tokens) {
             return Promise.reject(noTokensError);
@@ -23,13 +26,14 @@ export const accountService = {
         const { publicRuntimeConfig } = getConfig();
         const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
         const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
+        let newTokens = '';
 
         const response = await fetch(meUrl, requestOptions);
 
         return fetchHelper
             .handleResponse(response)
-            .then((response) => {
-                return Promise.resolve(response);
+            .then(({ data }) => {
+                return Promise.resolve({ user: data });
             })
             .catch((err) => {
                 // TODO still useful??
@@ -40,6 +44,8 @@ export const accountService = {
                 return authService
                     .refreshAccessToken(tokens.refreshToken, tokenUrl)
                     .then(async ({ data }) => {
+                        newTokens = data;
+
                         const resp = await fetch(meUrl, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -49,8 +55,13 @@ export const accountService = {
                         return Promise.resolve(
                             fetchHelper
                                 .handleResponse(resp)
-                                .then(async (data) => {
-                                    return Promise.resolve(data);
+                                .then(async ({ data }) => {
+                                    console.log('==== LOG ==== ', data);
+
+                                    return Promise.resolve({
+                                        user: data,
+                                        newTokens,
+                                    });
                                 })
                                 .catch((err) => {
                                     return Promise.reject(err);

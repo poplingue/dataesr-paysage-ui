@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 import * as Yup from 'yup';
 import grid from '../../../helpers/imports';
 import {
@@ -67,7 +67,11 @@ export default function Index() {
             .then(() => {
                 authService.signIn({ account, password }).then(async () => {
                     router.push('/').then(() => {
-                        Cookies.set('userConnected', true);
+                        setCookie(null, 'userConnected', 'true', {
+                            maxAge: 30 * 24 * 60 * 60,
+                            path: '/',
+                        });
+
                         NotifService.info('Mot de passe mis à jour', 'valid');
                         window.location = '/';
                     });

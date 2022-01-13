@@ -4,7 +4,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/refresh-access-token`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/refresh-access-token`;
 
         // TODO Tidy options
         const request = await fetch(url, {

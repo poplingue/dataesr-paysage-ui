@@ -6,7 +6,8 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/activate-account`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/activate-account`;
+
         const body = {
             activationCode: parseInt(req.body.activationCode),
         };
@@ -30,7 +31,7 @@ async function handler(req, res) {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
+                ...fetchHelper.authHeader(req.body.tokens || tokens),
             },
             body: JSON.stringify(body),
         });

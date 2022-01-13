@@ -10,11 +10,11 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
-import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { parseCookies, setCookie } from 'nookies';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -64,6 +64,7 @@ const { publicRuntimeConfig } = getConfig();
 export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
+    const cookies = parseCookies();
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
         statePage: { userConnected },
@@ -90,9 +91,10 @@ export default function Layout({ children, headTitle }) {
                 payload: '',
             });
 
-            if (Cookies && Cookies.get('userConnected')) {
-                Cookies.set('userConnected', false);
-            }
+            setCookie(null, 'userConnected', 'false', {
+                maxAge: 30 * 24 * 60 * 60,
+                path: '/',
+            });
 
             window.location = '/account/sign-in';
         });

@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
@@ -40,7 +40,10 @@ export default function Help() {
                     payload: false,
                 });
 
-                Cookies.set('userConnected', false);
+                setCookie(null, 'userConnected', 'false', {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: '/',
+                });
 
                 router.push({
                     pathname: '/account/forgot-password',

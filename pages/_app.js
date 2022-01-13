@@ -1,6 +1,7 @@
 import '../styles/styles.scss';
 import cookie from 'cookie';
-import { memo } from 'react';
+import nookies from 'nookies';
+import { memo, useEffect } from 'react';
 
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
@@ -13,6 +14,27 @@ import accountService from '../services/Account.service';
 
 function MyApp({ Component, pageProps, user, error }) {
     const MemoizedComponent = memo(Component);
+
+    useEffect(() => {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/sw.js').then(
+                    function (registration) {
+                        console.log(
+                            'Service Worker registration successful with scope: ',
+                            registration.scope
+                        );
+                    },
+                    function (err) {
+                        console.log(
+                            'Service Worker registration failed: ',
+                            err
+                        );
+                    }
+                );
+            });
+        }
+    }, []);
 
     return (
         <DataProvider user={user} error={error}>
@@ -40,10 +62,19 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
     return await accountService
         .me(tokens)
-        .then(({ data }) => {
-            console.log('==== getInitialProps USER ==== ', data);
+        .then(({ user, newTokens }) => {
+            if (
+                newTokens &&
+                Object.keys(newTokens).includes('accessToken') &&
+                Object.keys(newTokens).includes('refreshToken')
+            ) {
+                nookies.set(ctx, 'tokens', JSON.stringify(newTokens), {
+                    maxAge: 30 * 24 * 60 * 60,
+                    path: '/',
+                });
+            }
 
-            return Promise.resolve({ user: data });
+            return Promise.resolve({ user });
         })
         .catch((error) => {
             if (error === inactiveUserError || error === noTokensError) {

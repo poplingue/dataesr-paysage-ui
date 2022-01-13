@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import React, { useContext } from 'react';
+import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
 import { getObjectType } from '../../helpers/constants';
 import grid from '../../helpers/imports';
@@ -221,6 +222,9 @@ export default function Components() {
                             title={`Voir tout l'historique`}
                             icon="ri-eye-2-line"
                         />
+                    </Col>
+                    <Col>
+                        <LinkClick href="/update/person" text="LinkClick" />
                     </Col>
                 </Row>
             </Container>

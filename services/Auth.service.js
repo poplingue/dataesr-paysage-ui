@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
+import { setCookie } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
-
 import {
     combinationError,
     emailErrorMsg,
@@ -29,7 +29,10 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
+                    setCookie(null, 'tokens', JSON.stringify(data), {
+                        maxAge: 30 * 24 * 60 * 60,
+                        path: '/',
+                    });
                 }
 
                 return response;
@@ -43,6 +46,7 @@ const authService = {
     activate: async (code) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/activate-account`;
+        let newTokens = '';
 
         const requestOptions = {
             method: 'POST',
@@ -61,23 +65,29 @@ const authService = {
                 })
                 .catch((err) => {
                     if (err === tokenError) {
-                        authService
+                        return authService
                             .refreshAccessToken()
-                            .then(async (response) => {
-                                await fetch(url, requestOptions);
+                            .then(async (resp) => {
+                                newTokens = resp.data;
+
+                                const newBody = {
+                                    activationCode: code.activationCode,
+                                    tokens: newTokens,
+                                };
+                                const r = await fetch(url, {
+                                    ...requestOptions,
+                                    body: JSON.stringify(newBody),
+                                });
 
                                 return fetchHelper
-                                    .handleResponse(response)
-                                    .then(async (response) => {
-                                        return response;
-                                    })
-                                    .catch((err) => {
-                                        return Promise.reject(err);
+                                    .handleResponse(r)
+                                    .then(async (res) => {
+                                        return { response: res, newTokens };
                                     });
                             });
+                    } else {
+                        return Promise.reject(err);
                     }
-
-                    return Promise.reject(err);
                 });
         } catch (err) {
             return Promise.reject(err);
@@ -86,6 +96,7 @@ const authService = {
     renewActivationCode: async () => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/renew-activation-code`;
+        let newTokens = '';
 
         // TODO Tidy options
         const requestOptions = {
@@ -103,18 +114,22 @@ const authService = {
             })
             .catch((err) => {
                 if (err === tokenError) {
-                    authService
+                    return authService
                         .refreshAccessToken()
-                        .then(async () => {
-                            const response = await fetch(url, requestOptions);
+                        .then(async (resp) => {
+                            newTokens = resp.data;
+
+                            const newBody = { tokens: newTokens };
+                            const r = await fetch(url, {
+                                ...requestOptions,
+                                body: JSON.stringify(newBody),
+                                method: 'POST',
+                            });
 
                             return fetchHelper
-                                .handleResponse(response)
+                                .handleResponse(r)
                                 .then(async (response) => {
                                     return response;
-                                })
-                                .catch((err) => {
-                                    return Promise.reject(err);
                                 });
                         })
                         .catch((err) => {
@@ -145,7 +160,10 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
+                    setCookie(null, 'tokens', JSON.stringify(data), {
+                        maxAge: 30 * 24 * 60 * 60,
+                        path: '/',
+                    });
                 }
 
                 return response;
@@ -228,8 +246,10 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    console.log('==== Tokens updated ==== ');
-                    Cookies.set('tokens', JSON.stringify(data));
+                    setCookie(null, 'tokens', JSON.stringify(data), {
+                        maxAge: 30 * 24 * 60 * 60,
+                        path: '/',
+                    });
                 }
 
                 return { response, data };

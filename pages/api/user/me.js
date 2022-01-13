@@ -1,12 +1,16 @@
 import getConfig from 'next/config';
+import nookies from 'nookies';
 import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
-async function handler(req, res) {
+async function handler({ ctx }) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/me`;
-        const headers = fetchHelper.authHeader({ accessToken: req.body });
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/me`;
+        const headers = fetchHelper.authHeader({ accessToken: ctx.req.body });
+        const cookies = nookies.get(ctx);
+
+        console.log('==== ME cookies ==== ', cookies);
 
         // TODO Tidy options
         const request = await fetch(url, {
@@ -19,9 +23,9 @@ async function handler(req, res) {
         });
 
         const response = await request.text();
-        res.status(request.status).json(response);
+        ctx.res.status(request.status).json(response);
     } catch (err) {
-        res.status(500).send(err);
+        ctx.res.status(500).send(err);
     }
 }
 

@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { setCookie } from 'nookies';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import { AppContext } from '../../../context/GlobalState';
@@ -69,7 +69,11 @@ function SignIn() {
             .signIn(formData)
             .then(async () => {
                 router.push('/').then(() => {
-                    Cookies.set('userConnected', true);
+                    setCookie(null, 'userConnected', 'true', {
+                        maxAge: 30 * 24 * 60 * 60,
+                        path: '/',
+                    });
+
                     NotifService.info(connectedMsg, 'valid');
                     window.location = '/';
                 });

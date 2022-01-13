@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { parseCookies, setCookie } from 'nookies';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import { AppContext } from '../../../context/GlobalState';
@@ -32,6 +32,7 @@ const formSchema = [
 
 export default function Activate() {
     const { Col, Row, Container } = grid();
+    const cookies = parseCookies();
 
     const router = useRouter();
     const {
@@ -81,29 +82,44 @@ export default function Activate() {
     const onSubmit = (formData) => {
         authService
             .activate(formData)
-            .then(() => {
-                authService.signOut().then(() => {
-                    dispatch({
-                        type: 'UPDATE_ERROR',
-                        payload: '',
-                    });
+            .then((response) => {
+                if (response && response.newTokens) {
+                    setCookie(
+                        null,
+                        'tokens',
+                        JSON.stringify(response.newTokens),
+                        {
+                            maxAge: 30 * 24 * 60 * 60,
+                            path: '/',
+                        }
+                    );
+                } else {
+                    authService.signOut().then(() => {
+                        dispatch({
+                            type: 'UPDATE_ERROR',
+                            payload: '',
+                        });
 
-                    dispatch({
-                        type: 'UPDATE_USER_CONNECTION',
-                        payload: false,
-                    });
+                        dispatch({
+                            type: 'UPDATE_USER_CONNECTION',
+                            payload: false,
+                        });
 
-                    if (Cookies && Cookies.get('userConnected')) {
-                        Cookies.set('userConnected', false);
-                    }
+                        if (cookies.userConnected === 'true') {
+                            setCookie(null, 'userConnected', 'false', {
+                                maxAge: 30 * 24 * 60 * 60,
+                                path: '/',
+                            });
+                        }
 
-                    router.push('/account/sign-in').then(() => {
-                        NotifService.info(
-                            'Compte activé, connectez-vous',
-                            'valid'
-                        );
+                        router.push('/account/sign-in').then(() => {
+                            NotifService.info(
+                                'Compte activé, connectez-vous',
+                                'valid'
+                            );
+                        });
                     });
-                });
+                }
             })
             .catch((err) => {
                 console.error('==== authService.activate ==== ', err);
