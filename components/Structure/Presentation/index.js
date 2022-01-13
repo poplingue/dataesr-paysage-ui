@@ -10,10 +10,10 @@ const components = {
 
 export default function Presentation({ content, section, expand }) {
     const { Col, Row, Container } = grid();
-    
-return (
+
+    return (
         <>
-            {content.map((subSection) => {
+            {content.map((subSection, index) => {
                 const { title, component } = subSection;
                 const dataSubSection = sectionUniqueId(title);
                 const Component = components[component];
@@ -21,11 +21,13 @@ return (
                 return (
                     <div key={title} data-section={dataSubSection}>
                         <Container fluid>
-                            <Row spacing="px-2w">
-                                <Col spacing="pb-8w">
-                                    <Map />
-                                </Col>
-                            </Row>
+                            {index === 0 ? (
+                                <Row spacing="px-2w">
+                                    <Col spacing="pb-8w">
+                                        <Map />
+                                    </Col>
+                                </Row>
+                            ) : null}
                             <Row spacing="px-2w">
                                 <Col>
                                     <Title as="h3" look="h6">
