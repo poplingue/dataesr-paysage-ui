@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 import { useContext } from 'react';
+import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
@@ -21,7 +22,9 @@ export default function Help() {
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
-    const lostPassword = () => {
+    const lostPassword = (e) => {
+        e.preventDefault();
+
         // TODO refacto
         if (userConnected) {
             authService.signOut().then(() => {
@@ -72,9 +75,15 @@ export default function Help() {
                         </NavLink>
                     </Col>
                     <Col n="12">
-                        <FieldButton
-                            onClick={lostPassword}
-                            title={lostPasswordMsg}
+                        <NavLink href="/account/reset-password">
+                            {`Renouveler mon mot de passe avec le code d'activation reçu`}
+                        </NavLink>
+                    </Col>
+                    <Col n="12">
+                        <LinkClick
+                            href="account/forgot-password"
+                            onClick={(e) => lostPassword(e)}
+                            text={lostPasswordMsg}
                         />
                     </Col>
                 </Row>

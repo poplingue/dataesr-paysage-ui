@@ -1,5 +1,4 @@
 import '../styles/styles.scss';
-import cookie from 'cookie';
 import nookies from 'nookies';
 import { memo, useEffect } from 'react';
 
@@ -45,20 +44,8 @@ function MyApp({ Component, pageProps, user, error }) {
 }
 
 MyApp.getInitialProps = async ({ ctx }) => {
-    let cookiesHeader = '';
-    let tokens = {};
-
-    if (ctx.req && ctx.req.headers && ctx.req.headers.cookie) {
-        cookiesHeader = cookie.parse(ctx.req.headers.cookie);
-    }
-
-    if (
-        cookiesHeader &&
-        Object.keys(cookiesHeader).includes('tokens') &&
-        cookiesHeader.tokens
-    ) {
-        tokens = JSON.parse(cookiesHeader.tokens);
-    }
+    const cookies = nookies.get(ctx);
+    let tokens = (cookies.tokens && JSON.parse(cookies.tokens)) || {};
 
     return await accountService
         .me(tokens)

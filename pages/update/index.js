@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { destroyCookie, parseCookies } from 'nookies';
 import { useContext, useEffect, useRef } from 'react';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
@@ -13,6 +13,7 @@ const Layout = dynamic(() => import('./../../components/Layout'));
 export default function Create() {
     const { Col, Row, Container } = grid();
     const workerRef = useRef();
+    const cookies = parseCookies();
 
     const router = useRouter();
     const { dispatchForm: dispatch } = useContext(AppContext);
@@ -26,7 +27,6 @@ export default function Create() {
 
     useEffect(() => {
         workerRef.current.onmessage = (event) => {
-            console.log('==== workerRef ==== ', event);
             ObjectService.new(event);
         };
     }, [workerRef]);
@@ -34,17 +34,19 @@ export default function Create() {
     const onClick = (e, url) => {
         e.preventDefault();
 
-        Cookies.remove('updateObjectId');
+        destroyCookie(null, 'updateObjectId');
 
         dispatch({
             type: 'UPDATE_UPDATE_OBJECT_ID',
             payload: { updateObjectId: '' },
         });
 
-        workerRef.current.postMessage({
-            type: 'structure',
-            accessToken: JSON.parse(Cookies.get('tokens')).accessToken,
-        });
+        if (cookies.tokens) {
+            workerRef.current.postMessage({
+                type: 'structure',
+                accessToken: JSON.parse(cookies.tokens).accessToken,
+            });
+        }
 
         router.push(url);
     };

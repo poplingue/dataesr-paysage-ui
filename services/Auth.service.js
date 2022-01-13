@@ -1,6 +1,5 @@
-import Cookies from 'js-cookie';
 import getConfig from 'next/config';
-import { setCookie } from 'nookies';
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 import {
     combinationError,
@@ -185,10 +184,11 @@ const authService = {
     signOut: async () => {
         // TODO route auth/signout
         let resp = 'No Cookie tokens to remove';
+        const cookies = parseCookies();
 
         try {
-            if (Cookies.get('tokens')) {
-                Cookies.remove('tokens');
+            if (cookies.tokens) {
+                destroyCookie(null, 'tokens');
                 resp = 'Cookie tokens removed';
             }
 
@@ -222,13 +222,12 @@ const authService = {
     },
     refreshAccessToken: async (refreshToken, refreshTokenUrl) => {
         const { publicRuntimeConfig } = getConfig();
+        const cookies = parseCookies();
         const url =
             refreshTokenUrl ||
             `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
-        const tokens = Cookies.get('tokens')
-            ? JSON.parse(Cookies.get('tokens'))
-            : null;
+        const tokens = cookies.tokens ? JSON.parse(cookies.tokens) : null;
 
         const response = await fetch(url, {
             method: 'POST',

@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { destroyCookie } from 'nookies';
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
@@ -245,7 +245,7 @@ export default function CreatePerson({ data, id }) {
     const onClick = (e) => {
         e.preventDefault();
 
-        Cookies.remove('updateObjectId');
+        destroyCookie(null, 'updateObjectId');
 
         DBService.clear('update/person');
 

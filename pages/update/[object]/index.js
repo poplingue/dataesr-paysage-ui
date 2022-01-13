@@ -1,6 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 
@@ -13,6 +13,7 @@ const CreateStructure = dynamic(() =>
 
 export default function Create({ data }) {
     const router = useRouter();
+    const cookies = parseCookies();
     const { object } = router.query;
     const components = {
         person: CreatePerson,
@@ -27,7 +28,7 @@ export default function Create({ data }) {
     const Component = object ? components[object] : null;
 
     useEffect(() => {
-        const updateObjectId = Cookies.get('updateObjectId');
+        const updateObjectId = cookies.updateObjectId;
 
         if (updateObjectId && object) {
             dispatch({
@@ -35,7 +36,7 @@ export default function Create({ data }) {
                 payload: { updateObjectId },
             });
         }
-    }, [dispatch, object]);
+    }, [cookies.updateObjectId, dispatch, object]);
 
     return Component && <Component data={data} id={updateObjectId} />;
 }

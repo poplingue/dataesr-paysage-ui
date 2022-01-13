@@ -7,9 +7,11 @@ import authService from './Auth.service';
 
 export const accountService = {
     me: async (cookieTokens) => {
-        const cookie = parseCookies();
+        const cookies = parseCookies();
         const tokens =
-            cookieTokens || (cookie.tokens && JSON.parse(cookie.tokens)) || {};
+            cookieTokens ||
+            (cookies.tokens && JSON.parse(cookies.tokens)) ||
+            {};
 
         if ((tokens && !Object.keys(tokens).length) || !tokens) {
             return Promise.reject(noTokensError);
