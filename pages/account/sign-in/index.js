@@ -16,6 +16,7 @@ import {
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
+import { cookieOptions } from '../../../helpers/utils';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
@@ -69,10 +70,7 @@ function SignIn() {
             .signIn(formData)
             .then(async () => {
                 router.push('/').then(() => {
-                    setCookie(null, 'userConnected', 'true', {
-                        maxAge: 30 * 24 * 60 * 60,
-                        path: '/',
-                    });
+                    setCookie(null, 'userConnected', 'true', cookieOptions);
 
                     NotifService.info(connectedMsg, 'valid');
                     window.location = '/';

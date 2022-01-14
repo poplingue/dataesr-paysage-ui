@@ -9,6 +9,7 @@ import {
     inactiveUserError,
     noTokensError,
 } from '../helpers/internalMessages';
+import { cookieOptions } from '../helpers/utils';
 import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
 
@@ -62,10 +63,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
                 Object.keys(newTokens).includes('accessToken') &&
                 Object.keys(newTokens).includes('refreshToken')
             ) {
-                nookies.set(ctx, 'tokens', JSON.stringify(newTokens), {
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: '/',
-                });
+                nookies.set(
+                    ctx,
+                    'tokens',
+                    JSON.stringify(newTokens),
+                    cookieOptions
+                );
             }
 
             return Promise.resolve({ user });

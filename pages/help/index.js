@@ -6,6 +6,7 @@ import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
+import { cookieOptions } from '../../helpers/utils';
 import authService from '../../services/Auth.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
@@ -43,10 +44,7 @@ export default function Help() {
                     payload: false,
                 });
 
-                setCookie(null, 'userConnected', 'false', {
-                    maxAge: 30 * 24 * 60 * 60,
-                    path: '/',
-                });
+                setCookie(null, 'userConnected', 'false', cookieOptions);
 
                 router.push({
                     pathname: '/account/forgot-password',

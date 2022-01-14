@@ -13,6 +13,7 @@ import {
     inactiveUserError,
     tokenMissingError,
 } from '../../../helpers/internalMessages';
+import { cookieOptions } from '../../../helpers/utils';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
@@ -88,10 +89,7 @@ export default function Activate() {
                         null,
                         'tokens',
                         JSON.stringify(response.newTokens),
-                        {
-                            maxAge: 30 * 24 * 60 * 60,
-                            path: '/',
-                        }
+                        cookieOptions
                     );
                 } else {
                     authService.signOut().then(() => {
@@ -106,10 +104,12 @@ export default function Activate() {
                         });
 
                         if (cookies.userConnected === 'true') {
-                            setCookie(null, 'userConnected', 'false', {
-                                maxAge: 30 * 24 * 60 * 60,
-                                path: '/',
-                            });
+                            setCookie(
+                                null,
+                                'userConnected',
+                                'false',
+                                cookieOptions
+                            );
                         }
 
                         router.push('/account/sign-in').then(() => {

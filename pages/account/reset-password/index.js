@@ -12,6 +12,7 @@ import {
     emailPatternHint,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
+import { cookieOptions } from '../../../helpers/utils';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
@@ -67,10 +68,7 @@ export default function Index() {
             .then(() => {
                 authService.signIn({ account, password }).then(async () => {
                     router.push('/').then(() => {
-                        setCookie(null, 'userConnected', 'true', {
-                            maxAge: 30 * 24 * 60 * 60,
-                            path: '/',
-                        });
+                        setCookie(null, 'userConnected', 'true', cookieOptions);
 
                         NotifService.info('Mot de passe mis à jour', 'valid');
                         window.location = '/';

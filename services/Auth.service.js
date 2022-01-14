@@ -8,6 +8,7 @@ import {
     passwordErrorMsg,
     tokenError,
 } from '../helpers/internalMessages';
+import { cookieOptions } from '../helpers/utils';
 
 const authService = {
     signup: async (userData) => {
@@ -28,10 +29,12 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(null, 'tokens', JSON.stringify(data), {
-                        maxAge: 30 * 24 * 60 * 60,
-                        path: '/',
-                    });
+                    setCookie(
+                        null,
+                        'tokens',
+                        JSON.stringify(data),
+                        cookieOptions
+                    );
                 }
 
                 return response;
@@ -159,10 +162,12 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(null, 'tokens', JSON.stringify(data), {
-                        maxAge: 30 * 24 * 60 * 60,
-                        path: '/',
-                    });
+                    setCookie(
+                        null,
+                        'tokens',
+                        JSON.stringify(data),
+                        cookieOptions
+                    );
                 }
 
                 return response;
@@ -245,10 +250,12 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(null, 'tokens', JSON.stringify(data), {
-                        maxAge: 30 * 24 * 60 * 60,
-                        path: '/',
-                    });
+                    setCookie(
+                        null,
+                        'tokens',
+                        JSON.stringify(data),
+                        cookieOptions
+                    );
                 }
 
                 return { response, data };

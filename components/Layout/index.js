@@ -21,6 +21,7 @@ import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
+import { cookieOptions } from '../../helpers/utils';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
@@ -92,10 +93,7 @@ export default function Layout({ children, headTitle }) {
                 payload: '',
             });
 
-            setCookie(null, 'userConnected', 'false', {
-                maxAge: 30 * 24 * 60 * 60,
-                path: '/',
-            });
+            setCookie(null, 'userConnected', 'false', cookieOptions);
 
             window.location = '/account/sign-in';
         });
