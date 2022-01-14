@@ -24,6 +24,7 @@ import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
+import Spinner from '../Spinner';
 
 const NavLink = dynamic(() => import('./../NavLink'));
 
@@ -257,6 +258,7 @@ export default function Layout({ children, headTitle }) {
                 <Row>
                     <Col>{children}</Col>
                 </Row>
+                <Spinner />
             </Container>
             <Footer>
                 <FooterTop>

@@ -29,6 +29,7 @@ export const DataProvider = ({ user, error, children }) => {
 
     const initialStatePage = {
         sideMode: 'on',
+        spinner: false,
         printPage: null,
         accordionSkeleton: [],
         accordionItems: [],

@@ -13,7 +13,6 @@ const Layout = dynamic(() => import('./../../components/Layout'));
 
 export default function Update() {
     const { Col, Row, Container } = grid();
-    // TODO spinner in globalState
     const [spinner, setSpinner] = useState(false);
     const [currentObject, setCurrentObject] = useState('');
     const workerRef = useRef();
@@ -62,20 +61,18 @@ export default function Update() {
             <HeaderLayout pageTitle="Ajouter un nouvel objet Paysage" />
             <Container>
                 <Row gutters spacing="px-2w">
-                    <Col n="12" className="p-relative">
-                        <LinkClick
-                            href="/update/structure"
-                            onClick={(e) => onClick(e, 'structure')}
-                            text="Créer un nouvel Établissement"
-                        />
-                        {spinner && <Spinner />}
-                    </Col>
                     <Col n="12">
-                        <LinkClick
-                            href="/update/person"
-                            onClick={(e) => onClick(e, 'person')}
-                            text="Créer une nouvelle Personne"
-                        />
+                        {spinner ? (
+                            <Spinner active small>
+                                Créer un nouvel Établissement
+                            </Spinner>
+                        ) : (
+                            <LinkClick
+                                href="/update/structure"
+                                onClick={(e) => onClick(e, 'structure')}
+                                text="Créer un nouvel Établissement"
+                            />
+                        )}
                     </Col>
                 </Row>
             </Container>
