@@ -1,4 +1,3 @@
-// import dynamic from 'next/dynamic';
 import {
     Button,
     Callout,
@@ -6,10 +5,12 @@ import {
     CalloutTitle,
     Title,
 } from '@dataesr/react-dsfr';
+// import dynamic from 'next/dynamic';
 import grid from '../../../helpers/imports';
+import NoSsrWrapper from '../../../helpers/no-ssr-wrapper';
 import { sectionUniqueId } from '../../../helpers/utils';
-// import Map from '../../MapComponent';
 import CardInfo from '../../CardInfo';
+import Map from '../../MapComponent';
 import History from './History';
 
 // const Map = dynamic(() => Promise.resolve('../../MapComponent'), {
@@ -32,12 +33,14 @@ export default function Presentation({ content, section, expand }) {
 
                 return (
                     <div key={title} data-section={dataSubSection}>
-                        <Container fluid>
+                        <Container>
                             {index === 0 ? (
                                 <>
                                     <Row spacing="px-2w">
                                         <Col spacing="pb-2w">
-                                            {/* <Map /> */}Map
+                                            <NoSsrWrapper>
+                                                <Map />
+                                            </NoSsrWrapper>
                                         </Col>
                                     </Row>
                                     <Row spacing="px-2w">
@@ -136,13 +139,15 @@ export default function Presentation({ content, section, expand }) {
                                                         <li>Contact 3</li>
                                                     </ul>
                                                 </CalloutText>
-                                                <Button
-                                                    // size="sm"
-                                                    title="Voir tout"
-                                                    icon="ri-eye-2-line"
-                                                >
-                                                    Voir tout
-                                                </Button>
+                                                <div>
+                                                    <Button
+                                                        // size="sm"
+                                                        title="Voir tout"
+                                                        icon="ri-eye-2-line"
+                                                    >
+                                                        Voir tout
+                                                    </Button>
+                                                </div>
                                             </Callout>
                                         </Col>
                                     </Row>

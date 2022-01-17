@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
-import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
+
 import { blueIcon } from './icons';
 import styles from './Map.module.scss';
 
@@ -21,27 +21,25 @@ export default function MapComponent({ markers, height, width }) {
 
     return (
         <div className={styles.MapComponent}>
-            <NoSsrWrapper>
-                <MapContainer
-                    className={styles.MapContainer}
-                    center={[48.866667, 2.333333]}
-                    zoom={12}
-                    style={{ height, width }}
-                    scrollWheelZoom={false}
-                    attributionControl
-                >
-                    <TileLayer
-                        attribution="<a href='https://www.jawg.io' target='_blank'>&copy; Jawg</a>"
-                        url="https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}.png?access-token=5V4ER9yrsLxoHQrAGQuYNu4yWqXNqKAM6iaX5D1LGpRNTBxvQL3enWXpxMQqTrY8"
-                    />
-                    {/* <Marker position={[51.505, -0.09]}>
+            <MapContainer
+                className={styles.MapContainer}
+                center={[48.866667, 2.333333]}
+                zoom={12}
+                style={{ height, width }}
+                scrollWheelZoom={false}
+                attributionControl
+            >
+                <TileLayer
+                    attribution="<a href='https://www.jawg.io' target='_blank'>&copy; Jawg</a>"
+                    url="https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}.png?access-token=5V4ER9yrsLxoHQrAGQuYNu4yWqXNqKAM6iaX5D1LGpRNTBxvQL3enWXpxMQqTrY8"
+                />
+                {/* <Marker position={[51.505, -0.09]}>
             <Popup>
               popip texte
             </Popup>
           </Marker> */}
-                    {markersComponents.map((marker) => marker)}
-                </MapContainer>
-            </NoSsrWrapper>
+                {markersComponents.map((marker) => marker)}
+            </MapContainer>
         </div>
     );
 }
