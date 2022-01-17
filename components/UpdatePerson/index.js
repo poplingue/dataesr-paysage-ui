@@ -1,5 +1,5 @@
+import basicCookie from '@franca/basic-cookie';
 import { useRouter } from 'next/router';
-import { destroyCookie } from 'nookies';
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
@@ -245,7 +245,7 @@ export default function UpdatePerson({ data, id }) {
     const onClick = (e) => {
         e.preventDefault();
 
-        destroyCookie(null, 'updateObjectId');
+        basicCookie.eraseCookie('updateObjectId');
 
         DBService.clear('update/person');
 

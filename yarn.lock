@@ -627,6 +627,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@franca/basic-cookie@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@franca/basic-cookie/-/basic-cookie-1.0.7.tgz#89223eceb8e242576824a07d552eb9e5daaf0fdb"
+  integrity sha512-JOyhbqKDFfNFrJnXTxWljU4PmZXMupXGqUB7HwYZlyvoP61QWaLGaUmia7T7cckfv9kVpt/gTaqp5oCtG7OXPQ==
+
 "@gouvfr/dsfr@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@gouvfr/dsfr/-/dsfr-1.2.1.tgz#68383192c24d521cf247992b11d891fb78d8f2f3"
@@ -6632,6 +6637,11 @@ joi@^17.4.0:
     "@sideway/address" "^4.1.0"
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
+
+js-cookie@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
+  integrity sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"

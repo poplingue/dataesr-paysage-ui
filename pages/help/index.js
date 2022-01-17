@@ -1,21 +1,21 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
+import { parseCookies } from 'nookies';
 import { useContext } from 'react';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
-import { cookieOptions } from '../../helpers/utils';
 import authService from '../../services/Auth.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 const NavLink = dynamic(() => import('./../../components/NavLink'));
-const FieldButton = dynamic(() => import('./../../components/FieldButton'));
 
 export default function Help() {
     const { Col, Row, Container } = grid();
+    const cookies = parseCookies();
 
     const router = useRouter();
     const {
@@ -44,7 +44,7 @@ export default function Help() {
                     payload: false,
                 });
 
-                setCookie(null, 'userConnected', 'false', cookieOptions);
+                Cookies.set('userConnected', false);
 
                 router.push({
                     pathname: '/account/forgot-password',

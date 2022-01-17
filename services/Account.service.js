@@ -13,9 +13,11 @@ export const accountService = {
             (cookies.tokens && JSON.parse(cookies.tokens)) ||
             {};
 
-        if ((tokens && !Object.keys(tokens).length) || !tokens) {
+        if (tokens && !Object.keys(tokens).length) {
             return Promise.reject(noTokensError);
         }
+
+        // const objectTokens = JSON.parse(tokens);
 
         // TODO refacto options
         const requestOptions = {
@@ -34,8 +36,8 @@ export const accountService = {
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ data }) => {
-                return Promise.resolve({ user: data });
+            .then((response) => {
+                return Promise.resolve(response);
             })
             .catch((err) => {
                 // TODO still useful??

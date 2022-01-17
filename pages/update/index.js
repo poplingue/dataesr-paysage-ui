@@ -1,6 +1,6 @@
+import basicCookie from '@franca/basic-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { destroyCookie } from 'nookies';
 import { useContext, useEffect, useRef, useState } from 'react';
 import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
@@ -48,7 +48,7 @@ export default function Update() {
 
         setCurrentObject(object);
 
-        destroyCookie(null, 'updateObjectId');
+        basicCookie.eraseCookie('updateObjectId');
 
         dispatch({
             type: 'UPDATE_UPDATE_OBJECT_ID',

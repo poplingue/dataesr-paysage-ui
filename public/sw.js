@@ -26,6 +26,7 @@ self.addEventListener('fetch', function (event) {
 });
 
 self.addEventListener('message', async (event) => {
+    // TODO refacto requestOptions
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

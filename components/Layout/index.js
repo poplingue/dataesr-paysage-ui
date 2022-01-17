@@ -10,22 +10,20 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
+import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
 import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { disconnectedMsg } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
-import { cookieOptions } from '../../helpers/utils';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
-import Spinner from '../Spinner';
 
 const NavLink = dynamic(() => import('./../NavLink'));
 
@@ -66,7 +64,6 @@ const { publicRuntimeConfig } = getConfig();
 export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
-
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
         statePage: { userConnected },
@@ -93,7 +90,9 @@ export default function Layout({ children, headTitle }) {
                 payload: '',
             });
 
-            setCookie(null, 'userConnected', 'false', cookieOptions);
+            if (Cookies && Cookies.get('userConnected')) {
+                Cookies.set('userConnected', false);
+            }
 
             window.location = '/account/sign-in';
         });
@@ -256,7 +255,6 @@ export default function Layout({ children, headTitle }) {
                 <Row>
                     <Col>{children}</Col>
                 </Row>
-                <Spinner />
             </Container>
             <Footer>
                 <FooterTop>

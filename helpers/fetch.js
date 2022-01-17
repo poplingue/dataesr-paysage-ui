@@ -36,7 +36,7 @@ async function handleResponse(response) {
                 if (!!Object.keys(data).length) {
                     errorMsg = data.error || genericErrorMsg;
 
-                    if (!!data.details.length) {
+                    if (data.details && !!data.details.length) {
                         errorMsg = data.details[0].message;
                     }
                 }

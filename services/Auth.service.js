@@ -1,5 +1,6 @@
+import Cookies from 'js-cookie';
 import getConfig from 'next/config';
-import { destroyCookie, parseCookies, setCookie } from 'nookies';
+import { setCookie } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 import {
     combinationError,
@@ -162,12 +163,7 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(
-                        null,
-                        'tokens',
-                        JSON.stringify(data),
-                        cookieOptions
-                    );
+                    Cookies.set('tokens', JSON.stringify(data));
                 }
 
                 return response;
@@ -189,11 +185,10 @@ const authService = {
     signOut: async () => {
         // TODO route auth/signout
         let resp = 'No Cookie tokens to remove';
-        const cookies = parseCookies();
 
         try {
-            if (cookies.tokens) {
-                destroyCookie(null, 'tokens');
+            if (Cookies.get('tokens')) {
+                Cookies.remove('tokens');
                 resp = 'Cookie tokens removed';
             }
 
@@ -227,12 +222,13 @@ const authService = {
     },
     refreshAccessToken: async (refreshToken, refreshTokenUrl) => {
         const { publicRuntimeConfig } = getConfig();
-        const cookies = parseCookies();
         const url =
             refreshTokenUrl ||
             `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
-        const tokens = cookies.tokens ? JSON.parse(cookies.tokens) : null;
+        const tokens = Cookies.get('tokens')
+            ? JSON.parse(Cookies.get('tokens'))
+            : null;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -250,12 +246,7 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(
-                        null,
-                        'tokens',
-                        JSON.stringify(data),
-                        cookieOptions
-                    );
+                    Cookies.set('tokens', JSON.stringify(data));
                 }
 
                 return { response, data };

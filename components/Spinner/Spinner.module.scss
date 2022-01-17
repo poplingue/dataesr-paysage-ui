@@ -1,101 +1,74 @@
+@mixin bg-gradient() {
+    background-image: linear-gradient(
+        180deg,
+        hsl(356deg 100% 44%) 0%,
+        hsl(356deg 99% 50%) 2%,
+        hsl(357deg 97% 55%) 4%,
+        hsl(358deg 97% 61%) 6%,
+        hsl(358deg 95% 66%) 9%,
+        hsl(359deg 94% 72%) 11%,
+        hsl(359deg 93% 78%) 14%,
+        hsl(0deg 91% 83%) 18%,
+        hsl(0deg 91% 87%) 21%,
+        hsl(0deg 93% 89%) 25%,
+        hsl(0deg 91% 91%) 29%,
+        hsl(0deg 89% 93%) 34%,
+        hsl(0deg 93% 94%) 39%,
+        hsl(0deg 90% 96%) 44%,
+        hsl(0deg 83% 98%) 49%,
+        hsl(0deg 100% 99%) 55%,
+        hsl(240deg 100% 94%) 61%,
+        hsl(240deg 100% 85%) 67%,
+        hsl(240deg 100% 75%) 73%,
+        hsl(240deg 100% 66%) 79%,
+        hsl(240deg 100% 56%) 85%,
+        hsl(240deg 100% 47%) 90%,
+        hsl(240deg 100% 38%) 95%,
+        hsl(240deg 100% 28%) 100%
+    );
+}
+
 .Inside {
     &::before {
         z-index: 1;
-        content: '';
-        box-sizing: border-box;
-        position: absolute;
-        top: 50%;
-        left: 50%;
         width: 32px;
         height: 32px;
         margin-top: -16px;
         margin-left: -16px;
-        border-radius: 50%;
         background: var(--grey-1000-50);
     }
 }
 
+.Inside,
 .Outside {
-    &::before {
-        content: '';
-        box-sizing: border-box;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 48px;
-        height: 48px;
-        margin-top: -24px;
-        margin-left: -24px;
-        border-radius: 60%;
-        animation: spinnerRotate 800ms linear infinite;
-        background-image: linear-gradient(
-            180deg,
-            hsl(356deg 100% 44%) 0%,
-            hsl(356deg 99% 50%) 2%,
-            hsl(357deg 97% 55%) 4%,
-            hsl(358deg 97% 61%) 6%,
-            hsl(358deg 95% 66%) 9%,
-            hsl(359deg 94% 72%) 11%,
-            hsl(359deg 93% 78%) 14%,
-            hsl(0deg 91% 83%) 18%,
-            hsl(0deg 91% 87%) 21%,
-            hsl(0deg 93% 89%) 25%,
-            hsl(0deg 91% 91%) 29%,
-            hsl(0deg 89% 93%) 34%,
-            hsl(0deg 93% 94%) 39%,
-            hsl(0deg 90% 96%) 44%,
-            hsl(0deg 83% 98%) 49%,
-            hsl(0deg 100% 99%) 55%,
-            hsl(240deg 100% 94%) 61%,
-            hsl(240deg 100% 85%) 67%,
-            hsl(240deg 100% 75%) 73%,
-            hsl(240deg 100% 66%) 79%,
-            hsl(240deg 100% 56%) 85%,
-            hsl(240deg 100% 47%) 90%,
-            hsl(240deg 100% 38%) 95%,
-            hsl(240deg 100% 28%) 100%
-        );
-    }
-
+    &::before,
     &::after {
         content: '';
         box-sizing: border-box;
         position: absolute;
         top: 50%;
         left: 50%;
+        border-radius: 60%;
+    }
+}
+
+.Outside {
+    &::before {
+        @include bg-gradient();
+        width: 48px;
+        height: 48px;
+        margin-top: -24px;
+        margin-left: -24px;
+        animation: spinnerRotate 800ms linear infinite;
+    }
+
+    &::after {
+        @include bg-gradient();
         width: 40px;
         height: 40px;
         margin-top: -20px;
         margin-left: -20px;
-        border-radius: 50%;
         animation: spinnerRotateBack 1200ms linear infinite;
-        background-image: linear-gradient(
-            180deg,
-            hsl(356deg 100% 44%) 0%,
-            hsl(356deg 99% 50%) 2%,
-            hsl(357deg 97% 55%) 4%,
-            hsl(358deg 97% 61%) 6%,
-            hsl(358deg 95% 66%) 9%,
-            hsl(359deg 94% 72%) 11%,
-            hsl(359deg 93% 78%) 14%,
-            hsl(0deg 91% 83%) 18%,
-            hsl(0deg 91% 87%) 21%,
-            hsl(0deg 93% 89%) 25%,
-            hsl(0deg 91% 91%) 29%,
-            hsl(0deg 89% 93%) 34%,
-            hsl(0deg 93% 94%) 39%,
-            hsl(0deg 90% 96%) 44%,
-            hsl(0deg 83% 98%) 49%,
-            hsl(0deg 100% 99%) 55%,
-            hsl(240deg 100% 94%) 61%,
-            hsl(240deg 100% 85%) 67%,
-            hsl(240deg 100% 75%) 73%,
-            hsl(240deg 100% 66%) 79%,
-            hsl(240deg 100% 56%) 85%,
-            hsl(240deg 100% 47%) 90%,
-            hsl(240deg 100% 38%) 95%,
-            hsl(240deg 100% 28%) 100%
-        );
     }
 }
 

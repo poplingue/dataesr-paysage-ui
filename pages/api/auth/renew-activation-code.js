@@ -28,7 +28,7 @@ async function handler(req, res) {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(req.body.tokens || tokens),
+                ...fetchHelper.authHeader(tokens),
             },
         });
         const response = await request.text();

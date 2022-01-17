@@ -1,6 +1,6 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
 import * as Yup from 'yup';
 import grid from '../../../helpers/imports';
 import {
@@ -12,7 +12,6 @@ import {
     emailPatternHint,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
-import { cookieOptions } from '../../../helpers/utils';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
@@ -68,8 +67,7 @@ export default function Index() {
             .then(() => {
                 authService.signIn({ account, password }).then(async () => {
                     router.push('/').then(() => {
-                        setCookie(null, 'userConnected', 'true', cookieOptions);
-
+                        Cookies.set('userConnected', true);
                         NotifService.info('Mot de passe mis à jour', 'valid');
                         window.location = '/';
                     });

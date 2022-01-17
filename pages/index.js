@@ -1,7 +1,7 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/GlobalState';
 import grid from '../helpers/imports';
 import {
@@ -9,6 +9,7 @@ import {
     connectedMsg,
     inactiveUserError,
 } from '../helpers/internalMessages';
+import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
 
 const Tile = dynamic(() =>
@@ -22,13 +23,38 @@ const Layout = dynamic(() => import('../components/Layout'));
 
 function Home() {
     const { Col, Row, Container } = grid();
+    const [hello, setHello] = useState(null);
 
     const router = useRouter();
-    const cookies = parseCookies();
+    const tokens = Cookies.get('tokens');
 
     const {
         statePage: { user, error, userConnected },
+        dispatchPage: dispatch,
     } = useContext(AppContext);
+
+    useEffect(() => {
+        const tokens = Cookies.get('tokens');
+
+        if (tokens) {
+            const objTokens = JSON.parse(tokens);
+            accountService.me(objTokens).then(({ data }) => {
+                if (data && !userConnected) {
+                    dispatch({
+                        type: 'UPDATE_USER',
+                        payload: data,
+                    });
+
+                    dispatch({
+                        type: 'UPDATE_USER_CONNECTION',
+                        payload: true,
+                    });
+
+                    setHello(`Salut à toi ${user.username}`);
+                }
+            });
+        }
+    }, [dispatch, user]);
 
     useEffect(() => {
         if (!error && userConnected) {
@@ -37,12 +63,12 @@ function Home() {
     }, [error, userConnected]);
 
     useEffect(() => {
-        if (error && error === inactiveUserError && cookies.tokens) {
+        if (error && error === inactiveUserError && tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, error, userConnected, cookies.tokens]);
+    }, [router, tokens, error, userConnected]);
 
     return (
         <Layout>
@@ -55,11 +81,7 @@ function Home() {
                 </Row>
                 <Row>
                     <Col n="12" spacing="mb-3w">
-                        <h2 data-cy="user">
-                            {userConnected && user
-                                ? `Salut à toi ${user.username || ''}`
-                                : 'Salut'}
-                        </h2>
+                        <h2 data-cy="user">{hello || 'Salut'}</h2>
                     </Col>
                     <Col n="12">
                         <Row gutters>

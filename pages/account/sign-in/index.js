@@ -1,6 +1,6 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { setCookie } from 'nookies';
 import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
 import { AppContext } from '../../../context/GlobalState';
@@ -16,7 +16,6 @@ import {
     lostPasswordMsg,
     passwordMandatoryMsg,
 } from '../../../helpers/internalMessages';
-import { cookieOptions } from '../../../helpers/utils';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
 
@@ -46,6 +45,7 @@ function SignIn() {
     const router = useRouter();
     const {
         statePage: { error, user },
+        dispatchPage: dispatch,
     } = useContext(AppContext);
 
     useEffect(() => {
@@ -68,12 +68,11 @@ function SignIn() {
     const onSubmit = (formData) => {
         authService
             .signIn(formData)
-            .then(async () => {
+            .then(async ({ user }) => {
                 router.push('/').then(() => {
-                    setCookie(null, 'userConnected', 'true', cookieOptions);
-
+                    Cookies.set('userConnected', true);
                     NotifService.info(connectedMsg, 'valid');
-                    window.location = '/';
+                    router.replace(router.asPath);
                 });
             })
             .catch((err) => {

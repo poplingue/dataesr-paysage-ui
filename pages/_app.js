@@ -1,26 +1,14 @@
 import '../styles/styles.scss';
-import nookies from 'nookies';
+import cookie from 'cookie';
 import { memo, useEffect } from 'react';
 
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
-import {
-    genericErrorMsg,
-    inactiveUserError,
-    noTokensError,
-} from '../helpers/internalMessages';
-import { cookieOptions } from '../helpers/utils';
+import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
-import NotifService from '../services/Notif.service';
 
-function MyApp({ Component, pageProps, user, error, technicalError }) {
+function MyApp({ Component, pageProps, user, error }) {
     const MemoizedComponent = memo(Component);
-
-    useEffect(() => {
-        if (technicalError) {
-            NotifService.techInfo(genericErrorMsg, 'error');
-        }
-    }, [technicalError]);
 
     useEffect(() => {
         if ('serviceWorker' in navigator) {
@@ -52,33 +40,38 @@ function MyApp({ Component, pageProps, user, error, technicalError }) {
 }
 
 MyApp.getInitialProps = async ({ ctx }) => {
-    const cookies = nookies.get(ctx);
-    let tokens = (cookies.tokens && JSON.parse(cookies.tokens)) || {};
+    let cookiesHeader = '';
+    let tokens = {};
+
+    if (ctx.req && ctx.req.headers && ctx.req.headers.cookie) {
+        cookiesHeader = cookie.parse(ctx.req.headers.cookie);
+    }
+
+    if (
+        cookiesHeader &&
+        Object.keys(cookiesHeader).includes('tokens') &&
+        cookiesHeader.tokens
+    ) {
+        tokens = JSON.parse(cookiesHeader.tokens);
+    }
+
+    console.debug('==== MyApp.getInitialProps tokens ==== ', tokens);
 
     return await accountService
         .me(tokens)
-        .then(({ user, newTokens }) => {
-            if (
-                newTokens &&
-                Object.keys(newTokens).includes('accessToken') &&
-                Object.keys(newTokens).includes('refreshToken')
-            ) {
-                nookies.set(
-                    ctx,
-                    'tokens',
-                    JSON.stringify(newTokens),
-                    cookieOptions
-                );
-            }
+        .then(({ data }) => {
+            console.log('==== getInitialProps USER ==== ', data);
 
-            return Promise.resolve({ user });
+            return { user: data };
         })
         .catch((error) => {
+            console.log('==== getInitialProps ERROR ==== ', error);
+
             if (error === inactiveUserError || error === noTokensError) {
                 return { error };
             }
 
-            return { technicalError: error };
+            return { error };
         });
 };
 

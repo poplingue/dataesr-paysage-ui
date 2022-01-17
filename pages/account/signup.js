@@ -1,6 +1,6 @@
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { destroyCookie, parseCookies } from 'nookies';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
 
@@ -93,10 +93,8 @@ function Signup() {
     });
 
     useEffect(() => {
-        const cookies = parseCookies();
-
-        if (cookies.tokens) {
-            destroyCookie(null, 'tokens');
+        if (Cookies.get('tokens')) {
+            Cookies.remove('tokens');
         }
     }, []);
 
