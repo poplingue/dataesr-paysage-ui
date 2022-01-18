@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
-import { setCookie } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 import {
     combinationError,
@@ -9,7 +8,6 @@ import {
     passwordErrorMsg,
     tokenError,
 } from '../helpers/internalMessages';
-import { cookieOptions } from '../helpers/utils';
 
 const authService = {
     signup: async (userData) => {
@@ -241,12 +239,8 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(
-                        null,
-                        'tokens',
-                        JSON.stringify(data),
-                        cookieOptions
-                    );
+                    Cookies.set('tokens', JSON.stringify(data));
+                    console.log('==== Tokens refreshed ==== ');
                 }
 
                 return { response, data };

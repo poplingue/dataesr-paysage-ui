@@ -1,23 +1,18 @@
 import getConfig from 'next/config';
-import { parseCookies } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 
-import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
+import {
+    inactiveUserError,
+    noTokensError,
+    tokenError,
+} from '../helpers/internalMessages';
 import authService from './Auth.service';
 
 export const accountService = {
-    me: async (cookieTokens) => {
-        const cookies = parseCookies();
-        const tokens =
-            cookieTokens ||
-            (cookies.tokens && JSON.parse(cookies.tokens)) ||
-            {};
-
+    me: async (tokens) => {
         if (tokens && !Object.keys(tokens).length) {
             return Promise.reject(noTokensError);
         }
-
-        // const objectTokens = JSON.parse(tokens);
 
         // TODO refacto options
         const requestOptions = {
@@ -45,34 +40,33 @@ export const accountService = {
                     return Promise.reject(err);
                 }
 
-                return authService
-                    .refreshAccessToken(tokens.refreshToken, tokenUrl)
-                    .then(async ({ data }) => {
-                        newTokens = data;
+                if (err === tokenError) {
+                    authService
+                        .refreshAccessToken(tokens.refreshToken, tokenUrl)
+                        .then(async ({ data }) => {
+                            newTokens = data;
 
-                        const resp = await fetch(meUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data.accessToken),
+                            const resp = await fetch(meUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data.accessToken),
+                            });
+
+                            return Promise.resolve(
+                                fetchHelper
+                                    .handleResponse(resp)
+                                    .then(async ({ data }) => {
+                                        return Promise.resolve({
+                                            user: data,
+                                            newTokens,
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        return Promise.reject(err);
+                                    })
+                            );
                         });
-
-                        return Promise.resolve(
-                            fetchHelper
-                                .handleResponse(resp)
-                                .then(async ({ data }) => {
-                                    return Promise.resolve({
-                                        user: data,
-                                        newTokens,
-                                    });
-                                })
-                                .catch((err) => {
-                                    return Promise.reject(err);
-                                })
-                        );
-                    })
-                    .catch((err) => {
-                        return Promise.reject(err);
-                    });
+                }
             });
     },
 };

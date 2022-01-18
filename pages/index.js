@@ -8,6 +8,7 @@ import {
     activateAdviceMsg,
     connectedMsg,
     inactiveUserError,
+    noTokensError,
 } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
@@ -38,22 +39,41 @@ function Home() {
 
         if (tokens) {
             const objTokens = JSON.parse(tokens);
-            accountService.me(objTokens).then(({ data }) => {
-                if (data && !userConnected) {
-                    dispatch({
-                        type: 'UPDATE_USER',
-                        payload: data,
-                    });
 
-                    dispatch({
-                        type: 'UPDATE_USER_CONNECTION',
-                        payload: true,
-                    });
+            accountService
+                .me(objTokens)
+                .then(({ data }) => {
+                    if (data && !userConnected) {
+                        dispatch({
+                            type: 'UPDATE_USER',
+                            payload: data,
+                        });
 
-                    // TODO still usefull??
-                    setHello(`Salut à toi ${user.username}`);
-                }
-            });
+                        dispatch({
+                            type: 'UPDATE_USER_CONNECTION',
+                            payload: true,
+                        });
+
+                        // TODO still usefull??
+                        setHello(`Salut à toi ${user.username}`);
+                    }
+                })
+                .catch((error) => {
+                    if (
+                        error === inactiveUserError ||
+                        error === noTokensError
+                    ) {
+                        dispatch({
+                            type: 'UPDATE_USER_ERROR',
+                            payload: error,
+                        });
+                    }
+
+                    return dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: error,
+                    });
+                });
         }
     }, [dispatch, user, userConnected]);
 

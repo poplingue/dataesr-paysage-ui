@@ -30,8 +30,7 @@ self.addEventListener('message', async (event) => {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'active' }),
-        credentials: 'include',
+        body: JSON.stringify({ [`${event.data.type}Status`]: 'active' }),
     };
 
     if (event.target.name === 'New_object') {
