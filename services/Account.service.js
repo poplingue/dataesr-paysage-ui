@@ -1,23 +1,14 @@
 import getConfig from 'next/config';
-import { parseCookies } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 
 import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import authService from './Auth.service';
 
 export const accountService = {
-    me: async (cookieTokens) => {
-        const cookies = parseCookies();
-        const tokens =
-            cookieTokens ||
-            (cookies.tokens && JSON.parse(cookies.tokens)) ||
-            {};
-
+    me: async (tokens) => {
         if (tokens && !Object.keys(tokens).length) {
             return Promise.reject(noTokensError);
         }
-
-        // const objectTokens = JSON.parse(tokens);
 
         // TODO refacto options
         const requestOptions = {

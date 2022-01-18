@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import getConfig from 'next/config';
-import { setCookie } from 'nookies';
 import { fetchHelper } from '../helpers/fetch';
 import {
     combinationError,
