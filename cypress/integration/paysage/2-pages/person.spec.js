@@ -1,13 +1,12 @@
 const baseUrl = Cypress.env('baseUrl');
 
 context('Person form page', () => {
-    beforeEach(() => {
-        cy.deleteIndexDB();
+    before(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update/person`);
     });
 
-    afterEach(() => {
+    after(() => {
         cy.signOut();
     });
 

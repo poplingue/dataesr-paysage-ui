@@ -14,7 +14,7 @@ export function getUrl(key) {
 export function getVal(key) {
     const data = {
         IDB_DATABASE_NAME: 'SERVICE_FORMS',
-        IDB_DATABASE_VERSION: 1,
+        IDB_DATABASE_VERSION: 2,
     };
 
     return data[key];

@@ -22,11 +22,8 @@ Cypress.Commands.add('signIn', () => {
 });
 
 Cypress.Commands.add('signOut', () => {
-    // const baseUrl = Cypress.env('baseUrl');
-    // cy.visit(`${baseUrl}`);
-    cy.get('[data-cy="sign-out"]').find('a').click();
-
-    // cy.wait(2000);
+    cy.scrollTo(0, 0);
+    cy.get('.fr-header__tools-links').find('.ds-fr--flex.fr-link').click();
 });
 
 Cypress.Commands.add('signup', () => {
