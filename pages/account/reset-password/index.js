@@ -69,7 +69,6 @@ export default function Index() {
                     router.push('/').then(() => {
                         Cookies.set('userConnected', true);
                         NotifService.info('Mot de passe mis à jour', 'valid');
-                        window.location = '/';
                     });
                 });
             })

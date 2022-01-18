@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { AppContext } from '../../../context/GlobalState';
 import grid from '../../../helpers/imports';
 import {
-    activateAdviceMsg,
     connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
@@ -41,20 +40,17 @@ const formSchema = [
 
 function SignIn() {
     const { Col, Row, Container } = grid();
-
     const router = useRouter();
+
     const {
-        statePage: { error, user },
-        dispatchPage: dispatch,
+        statePage: { userError, userConnected },
     } = useContext(AppContext);
 
     useEffect(() => {
-        if (error && error === inactiveUserError) {
-            router.push('/account/activate-account').then(() => {
-                NotifService.info(activateAdviceMsg, 'neutral', 10000);
-            });
+        if (userConnected) {
+            router.push('/');
         }
-    }, [error, router, user]);
+    }, [router, userConnected]);
 
     const validationSchema = Yup.object().shape({
         account: Yup.string()
@@ -68,11 +64,10 @@ function SignIn() {
     const onSubmit = (formData) => {
         authService
             .signIn(formData)
-            .then(async ({ user }) => {
+            .then(() => {
                 router.push('/').then(() => {
                     Cookies.set('userConnected', true);
                     NotifService.info(connectedMsg, 'valid');
-                    router.replace(router.asPath);
                 });
             })
             .catch((err) => {

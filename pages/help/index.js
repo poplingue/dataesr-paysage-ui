@@ -1,7 +1,5 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
 import { useContext } from 'react';
 import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
@@ -15,7 +13,6 @@ const NavLink = dynamic(() => import('./../../components/NavLink'));
 
 export default function Help() {
     const { Col, Row, Container } = grid();
-    const cookies = parseCookies();
 
     const router = useRouter();
     const {

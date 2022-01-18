@@ -39,7 +39,7 @@ export default function UpdateObject({ data }) {
         Component && (
             <Component
                 data={data}
-                id={cookies.updateObjectId || updateObjectId}
+                id={Cookies.get('updateObjectId') || updateObjectId}
             />
         )
     );

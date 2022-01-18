@@ -30,12 +30,7 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    setCookie(
-                        null,
-                        'tokens',
-                        JSON.stringify(data),
-                        cookieOptions
-                    );
+                    Cookies.set('tokens', JSON.stringify(data));
                 }
 
                 return response;
@@ -246,7 +241,12 @@ const authService = {
             .handleResponse(response)
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
+                    setCookie(
+                        null,
+                        'tokens',
+                        JSON.stringify(data),
+                        cookieOptions
+                    );
                 }
 
                 return { response, data };

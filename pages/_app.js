@@ -7,7 +7,7 @@ import { DataProvider } from '../context/GlobalState';
 import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
 
-function MyApp({ Component, pageProps, user, error }) {
+function MyApp({ Component, pageProps, user, userError, technicalError }) {
     const MemoizedComponent = memo(Component);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps, user, error }) {
     }, []);
 
     return (
-        <DataProvider user={user} error={error}>
+        <DataProvider user={user} error={technicalError} userError={userError}>
             <MemoizedComponent {...pageProps} />
             <Toaster />
         </DataProvider>
@@ -55,23 +55,17 @@ MyApp.getInitialProps = async ({ ctx }) => {
         tokens = JSON.parse(cookiesHeader.tokens);
     }
 
-    console.debug('==== MyApp.getInitialProps tokens ==== ', tokens);
-
     return await accountService
         .me(tokens)
         .then(({ data }) => {
-            console.log('==== getInitialProps USER ==== ', data);
-
             return { user: data };
         })
         .catch((error) => {
-            console.log('==== getInitialProps ERROR ==== ', error);
-
             if (error === inactiveUserError || error === noTokensError) {
-                return { error };
+                return { userError: error };
             }
 
-            return { error };
+            return { technicalError: error };
         });
 };
 

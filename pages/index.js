@@ -29,7 +29,7 @@ function Home() {
     const tokens = Cookies.get('tokens');
 
     const {
-        statePage: { user, error, userConnected },
+        statePage: { user, userError, userConnected },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -50,25 +50,26 @@ function Home() {
                         payload: true,
                     });
 
+                    // TODO still usefull??
                     setHello(`Salut à toi ${user.username}`);
                 }
             });
         }
-    }, [dispatch, user]);
+    }, [dispatch, user, userConnected]);
 
     useEffect(() => {
-        if (!error && userConnected) {
+        if (!userError && userConnected) {
             NotifService.info(connectedMsg, 'valid');
         }
-    }, [error, userConnected]);
+    }, [userConnected, userError]);
 
     useEffect(() => {
-        if (error && error === inactiveUserError && tokens) {
+        if (userError === inactiveUserError && tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, tokens, error, userConnected]);
+    }, [router, tokens, userConnected, userError]);
 
     return (
         <Layout>
@@ -81,7 +82,11 @@ function Home() {
                 </Row>
                 <Row>
                     <Col n="12" spacing="mb-3w">
-                        <h2 data-cy="user">{hello || 'Salut'}</h2>
+                        <h2 data-cy="user">
+                            {userConnected
+                                ? `Salut à toi ${user.username || ''}`
+                                : 'Salut'}
+                        </h2>
                     </Col>
                     <Col n="12">
                         <Row gutters>
