@@ -77,6 +77,12 @@ const NotifService = {
     },
 
     techInfo(message, type = 'neutral', duration = 4000) {
+        let stringMessage = message;
+
+        if (!typeof message === 'string' || !message instanceof String) {
+            stringMessage = JSON.stringify(message);
+        }
+
         const typeObject = {
             error: { background: bgError, icon: iconError },
             valid: { background: bgValid, icon: iconValid },
@@ -84,9 +90,9 @@ const NotifService = {
         };
 
         toast(message, {
-            id: 'toast-tech-info',
             position: 'bottom-right',
             className: `cy-notif-${type}`,
+            icon: typeObject[type].icon,
             duration,
             style: {
                 fontSize: 14,

@@ -1,19 +1,17 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-const CreatePerson = dynamic(() =>
-    import('./../../../components/CreatePerson')
-);
-const CreateStructure = dynamic(() =>
-    import('./../../../components/CreateStructure')
+const UpdatePerson = dynamic(() => import('../../../components/UpdatePerson'));
+const UpdateStructure = dynamic(() =>
+    import('../../../components/UpdateStructure')
 );
 
 export default function Create({ data }) {
     const router = useRouter();
     const { object } = router.query;
     const components = {
-        person: CreatePerson,
-        structure: CreateStructure,
+        person: UpdatePerson,
+        structure: UpdateStructure,
     };
     const Component = object ? components[object] : null;
 

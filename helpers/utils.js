@@ -204,3 +204,7 @@ export function cleanedPrintPage(pageId) {
 
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
+export const cookieOptions = {
+    maxAge: 30 * 24 * 60 * 60,
+    path: '/',
+};

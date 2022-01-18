@@ -35,6 +35,13 @@ const reducersPage = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_USER_ERROR: {
+            return {
+                ...state,
+                userError: action.payload,
+            };
+        }
+
         case ACTIONS.UPDATE_PRINT_PAGE: {
             return {
                 ...state,

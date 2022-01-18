@@ -66,14 +66,14 @@ export default function Layout({ children, headTitle }) {
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
     const {
-        statePage: { userConnected },
+        statePage: { userConnected, user },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
+    const router = useRouter();
+
     const signOut = () => {
         authService.signOut().then(() => {
-            NotifService.info(disconnectedMsg, 'valid');
-
             dispatch({
                 type: 'UPDATE_USER',
                 payload: {},
@@ -94,7 +94,9 @@ export default function Layout({ children, headTitle }) {
                 Cookies.set('userConnected', false);
             }
 
-            window.location = '/account/sign-in';
+            router.push('/account/sign-in').then(() => {
+                NotifService.info(disconnectedMsg, 'valid');
+            });
         });
     };
 
@@ -173,7 +175,7 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            {userConnected ? (
+                            {userConnected && user ? (
                                 <ToolItem
                                     onClick={signOut}
                                     icon="ri-user-3-line"

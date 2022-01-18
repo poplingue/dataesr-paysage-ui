@@ -1,5 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { useContext } from 'react';
+import LinkClick from '../../components/LinkClick';
+import Spinner from '../../components/Spinner';
 import { AppContext } from '../../context/GlobalState';
 import { getObjectType } from '../../helpers/constants';
 import grid from '../../helpers/imports';
@@ -65,6 +67,16 @@ export default function Components() {
                                 </Col>
                             </li>
                         </List>
+                    </Col>
+                    <Col n="2">
+                        <Row>
+                            <Col>
+                                <Spinner active />
+                            </Col>
+                            <Col>
+                                <Spinner active small />
+                            </Col>
+                        </Row>
                     </Col>
                     <Col n="12">
                         <ShowMoreList>
@@ -221,6 +233,9 @@ export default function Components() {
                             title={`Voir tout l'historique`}
                             icon="ri-eye-2-line"
                         />
+                    </Col>
+                    <Col>
+                        <LinkClick href="/update/person" text="LinkClick" />
                     </Col>
                 </Row>
             </Container>

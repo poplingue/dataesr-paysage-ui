@@ -4,7 +4,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/reset-password`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/reset-password`;
 
         const body = {
             ...req.body,

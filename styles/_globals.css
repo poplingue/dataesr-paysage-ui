@@ -26,6 +26,14 @@ html {
     position: relative;
 }
 
+.d-inline-block {
+    display: inline-block;
+}
+
+.d-none {
+    display: none;
+}
+
 /**
     Reset
  */

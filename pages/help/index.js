@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
+import LinkClick from '../../components/LinkClick';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { lostPasswordMsg } from '../../helpers/internalMessages';
@@ -10,7 +10,6 @@ import authService from '../../services/Auth.service';
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 const NavLink = dynamic(() => import('./../../components/NavLink'));
-const FieldButton = dynamic(() => import('./../../components/FieldButton'));
 
 export default function Help() {
     const { Col, Row, Container } = grid();
@@ -21,7 +20,9 @@ export default function Help() {
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
-    const lostPassword = () => {
+    const lostPassword = (e) => {
+        e.preventDefault();
+
         // TODO refacto
         if (userConnected) {
             authService.signOut().then(() => {
@@ -69,9 +70,15 @@ export default function Help() {
                         </NavLink>
                     </Col>
                     <Col n="12">
-                        <FieldButton
-                            onClick={lostPassword}
-                            title={lostPasswordMsg}
+                        <NavLink href="/account/reset-password">
+                            {`Renouveler mon mot de passe avec le code d'activation reçu`}
+                        </NavLink>
+                    </Col>
+                    <Col n="12">
+                        <LinkClick
+                            href="account/forgot-password"
+                            onClick={(e) => lostPassword(e)}
+                            text={lostPasswordMsg}
                         />
                     </Col>
                 </Row>

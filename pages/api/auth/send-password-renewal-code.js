@@ -4,7 +4,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/send-password-renewal-code`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/send-password-renewal-code`;
         // TODO Tidy options
         const request = await fetch(url, {
             method: 'POST',

@@ -18,29 +18,32 @@ function authHeader(tokens) {
 }
 
 async function handleResponse(response) {
-    return response.text().then((text) => {
-        let data;
+    return response
+        .clone()
+        .text()
+        .then((text) => {
+            let data;
 
-        try {
-            data = text && JSON.parse(text);
-        } catch (strError) {
-            return Promise.reject(strError || text);
-        }
-
-        if (!response.ok) {
-            let errorMsg = data.message || genericErrorMsg;
-
-            if (!!Object.keys(data).length) {
-                errorMsg = data.error || genericErrorMsg;
-
-                if (!!data.details.length) {
-                    errorMsg = data.details[0].message;
-                }
+            try {
+                data = text && JSON.parse(text);
+            } catch (strError) {
+                return Promise.reject(strError || text);
             }
 
-            return Promise.reject(errorMsg);
-        }
+            if (!response.ok) {
+                let errorMsg = data.message || genericErrorMsg;
 
-        return Promise.resolve({ response, data });
-    });
+                if (!!Object.keys(data).length) {
+                    errorMsg = data.error || genericErrorMsg;
+
+                    if (data.details && !!data.details.length) {
+                        errorMsg = data.details[0].message;
+                    }
+                }
+
+                return Promise.reject(errorMsg);
+            }
+
+            return Promise.resolve({ response, data });
+        });
 }

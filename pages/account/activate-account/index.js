@@ -35,7 +35,7 @@ export default function Activate() {
 
     const router = useRouter();
     const {
-        statePage: { error },
+        statePage: { userError },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -46,10 +46,10 @@ export default function Activate() {
     });
 
     useEffect(() => {
-        if (error && error === inactiveUserError) {
+        if (userError === inactiveUserError) {
             NotifService.info(activateAdviceMsg, 'neutral', 10000);
         }
-    }, [error, router]);
+    }, [router, userError]);
 
     const getNewCode = () => {
         authService

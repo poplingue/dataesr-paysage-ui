@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/me`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/me`;
         const headers = fetchHelper.authHeader({ accessToken: req.body });
 
         // TODO Tidy options

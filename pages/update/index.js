@@ -1,28 +1,59 @@
-import Cookies from 'js-cookie';
+import basicCookie from '@franca/basic-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import LinkClick from '../../components/LinkClick';
+import Spinner from '../../components/Spinner';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import ObjectService from '../../services/Object.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 
-export default function Create() {
+export default function Update() {
     const { Col, Row, Container } = grid();
+    const [spinner, setSpinner] = useState(false);
+    const [currentObject, setCurrentObject] = useState('');
+    const workerRef = useRef();
 
     const router = useRouter();
     const { dispatchForm: dispatch } = useContext(AppContext);
 
-    const onClick = (url) => {
-        Cookies.remove('updateObjectId');
+    useEffect(() => {
+        workerRef.current = new Worker('sw.js', {
+            name: 'New_object',
+            type: 'module',
+        });
+    }, []);
+
+    useEffect(() => {
+        workerRef.current.onmessage = ({ data }) => {
+            ObjectService.newId(data).then((id) => {
+                if (id) {
+                    router.push(`/update/${currentObject}/${id}`);
+                }
+            });
+        };
+    }, [currentObject, router, workerRef]);
+
+    const onClick = (e, object) => {
+        e.preventDefault();
+
+        setSpinner(true);
+
+        workerRef.current.postMessage({
+            type: object,
+        });
+
+        setCurrentObject(object);
+
+        basicCookie.eraseCookie('updateObjectId');
+
         dispatch({
             type: 'UPDATE_UPDATE_OBJECT_ID',
             payload: { updateObjectId: '' },
         });
-
-        router.push(url);
     };
 
     return (
@@ -31,18 +62,17 @@ export default function Create() {
             <Container>
                 <Row gutters spacing="px-2w">
                     <Col n="12">
-                        <LinkClick
-                            href="/update/structure"
-                            onClick={() => onClick('/update/structure')}
-                            text="Créer un nouvel Établissement"
-                        />
-                    </Col>
-                    <Col n="12">
-                        <LinkClick
-                            href="/update/person"
-                            onClick={() => onClick('/update/person')}
-                            text="Créer une nouvelle Personne"
-                        />
+                        {spinner ? (
+                            <Spinner active small>
+                                Créer un nouvel Établissement
+                            </Spinner>
+                        ) : (
+                            <LinkClick
+                                href="/update/structure"
+                                onClick={(e) => onClick(e, 'structure')}
+                                text="Créer un nouvel Établissement"
+                            />
+                        )}
                     </Col>
                 </Row>
             </Container>

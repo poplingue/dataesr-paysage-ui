@@ -1,14 +1,16 @@
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
-import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
+import {
+    inactiveUserError,
+    noTokensError,
+    tokenError,
+} from '../helpers/internalMessages';
 import authService from './Auth.service';
 
 export const accountService = {
-    me: async (cookieTokens) => {
-        const tokens = cookieTokens || Cookies.get('tokens') || {};
-
-        if ((tokens && !Object.keys(tokens).length) || !tokens) {
+    me: async (tokens) => {
+        if (tokens && !Object.keys(tokens).length) {
             return Promise.reject(noTokensError);
         }
 
@@ -23,6 +25,7 @@ export const accountService = {
         const { publicRuntimeConfig } = getConfig();
         const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
         const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
+        let newTokens = '';
 
         const response = await fetch(meUrl, requestOptions);
 
@@ -37,29 +40,33 @@ export const accountService = {
                     return Promise.reject(err);
                 }
 
-                return authService
-                    .refreshAccessToken(tokens.refreshToken, tokenUrl)
-                    .then(async ({ data }) => {
-                        const resp = await fetch(meUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data.accessToken),
-                        });
+                if (err === tokenError) {
+                    authService
+                        .refreshAccessToken(tokens.refreshToken, tokenUrl)
+                        .then(async ({ data }) => {
+                            newTokens = data;
 
-                        return Promise.resolve(
-                            fetchHelper
-                                .handleResponse(resp)
-                                .then(async (data) => {
-                                    return Promise.resolve(data);
-                                })
-                                .catch((err) => {
-                                    return Promise.reject(err);
-                                })
-                        );
-                    })
-                    .catch((err) => {
-                        return Promise.reject(err);
-                    });
+                            const resp = await fetch(meUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data.accessToken),
+                            });
+
+                            return Promise.resolve(
+                                fetchHelper
+                                    .handleResponse(resp)
+                                    .then(async ({ data }) => {
+                                        return Promise.resolve({
+                                            user: data,
+                                            newTokens,
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        return Promise.reject(err);
+                                    })
+                            );
+                        });
+                }
             });
     },
 };

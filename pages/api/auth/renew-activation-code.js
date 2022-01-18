@@ -7,7 +7,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.authApiUrl}/auth/renew-activation-code`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/renew-activation-code`;
 
         let cookiesHeader = '';
         let tokens = null;

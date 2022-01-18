@@ -1,12 +1,15 @@
+import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DB.service';
 import reducersForm from './ReducersForm';
 import reducersList from './ReducersList';
 import reducersPage from './ReducersPage';
-
 export const AppContext = createContext();
 
-export const DataProvider = ({ user, error, children }) => {
+export const DataProvider = ({ user, technicalError, userError, children }) => {
+    const tokens = Cookies.get('tokens');
+    const userConnected = Cookies.get('userConnected');
+
     const initialState = {
         darkTheme: false,
         storeObjects: [],
@@ -29,6 +32,7 @@ export const DataProvider = ({ user, error, children }) => {
 
     const initialStatePage = {
         sideMode: 'on',
+        spinner: false,
         printPage: null,
         accordionSkeleton: [],
         accordionItems: [],
@@ -39,10 +43,12 @@ export const DataProvider = ({ user, error, children }) => {
         },
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
-        error: error || null,
+        error: technicalError || null,
+        userError: userError || null,
         user: user || {},
         userConnected:
-            (user && Object.keys(user).length > 0 && !user.error) || false,
+            (user && Object.keys(user).length > 0) ||
+            (tokens && userConnected === 'true'),
     };
 
     const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
