@@ -1,6 +1,7 @@
 import cookie from 'cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
+import { tokenError } from '../../../helpers/internalMessages';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -31,6 +32,15 @@ async function handler(req, res) {
             },
             body: JSON.stringify(req.body),
         });
+
+        // TODO handle response in a service/helper
+        if (
+            tokens &&
+            request.status === 401 &&
+            request.statusText === 'Unauthorized'
+        ) {
+            res.status(401).send(tokenError);
+        }
 
         const response = await request.text();
         res.status(request.status).json(response);
