@@ -110,13 +110,13 @@ function InfiniteField({ children, title, section }) {
                                     forms,
                                     formName,
                                     getUniqueId(formName, section, title, i)
-                                ) || null;
+                                ) || '';
                             const newTitle = `${title}#${i}`;
 
                             return (
                                 <Field
                                     key={getUniqueId(formName, '', title, i)}
-                                    value={value || ''}
+                                    value={value}
                                     index={i}
                                     title={title}
                                     label={newTitle}
