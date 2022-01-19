@@ -21,7 +21,9 @@ context('IndexDB', () => {
         cy.get('[data-testid="demo/person@denomination/genre#0"]')
             .find('select')
             .select('n');
-        cy.reload();
+
+        cy.wait(500);
+
         cy.get('[data-testid="demo/person@denomination/genre#0"]')
             .find('select')
             .should('have.value', 'n');

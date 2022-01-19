@@ -59,6 +59,7 @@ function Home() {
                     }
                 })
                 .catch((error) => {
+                    // TODO refactio
                     if (
                         error === inactiveUserError ||
                         error === noTokensError

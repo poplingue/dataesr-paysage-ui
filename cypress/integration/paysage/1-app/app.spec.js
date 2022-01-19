@@ -1,8 +1,8 @@
 const baseUrl = Cypress.env('baseUrl');
 
 context('App', () => {
-    it('should load our app and show content', () => {
-        cy.visit(`${baseUrl}`);
+    it('should load static Help page and show content', () => {
+        cy.visit(`${baseUrl}/help`);
         cy.contains(
             "Plateforme d'échanges et d'informations de la DGESIP et de la DGRI"
         );

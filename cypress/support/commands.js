@@ -46,24 +46,7 @@ Cypress.Commands.add('signup', () => {
     cy.get('form').submit();
 });
 
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-// Cypress.on("window:before:load", win => {
-//     win.indexedDB.deleteDatabase("SERVICE_FORMS");
-// });
-
-Cypress.Commands.add('deleteIndexDB', (win) => {
+Cypress.Commands.add('deleteIndexDB', () => {
     return new Cypress.Promise(async (resolve) => {
         window.indexedDB.deleteDatabase('SERVICE_FORMS');
         resolve();
