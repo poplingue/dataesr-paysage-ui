@@ -34,6 +34,7 @@ context('IndexDB', () => {
         cy.get('[data-cy="aisne-1"]').find('input').check({ force: true });
         cy.get('[data-cy="allier-2"]').find('input').check({ force: true });
 
+        cy.wait(500);
         cy.reload();
 
         cy.get('[data-cy="Aisne"]').should('exist');
