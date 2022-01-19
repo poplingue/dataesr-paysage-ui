@@ -110,7 +110,7 @@ function InfiniteField({ children, title, section }) {
                                     forms,
                                     formName,
                                     getUniqueId(formName, section, title, i)
-                                ) || null;
+                                ) || '';
                             const newTitle = `${title}#${i}`;
 
                             return (
@@ -118,7 +118,6 @@ function InfiniteField({ children, title, section }) {
                                     key={getUniqueId(formName, '', title, i)}
                                     value={value}
                                     index={i}
-                                    pathname={pathname}
                                     title={title}
                                     label={newTitle}
                                     deleteField={deleteField}

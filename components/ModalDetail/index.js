@@ -21,8 +21,8 @@ export default function ModalDetail() {
             }}
             title={title}
         >
-            <ModalTitle>{title}</ModalTitle>
-            <ModalContent>{content}</ModalContent>
+            <ModalTitle>{title || 'No Title'}</ModalTitle>
+            <ModalContent>{content || 'No content'}</ModalContent>
         </Modal>
     );
 }

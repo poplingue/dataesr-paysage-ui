@@ -3,6 +3,7 @@ import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
@@ -95,13 +96,21 @@ export default function FormAccordionItem({
                 payload,
             });
 
+            // POST data
+            dataFormService.save();
+
             const { msg, type } = notif[valid ? 'valid' : 'error'];
             NotifService.info(msg, type);
         }
     };
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+        save();
+    };
+
     return (
-        <>
+        <form onSubmit={onSubmit}>
             {content.map((field) => {
                 const {
                     type: fieldType,
@@ -151,9 +160,9 @@ export default function FormAccordionItem({
                         {/* TODO remove data-testId */}
                         <Col n="2" className="txt-right">
                             <FieldButton
+                                submit
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, green]}
-                                onClick={save}
                                 title="Sauvegarder"
                                 dataTestId={`${cleanString(
                                     newTitle
@@ -163,6 +172,6 @@ export default function FormAccordionItem({
                     </Row>
                 </Container>
             </Row>
-        </>
+        </form>
     );
 }

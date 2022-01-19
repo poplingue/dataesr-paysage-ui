@@ -1,4 +1,4 @@
-import basicCookie from '@franca/basic-cookie';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
@@ -245,7 +245,7 @@ export default function UpdatePerson({ data, id }) {
     const onClick = (e) => {
         e.preventDefault();
 
-        basicCookie.eraseCookie('updateObjectId');
+        Cookies.remove('updateObjectId');
 
         DBService.clear('update/person');
 

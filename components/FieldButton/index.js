@@ -10,9 +10,11 @@ export default function FieldButton({
     className,
     disabled,
     colors,
+    submit,
 }) {
     return (
         <Button
+            submit={submit}
             disabled={disabled}
             className={`${className} ${noPrintClass}`}
             icon={icon}
@@ -30,6 +32,7 @@ export default function FieldButton({
 FieldButton.defaultProps = {
     onClick: () => {},
     dataTestId: '',
+    submit: false,
     icon: '',
     className: '',
     disabled: false,
@@ -39,6 +42,7 @@ FieldButton.defaultProps = {
 FieldButton.propTypes = {
     title: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    submit: PropTypes.bool,
     dataTestId: PropTypes.string,
     icon: PropTypes.string,
     className: PropTypes.string,

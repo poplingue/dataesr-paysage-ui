@@ -11,6 +11,33 @@ export const configValidator = {
     test: {
         required: true,
     },
+    article: {
+        required: false,
+    },
+    officialName: {
+        required: true,
+    },
+    usualName: {
+        required: false,
+    },
+    shortName: {
+        required: false,
+    },
+    brandName: {
+        required: false,
+    },
+    nameEn: {
+        required: false,
+    },
+    acronymFr: {
+        required: false,
+    },
+    acronymEn: {
+        required: false,
+    },
+    otherName: {
+        required: false,
+    },
     wikidata: {
         required: false,
         validators: [

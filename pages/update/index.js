@@ -1,4 +1,4 @@
-import basicCookie from '@franca/basic-cookie';
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -48,7 +48,7 @@ export default function Update() {
 
         setCurrentObject(object);
 
-        basicCookie.eraseCookie('updateObjectId');
+        Cookies.remove('updateObjectId');
 
         dispatch({
             type: 'UPDATE_UPDATE_OBJECT_ID',

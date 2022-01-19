@@ -1,4 +1,12 @@
 const mapFields = {
+    officialName: 'officialName',
+    usualName: 'usualName',
+    shortName: 'shortName',
+    brandName: 'brandName',
+    nameEn: 'nameEn',
+    acronymFr: 'acronymFr',
+    acronymEn: 'acronymEn',
+    otherName: 'otherName',
     wikidata: 'identifiers',
     idref: 'identifiers',
     uai: 'identifiers',
@@ -83,7 +91,9 @@ export const dataFormService = {
             }
         }
 
-        return { form: newForm };
+        console.log('==== newForm ==== ', newForm);
+        
+return { form: newForm };
     },
     socialMediaSection: (data, contentSection, copy) => {
         return data.map((m) => {
@@ -120,4 +130,5 @@ export const dataFormService = {
             }
         }
     },
+    save: () => {},
 };
