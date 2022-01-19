@@ -2,43 +2,62 @@
   {
     "form": [
       {
-        "title": "État",
-        "infinite": true,
+        "title": "Noms",
         "content": [
           {
-            "title": "Title",
+            "title": "Nom officiel",
             "type": "text",
-            "validatorId": "title"
+            "validatorId": "officialName"
           },
           {
-            "title": "Test",
-            "type": "toggle",
-            "validatorId": "test"
-          }
-        ]
-      },
-      {
-        "title": "Informations",
-        "content": [
-          {
-            "title": "Siret",
+            "title": "Nom usuel",
             "type": "text",
-            "validatorId": "siret"
+            "validatorId": "usualName"
           },
           {
-            "title": "Wikidata",
-            "type": "text",
-            "validatorId": "wikidata"
+            "title": "Article du nom usuel",
+            "type": "select",
+            "staticValues": [
+              "à",
+              "l'à",
+              "à la",
+              "dans le",
+              "dans les",
+              "aux",
+              "au"
+            ],
+            "validatorId": "article"
           },
           {
-            "title": "RNSR",
+            "title": "ShortName",
             "type": "text",
-            "validatorId": "rnsr"
+            "validatorId": "shortName"
           },
           {
-            "title": "Tutelle",
-            "type": "checkbox",
-            "validatorId": "tutelle"
+            "title": "BrandName",
+            "type": "text",
+            "validatorId": "brandName"
+          },
+          {
+            "title": "Nom anglais",
+            "type": "text",
+            "validatorId": "nameEn"
+          },
+          {
+            "title": "Acronyme français",
+            "type": "text",
+            "validatorId": "acronymFr"
+          },
+          {
+            "title": "Acronyme anglais",
+            "type": "text",
+            "validatorId": "acronymEn"
+          },
+          {
+            "title": "Autre nom",
+            "type": "text",
+            "infinite": true,
+            "validatorId": "otherName"
           }
         ]
       },
@@ -49,64 +68,6 @@
             "title": "Lier à un ou plusieurs départements",
             "type": "multiSearch",
             "validatorId": "departments"
-          }
-        ]
-      },
-      {
-        "title": "Catégories",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Type",
-            "type": "select",
-            "staticValues": [
-              "catégorie 0",
-              "catégorie 1",
-              "catégorie 2",
-              "catégorie 3",
-              "catégorie 4",
-              "catégorie 5"
-            ],
-            "validatorId": "categories"
-          },
-          {
-            "title": "Start",
-            "type": "date",
-            "validatorId": "startDate"
-          },
-          {
-            "title": "End",
-            "type": "date",
-            "validatorId": "endDate"
-          }
-        ]
-      },
-      {
-        "title": "État de la structure",
-        "content": [
-          {
-            "title": "État",
-            "type": "radio",
-            "staticValues": [
-              "Ouvert",
-              "Fermé",
-              "Potentiel"
-            ],
-            "validatorId": "state"
-          }
-        ]
-      },
-      {
-        "title": "Typologie",
-        "content": [
-          {
-            "title": "Statut",
-            "staticValues": [
-              "Université",
-              "Grande Ecole"
-            ],
-            "type": "select",
-            "validatorId": "typology"
           }
         ]
       }

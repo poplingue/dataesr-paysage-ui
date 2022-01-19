@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Children, cloneElement, useRef } from 'react';
 import grid from '../../helpers/imports';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
@@ -59,3 +60,21 @@ export default function Field({
         </Container>
     );
 }
+
+Field.defaultProps = {
+    value: '',
+};
+
+Field.propTypes = {
+    title: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    section: PropTypes.string.isRequired,
+    deleteField: PropTypes.func.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+    value: PropTypes.string,
+};

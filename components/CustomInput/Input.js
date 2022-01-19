@@ -121,12 +121,13 @@ function Input({
 
 Input.defaultProps = {
     value: '',
+    index: '',
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
     label: PropTypes.string.isRequired,
-    index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string.isRequired,
     section: PropTypes.string.isRequired,
     value: PropTypes.string,

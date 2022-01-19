@@ -116,9 +116,8 @@ function InfiniteField({ children, title, section }) {
                             return (
                                 <Field
                                     key={getUniqueId(formName, '', title, i)}
-                                    value={value}
+                                    value={value || ''}
                                     index={i}
-                                    pathname={pathname}
                                     title={title}
                                     label={newTitle}
                                     deleteField={deleteField}

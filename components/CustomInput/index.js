@@ -29,7 +29,7 @@ function CustomInput({
                     ) : (
                         <Col spacing="py-1w">
                             <Input
-                                value={value}
+                                value={value || ''}
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
                                 title={title}
