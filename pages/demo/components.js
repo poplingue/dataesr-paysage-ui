@@ -8,7 +8,7 @@ import grid from '../../helpers/imports';
 import useCSSProperty from '../../hooks/useCSSProperty';
 
 const ShowMoreList = dynamic(() => import('./../../components/ShowMoreList'));
-const CalloutPerson = dynamic(() => import('./../../components/CalloutPerson'));
+const CalloutCustom = dynamic(() => import('../../components/CalloutCustom'));
 const CardInfo = dynamic(() => import('./../../components/CardInfo'));
 const CardLink = dynamic(() => import('./../../components/CardLink'));
 const TileElement = dynamic(() => import('./../../components/TileElement'));
@@ -210,9 +210,10 @@ export default function Components() {
                 </Row>
                 <Row gutters>
                     <Col>
-                        <CalloutPerson
-                            title="CalloutPerson"
+                        <CalloutCustom
+                            title="CalloutCustom - Person color"
                             description="+33 15 78 54 34 99"
+                            colorFamily="pink-macaron"
                         />
                     </Col>
                 </Row>

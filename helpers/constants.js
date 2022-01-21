@@ -120,6 +120,7 @@ export const StructurePageSkeleton = [
         title: 'Présentation',
         component: 'presentation',
         content: [
+            { title: null, component: 'header' },
             { title: 'Historique et dates', component: 'history' },
             { title: 'Composition', component: 'composition' },
             { title: 'Structures internes', component: 'internals' },

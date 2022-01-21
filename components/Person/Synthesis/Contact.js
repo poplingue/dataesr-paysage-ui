@@ -1,6 +1,6 @@
 import { Tag } from '@dataesr/react-dsfr';
 import grid from '../../../helpers/imports';
-import CalloutPerson from '../../CalloutPerson';
+import CalloutCustom from '../../CalloutCustom';
 
 export default function Contact() {
     const { Col, Row, Container } = grid();
@@ -9,15 +9,17 @@ export default function Contact() {
         <Container fluid>
             <Row gutters>
                 <Col>
-                    <CalloutPerson
+                    <CalloutCustom
                         title="Téléphone"
                         description="+33 15 78 54 34 99"
+                        colorFamily="pink-macaron"
                     />
                 </Col>
                 <Col>
-                    <CalloutPerson
+                    <CalloutCustom
                         title="Email"
                         description="madameBilly@email.com"
+                        colorFamily="pink-macaron"
                     />
                 </Col>
                 <Col n="12" spacing="py-2w">

@@ -1,16 +1,17 @@
 import { Callout, CalloutText, CalloutTitle } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 
-export default function CalloutPerson({ title, description }) {
+export default function CalloutCustom({ title, description, colorFamily }) {
     return (
-        <Callout hasInfoIcon={false} colorFamily="pink-macaron">
+        <Callout hasInfoIcon={false} colorFamily={colorFamily}>
             <CalloutTitle>{title}</CalloutTitle>
-            <CalloutText>{description}</CalloutText>
+            <CalloutText size="md">{description}</CalloutText>
         </Callout>
     );
 }
 
-CalloutPerson.defaultProps = {
+CalloutCustom.defaultProps = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    colorFamily: PropTypes.string.isRequired,
 };

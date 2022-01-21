@@ -1,25 +1,27 @@
 import { Title } from '@dataesr/react-dsfr';
 import grid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
+import PresHeader from './Header';
 import History from './History';
 
 const components = {
+    header: PresHeader,
     history: History,
 };
 
-export default function Presentation({ content, section, expand }) {
+export default function Presentation({ content, section }) {
     const { Col, Row, Container } = grid();
 
     return (
         <>
-            {content.map((subSection) => {
+            {content.map((subSection, index) => {
                 const { title, component } = subSection;
                 const dataSubSection = sectionUniqueId(title);
                 const Component = components[component];
 
                 return (
                     <div key={title} data-section={dataSubSection}>
-                        <Container fluid>
+                        <Container>
                             <Row spacing="px-2w">
                                 <Col>
                                     <Title as="h3" look="h6">
