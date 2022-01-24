@@ -80,7 +80,7 @@ export default function Category(props) {
                                             ) : (
                                                 <Col spacing="py-1w">
                                                     <CardLink
-                                                        link={`/structure/${id}`}
+                                                        link={`/object/structure/${id}`}
                                                         supInfo={name}
                                                         subInfo={desc}
                                                         info={name}
