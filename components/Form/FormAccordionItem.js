@@ -82,7 +82,7 @@ export default function FormAccordionItem({
         [newTitle, dispatch, validSections, disabled]
     );
 
-    const save = () => {
+    const save = async () => {
         const title = cleanString(newTitle);
         const currentSection = validSections[title];
 
@@ -108,14 +108,22 @@ export default function FormAccordionItem({
             });
 
             // POST data
-            dataFormService
-                .save(updateObjectId, formName, sectionName)
-                .then((resp) => {
-                    console.log('==== dataFormService.save ==== ', resp);
-                    DBService.deleteList(keys, formName);
+            const form = await DBService.getAllObjects(formName, true);
+            const uids = [];
 
-                    const { msg, type } = notif[valid ? 'valid' : 'error'];
-                    NotifService.info(msg, type);
+            dataFormService
+                .save(updateObjectId, 'names', form)
+                .then(async (resp) => {
+                    for (let i = 0; i < form.length; i = i + 1) {
+                        if (form[i].uid.startsWith(sectionName)) {
+                            uids.push(form[i].uid);
+                        }
+                    }
+
+                    DBService.deleteList(uids, formName).then(() => {
+                        const { msg, type } = notif[valid ? 'valid' : 'error'];
+                        NotifService.info(msg, type);
+                    });
                 });
         }
     };

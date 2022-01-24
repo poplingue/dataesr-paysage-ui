@@ -34,8 +34,6 @@ const DBService = {
                     );
 
                     if (objectStoreNames) {
-                        let names = [];
-
                         objectStoreNames.map((name) => {
                             if (db.objectStoreNames.contains(name)) {
                                 db.deleteObjectStore(name);
@@ -47,17 +45,21 @@ const DBService = {
                             });
                         });
 
-                        cb(names);
+                        if (cb) {
+                            cb(objectStoreNames);
+                        }
                     }
                 },
                 blocked() {
                     // Called if there are older versions of the database open on the origin, so this version cannot open
                     // TODO manage with link in popup alert to reload manually
+                    console.debug('==== blocked ==== ', e);
                     window.location.reload();
                 },
                 blocking() {
                     // Called if connection is blocking a future version of the database from opening.
                     // TODO manage with link in popup alert to reload manually
+                    console.debug('==== blocking ==== ', e);
                     window.location.reload();
                 },
                 terminated(e) {
@@ -138,7 +140,6 @@ const DBService = {
     },
 
     async deleteList(uids, objectStoreName) {
-        debugger; // eslint-disable-line
         const db = await this.asyncOpenDB(
             getVal('IDB_DATABASE_NAME'),
             getVal('IDB_DATABASE_VERSION')
@@ -187,11 +188,11 @@ const DBService = {
         };
     },
 
-    // async delete(objectStoreName, objectStoreChecked) {
-    //
-    // },
-
     async getAllObjects(objectStoreName, objectStoreChecked) {
+        if (!objectStoreChecked) {
+            return [];
+        }
+
         const db = await NotifService.promise(
             this.asyncOpenDB(
                 getVal('IDB_DATABASE_NAME'),
@@ -200,15 +201,11 @@ const DBService = {
             'IndexDB getAllObjects connection ok'
         );
 
-        if (objectStoreChecked && db) {
-            const store = db
-                .transaction(objectStoreName)
-                .objectStore(objectStoreName);
+        const store = db
+            .transaction(objectStoreName)
+            .objectStore(objectStoreName);
 
-            return await store.getAll();
-        } else {
-            return [];
-        }
+        return await store.getAll();
     },
 };
 

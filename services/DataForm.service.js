@@ -1,4 +1,3 @@
-import DBService from './DB.service';
 
 const mapFields = {
     officialName: 'officialName',
@@ -132,10 +131,8 @@ export const dataFormService = {
             }
         }
     },
-    save: async (objectId, formName) => {
-        const form = await DBService.getAllObjects(formName, true);
+    save: async (objectId, subObject, form) => {
         const reg = new RegExp(`(?<=€).*(?=#)`, 'g');
-
         let bodyObject = {};
 
         for (let i = 0; i < form.length; i++) {
@@ -154,6 +151,6 @@ export const dataFormService = {
             body: JSON.stringify(bodyObject),
         };
 
-        await fetch(`/api/structure/${objectId}/names`, requestOptions);
+        await fetch(`/api/structure/${objectId}/${subObject}`, requestOptions);
     },
 };
