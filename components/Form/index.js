@@ -47,7 +47,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 }
             }
         },
-        [dispatch, formName, storeObjects, updateObjectId]
+        [dispatch, formName, storeObjects]
     );
 
     useEffect(() => {
@@ -72,8 +72,13 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
             }
         };
 
-        getIndexDBData();
-    }, [retrieveField, storeObjects, formName]);
+        if (!updateObjectId) {
+            getIndexDBData();
+        } else {
+            // Case data from DB
+            DBService.clear(formName);
+        }
+    }, [retrieveField, storeObjects, formName, updateObjectId]);
 
     return (
         <PageTheme color={color}>

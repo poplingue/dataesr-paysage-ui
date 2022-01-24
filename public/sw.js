@@ -49,10 +49,10 @@ self.addEventListener('message', async (event) => {
         };
 
         await fetch(
-            `api/${event.data.object}/${event.data.id}/names`,
+            `api/${event.data.object}/${event.data.id}`,
             requestOptions
         ).then(async (resp) => {
-            const { data } = await resp.clone().json();
+            const data = await resp.clone().json();
             self.postMessage(JSON.stringify({ status: resp.status, data }));
         });
     }

@@ -33,12 +33,12 @@ export default function UpdateStructure({ data, id }) {
         workerRef.current.onmessage = ({ data }) => {
             const message = JSON.parse(data);
 
-            if (message.data.length > 0) {
+            if (message.data && message.status >= 200 && message.status < 400) {
                 const a = dataFormService.mapping(
                     UpdateStructureForm[0],
-                    message.data[message.data.length - 1]
+                    message.data
                 );
-                // setStructureForm(a);
+                setStructureForm(a);
             }
         };
     }, []);
