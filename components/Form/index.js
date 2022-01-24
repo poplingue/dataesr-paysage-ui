@@ -36,7 +36,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     payload: { value, uid, formName },
                 });
 
-                if (checkStoreObject && !updateObjectId) {
+                if (checkStoreObject) {
                     await DBService.set(
                         {
                             value,

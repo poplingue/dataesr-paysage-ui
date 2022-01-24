@@ -32,18 +32,21 @@ export default function UpdateStructure({ data, id }) {
     useEffect(() => {
         workerRef.current.onmessage = ({ data }) => {
             const message = JSON.parse(data);
-            const a = dataFormService.mapping(
-                UpdateStructureForm[0],
-                message.data[message.data.length - 1]
-            );
-            setStructureForm(a);
+
+            if (message.data.length > 0) {
+                const a = dataFormService.mapping(
+                    UpdateStructureForm[0],
+                    message.data[message.data.length - 1]
+                );
+                // setStructureForm(a);
+            }
         };
     }, []);
 
     useEffect(() => {
         async function fetchStructure() {
             workerRef.current.postMessage({
-                type: 'structure',
+                object: 'structure',
                 id,
             });
         }

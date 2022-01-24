@@ -1,3 +1,5 @@
+import DBService from './DB.service';
+
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
@@ -92,8 +94,8 @@ export const dataFormService = {
         }
 
         console.log('==== newForm ==== ', newForm);
-        
-return { form: newForm };
+
+        return { form: newForm };
     },
     socialMediaSection: (data, contentSection, copy) => {
         return data.map((m) => {
@@ -130,5 +132,28 @@ return { form: newForm };
             }
         }
     },
-    save: () => {},
+    save: async (objectId, formName) => {
+        const form = await DBService.getAllObjects(formName, true);
+        const reg = new RegExp(`(?<=€).*(?=#)`, 'g');
+
+        let bodyObject = {};
+
+        for (let i = 0; i < form.length; i++) {
+            const current = form[i];
+            const match = current.uid.match(reg);
+
+            if (!!match.length) {
+                const key = match[0];
+                bodyObject[key] = current.value;
+            }
+        }
+
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyObject),
+        };
+
+        await fetch(`/api/structure/${objectId}/names`, requestOptions);
+    },
 };

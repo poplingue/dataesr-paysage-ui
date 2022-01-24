@@ -1,9 +1,11 @@
-import { useCallback, useContext, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString } from '../../helpers/utils';
+import { cleanString, getFormName, getUniqueId } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
+import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
@@ -28,9 +30,18 @@ export default function FormAccordionItem({
     const { Col, Row, Container } = grid();
 
     const {
-        stateForm: { validSections },
+        stateForm: { validSections, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const sectionName = useMemo(
+        () => getUniqueId(formName, title),
+        [formName, title]
+    );
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
@@ -97,10 +108,15 @@ export default function FormAccordionItem({
             });
 
             // POST data
-            dataFormService.save();
+            dataFormService
+                .save(updateObjectId, formName, sectionName)
+                .then((resp) => {
+                    console.log('==== dataFormService.save ==== ', resp);
+                    DBService.deleteList(keys, formName);
 
-            const { msg, type } = notif[valid ? 'valid' : 'error'];
-            NotifService.info(msg, type);
+                    const { msg, type } = notif[valid ? 'valid' : 'error'];
+                    NotifService.info(msg, type);
+                });
         }
     };
 
@@ -119,7 +135,7 @@ export default function FormAccordionItem({
                     validatorId,
                     value,
                 } = field;
-                const fieldTitle = field.title;
+                const fieldTitle = validatorId;
 
                 return (
                     <div key={fieldTitle}>

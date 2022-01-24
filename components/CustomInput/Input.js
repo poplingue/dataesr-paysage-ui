@@ -45,7 +45,7 @@ function Input({
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-            if (checkStoreObject && !updateObjectId) {
+            if (checkStoreObject) {
                 await DBService.set(
                     {
                         value,

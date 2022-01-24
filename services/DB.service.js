@@ -137,7 +137,8 @@ const DBService = {
         await tx.done;
     },
 
-    async deleteList(keys, objectStoreName) {
+    async deleteList(uids, objectStoreName) {
+        debugger; // eslint-disable-line
         const db = await this.asyncOpenDB(
             getVal('IDB_DATABASE_NAME'),
             getVal('IDB_DATABASE_VERSION')
@@ -146,8 +147,8 @@ const DBService = {
         const tx = db.transaction(objectStoreName);
 
         if (tx) {
-            for (let i = 0; i < keys.length; i = i + 1) {
-                const uid = await db.getKey(objectStoreName, keys[i]);
+            for (let i = 0; i < uids.length; i = i + 1) {
+                const uid = await db.getKey(objectStoreName, uids[i]);
 
                 if (uid) {
                     await db.delete(objectStoreName, uid);
@@ -185,6 +186,10 @@ const DBService = {
             store.delete(uid);
         };
     },
+
+    // async delete(objectStoreName, objectStoreChecked) {
+    //
+    // },
 
     async getAllObjects(objectStoreName, objectStoreChecked) {
         const db = await NotifService.promise(

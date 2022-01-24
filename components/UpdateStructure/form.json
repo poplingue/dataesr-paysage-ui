@@ -3,6 +3,7 @@
     "form": [
       {
         "title": "Noms",
+        "infinite": true,
         "content": [
           {
             "title": "Nom officiel",
@@ -58,6 +59,16 @@
             "type": "text",
             "infinite": true,
             "validatorId": "otherName"
+          },
+          {
+            "title": "Start",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "End",
+            "type": "date",
+            "validatorId": "endDate"
           }
         ]
       },

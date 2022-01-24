@@ -44,10 +44,10 @@ export function containsObject(obj, array) {
  */
 export function getUniqueId(formName, section = '', name = '', id) {
     // TODO standardize this shit
-    let r = `${formName}@${cleanString(section)}/${cleanString(name)}#${id}`;
+    let r = `${formName}@${cleanString(section)}€${name}#${id}`;
 
     if (!id && id !== 0) {
-        r = `${formName}@${cleanString(section)}/${cleanString(name)}`;
+        r = `${formName}@${cleanString(section)}€${name}`;
     }
 
     if (!name) {

@@ -44,17 +44,17 @@ self.addEventListener('message', async (event) => {
 
     if (event.target.name === 'Get_object') {
         const requestOptions = {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: event.data.id }),
         };
 
-        await fetch(`api/${event.data.type}`, requestOptions).then(
-            async (resp) => {
-                const { data } = await resp.clone().json();
-                self.postMessage(JSON.stringify({ status: resp.status, data }));
-            }
-        );
+        await fetch(
+            `api/${event.data.object}/${event.data.id}/names`,
+            requestOptions
+        ).then(async (resp) => {
+            const { data } = await resp.clone().json();
+            self.postMessage(JSON.stringify({ status: resp.status, data }));
+        });
     }
 });
 
