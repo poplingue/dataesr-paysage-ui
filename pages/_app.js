@@ -1,9 +1,9 @@
 import '../styles/styles.scss';
-import cookie from 'cookie';
 import { memo, useEffect } from 'react';
 
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
+import { fetchHelper } from '../helpers/fetch';
 import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
 
@@ -40,20 +40,7 @@ function MyApp({ Component, pageProps, user, userError, technicalError }) {
 }
 
 MyApp.getInitialProps = async ({ ctx }) => {
-    let cookiesHeader = '';
-    let tokens = {};
-
-    if (ctx.req && ctx.req.headers && ctx.req.headers.cookie) {
-        cookiesHeader = cookie.parse(ctx.req.headers.cookie);
-    }
-
-    if (
-        cookiesHeader &&
-        Object.keys(cookiesHeader).includes('tokens') &&
-        cookiesHeader.tokens
-    ) {
-        tokens = JSON.parse(cookiesHeader.tokens);
-    }
+    const tokens = fetchHelper.headerTokens(ctx.req, true);
 
     return await accountService
         .me(tokens)

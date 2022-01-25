@@ -1,4 +1,3 @@
-import cookie from 'cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
 
@@ -10,19 +9,7 @@ async function handler(req, res) {
         const body = {
             activationCode: parseInt(req.body.activationCode),
         };
-
-        let cookiesHeader = '';
-        let tokens = null;
-
-        if (req && req.headers && req.headers.cookie) {
-            cookiesHeader = cookie.parse(req.headers.cookie);
-        }
-
-        if (!cookiesHeader) {
-            throw Error('Cookie missing');
-        } else if (Object.keys(cookiesHeader).includes('tokens')) {
-            tokens = JSON.parse(cookiesHeader.tokens);
-        }
+        const tokens = fetchHelper.headerTokens(req);
 
         const requestOptions = fetchHelper.requestOptions('POST', body, tokens);
 

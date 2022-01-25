@@ -51,7 +51,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     );
 
     useEffect(() => {
-        // TODO in middleware?
         dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
     }, [dispatch, objectFormType]);
 
