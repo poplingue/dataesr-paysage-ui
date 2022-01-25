@@ -24,6 +24,7 @@ export default function CustomSelect({
     validatorConfig,
     updateValidSection,
     updateCheck,
+    validatorId,
 }) {
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -138,7 +139,12 @@ export default function CustomSelect({
                 message={message}
                 messageType={type || undefined}
                 data-field={uid}
-                data-testid={uid}
+                data-testid={getUniqueId(
+                    formName,
+                    section,
+                    validatorId,
+                    index || 0
+                )}
                 onChange={onChange}
                 selected={selectValue || newValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}

@@ -16,6 +16,7 @@ function Input({
     value: initValue,
     validatorConfig,
     updateValidSection,
+    validatorId,
 }) {
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -32,7 +33,7 @@ function Input({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, index);
+    const uid = getUniqueId(formName, section, validatorId, index);
 
     const saveValue = useCallback(
         async (value) => {
@@ -108,7 +109,7 @@ function Input({
                 message={message}
                 messageType={type}
                 data-field={uid}
-                data-testid={title}
+                data-testid={validatorId}
                 ref={inputRef}
                 onChange={onChange}
                 value={textValue}

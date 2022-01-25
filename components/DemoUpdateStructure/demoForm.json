@@ -67,7 +67,7 @@
               "catégorie 4",
               "catégorie 5"
             ],
-            "validatorId": "categories"
+            "validatorId": "type"
           },
           {
             "title": "Start",

@@ -43,6 +43,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
+                        validatorId={validatorId}
                         value={value}
                         infinite={infinite}
                         index={index}
@@ -56,6 +57,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
+                        validatorId={validatorId}
                         staticValues={staticValues}
                         index={index}
                         section={section}
@@ -66,6 +68,7 @@ export default function SwitchField({
                     <MultiSearch
                         updateValidSection={updateValidSection}
                         title={title}
+                        validatorId={validatorId}
                         index={index}
                         section={section}
                         validatorConfig={validatorConfig}
@@ -77,6 +80,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
+                        validatorId={validatorId}
                         staticValues={staticValues}
                         index={index}
                         section={section}
@@ -88,6 +92,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
+                        validatorId={validatorId}
                         section={section}
                         index={index}
                     />
@@ -97,6 +102,7 @@ export default function SwitchField({
                     <CustomToggle
                         updateValidSection={updateValidSection}
                         title={title}
+                        validatorId={validatorId}
                         index={index}
                         section={section}
                     />
@@ -108,6 +114,7 @@ export default function SwitchField({
                         validatorConfig={validatorConfig}
                         staticValues={staticValues}
                         title={title}
+                        validatorId={validatorId}
                         index={index}
                         section={section}
                     />

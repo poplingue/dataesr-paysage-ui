@@ -37,20 +37,20 @@ export function containsObject(obj, array) {
 /**
  *
  * @param formName
- * @param name
- * @param id
+ * @param nameId
+ * @param eq
  * @param section
- * @returns {string} format pathname@[section#i]/[name]#[index]
+ * @returns {string} format pathname@[section#i]_[nameId]#[eq]
  */
-export function getUniqueId(formName, section = '', name = '', id) {
+export function getUniqueId(formName, section = '', nameId = '', eq) {
     // TODO standardize this shit
-    let r = `${formName}@${cleanString(section)}€${name}#${id}`;
+    let r = `${formName}@${cleanString(section)}_${nameId}#${eq}`;
 
-    if (!id && id !== 0) {
-        r = `${formName}@${cleanString(section)}€${name}`;
+    if (!nameId && nameId !== 0) {
+        r = `${formName}@${cleanString(section)}_${nameId}`;
     }
 
-    if (!name) {
+    if (!nameId) {
         r = `${formName}@${cleanString(section)}`;
     }
 
@@ -107,8 +107,8 @@ export function uniqueOnlyFilter(value, index, self) {
  * @param contentNumber
  * @returns {string}
  */
-export function sectionUniqueId(title, contentNumber = '0') {
-    return `${cleanString(title)}-${contentNumber}`;
+export function sectionUniqueId(title, contentNumber = '0', separator = '-') {
+    return `${cleanString(title)}${separator}${contentNumber}`;
 }
 
 /**

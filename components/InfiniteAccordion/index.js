@@ -62,7 +62,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         [formName, forms]
     );
     const formSections = useCallback(
-        () => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')),
+        () => currentForm().map((c) => c.uid.split('_')[0]),
         [currentForm]
     );
 
@@ -78,8 +78,9 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         // Reassign Section's fields value...
         for (let i = 0; i < currentForm().length; i = i + 1) {
             const { uid, value } = currentForm()[i];
+
             // get id of section based on uid
-            const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
+            const reg = new RegExp(`(?<=@${sectionType}).*(?=\_)`, 'g');
             const match = uid.match(reg);
             const id = match ? parseInt(match[0].substring(1)) : null;
 
@@ -88,10 +89,10 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
             }
 
             if (id && id > index) {
-                const sectionReg = /@.+?\//g.exec(uid);
+                const sectionReg = /@.+?_/g.exec(uid);
                 const newUid = uid.replace(
                     sectionReg[0],
-                    `@${sectionType}#${id - 1}/`
+                    `@${sectionType}#${id - 1}_`
                 );
 
                 fieldsToUpdate.push({ value, uid: newUid });
@@ -141,7 +142,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
     useEffect(() => {
         const sectionFields = formSections()
             .filter(uniqueOnlyFilter)
-            .filter((k) => k.split('#')[0] === sectionName);
+            .filter((k) => k.startsWith(sectionName));
 
         updateSection(type, sectionFields.length);
     }, [formSections, sectionName, type, updateSection]);

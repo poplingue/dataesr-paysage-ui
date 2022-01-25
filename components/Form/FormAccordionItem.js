@@ -111,6 +111,7 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
             const uids = [];
 
+            // TODO dynamic
             dataFormService
                 .save(updateObjectId, 'names', form)
                 .then(async (resp) => {
@@ -141,9 +142,11 @@ export default function FormAccordionItem({
                     infinite,
                     staticValues,
                     validatorId,
+                    title,
                     value,
                 } = field;
-                const fieldTitle = validatorId;
+
+                const fieldTitle = title;
 
                 return (
                     <div key={fieldTitle}>

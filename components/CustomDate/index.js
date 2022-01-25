@@ -10,6 +10,7 @@ export default function CustomDate({
     index,
     validatorConfig,
     updateValidSection,
+    validatorId,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -98,6 +99,7 @@ export default function CustomDate({
                                     section={section}
                                     index={index}
                                     title={title}
+                                    validatorId={cleanString(title)}
                                     staticValues={options}
                                     newValue={selectedValue}
                                     newValueCheck={newValueCheck}

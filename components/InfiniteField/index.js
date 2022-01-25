@@ -14,7 +14,7 @@ import NotifService from '../../services/Notif.service';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 
-function InfiniteField({ children, title, section }) {
+function InfiniteField({ children, title, section, validatorId }) {
     const { Col, Row, Container } = grid();
 
     const {
@@ -43,11 +43,11 @@ function InfiniteField({ children, title, section }) {
                 // all field after the delete one
                 if (i > indexRef) {
                     const update = {
-                        uid: getUniqueId(formName, section, title, i - 1),
+                        uid: getUniqueId(formName, section, validatorId, i - 1),
                         value: getFieldValue(
                             forms,
                             formName,
-                            getUniqueId(formName, section, title, i)
+                            getUniqueId(formName, section, validatorId, i)
                         ),
                     };
 
@@ -73,7 +73,12 @@ function InfiniteField({ children, title, section }) {
                 key = number - 1;
             }
 
-            const uidToDelete = getUniqueId(formName, section, title, key);
+            const uidToDelete = getUniqueId(
+                formName,
+                section,
+                validatorId,
+                key
+            );
 
             const payload = {
                 uid: uidToDelete,
@@ -92,12 +97,15 @@ function InfiniteField({ children, title, section }) {
         const currentForm = getForm(forms, formName);
 
         if (currentForm) {
-            const initInfinite = currentForm.filter((field) =>
-                field.uid.startsWith(getUniqueId(formName, section, title))
+            const initInfinite = currentForm.filter((field, i) =>
+                field.uid.startsWith(
+                    getUniqueId(formName, section, validatorId, i)
+                )
             );
+
             setNumber(initInfinite.length || 1);
         }
-    }, [forms, title, section, formName, pathname]);
+    }, [forms, section, formName, pathname, validatorId]);
 
     return (
         <Col n="12">
@@ -109,7 +117,12 @@ function InfiniteField({ children, title, section }) {
                                 getFieldValue(
                                     forms,
                                     formName,
-                                    getUniqueId(formName, section, title, i)
+                                    getUniqueId(
+                                        formName,
+                                        section,
+                                        validatorId,
+                                        i
+                                    )
                                 ) || '';
                             const newTitle = `${title}#${i}`;
 

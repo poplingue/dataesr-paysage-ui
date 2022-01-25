@@ -151,7 +151,7 @@ export const dataFormService = {
         }
     },
     save: async (objectId, subObject, form) => {
-        const reg = new RegExp(`(?<=€).*(?=#)`, 'g');
+        const reg = new RegExp(`(?<=_).*(?=#)`, 'g');
         let bodyObject = {};
 
         for (let i = 0; i < form.length; i++) {

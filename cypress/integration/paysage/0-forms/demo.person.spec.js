@@ -7,101 +7,97 @@ context('Person form page', () => {
     });
 
     it('should render idRef input field', () => {
-        cy.get('[data-testid="IdRef"]')
+        cy.get('[data-testid="idref"]')
             .find('input')
             .type('12345')
             .should('have.value', '12345');
     });
 
     it('should add an infinite input field Autre dénomination', () => {
-        cy.get('[data-testid="Autre dénomination"]')
-            .find('input')
-            .type('Maggie Smith');
+        cy.get('[data-testid="otherName"]').find('input').type('Maggie Smith');
         cy.get('[data-testid="btn-add"]').click();
 
-        cy.get(
-            '[data-field="demo/person@denomination/autredenomination#1"]'
-        ).should('exist');
+        cy.get('[data-field="demo/person@denomination_otherName#1"]').should(
+            'exist'
+        );
         cy.get('[data-testid="btn-delete-autredenomination#1"]').should(
             'exist'
         );
     });
 
     it('should delete infinite input field', () => {
-        cy.get('[data-testid="Autre dénomination"]')
-            .find('input')
-            .type('Maggie Smith');
+        cy.get('[data-testid="otherName"]').find('input').type('Maggie Smith');
         cy.get('[data-testid="btn-add"]').click();
 
         cy.get('[data-testid="btn-delete-autredenomination#1"]').click();
-        cy.get(
-            '[data-field="demo/person@denomination/autredenomination#1"]'
-        ).should('not.exist');
+        cy.get('[data-field="demo/person@denomination_otherName#1"]').should(
+            'not.exist'
+        );
         cy.get('[data-testid="btn-delete-autredenomination#1"]').should(
             'not.exist'
         );
     });
 
     it('should create multiple infinite input field', () => {
-        cy.get('[data-field="demo/person@denomination/autredenomination#0"]')
+        cy.get('[data-field="demo/person@denomination_otherName#0"]')
             .find('input')
             .type("Il n'y a de divinité");
         cy.get('[data-testid="btn-add"]').click();
         cy.scrollTo(0, 300);
-        cy.get('[data-field="demo/person@denomination/autredenomination#1"]')
+        cy.get('[data-field="demo/person@denomination_otherName#1"]')
             .find('input')
             .type("qu'Allah");
         cy.get('[data-testid="btn-add"]').click();
         cy.scrollTo(0, 300);
-        cy.get('[data-field="demo/person@denomination/autredenomination#2"]')
+        cy.get('[data-field="demo/person@denomination_otherName#2"]')
             .find('input')
             .type('et Mahomet est');
         cy.get('[data-testid="btn-add"]').click();
         cy.scrollTo(0, 300);
-        cy.get('[data-field="demo/person@denomination/autredenomination#3"]')
+        cy.get('[data-field="demo/person@denomination_otherName#3"]')
             .find('input')
             .type('son messager');
 
-        cy.get('[data-field="demo/person@denomination/autredenomination#0"]')
+        cy.get('[data-field="demo/person@denomination_otherName#0"]')
             .find('input')
             .should('have.value', "Il n'y a de divinité");
-        cy.get('[data-field="demo/person@denomination/autredenomination#1"]')
+        cy.get('[data-field="demo/person@denomination_otherName#1"]')
             .find('input')
             .should('have.value', "qu'Allah");
-        cy.get('[data-field="demo/person@denomination/autredenomination#2"]')
+        cy.get('[data-field="demo/person@denomination_otherName#2"]')
             .find('input')
             .should('have.value', 'et Mahomet est');
-        cy.get('[data-field="demo/person@denomination/autredenomination#3"]')
+        cy.get('[data-field="demo/person@denomination_otherName#3"]')
             .find('input')
             .should('have.value', 'son messager');
     });
 
     it('should delete one of multiple infinite input field', () => {
-        cy.get('[data-field="demo/person@denomination/autredenomination#0"]')
+        cy.get('[data-field="demo/person@denomination_otherName#0"]')
             .find('input')
             .type("Il n'y a de divinité");
         cy.get('[data-testid="btn-add"]').click();
-        cy.get('[data-field="demo/person@denomination/autredenomination#1"]')
+        cy.get('[data-field="demo/person@denomination_otherName#1"]')
             .find('input')
             .type("qu'Allah");
         cy.get('[data-testid="btn-add"]').click();
-        cy.get('[data-field="demo/person@denomination/autredenomination#2"]')
+        cy.get('[data-field="demo/person@denomination_otherName#2"]')
             .find('input')
             .type('et Mahomet est');
         cy.get('[data-testid="btn-add"]').click();
-        cy.get('[data-field="demo/person@denomination/autredenomination#3"]')
+        cy.get('[data-field="demo/person@denomination_otherName#3"]')
             .find('input')
             .type('son messager');
 
         cy.get('[data-testid="btn-delete-autredenomination#1"]').click();
 
-        cy.get('[data-field="demo/person@denomination/autredenomination#0"]')
+        cy.get('[data-field="demo/person@denomination_otherName#0"]')
             .find('input')
             .should('have.value', "Il n'y a de divinité");
-        cy.get('[data-field="demo/person@denomination/autredenomination#1"]')
+        cy.get('[data-field="demo/person@denomination_otherName#1"]')
             .find('input')
             .should('have.value', 'et Mahomet est');
-        cy.get('[data-field="demo/person@denomination/autredenomination#2"]')
+        cy.get('[data-field="demo/person@denomination_otherName#2"]')
             .find('input')
             .should('have.value', 'son messager');
     });
@@ -110,8 +106,8 @@ context('Person form page', () => {
         cy.get('[data-cy="toolbox-header"]').find('.ri-tools-fill ').click();
         cy.get('[data-testid="btn-expand-close"]').click();
         cy.get('[data-testid="btn-expand-close"]').click();
-        cy.get('[data-testid="Wikidata"]').should('be.visible');
-        cy.get('[data-testid="demo/person@denomination/genre#0"]').should(
+        cy.get('[data-testid="wikidata"]').should('be.visible');
+        cy.get('[data-testid="demo/person@denomination_gender#0"]').should(
             'be.visible'
         );
     });
@@ -119,30 +115,28 @@ context('Person form page', () => {
     it('should close all sections', () => {
         cy.get('[data-cy="toolbox-header"]').find('.ri-tools-fill ').click();
         cy.get('[data-testid="btn-expand-close"]').click();
-        cy.get('[data-testid="Wikidata"]').should('not.be.visible');
-        cy.get('[data-testid="demo/person@denomination/genre#0"]').should(
+        cy.get('[data-testid="wikidata"]').should('not.be.visible');
+        cy.get('[data-testid="demo/person@denomination_gender#0"]').should(
             'not.be.visible'
         );
     });
 
     it('should display error input', () => {
-        cy.get('[data-testid="Nom"] input').type('A');
-        cy.get('[data-testid="Nom"]')
+        cy.get('[data-testid="lastName"] input').type('A');
+        cy.get('[data-testid="lastName"]')
             .find('.fr-error-text')
             .should('be.visible');
     });
 
     it('should display valid input', () => {
-        cy.get('[data-testid="Nom"] input').type('Abcd');
-        cy.get('[data-testid="Nom"]')
+        cy.get('[data-testid="lastName"] input').type('Abcd');
+        cy.get('[data-testid="lastName"]')
             .find('.fr-input')
             .should('have.class', 'fr-input--valid');
     });
 
     it('should display optional hint', () => {
-        cy.get('[data-testid="Autre dénomination"] .fr-hint-text').should(
-            'be.visible'
-        );
+        cy.get('[data-testid="otherName"] .fr-hint-text').should('be.visible');
     });
 
     it('should check', () => {

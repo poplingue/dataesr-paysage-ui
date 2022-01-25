@@ -5,7 +5,7 @@ import {
     StructurePageSkeletonPropType,
 } from '../../helpers/constants';
 import grid from '../../helpers/imports';
-import { cleanString, sectionUniqueId } from '../../helpers/utils';
+import { sectionUniqueId } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 
 // TODO add proptypes
@@ -26,7 +26,7 @@ export default function AccordionObject({
                         const { content, title, component, print } = elm;
 
                         const dataSection = sectionUniqueId(
-                            cleanString(title),
+                            title,
                             content.length
                         );
                         const Component = components[component];
