@@ -25,6 +25,7 @@ export default function FormAccordionItem({
     title,
     deletable = false,
     index,
+    subObject,
     deleteSection,
 }) {
     const { Col, Row, Container } = grid();
@@ -39,8 +40,8 @@ export default function FormAccordionItem({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const sectionName = useMemo(
-        () => getUniqueId(formName, title),
-        [formName, title]
+        () => getUniqueId(formName, subObject),
+        [formName, subObject]
     );
 
     const { style: green } = useCSSProperty('--success-main-525');
@@ -111,9 +112,8 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
             const uids = [];
 
-            // TODO dynamic
             dataFormService
-                .save(updateObjectId, 'names', form)
+                .save(updateObjectId, subObject, form)
                 .then(async (resp) => {
                     for (let i = 0; i < form.length; i = i + 1) {
                         if (form[i].uid.startsWith(sectionName)) {
@@ -156,6 +156,7 @@ export default function FormAccordionItem({
                                     <SwitchField
                                         updateValidSection={updateValidSection}
                                         validatorId={validatorId}
+                                        subObject={subObject}
                                         value={value}
                                         section={newTitle}
                                         type={fieldType}

@@ -86,6 +86,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     {jsonForm.form.map((section, i) => {
                         const {
                             title: sectionTitle,
+                            subObject,
                             content,
                             infinite,
                         } = section;
@@ -105,6 +106,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 <InfiniteAccordion
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
+                                    subObject={subObject}
                                     content={content}
                                     index={`${sectionTitle}-${i}`}
                                 />
@@ -118,6 +120,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             >
                                 <FormAccordionItem
                                     content={content}
+                                    subObject={subObject}
                                     newTitle={sectionTitle}
                                 />
                             </AccordionForm>

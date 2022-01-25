@@ -14,7 +14,7 @@ import NotifService from '../../services/Notif.service';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 
-function InfiniteField({ children, title, section, validatorId }) {
+function InfiniteField({ children, title, section, validatorId, subObject }) {
     const { Col, Row, Container } = grid();
 
     const {
@@ -43,11 +43,16 @@ function InfiniteField({ children, title, section, validatorId }) {
                 // all field after the delete one
                 if (i > indexRef) {
                     const update = {
-                        uid: getUniqueId(formName, section, validatorId, i - 1),
+                        uid: getUniqueId(
+                            formName,
+                            subObject,
+                            validatorId,
+                            i - 1
+                        ),
                         value: getFieldValue(
                             forms,
                             formName,
-                            getUniqueId(formName, section, validatorId, i)
+                            getUniqueId(formName, subObject, validatorId, i)
                         ),
                     };
 
@@ -75,7 +80,7 @@ function InfiniteField({ children, title, section, validatorId }) {
 
             const uidToDelete = getUniqueId(
                 formName,
-                section,
+                subObject,
                 validatorId,
                 key
             );
@@ -99,7 +104,7 @@ function InfiniteField({ children, title, section, validatorId }) {
         if (currentForm) {
             const initInfinite = currentForm.filter((field, i) =>
                 field.uid.startsWith(
-                    getUniqueId(formName, section, validatorId, i)
+                    getUniqueId(formName, subObject, validatorId, i)
                 )
             );
 
@@ -119,7 +124,7 @@ function InfiniteField({ children, title, section, validatorId }) {
                                     formName,
                                     getUniqueId(
                                         formName,
-                                        section,
+                                        subObject,
                                         validatorId,
                                         i
                                     )

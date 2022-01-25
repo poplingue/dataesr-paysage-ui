@@ -42,6 +42,7 @@ describe('Field component', () => {
                 section="Section"
                 title="Title"
                 value="Content value"
+                subObject="names"
             />
         );
     });

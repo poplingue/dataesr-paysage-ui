@@ -13,6 +13,7 @@ function Input({
     index,
     title,
     section,
+    subObject,
     value: initValue,
     validatorConfig,
     updateValidSection,
@@ -33,7 +34,7 @@ function Input({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, validatorId, index);
+    const uid = getUniqueId(formName, subObject, validatorId, index);
 
     const saveValue = useCallback(
         async (value) => {

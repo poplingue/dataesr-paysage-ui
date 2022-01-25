@@ -12,6 +12,7 @@ function CustomRadio({
     title,
     staticValues = [],
     section,
+    subObject,
     validatorConfig,
     updateValidSection,
 }) {
@@ -27,7 +28,7 @@ function CustomRadio({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, 0);
+    const uid = getUniqueId(formName, subObject, title, 0);
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const onRadioChange = async (value) => {

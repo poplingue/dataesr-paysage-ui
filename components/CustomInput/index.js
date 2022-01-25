@@ -10,6 +10,7 @@ function CustomInput({
     validatorConfig,
     updateValidSection,
     validatorId,
+    subObject,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -29,6 +30,7 @@ function CustomInput({
                                 title={title}
                                 validatorId={validatorId}
                                 section={section}
+                                subObject={subObject}
                                 label={title}
                             />
                         </InfiniteField>
@@ -43,6 +45,7 @@ function CustomInput({
                                 label={title}
                                 index={0}
                                 section={section}
+                                subObject={subObject}
                             />
                         </Col>
                     )}

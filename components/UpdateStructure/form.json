@@ -3,6 +3,7 @@
     "form": [
       {
         "title": "Noms",
+        "subObject": "names",
         "infinite": true,
         "content": [
           {

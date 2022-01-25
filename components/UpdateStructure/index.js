@@ -38,7 +38,6 @@ export default function UpdateStructure({ data, id }) {
                     UpdateStructureForm[0],
                     message.data
                 );
-                console.log('==== newForm ==== ', newForm.form[0]);
                 setStructureForm(newForm);
             }
         };

@@ -25,6 +25,7 @@ export default function CustomSelect({
     updateValidSection,
     updateCheck,
     validatorId,
+    subObject,
 }) {
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -37,7 +38,7 @@ export default function CustomSelect({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, index || 0);
+    const uid = getUniqueId(formName, subObject, validatorId, index || 0);
 
     const { checkField, message, type } = useValidator(validatorConfig);
 
@@ -141,7 +142,7 @@ export default function CustomSelect({
                 data-field={uid}
                 data-testid={getUniqueId(
                     formName,
-                    section,
+                    subObject,
                     validatorId,
                     index || 0
                 )}

@@ -24,7 +24,12 @@ import FormAccordionItem from '../Form/FormAccordionItem';
 import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
-export default function InfiniteAccordion({ title, content, dataAttSection }) {
+export default function InfiniteAccordion({
+    title,
+    content,
+    dataAttSection,
+    subObject,
+}) {
     const { Col, Row, Container } = grid();
 
     const { style: yellow } = useCSSProperty(
@@ -181,6 +186,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                                 newTitle={newTitle}
                                             >
                                                 <FormAccordionItem
+                                                    subObject={subObject}
                                                     content={content}
                                                     newTitle={newTitle}
                                                     deleteSection={

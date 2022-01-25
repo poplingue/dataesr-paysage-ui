@@ -26,6 +26,7 @@ export default function SwitchField({
     index,
     section,
     updateValidSection,
+    subObject,
 }) {
     const {
         stateForm: { objectFormType },
@@ -48,6 +49,7 @@ export default function SwitchField({
                         infinite={infinite}
                         index={index}
                         section={section}
+                        subObject={subObject}
                     />
                 );
             case 'select':
@@ -61,6 +63,7 @@ export default function SwitchField({
                         staticValues={staticValues}
                         index={index}
                         section={section}
+                        subObject={subObject}
                     />
                 );
             case 'multiSearch':
@@ -72,6 +75,7 @@ export default function SwitchField({
                         index={index}
                         section={section}
                         validatorConfig={validatorConfig}
+                        subObject={subObject}
                     />
                 );
             case 'radio':
@@ -84,6 +88,7 @@ export default function SwitchField({
                         staticValues={staticValues}
                         index={index}
                         section={section}
+                        subObject={subObject}
                     />
                 );
             case 'date':
@@ -95,6 +100,7 @@ export default function SwitchField({
                         validatorId={validatorId}
                         section={section}
                         index={index}
+                        subObject={subObject}
                     />
                 );
             case 'toggle':
@@ -105,6 +111,7 @@ export default function SwitchField({
                         validatorId={validatorId}
                         index={index}
                         section={section}
+                        subObject={subObject}
                     />
                 );
             case 'checkbox':
@@ -117,6 +124,7 @@ export default function SwitchField({
                         validatorId={validatorId}
                         index={index}
                         section={section}
+                        subObject={subObject}
                     />
                 );
             default:

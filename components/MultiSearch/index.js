@@ -14,7 +14,13 @@ import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import styles from './MultiSearch.module.scss';
 
-function MultiSearch({ title, section, validatorConfig, updateValidSection }) {
+function MultiSearch({
+    title,
+    section,
+    subObject,
+    validatorConfig,
+    updateValidSection,
+}) {
     const {
         stateForm: { departments, forms, storeObjects },
         dispatchForm: dispatch,
@@ -24,7 +30,7 @@ function MultiSearch({ title, section, validatorConfig, updateValidSection }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, 0);
+    const uid = getUniqueId(formName, subObject, title, 0);
     const [textValue, setTextValue] = useState('');
     const currentForm = useCallback(
         () => (forms && formName ? getForm(forms, formName) : null),
