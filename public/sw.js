@@ -26,15 +26,19 @@ self.addEventListener('fetch', function (event) {
 });
 
 self.addEventListener('message', async (event) => {
-    if (event.target.name === 'New_object') {
-        // TODO refacto requestOptions
+    const {
+        target: { name },
+        data,
+    } = event;
+
+    if (name === 'New_object') {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [`${event.data.type}Status`]: 'active' }),
+            body: JSON.stringify({ [`${data.type}Status`]: 'active' }),
         };
 
-        await fetch(`api/${event.data.type}/new`, requestOptions).then(
+        await fetch(`api/${data.type}/new`, requestOptions).then(
             async (resp) => {
                 const data = await resp.clone().json();
                 self.postMessage(JSON.stringify({ status: resp.status, data }));
@@ -42,19 +46,18 @@ self.addEventListener('message', async (event) => {
         );
     }
 
-    if (event.target.name === 'Get_object') {
+    if (name === 'Get_object') {
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         };
 
-        await fetch(
-            `api/${event.data.object}/${event.data.id}`,
-            requestOptions
-        ).then(async (resp) => {
-            const data = await resp.clone().json();
-            self.postMessage(JSON.stringify({ status: resp.status, data }));
-        });
+        await fetch(`api/${data.object}/${data.id}`, requestOptions).then(
+            async (resp) => {
+                const data = await resp.clone().json();
+                self.postMessage(JSON.stringify({ status: resp.status, data }));
+            }
+        );
     }
 });
 

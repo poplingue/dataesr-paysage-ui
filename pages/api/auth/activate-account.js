@@ -24,16 +24,9 @@ async function handler(req, res) {
             tokens = JSON.parse(cookiesHeader.tokens);
         }
 
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
-            },
-            body: JSON.stringify(body),
-        });
+        const requestOptions = fetchHelper.requestOptions('POST', body, tokens);
+
+        const request = await fetch(url, requestOptions);
 
         const response = await request.text();
         res.status(request.status).json(response);

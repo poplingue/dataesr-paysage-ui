@@ -23,16 +23,13 @@ async function handler(req, res) {
 
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/structures`;
+        const requestOptions = fetchHelper.requestOptions(
+            'POST',
+            req.body,
+            tokens
+        );
 
-        const request = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
-            },
-            body: JSON.stringify(req.body),
-        });
+        const request = await fetch(url, requestOptions);
 
         // TODO handle response in a service/helper
         if (
@@ -51,18 +48,13 @@ async function handler(req, res) {
 
         for (let i = 0; i < structureSubObjects.length; i++) {
             const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${structureSubObjects[i].subObject}`;
-
-            promises.push(
-                fetch(url, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...fetchHelper.authHeader(tokens),
-                    },
-                    body: JSON.stringify(structureSubObjects[i].initBody),
-                })
+            const requestOptions = fetchHelper.requestOptions(
+                'POST',
+                structureSubObjects[i].initBody,
+                tokens
             );
+
+            promises.push(fetch(url, requestOptions));
         }
 
         Promise.all(promises)

@@ -1,0 +1,115 @@
+[
+  {
+    "form": [
+      {
+        "title": "État",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Title",
+            "type": "text",
+            "validatorId": "title"
+          },
+          {
+            "title": "Test",
+            "type": "toggle",
+            "validatorId": "test"
+          }
+        ]
+      },
+      {
+        "title": "Informations",
+        "content": [
+          {
+            "title": "Siret",
+            "type": "text",
+            "validatorId": "siret"
+          },
+          {
+            "title": "Wikidata",
+            "type": "text",
+            "validatorId": "wikidata"
+          },
+          {
+            "title": "RNSR",
+            "type": "text",
+            "validatorId": "rnsr"
+          },
+          {
+            "title": "Tutelle",
+            "type": "checkbox",
+            "validatorId": "tutelle"
+          }
+        ]
+      },
+      {
+        "title": "Localisation",
+        "content": [
+          {
+            "title": "Lier à un ou plusieurs départements",
+            "type": "multiSearch",
+            "validatorId": "departments"
+          }
+        ]
+      },
+      {
+        "title": "Catégories",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "select",
+            "staticValues": [
+              "catégorie 0",
+              "catégorie 1",
+              "catégorie 2",
+              "catégorie 3",
+              "catégorie 4",
+              "catégorie 5"
+            ],
+            "validatorId": "categories"
+          },
+          {
+            "title": "Start",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "End",
+            "type": "date",
+            "validatorId": "endDate"
+          }
+        ]
+      },
+      {
+        "title": "État de la structure",
+        "content": [
+          {
+            "title": "État",
+            "type": "radio",
+            "staticValues": [
+              "Ouvert",
+              "Fermé",
+              "Potentiel"
+            ],
+            "validatorId": "state"
+          }
+        ]
+      },
+      {
+        "title": "Typologie",
+        "content": [
+          {
+            "title": "Statut",
+            "staticValues": [
+              "Université",
+              "Grande Ecole"
+            ],
+            "type": "select",
+            "validatorId": "typology"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,3 +1,5 @@
+import { fetchHelper } from '../helpers/fetch';
+
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
@@ -30,7 +32,6 @@ export const dataFormService = {
             let infiniteSection = copy[i].infinite;
 
             if (infiniteSection) {
-                // TODO make it generic
                 if (Object.keys(data).indexOf('socialMedia') > -1) {
                     const frontSections = dataFormService.socialMediaSection(
                         data.socialMedia,
@@ -40,16 +41,13 @@ export const dataFormService = {
                     newForm = [...frontSections];
                 }
 
+                // TODO make it generic
                 if (Object.keys(data).indexOf('currentName') > -1) {
-                    const q = contentSection.map((p) => {
-                        const value = data['currentName'][p.validatorId];
-
-                        if (value) {
-                            newContent.push({ ...p, value });
-                        } else {
-                            newContent.push({ ...p });
-                        }
-                    });
+                    newContent = dataFormService.infiniteSection(
+                        contentSection,
+                        'currentName',
+                        data
+                    );
                 }
             } else {
                 let fieldWithValue;
@@ -124,6 +122,19 @@ export const dataFormService = {
         });
     },
 
+    infiniteSection: (sections, key, data) => {
+        return sections.map((p) => {
+            const value = data[key][p.validatorId];
+
+            if (value) {
+                return { ...p, value };
+            } else {
+                // still needed ??
+                return p;
+            }
+        });
+    },
+
     getProp: (o, path) => {
         const object = Object.assign(o, {});
 
@@ -153,11 +164,7 @@ export const dataFormService = {
             }
         }
 
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyObject),
-        };
+        const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
         await fetch(`/api/structure/${objectId}/${subObject}`, requestOptions);
     },

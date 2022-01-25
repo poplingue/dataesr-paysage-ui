@@ -66,16 +66,13 @@ const handler = nc()
 
         try {
             const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/names/1`;
+            const requestOptions = fetchHelper.requestOptions(
+                'PATCH',
+                req.body,
+                tokens
+            );
 
-            const request = await fetch(url, {
-                method: 'PATCH',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...fetchHelper.authHeader(tokens),
-                },
-                body: JSON.stringify(req.body),
-            });
+            const request = await fetch(url, requestOptions);
 
             // TODO handle response in a service/helper
             if (

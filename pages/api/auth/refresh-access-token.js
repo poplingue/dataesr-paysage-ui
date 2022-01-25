@@ -1,18 +1,14 @@
 import getConfig from 'next/config';
+import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/refresh-access-token`;
+        const requestOptions = fetchHelper.requestOptions('POST', req.body);
 
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(req.body),
-        });
+        const request = await fetch(url, requestOptions);
 
         const response = await request.text();
         res.status(request.status).json(response);

@@ -75,7 +75,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         if (!updateObjectId) {
             getIndexDBData();
         } else {
-            // Case data from DB
+            // Case data coming from DB
             DBService.clear(formName);
         }
     }, [retrieveField, storeObjects, formName, updateObjectId]);

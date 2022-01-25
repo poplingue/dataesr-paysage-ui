@@ -6,14 +6,16 @@ import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
-import UpdateStructureForm from './form.json';
+import DemoUpdateStructureForm from './demoForm.json';
 
 export default function UpdateStructure({ data, id }) {
     const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
-    const [structureForm, setStructureForm] = useState(UpdateStructureForm[0]);
+    const [structureForm, setStructureForm] = useState(
+        DemoUpdateStructureForm[0]
+    );
     const workerRef = useRef();
 
     useEffect(() => {
@@ -35,7 +37,7 @@ export default function UpdateStructure({ data, id }) {
 
             if (message.data && message.status >= 200 && message.status < 400) {
                 const newForm = dataFormService.mapping(
-                    UpdateStructureForm[0],
+                    DemoUpdateStructureForm[0],
                     message.data
                 );
                 console.log('==== newForm ==== ', newForm.form[0]);
@@ -63,9 +65,9 @@ export default function UpdateStructure({ data, id }) {
                 highlight={id ? 'Dernière modification le 23/03/2021' : ''}
                 pageTitle={id ? `Modifier ${id}` : 'Ajouter une structure'}
             />
-            <SideNavigation items={UpdateStructureForm[0].form}>
+            <SideNavigation items={DemoUpdateStructureForm[0].form}>
                 <CreateForm
-                    jsonForm={id ? structureForm : UpdateStructureForm[0]}
+                    jsonForm={id ? structureForm : DemoUpdateStructureForm[0]}
                     color={yellow}
                     objectFormType="structure"
                 />

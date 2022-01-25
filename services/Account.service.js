@@ -14,14 +14,10 @@ export const accountService = {
             return Promise.reject(noTokensError);
         }
 
-        // TODO refacto options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(tokens.accessToken),
-            credentials: 'include',
-        };
-
+        const requestOptions = fetchHelper.requestOptions(
+            'POST',
+            tokens.accessToken
+        );
         const { publicRuntimeConfig } = getConfig();
         const meUrl = `${publicRuntimeConfig.baseApiUrl}/user/me`;
         const tokenUrl = `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;

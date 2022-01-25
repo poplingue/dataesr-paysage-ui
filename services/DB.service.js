@@ -50,13 +50,13 @@ const DBService = {
                         }
                     }
                 },
-                blocked() {
+                blocked(e) {
                     // Called if there are older versions of the database open on the origin, so this version cannot open
                     // TODO manage with link in popup alert to reload manually
                     console.debug('==== blocked ==== ', e);
                     window.location.reload();
                 },
-                blocking() {
+                blocking(e) {
                     // Called if connection is blocking a future version of the database from opening.
                     // TODO manage with link in popup alert to reload manually
                     console.debug('==== blocking ==== ', e);

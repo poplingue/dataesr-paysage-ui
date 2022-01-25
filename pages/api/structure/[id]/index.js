@@ -23,15 +23,9 @@ const handler = nc().get(async (req, res) => {
 
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}`;
+        const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
 
-        const request = await fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
-            },
-        });
+        const request = await fetch(url, requestOptions);
 
         // TODO handle response in a service/helper
         if (

@@ -22,15 +22,14 @@ async function handler(req, res) {
             tokens = JSON.parse(cookiesHeader.tokens);
         }
 
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
-            },
-        });
+        const requestOptions = fetchHelper.requestOptions(
+            'GET',
+            req.body,
+            tokens
+        );
+
+        const request = await fetch(url, requestOptions);
+
         const response = await request.text();
         res.status(request.status).json(response);
     } catch (err) {

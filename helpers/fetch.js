@@ -3,6 +3,7 @@ import { genericErrorMsg } from './internalMessages';
 export const fetchHelper = {
     authHeader,
     handleResponse,
+    requestOptions,
 };
 
 function authHeader(tokens) {
@@ -46,4 +47,29 @@ async function handleResponse(response) {
 
             return Promise.resolve({ response, data });
         });
+}
+
+function requestOptions(method, body, tokens, opts = {}) {
+    let options = {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        ...opts,
+    };
+
+    if (body) {
+        options = { ...options, body: JSON.stringify(body) };
+    }
+
+    if (tokens) {
+        options = {
+            ...options,
+            credentials: 'include',
+            headers: {
+                ...options.headers,
+                ...fetchHelper.authHeader(tokens),
+            },
+        };
+    }
+
+    return options;
 }
