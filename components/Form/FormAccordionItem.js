@@ -116,7 +116,15 @@ export default function FormAccordionItem({
             dataFormService
                 .save(form, updateObjectId, subObject, subObjectId)
                 .then(async (resp) => {
-                    console.log('==== LOG ==== ', resp);
+                    console.log('==== RESp SAVE ==== ', resp);
+                    debugger; // eslint-disable-line
+                    // dispatch({
+                    //     type: 'UPDATE_FORM_FIELD',
+                    //     payload: {
+                    //         formName,
+                    //         ...update,
+                    //     },
+                    // });
 
                     for (let i = 1; i < form.length; i = i + 1) {
                         const uid = form[i].uid;

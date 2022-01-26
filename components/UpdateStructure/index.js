@@ -1,23 +1,35 @@
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
+import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
+import DBService from '../../services/DB.service';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import UpdateStructureForm from './form.json';
 
 export default function UpdateStructure({ data, id }) {
-    const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
+    const {
+        stateForm: { departments, storeObjects },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
     const [structureForm, setStructureForm] = useState(UpdateStructureForm[0]);
     const workerRef = useRef();
 
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+
     useEffect(() => {
-        if (data && !state.departments.length) {
+        if (data && !departments.length) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
         }
     });
@@ -30,7 +42,7 @@ export default function UpdateStructure({ data, id }) {
     }, []);
 
     useEffect(() => {
-        workerRef.current.onmessage = ({ data }) => {
+        workerRef.current.onmessage = async ({ data }) => {
             const message = JSON.parse(data);
 
             if (message.data && message.status >= 200 && message.status < 400) {
@@ -38,10 +50,32 @@ export default function UpdateStructure({ data, id }) {
                     UpdateStructureForm[0],
                     message.data
                 );
+
                 setStructureForm(newForm);
+
+                const fields = dataFormService.infiniteFields(
+                    message.data,
+                    formName
+                );
+
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD_LIST',
+                    payload: {
+                        formName,
+                        fields,
+                    },
+                });
+
+                const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+                if (checkStoreObject) {
+                    // indexDB
+                    console.log('==== fields ==== ', fields, formName);
+                    await DBService.setList(fields, formName);
+                }
             }
         };
-    }, []);
+    }, [dispatch, formName, storeObjects]);
 
     useEffect(() => {
         async function fetchStructure() {

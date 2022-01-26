@@ -1,4 +1,5 @@
 import { fetchHelper } from '../helpers/fetch';
+import { getUniqueId } from '../helpers/utils';
 
 const mapFields = {
     officialName: 'officialName',
@@ -8,7 +9,7 @@ const mapFields = {
     nameEn: 'nameEn',
     acronymFr: 'acronymFr',
     acronymEn: 'acronymEn',
-    otherName: 'otherName',
+    otherName: 'currentName.otherName',
     wikidata: 'identifiers',
     idref: 'identifiers',
     uai: 'identifiers',
@@ -21,6 +22,32 @@ const mapFields = {
 };
 
 export const dataFormService = {
+    infiniteFields: (data, formName) => {
+        const a = [];
+
+        for (let i = 0; i < Object.keys(mapFields).length; i++) {
+            const path = mapFields[Object.keys(mapFields)[i]];
+            const validatorId = Object.keys(mapFields)[i];
+
+            if (path) {
+                let dataValue =
+                    dataFormService.getProp(data, path.split('.')) || [];
+
+                for (let j = 0; j < dataValue.length; j++) {
+                    const uid = getUniqueId(
+                        formName,
+                        'names#1',
+                        validatorId,
+                        j
+                    );
+                    a.push({ uid, value: dataValue[j] });
+                }
+            }
+        }
+
+        return a;
+    },
+
     mapping: ({ form }, data) => {
         let copy = [...form];
         let newForm = [];
@@ -127,6 +154,7 @@ export const dataFormService = {
     infiniteSection: (sections, key, data) => {
         return sections.map((p) => {
             const value = data[key][p.validatorId];
+            const i = p.infinite;
 
             if (value) {
                 return { ...p, value };

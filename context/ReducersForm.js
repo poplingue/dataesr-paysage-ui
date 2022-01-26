@@ -4,6 +4,7 @@ import ACTIONS from './Actions';
 const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
+            debugger; // eslint-disable-line
             const { value, formName, uid } = action.payload;
 
             const formIndex = state.forms.findIndex(
