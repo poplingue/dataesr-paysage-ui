@@ -11,8 +11,6 @@ import NotifService from '../../services/Notif.service';
 function Input({
     label,
     index,
-    title,
-    section,
     subObject,
     value: initValue,
     validatorConfig,
@@ -130,8 +128,6 @@ Input.defaultProps = {
 Input.propTypes = {
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    title: PropTypes.string.isRequired,
-    section: PropTypes.string.isRequired,
     value: PropTypes.string,
     validatorConfig: PropTypes.shape({
         required: PropTypes.bool,

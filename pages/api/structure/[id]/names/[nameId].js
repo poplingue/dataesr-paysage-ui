@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
-import { fetchHelper } from '../../../../helpers/fetch';
+import { fetchHelper } from '../../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -30,7 +30,7 @@ const handler = nc()
         const tokens = fetchHelper.headerTokens(req);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/names/1`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/names/${req.query.nameId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PATCH',
                 req.body,

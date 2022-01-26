@@ -19,21 +19,8 @@ context('Structure form page', () => {
         cy.get('.cy-notif-neutral').should('exist');
     });
 
-    it('should display warning section on change data', () => {
+    it('should display warning section on change siret data', () => {
         cy.get('[data-testid="siret"] input').type('8765');
         cy.get('.cy-warning').should('exist');
-    });
-
-    it('should display warning section on change data', () => {
-        cy.get('[data-testid="siret"] input').type('8765');
-        cy.get('.cy-warning').should('exist');
-    });
-
-    it('should display warning section on change data', () => {
-        cy.get('[data-testid="rnsr"] input').type('234567');
-        cy.get('[data-testid="siret"] input').type('9876543');
-        cy.wait(100);
-        cy.get('[data-testid="informations-save-button"]').click();
-        cy.get('.cy-valid').should('exist');
     });
 });

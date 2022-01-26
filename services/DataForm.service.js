@@ -22,6 +22,7 @@ const mapFields = {
 
 export const dataFormService = {
     mapping: ({ form }, data) => {
+        console.log('==== LOG ==== ', data);
         let copy = [...form];
         let newForm = [];
 
@@ -102,6 +103,8 @@ export const dataFormService = {
             }
         }
 
+        console.debug('==== newForm ==== ', newForm);
+
         return { form: newForm };
     },
     socialMediaSection: (data, contentSection, copy) => {
@@ -129,7 +132,7 @@ export const dataFormService = {
             if (value) {
                 return { ...p, value };
             } else {
-                // still needed ??
+                // TODO still needed ??
                 return p;
             }
         });
@@ -150,9 +153,13 @@ export const dataFormService = {
             }
         }
     },
-    save: async (objectId, subObject, form) => {
+    save: async (form, objectId, subObject, subObjectId = '') => {
         const reg = new RegExp(`(?<=_).*(?=#)`, 'g');
         let bodyObject = {};
+
+        if (subObjectId) {
+            subObject = subObject.slice(0, -2);
+        }
 
         for (let i = 0; i < form.length; i++) {
             const current = form[i];
@@ -166,6 +173,9 @@ export const dataFormService = {
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
-        await fetch(`/api/structure/${objectId}/${subObject}`, requestOptions);
+        await fetch(
+            `/api/structure/${objectId}/${subObject}/${subObjectId}`,
+            requestOptions
+        );
     },
 };

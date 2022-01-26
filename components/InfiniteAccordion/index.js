@@ -43,7 +43,7 @@ export default function InfiniteAccordion({
         query: { object },
     } = useRouter();
     const [sections, setSections] = useState({});
-    const type = cleanString(title);
+    const type = cleanString(subObject);
     const formName = getFormName(pathname, object);
 
     const {
@@ -67,7 +67,10 @@ export default function InfiniteAccordion({
         [formName, forms]
     );
     const formSections = useCallback(
-        () => currentForm().map((c) => c.uid.split('_')[0]),
+        () =>
+            currentForm().map((c) => {
+                return c.uid.split('_')[0];
+            }),
         [currentForm]
     );
 
@@ -81,15 +84,15 @@ export default function InfiniteAccordion({
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         // Reassign Section's fields value...
-        for (let i = 0; i < currentForm().length; i = i + 1) {
+        for (let i = 1; i < currentForm().length; i = i + 1) {
             const { uid, value } = currentForm()[i];
 
-            // get id of section based on uid
+            // get #id of section contained in uid
             const reg = new RegExp(`(?<=@${sectionType}).*(?=\_)`, 'g');
             const match = uid.match(reg);
             const id = match ? parseInt(match[0].substring(1)) : null;
 
-            if (id && (id === index || id === sections[type] - 1)) {
+            if (id && id === index) {
                 fieldsToDelete.push(uid);
             }
 
@@ -165,7 +168,7 @@ export default function InfiniteAccordion({
                                     updateSection(type, 1);
                                 }
 
-                                const newTitle = `${title}#${i}`;
+                                const newTitle = `${title}#${i + 1}`;
                                 // TODO make it work with i !== 0 only
                                 const deletable = i !== 0;
 
@@ -186,13 +189,15 @@ export default function InfiniteAccordion({
                                                 newTitle={newTitle}
                                             >
                                                 <FormAccordionItem
-                                                    subObject={subObject}
+                                                    subObject={`${subObject}#${
+                                                        i + 1
+                                                    }`}
                                                     content={content}
                                                     newTitle={newTitle}
                                                     deleteSection={
                                                         deleteSection
                                                     }
-                                                    index={i}
+                                                    index={i + 1}
                                                     title={title}
                                                     deletable={deletable}
                                                 />

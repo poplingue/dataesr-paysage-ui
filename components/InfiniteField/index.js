@@ -104,13 +104,16 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
         if (currentForm) {
             const initInfinite = currentForm.filter((field, i) =>
                 field.uid.startsWith(
-                    getUniqueId(formName, subObject, validatorId, i)
+                    getUniqueId(formName, subObject, validatorId, i).slice(
+                        0,
+                        -2
+                    )
                 )
             );
 
             setNumber(initInfinite.length || 1);
         }
-    }, [forms, section, formName, pathname, validatorId]);
+    }, [forms, section, formName, pathname, validatorId, subObject]);
 
     return (
         <Col n="12">

@@ -23,13 +23,12 @@ function CustomInput({
                             title={title}
                             section={section}
                             validatorId={validatorId}
+                            subObject={subObject}
                         >
                             <Input
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
-                                title={title}
                                 validatorId={validatorId}
-                                section={section}
                                 subObject={subObject}
                                 label={title}
                             />
@@ -40,11 +39,9 @@ function CustomInput({
                                 value={value}
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
-                                title={title}
                                 validatorId={validatorId}
                                 label={title}
                                 index={0}
-                                section={section}
                                 subObject={subObject}
                             />
                         </Col>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import grid from '../../helpers/imports';
-import { cleanString, range } from '../../helpers/utils';
+import { camelCase, cleanString, range } from '../../helpers/utils';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
 
@@ -11,6 +11,7 @@ export default function CustomDate({
     validatorConfig,
     updateValidSection,
     validatorId,
+    subObject,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -99,11 +100,12 @@ export default function CustomDate({
                                     section={section}
                                     index={index}
                                     title={title}
-                                    validatorId={cleanString(title)}
+                                    validatorId={camelCase(title)}
                                     staticValues={options}
                                     newValue={selectedValue}
                                     newValueCheck={newValueCheck}
                                     updateCheck={(v) => setNewValueCheck(v)}
+                                    subObject={subObject}
                                 />
                             </Col>
                         );

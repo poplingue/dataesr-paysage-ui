@@ -10,13 +10,7 @@ import {
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 
-export default function CustomToggle({
-    index,
-    section,
-    subObject,
-    title,
-    validatorId,
-}) {
+export default function CustomToggle({ index, subObject, title, validatorId }) {
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,

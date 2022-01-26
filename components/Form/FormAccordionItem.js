@@ -111,11 +111,12 @@ export default function FormAccordionItem({
             // POST data
             const form = await DBService.getAllObjects(formName, true);
             const uids = [];
+            const subObjectId = newTitle.slice(-1);
 
             dataFormService
-                .save(updateObjectId, subObject, form)
+                .save(form, updateObjectId, subObject, subObjectId)
                 .then(async (resp) => {
-                    for (let i = 0; i < form.length; i = i + 1) {
+                    for (let i = 1; i < form.length; i = i + 1) {
                         if (form[i].uid.startsWith(sectionName)) {
                             uids.push(form[i].uid);
                         }
@@ -179,7 +180,7 @@ export default function FormAccordionItem({
                             index={index}
                             onclick={async () =>
                                 await deleteSection(
-                                    cleanString(title),
+                                    cleanString(subObject.slice(0, -2)),
                                     index,
                                     newTitle
                                 )

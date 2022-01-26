@@ -39,8 +39,6 @@ describe('Field component', () => {
                 }}
                 index={1}
                 label="Label"
-                section="Section"
-                title="Title"
                 value="Content value"
                 subObject="names"
             />

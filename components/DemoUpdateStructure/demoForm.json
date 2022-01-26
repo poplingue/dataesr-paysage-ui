@@ -4,6 +4,7 @@
       {
         "title": "État",
         "infinite": true,
+        "subObject": "state",
         "content": [
           {
             "title": "Title",
@@ -19,6 +20,7 @@
       },
       {
         "title": "Informations",
+        "subObject": "information",
         "content": [
           {
             "title": "Siret",
@@ -44,6 +46,7 @@
       },
       {
         "title": "Localisation",
+        "subObject": "location",
         "content": [
           {
             "title": "Lier à un ou plusieurs départements",
@@ -55,6 +58,7 @@
       {
         "title": "Catégories",
         "infinite": true,
+        "subObject": "categories",
         "content": [
           {
             "title": "Type",
@@ -83,6 +87,7 @@
       },
       {
         "title": "État de la structure",
+        "subObject": "structureState",
         "content": [
           {
             "title": "État",
@@ -98,6 +103,7 @@
       },
       {
         "title": "Typologie",
+        "subObject": "typology",
         "content": [
           {
             "title": "Statut",
