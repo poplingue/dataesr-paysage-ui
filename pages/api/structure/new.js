@@ -38,6 +38,7 @@ async function handler(req, res) {
 
         Promise.all(promises)
             .then((resp) => {
+                //TODO return also structureSubObjects reponse
                 res.status(request.status).json(response);
             })
             .catch((error) => {

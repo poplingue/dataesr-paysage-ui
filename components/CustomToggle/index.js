@@ -10,6 +10,7 @@ import {
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 
+// TODO add propTypes
 export default function CustomToggle({ index, subObject, title, validatorId }) {
     const {
         stateForm: { forms, storeObjects },

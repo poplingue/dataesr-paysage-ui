@@ -18,7 +18,6 @@ export default function CustomSelect({
     title,
     staticValues = [],
     index,
-    section,
     newValue,
     newValueCheck,
     validatorConfig,
@@ -140,12 +139,7 @@ export default function CustomSelect({
                 message={message}
                 messageType={type || undefined}
                 data-field={uid}
-                data-testid={getUniqueId(
-                    formName,
-                    subObject,
-                    validatorId,
-                    index
-                )}
+                data-testid={uid}
                 onChange={onChange}
                 selected={selectValue || newValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
@@ -157,7 +151,7 @@ export default function CustomSelect({
 }
 
 CustomSelect.defaultProps = {
-    index: '',
+    index: 0,
     newValue: '',
     newValueCheck: false,
     updateCheck: () => {},
@@ -167,7 +161,7 @@ CustomSelect.propTypes = {
     title: PropTypes.string.isRequired,
     staticValues: PropTypes.arrayOf(PropTypes.string),
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    section: PropTypes.string.isRequired,
+    subObject: PropTypes.string.isRequired,
     newValue: PropTypes.string,
     newValueCheck: PropTypes.bool,
     validatorConfig: PropTypes.shape({

@@ -47,17 +47,6 @@ self.addEventListener('message', async (event) => {
     }
 
     if (name === 'Get_object') {
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        };
-
-        await fetch(`api/${data.object}/${data.id}`, requestOptions).then(
-            async (resp) => {
-                const data = await resp.clone().json();
-                self.postMessage(JSON.stringify({ status: resp.status, data }));
-            }
-        );
     }
 });
 

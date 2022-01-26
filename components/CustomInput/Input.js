@@ -124,7 +124,7 @@ function Input({
 
 Input.defaultProps = {
     value: '',
-    index: '',
+    index: 0,
     infinite: false,
     updateValidSection: () => {},
 };

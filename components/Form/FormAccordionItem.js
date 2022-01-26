@@ -29,7 +29,6 @@ export default function FormAccordionItem({
     deleteSection,
 }) {
     const { Col, Row, Container } = grid();
-
     const {
         stateForm: { validSections, updateObjectId },
         dispatchForm: dispatch,
@@ -108,26 +107,18 @@ export default function FormAccordionItem({
                 payload,
             });
 
-            // POST data
+            // Save data
+            // TODO add objecStoreCheck
             const form = await DBService.getAllObjects(formName, true);
             const uids = [];
-            const subObjectId = newTitle.slice(-1);
-
+            const filteredForm = form.filter((f) => {
+                return f.uid.indexOf(`${subObject}`) > -1;
+            });
             dataFormService
-                .save(form, updateObjectId, subObject, subObjectId)
-                .then(async (resp) => {
-                    console.log('==== RESp SAVE ==== ', resp);
-                    debugger; // eslint-disable-line
-                    // dispatch({
-                    //     type: 'UPDATE_FORM_FIELD',
-                    //     payload: {
-                    //         formName,
-                    //         ...update,
-                    //     },
-                    // });
-
-                    for (let i = 1; i < form.length; i = i + 1) {
-                        const uid = form[i].uid;
+                .save(filteredForm, updateObjectId, subObject)
+                .then(async () => {
+                    for (let i = 1; i < filteredForm.length; i = i + 1) {
+                        const uid = filteredForm[i].uid;
 
                         if (uid.startsWith(sectionName)) {
                             uids.push(uid);

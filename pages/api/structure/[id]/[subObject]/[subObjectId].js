@@ -9,7 +9,7 @@ const handler = nc()
         const tokens = fetchHelper.headerTokens(req);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/names`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/${req.query.subObject}`;
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,
@@ -30,7 +30,7 @@ const handler = nc()
         const tokens = fetchHelper.headerTokens(req);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/names/${req.query.nameId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/${req.query.subObject}/${req.query.subObjectId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PATCH',
                 req.body,
@@ -43,6 +43,31 @@ const handler = nc()
 
             const response = await request.text();
             res.status(request.status).json(response);
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    })
+    .delete(async (req, res) => {
+        const tokens = fetchHelper.headerTokens(req);
+
+        try {
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/${req.query.subObject}/${req.query.subObjectId}`;
+
+            console.log('==== URL ==== ', url);
+
+            const requestOptions = fetchHelper.requestOptions(
+                'DELETE',
+                null,
+                tokens
+            );
+
+            const request = await fetch(url, requestOptions);
+
+            fetchHelper.checkAuthorized(tokens, request, res);
+
+            const response = await request.json();
+
+            res.status(request.status).send(response);
         } catch (err) {
             res.status(500).send(err);
         }

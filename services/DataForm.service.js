@@ -18,12 +18,77 @@ const mapFields = {
     gender: 'gender.type',
     media: 'socialMedia.type',
     socialAccount: 'socialMedia.account',
-    names: 'socialMedia.account',
 };
 
 export const dataFormService = {
-    infiniteFields: (data, formName) => {
-        const a = [];
+    deleteSubObject: async (object, objectId, subObjectType, subObjectId) => {
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
+        const requestOptions = fetchHelper.requestOptions('DELETE');
+
+        const res = await fetch(url, requestOptions);
+    },
+
+    subObjectsFields: (subObjects, formName) => {
+        const subObjectsFields = [];
+
+        for (let i = 0; i < subObjects.length; i++) {
+            const { data, subObject } = subObjects[i];
+
+            data.map((section, index) => {
+                const sections = Object.keys(section);
+
+                for (let j = 0; j < sections.length; j++) {
+                    const field = sections[j];
+                    const value = section[field];
+
+                    if (mapFields[field] && value) {
+                        const uid = getUniqueId(
+                            formName,
+                            `${subObject}#${index + 1}`,
+                            field
+                        );
+                        subObjectsFields.push({ uid, value });
+                    }
+                }
+            });
+        }
+
+        return subObjectsFields;
+    },
+
+    getStructure: async (object, id, subObjects) => {
+        const promises = [];
+
+        for (let i = 0; i < subObjects.length; i++) {
+            const url = `/api/${object}/${id}/${subObjects[i].subObject}`;
+            const requestOptions = fetchHelper.requestOptions('GET');
+
+            promises.push({ url, requestOptions });
+        }
+
+        const res = await Promise.all(
+            promises.map((obj) => fetch(obj.url, obj.requestOptions))
+        );
+
+        const jsons = await Promise.all(
+            res.map((r) => fetchHelper.handleResponse(r))
+        );
+
+        return fetchHelper.handleJsons(jsons);
+    },
+
+    initSubObject: async (type, subObject, id) => {
+        const requestOptions = fetchHelper.requestOptions('POST', {});
+
+        return await fetch(
+            `/api/${type}/${id}/${subObject}`,
+            requestOptions
+        ).then(async (resp) => {
+            return await resp.clone().json();
+        });
+    },
+    infiniteFields: (data, formName, subObject) => {
+        const fields = [];
 
         for (let i = 0; i < Object.keys(mapFields).length; i++) {
             const path = mapFields[Object.keys(mapFields)[i]];
@@ -36,16 +101,16 @@ export const dataFormService = {
                 for (let j = 0; j < dataValue.length; j++) {
                     const uid = getUniqueId(
                         formName,
-                        'names#1',
+                        subObject,
                         validatorId,
                         j
                     );
-                    a.push({ uid, value: dataValue[j] });
+                    fields.push({ uid, value: dataValue[j] });
                 }
             }
         }
 
-        return a;
+        return fields;
     },
 
     mapping: ({ form }, data) => {
@@ -154,7 +219,6 @@ export const dataFormService = {
     infiniteSection: (sections, key, data) => {
         return sections.map((p) => {
             const value = data[key][p.validatorId];
-            const i = p.infinite;
 
             if (value) {
                 return { ...p, value };
@@ -180,14 +244,13 @@ export const dataFormService = {
             }
         }
     },
-    save: async (form, objectId, subObject, subObjectId = '') => {
+    save: async (form, objectId, subObject) => {
         const reg = new RegExp(`(?<=_).*(?=#)`, 'g');
+        const subObjectType = subObject.slice(0, -2);
+        const subObjectId = subObject.slice(-1);
+
         let bodyObject = {};
         let infiniteArray = [];
-
-        if (subObjectId) {
-            subObject = subObject.slice(0, -2);
-        }
 
         for (let i = 0; i < form.length; i++) {
             const current = form[i];
@@ -220,7 +283,7 @@ export const dataFormService = {
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
         const response = await fetch(
-            `/api/structure/${objectId}/${subObject}/${subObjectId}`,
+            `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
             requestOptions
         );
 
@@ -232,9 +295,7 @@ export const dataFormService = {
         }
 
         if (response.status >= 200 && response.status < 400) {
-            debugger; // eslint-disable-line
-
-            return r.text();
+            return r;
         }
     },
 };

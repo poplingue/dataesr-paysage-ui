@@ -13,6 +13,27 @@ export const fetchHelper = {
 
         return headers;
     },
+
+    handleJsons: (jsonResponses) => {
+        let merged = [];
+
+        for (let i = 0; i < jsonResponses.length; i++) {
+            const { data, response } = jsonResponses[i];
+            const length = response.url.split('/').length - 1;
+            const subObject = response.url.split('/')[length];
+
+            if (
+                response.status >= 200 &&
+                response.status < 400 &&
+                !!data.data.length
+            ) {
+                merged.push({ data: data.data, subObject });
+            }
+        }
+
+        return merged;
+    },
+
     handleResponse: async (response) => {
         return response
             .clone()

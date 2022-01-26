@@ -106,7 +106,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 <InfiniteAccordion
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
-                                    subObject={subObject}
+                                    subObjectType={subObject}
                                     content={content}
                                     index={`${sectionTitle}-${i}`}
                                 />
