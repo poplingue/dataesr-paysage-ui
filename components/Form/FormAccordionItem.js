@@ -116,9 +116,13 @@ export default function FormAccordionItem({
             dataFormService
                 .save(form, updateObjectId, subObject, subObjectId)
                 .then(async (resp) => {
+                    console.log('==== LOG ==== ', resp);
+
                     for (let i = 1; i < form.length; i = i + 1) {
-                        if (form[i].uid.startsWith(sectionName)) {
-                            uids.push(form[i].uid);
+                        const uid = form[i].uid;
+
+                        if (uid.startsWith(sectionName)) {
+                            uids.push(uid);
                         }
                     }
 
@@ -126,6 +130,9 @@ export default function FormAccordionItem({
                         const { msg, type } = notif[valid ? 'valid' : 'error'];
                         NotifService.info(msg, type);
                     });
+                })
+                .catch((err) => {
+                    NotifService.info(err, 'error');
                 });
         }
     };

@@ -34,7 +34,7 @@ function CustomCheckbox({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title, 0);
+    const uid = getUniqueId(formName, subObject, title);
     const [checkboxValues, setCheckboxValues] = useState(() =>
         staticValues.map((elm) => {
             return { label: elm, checked: false, value: cleanString(elm) };

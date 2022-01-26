@@ -31,6 +31,7 @@ function CustomInput({
                                 validatorId={validatorId}
                                 subObject={subObject}
                                 label={title}
+                                infinite
                             />
                         </InfiniteField>
                     ) : (

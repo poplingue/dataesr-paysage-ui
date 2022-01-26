@@ -30,7 +30,7 @@ function MultiSearch({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title, 0);
+    const uid = getUniqueId(formName, subObject, title);
     const [textValue, setTextValue] = useState('');
     const currentForm = useCallback(
         () => (forms && formName ? getForm(forms, formName) : null),

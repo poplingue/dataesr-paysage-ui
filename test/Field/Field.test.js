@@ -27,6 +27,7 @@ describe('Field component', () => {
         React.useState.mockImplementation((init) => [init, setState]);
         render(
             <Field
+                deleteField={() => {}}
                 label="Field"
                 index={1}
                 section="Section"

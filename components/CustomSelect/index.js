@@ -38,7 +38,7 @@ export default function CustomSelect({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, validatorId, index || 0);
+    const uid = getUniqueId(formName, subObject, validatorId, index);
 
     const { checkField, message, type } = useValidator(validatorConfig);
 
@@ -144,7 +144,7 @@ export default function CustomSelect({
                     formName,
                     subObject,
                     validatorId,
-                    index || 0
+                    index
                 )}
                 onChange={onChange}
                 selected={selectValue || newValue}

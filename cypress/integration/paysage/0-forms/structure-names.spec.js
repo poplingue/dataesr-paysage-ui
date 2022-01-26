@@ -1,12 +1,14 @@
 const baseUrl = Cypress.env('baseUrl');
 
 context('Structure new form', () => {
-    beforeEach(() => {
+    before(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
     });
+
     it('should save new Structure names data', () => {
-        cy.get('[href="/update/structure"]').click();
+        cy.wait(100);
+        cy.get('a[href="/update/structure"]').click();
 
         cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
         cy.get('[data-testid="noms#1-save-button"]').click();

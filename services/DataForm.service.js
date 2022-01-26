@@ -22,7 +22,6 @@ const mapFields = {
 
 export const dataFormService = {
     mapping: ({ form }, data) => {
-        console.log('==== LOG ==== ', data);
         let copy = [...form];
         let newForm = [];
 
@@ -54,8 +53,9 @@ export const dataFormService = {
                 let fieldWithValue;
 
                 for (let k = 0; k < contentSection.length; k++) {
+                    const currentSection = contentSection[k];
+                    const path = mapFields[currentSection.validatorId];
                     let newField = null;
-                    const path = mapFields[contentSection[k].validatorId];
 
                     if (path) {
                         let dataValue = dataFormService.getProp(
@@ -66,26 +66,25 @@ export const dataFormService = {
                         // Case array
                         if (dataValue && dataValue.indexOf('') < 0) {
                             const dataField = dataValue.find((elm) => {
-                                return (
-                                    elm.type === contentSection[k].validatorId
-                                );
+                                return elm.type === currentSection.validatorId;
                             });
 
                             dataValue = dataField ? dataField.value : '';
                         }
 
                         fieldWithValue = {
-                            ...contentSection[k],
+                            ...currentSection,
                             value: dataValue,
                         };
 
-                        contentSection.map((field, k) => {
+                        // TODO check necessary loop in loop
+                        contentSection.map((field, j) => {
                             if (
                                 field.validatorId === fieldWithValue.validatorId
                             ) {
                                 newField = fieldWithValue;
                             } else if (
-                                k === contentSection[k].length &&
+                                j === contentSection[j].length &&
                                 field.validatorId !== fieldWithValue.validatorId
                             ) {
                                 newField = field;
@@ -103,7 +102,7 @@ export const dataFormService = {
             }
         }
 
-        console.debug('==== newForm ==== ', newForm);
+        console.log('==== newForm ==== ', newForm);
 
         return { form: newForm };
     },
@@ -156,6 +155,7 @@ export const dataFormService = {
     save: async (form, objectId, subObject, subObjectId = '') => {
         const reg = new RegExp(`(?<=_).*(?=#)`, 'g');
         let bodyObject = {};
+        let infiniteArray = [];
 
         if (subObjectId) {
             subObject = subObject.slice(0, -2);
@@ -164,18 +164,49 @@ export const dataFormService = {
         for (let i = 0; i < form.length; i++) {
             const current = form[i];
             const match = current.uid.match(reg);
+            const key = match[0];
+
+            if (current.infinite) {
+                const o = { [key]: [current.value] };
+                const alreadyExists = infiniteArray.filter(
+                    (elm) => Object.keys(elm).indexOf(key) > -1
+                );
+
+                if (!!alreadyExists.length) {
+                    infiniteArray.map((obj) => {
+                        obj[key] = [...obj[key], current.value];
+                    });
+                } else {
+                    infiniteArray.push(o);
+                }
+            }
 
             if (!!match.length) {
-                const key = match[0];
-                bodyObject[key] = current.value;
+                const infiniteObj = infiniteArray.find((elm) => elm[key]);
+                bodyObject[key] = !!infiniteArray.length
+                    ? infiniteObj[key]
+                    : current.value;
             }
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
-        await fetch(
+        const response = await fetch(
             `/api/structure/${objectId}/${subObject}/${subObjectId}`,
             requestOptions
         );
+
+        const r = await response.json();
+
+        if (response.status >= 400) {
+            console.error('==== Err ==== ', r);
+            throw r.error;
+        }
+
+        if (response.status >= 200 && response.status < 400) {
+            debugger; // eslint-disable-line
+
+            return r.text();
+        }
     },
 };

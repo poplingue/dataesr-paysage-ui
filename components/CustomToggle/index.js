@@ -22,7 +22,7 @@ export default function CustomToggle({ index, subObject, title, validatorId }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uniqueId = getUniqueId(formName, subObject, validatorId, index || 0);
+    const uniqueId = getUniqueId(formName, subObject, validatorId, index);
     const toggleValue = getFieldValue(forms, formName, uniqueId);
 
     useEffect(() => {

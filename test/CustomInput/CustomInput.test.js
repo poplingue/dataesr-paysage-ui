@@ -40,7 +40,8 @@ describe('Field component', () => {
                 index={1}
                 label="Label"
                 value="Content value"
-                subObject="names"
+                subObject="subObject"
+                validatorId="validator"
             />
         );
     });
@@ -54,9 +55,14 @@ describe('Field component', () => {
     });
 
     it('should have Title as data-field', () => {
-        const uniqueId = getUniqueId('update/person', 'Section', 'Title', 1);
+        const uniqueId = getUniqueId(
+            'update/person',
+            'subObject',
+            'validator',
+            1
+        );
 
-        expect(screen.getByTestId('Title')).toHaveAttribute(
+        expect(screen.getByTestId('validator')).toHaveAttribute(
             'data-field',
             uniqueId
         );

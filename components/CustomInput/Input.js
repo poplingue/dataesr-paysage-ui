@@ -12,6 +12,7 @@ function Input({
     label,
     index,
     subObject,
+    infinite = false,
     value: initValue,
     validatorConfig,
     updateValidSection,
@@ -41,6 +42,7 @@ function Input({
                 value,
                 uid,
                 formName,
+                infinite,
             };
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
@@ -50,6 +52,7 @@ function Input({
                     {
                         value,
                         uid,
+                        infinite,
                     },
                     formName
                 );
@@ -122,10 +125,12 @@ function Input({
 Input.defaultProps = {
     value: '',
     index: '',
+    infinite: false,
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
+    infinite: PropTypes.bool,
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.string,

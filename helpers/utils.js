@@ -58,7 +58,7 @@ export function containsObject(obj, array) {
  * @param section
  * @returns {string} format pathname@[section#i]_[nameId]#[eq]
  */
-export function getUniqueId(formName, section = '', nameId = '', eq) {
+export function getUniqueId(formName, section = '', nameId = '', eq = 0) {
     // TODO standardize this shit
     let r = `${formName}@${cleanString(section)}_${nameId}#${eq}`;
 

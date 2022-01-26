@@ -14,6 +14,7 @@ import NotifService from '../../services/Notif.service';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 
+// TODO add propTypes
 function InfiniteField({ children, title, section, validatorId, subObject }) {
     const { Col, Row, Container } = grid();
 
