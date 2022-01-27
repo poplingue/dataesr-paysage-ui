@@ -1,5 +1,5 @@
 import { fetchHelper } from '../helpers/fetch';
-import { getUniqueId } from '../helpers/utils';
+import { getUniqueId, isArray } from '../helpers/utils';
 
 const mapFields = {
     officialName: 'officialName',
@@ -26,9 +26,7 @@ export const dataFormService = {
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE');
 
-        const res = await fetch(url, requestOptions);
-
-        return res;
+        return await fetch(url, requestOptions);
     },
 
     subObjectsFields: (subObjects, formName) => {
@@ -37,7 +35,7 @@ export const dataFormService = {
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
 
-            data.map((section, index) => {
+            data.map((section, dataIndex) => {
                 const sections = Object.keys(section);
 
                 for (let j = 0; j < sections.length; j++) {
@@ -45,13 +43,30 @@ export const dataFormService = {
                     const value = section[field];
 
                     if (mapFields[field] && value) {
-                        const uid = getUniqueId(
-                            formName,
-                            `${subObject}#${index + 1}`,
-                            field
-                        );
+                        const infinite = isArray(value);
 
-                        subObjectsFields.push({ uid, value });
+                        if (infinite) {
+                            value.map((v, vIndex) => {
+                                const uid = getUniqueId(
+                                    formName,
+                                    `${subObject}#${dataIndex + 1}`,
+                                    field,
+                                    vIndex
+                                );
+                                subObjectsFields.push({
+                                    uid,
+                                    value: v,
+                                    infinite,
+                                });
+                            });
+                        } else {
+                            const uid = getUniqueId(
+                                formName,
+                                `${subObject}#${dataIndex + 1}`,
+                                field
+                            );
+                            subObjectsFields.push({ uid, value });
+                        }
                     }
                 }
             });
@@ -159,8 +174,7 @@ export const dataFormService = {
                             path.split('.')
                         );
 
-                        // Case array
-                        if (dataValue && dataValue.indexOf('') < 0) {
+                        if (isArray(dataValue)) {
                             const dataField = dataValue.find((elm) => {
                                 return elm.type === currentSection.validatorId;
                             });

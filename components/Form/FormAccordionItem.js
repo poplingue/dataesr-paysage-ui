@@ -112,8 +112,12 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
             const uids = [];
             const filteredForm = form.filter((f) => {
-                return f.uid.indexOf(`${subObject}`) > -1;
+                return (
+                    ((f.unSaved && !f.infinite) || f.infinite) &&
+                    f.uid.indexOf(`${subObject}`) > -1
+                );
             });
+
             dataFormService
                 .save(filteredForm, updateObjectId, subObject)
                 .then(async () => {

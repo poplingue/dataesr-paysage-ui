@@ -218,6 +218,14 @@ export function cleanedPrintPage(pageId) {
     return clonePage;
 }
 
+/**
+ *
+ * @param value
+ */
+export function isArray(value) {
+    return value && value.indexOf('') < 0;
+}
+
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
 export const cookieOptions = {

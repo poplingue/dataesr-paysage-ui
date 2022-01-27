@@ -47,12 +47,14 @@ function Input({
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
+            // TODO add unSaved to Select, Radio etc.
             if (checkStoreObject) {
                 await DBService.set(
                     {
                         value,
                         uid,
                         infinite,
+                        unSaved: true,
                     },
                     formName
                 );
