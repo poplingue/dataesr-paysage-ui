@@ -22,6 +22,20 @@ const mapFields = {
 };
 
 export const dataFormService = {
+    deleteField: async (
+        object,
+        objectId,
+        subObjectType,
+        subObjectId,
+        toDelete
+    ) => {
+        // TODO merge with deleteSubObject
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
+        const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
+
+        return await fetch(url, requestOptions);
+    },
+
     deleteSubObject: async (object, objectId, subObjectType, subObjectId) => {
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE');

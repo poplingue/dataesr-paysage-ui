@@ -9,6 +9,7 @@ import {
     getUniqueId,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import Field from '../Field';
@@ -19,7 +20,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
     const { Col, Row, Container } = grid();
 
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [number, setNumber] = useState(0);
@@ -36,6 +37,19 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
 
         if (element && element.length) {
             const uid = element[0].getAttribute('data-field');
+
+            // TODO in sw.js
+            // TODO fn to get subObjectType, subObjectId, object etc. from uid
+            dataFormService.deleteField(
+                'structure',
+                updateObjectId,
+                subObject.slice(0, -2),
+                subObject.slice(-1),
+                {
+                    [validatorId]: getFieldValue(forms, formName, uid),
+                }
+            );
+
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 

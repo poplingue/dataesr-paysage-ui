@@ -66,7 +66,7 @@ function Input({
                 NotifService.techInfo('Input field deleted');
             }
         },
-        [dispatch, formName, storeObjects, uid, updateObjectId]
+        [dispatch, formName, infinite, storeObjects, uid]
     );
 
     const onChange = async (e) => {

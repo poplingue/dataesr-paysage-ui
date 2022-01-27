@@ -51,13 +51,12 @@ const handler = nc()
         const tokens = fetchHelper.headerTokens(req);
 
         try {
+            // TODO refacto
             const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/${req.query.subObject}/${req.query.subObjectId}`;
-
-            console.log('==== URL ==== ', url);
 
             const requestOptions = fetchHelper.requestOptions(
                 'DELETE',
-                null,
+                req.body || null,
                 tokens
             );
 
