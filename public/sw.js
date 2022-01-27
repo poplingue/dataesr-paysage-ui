@@ -35,10 +35,10 @@ self.addEventListener('message', async (event) => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [`${data.type}Status`]: 'active' }),
+            body: JSON.stringify({ [`${data.object}Status`]: 'active' }),
         };
 
-        await fetch(`api/${data.type}/new`, requestOptions).then(
+        await fetch(`/api/${data.object}/new`, requestOptions).then(
             async (resp) => {
                 const data = await resp.clone().json();
                 self.postMessage(JSON.stringify({ status: resp.status, data }));
@@ -47,6 +47,17 @@ self.addEventListener('message', async (event) => {
     }
 
     if (name === 'Get_object') {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        };
+
+        await fetch(`/api/${data.object}/${data.id}`, requestOptions).then(
+            async (resp) => {
+                const data = await resp.clone().json();
+                self.postMessage(JSON.stringify({ status: resp.status, data }));
+            }
+        );
     }
 });
 

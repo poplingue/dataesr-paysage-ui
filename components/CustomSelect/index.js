@@ -31,14 +31,16 @@ export default function CustomSelect({
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [options, setOptions] = useState([]);
-    const [selectValue, setSelectValue] = useState(newValue || '');
     const {
         pathname,
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId, index);
-
+    const fieldValue = getFieldValue(forms, formName, uid);
+    const [selectValue, setSelectValue] = useState(
+        fieldValue || newValue || ''
+    );
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const onSelectChange = useCallback(
@@ -87,12 +89,12 @@ export default function CustomSelect({
             checkField(fieldValue, 'silent');
             setSelectValue(fieldValue);
         }
-    }, [checkField, formName, forms, selectValue, uid]);
+    }, [checkField, formName, forms, selectValue, uid, updateObjectId]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
-            // TODO rto emove
+            // TODO to remove
             fetch(getUrl(title))
                 .then((res) => res.json())
                 .then(() => {
@@ -141,7 +143,7 @@ export default function CustomSelect({
                 data-field={uid}
                 data-testid={uid}
                 onChange={onChange}
-                selected={selectValue || newValue}
+                selected={fieldValue || selectValue || newValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={title}
                 options={options}

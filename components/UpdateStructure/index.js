@@ -43,26 +43,34 @@ export default function UpdateStructure({ data, id }) {
     }, []);
 
     useEffect(() => {
-        async function fetchData() {
-            const message = await dataFormService.getStructure(
-                'structure',
-                id,
-                structureSubObjects
-            );
-
-            const fields = dataFormService.subObjectsFields(message, formName);
-
+        workerRef.current.onmessage = async ({ data }) => {
+            // TODO only not infinite subObject
             // const newForm = dataFormService.mapping(
             //     UpdateStructureForm[0],
-            //     message,
-            // );
-            //
+            //     JSON.parse(data).data)
             // setStructureForm(newForm);
+            //
             //
             // const fields = dataFormService.infiniteFields(
             //     message.data,
             //     formName,
             // );
+            // );
+        };
+    });
+
+    useEffect(() => {
+        async function fetchData() {
+            const structureData = await dataFormService.getStructureData(
+                'structure',
+                id,
+                structureSubObjects
+            );
+
+            const fields = dataFormService.subObjectsFields(
+                structureData,
+                formName
+            );
 
             dispatch({
                 type: 'UPDATE_FORM_FIELD_LIST',
@@ -81,7 +89,6 @@ export default function UpdateStructure({ data, id }) {
         }
 
         fetchData();
-        // };
     }, [dispatch, formName, storeObjects]);
 
     useEffect(() => {

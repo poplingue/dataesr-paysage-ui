@@ -4,6 +4,7 @@ import { getUniqueId } from '../helpers/utils';
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
+    article: 'article',
     shortName: 'shortName',
     brandName: 'brandName',
     nameEn: 'nameEn',
@@ -26,6 +27,8 @@ export const dataFormService = {
         const requestOptions = fetchHelper.requestOptions('DELETE');
 
         const res = await fetch(url, requestOptions);
+
+        return res;
     },
 
     subObjectsFields: (subObjects, formName) => {
@@ -47,6 +50,7 @@ export const dataFormService = {
                             `${subObject}#${index + 1}`,
                             field
                         );
+
                         subObjectsFields.push({ uid, value });
                     }
                 }
@@ -56,7 +60,7 @@ export const dataFormService = {
         return subObjectsFields;
     },
 
-    getStructure: async (object, id, subObjects) => {
+    getStructureData: async (object, id, subObjects) => {
         const promises = [];
 
         for (let i = 0; i < subObjects.length; i++) {

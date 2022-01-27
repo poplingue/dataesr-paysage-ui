@@ -43,7 +43,7 @@ export default function Update() {
         setSpinner(true);
 
         workerRef.current.postMessage({
-            type: object,
+            object,
         });
 
         setCurrentObject(object);
