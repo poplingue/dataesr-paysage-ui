@@ -41,7 +41,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             // TODO in sw.js
             // TODO fn to get subObjectType, subObjectId, object etc. from uid
             dataFormService.deleteField(
-                'structure',
+                object,
                 updateObjectId,
                 subObject.slice(0, -2),
                 subObject.slice(-1),
@@ -116,6 +116,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
     useEffect(() => {
         const currentForm = getForm(forms, formName);
 
+        //TODO refacto
         if (currentForm) {
             const initInfinite = currentForm.filter((field, i) =>
                 field.uid.startsWith(

@@ -44,6 +44,8 @@ export default function UpdateStructure({ data, id }) {
 
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
+            console.log('==== LOG ==== ', JSON.parse(data));
+
             // TODO only not infinite subObject
             // const newForm = dataFormService.mapping(
             //     UpdateStructureForm[0],
@@ -62,7 +64,7 @@ export default function UpdateStructure({ data, id }) {
     useEffect(() => {
         async function fetchData() {
             const structureData = await dataFormService.getStructureData(
-                'structure',
+                object,
                 id,
                 structureSubObjects
             );
@@ -89,12 +91,12 @@ export default function UpdateStructure({ data, id }) {
         }
 
         fetchData();
-    }, [dispatch, formName, storeObjects]);
+    }, [dispatch, formName, id, object, storeObjects]);
 
     useEffect(() => {
         async function fetchStructure() {
             workerRef.current.postMessage({
-                object: 'structure',
+                object,
                 id,
             });
         }
@@ -102,7 +104,7 @@ export default function UpdateStructure({ data, id }) {
         if (id) {
             fetchStructure();
         }
-    }, [id]);
+    }, [id, object]);
 
     return (
         <Layout>

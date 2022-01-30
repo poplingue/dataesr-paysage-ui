@@ -169,7 +169,7 @@ const reducersForm = (state, action) => {
         case ACTIONS.CLEAR_FORM: {
             const { formName } = action.payload;
 
-            const x = {
+            return {
                 ...state,
                 forms: [
                     ...state.forms.map((form) => {
@@ -179,8 +179,6 @@ const reducersForm = (state, action) => {
                     }),
                 ],
             };
-
-            return x;
         }
 
         default:

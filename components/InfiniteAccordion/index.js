@@ -85,7 +85,7 @@ export default function InfiniteAccordion({
         // TODO dynamic
         // TODO in sw.js
         await dataFormService.deleteSubObject(
-            'structure',
+            object,
             updateObjectId,
             subObjectType,
             sections[subObjectType]
@@ -158,11 +158,7 @@ export default function InfiniteAccordion({
     const addSection = () => {
         updateSection(subObjectType, sections[subObjectType] + 1);
         // TODO dynamic
-        dataFormService.initSubObject(
-            'structure',
-            subObjectType,
-            updateObjectId
-        );
+        dataFormService.initSubObject(object, subObjectType, updateObjectId);
     };
 
     useEffect(() => {

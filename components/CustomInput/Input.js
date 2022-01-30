@@ -6,7 +6,6 @@ import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
 
 function Input({
     label,
@@ -61,12 +60,31 @@ function Input({
             }
 
             if (!value) {
-                dispatch({ type: 'DELETE_FORM_FIELD', payload });
-                await DBService.delete(uid, formName);
-                NotifService.techInfo('Input field deleted');
+                // dispatch({ type: 'DELETE_FORM_FIELD', payload });
+                // await DBService.delete(uid, formName);
+                //
+                // // TODO refacto duplicate
+                // const form = await DBService.getAllObjects(formName, true);
+                // const filteredForm = form.filter((f) => {
+                //     return (
+                //         (f.unSaved && f.uid.indexOf(`${subObject}`) > -1) || (f.uid.indexOf(`${subObject}`) > -1 && f.infinite)
+                //     );
+                // });
+                // debugger; // eslint-disable-line
+                // dataFormService.save(filteredForm, updateObjectId, subObject).then(() => {
+                //     NotifService.techInfo('Input field deleted');
+                // });
             }
         },
-        [dispatch, formName, infinite, storeObjects, uid]
+        [
+            dispatch,
+            formName,
+            infinite,
+            storeObjects,
+            subObject,
+            uid,
+            updateObjectId,
+        ]
     );
 
     const onChange = async (e) => {

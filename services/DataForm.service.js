@@ -22,6 +22,25 @@ const mapFields = {
 };
 
 export const dataFormService = {
+    familyFields: (field, index, form) => {
+        // TODO refacto: work only with 1 infinite field in section
+        const checkFamily = form.find((f) => f.infinite && f.unSaved);
+        const family = checkFamily ? checkFamily.uid.slice(0, -2) : '';
+        const isInfinite = field.infinite;
+        const isUnsaved = field.unSaved;
+
+        if (isUnsaved) {
+            return true;
+        }
+
+        if (family) {
+            if (field.uid.startsWith(checkFamily.uid.slice(0, -2))) {
+                return true;
+            }
+        }
+
+        return false;
+    },
     deleteField: async (
         object,
         objectId,
@@ -29,6 +48,7 @@ export const dataFormService = {
         subObjectId,
         toDelete
     ) => {
+        debugger; // eslint-disable-line
         // TODO merge with deleteSubObject
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
@@ -306,14 +326,14 @@ export const dataFormService = {
 
             if (!!match.length) {
                 const infiniteObj = infiniteArray.find((elm) => elm[key]);
-                bodyObject[key] = !!infiniteArray.length
-                    ? infiniteObj[key]
-                    : current.value;
+                bodyObject[key] =
+                    !!infiniteArray.length && current.infinite
+                        ? infiniteObj[key]
+                        : current.value;
             }
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
-
         const response = await fetch(
             `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
             requestOptions

@@ -110,29 +110,34 @@ export default function FormAccordionItem({
             // Save data
             // TODO add objecStoreCheck
             const form = await DBService.getAllObjects(formName, true);
-            const uids = [];
-            const filteredForm = form.filter((f) => {
-                return (
-                    ((f.unSaved && !f.infinite) || f.infinite) &&
-                    f.uid.indexOf(`${subObject}`) > -1
-                );
-            });
+
+            const filteredForm = form
+                .filter(dataFormService.familyFields)
+                .filter((f) => {
+                    return f.uid.indexOf(`${subObject}`) > -1;
+                });
 
             dataFormService
                 .save(filteredForm, updateObjectId, subObject)
                 .then(async () => {
-                    for (let i = 1; i < filteredForm.length; i = i + 1) {
+                    for (let i = 0; i < filteredForm.length; i = i + 1) {
                         const uid = filteredForm[i].uid;
 
                         if (uid.startsWith(sectionName)) {
-                            uids.push(uid);
+                            DBService.set(
+                                {
+                                    ...filteredForm[i],
+                                    unSaved: false,
+                                },
+                                formName
+                            ).then(() => {
+                                NotifService.info(
+                                    'Données sauvegardées',
+                                    'valid'
+                                );
+                            });
                         }
                     }
-
-                    DBService.deleteList(uids, formName).then(() => {
-                        const { msg, type } = notif[valid ? 'valid' : 'error'];
-                        NotifService.info(msg, type);
-                    });
                 })
                 .catch((err) => {
                     NotifService.info(err, 'error');

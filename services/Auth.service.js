@@ -207,6 +207,7 @@ const authService = {
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
                     Cookies.set('tokens', JSON.stringify(data));
+                    // TODO console.trace()
                     console.log('==== Tokens refreshed ==== ');
                 }
 

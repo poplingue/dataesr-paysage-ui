@@ -15,7 +15,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const { Col, Row } = grid();
 
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { storeObjects, updateObjectId, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 

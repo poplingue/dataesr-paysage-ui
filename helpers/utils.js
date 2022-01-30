@@ -3,6 +3,15 @@
  * @param str
  * @returns {*}
  */
+export function sliceEnd(str) {
+    return str.slice(0, -2);
+}
+
+/**
+ *
+ * @param str
+ * @returns {*}
+ */
 export function camelCase(str) {
     return str
         .replace(/\s(.)/g, function (a) {
@@ -21,6 +30,7 @@ export function camelCase(str) {
  */
 
 export function cleanString(str) {
+    // TODO replace ??=
     if (!str) {
         return '';
     }
