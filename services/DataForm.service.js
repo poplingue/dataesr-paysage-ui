@@ -32,7 +32,7 @@ export const dataFormService = {
             return true;
         }
 
-        if (family) {
+        if (family && checkFamily) {
             if (field.uid.startsWith(checkFamily.uid.slice(0, -2))) {
                 return true;
             }
@@ -295,17 +295,21 @@ export const dataFormService = {
         }
     },
     save: async (form, objectId, subObject) => {
-        const reg = new RegExp(`(?<=_).*(?=#)`, 'g');
-        const subObjectType = subObject.slice(0, -2);
-        const subObjectId = subObject.slice(-1);
+        const regField = new RegExp(`(?<=_).*(?=#)`, 'g');
+        const sectionInfinite = !!subObject.match(/\d+$/)[0];
+
+        const subObjectType = sectionInfinite
+            ? subObject.slice(0, -2)
+            : subObject;
+        const subObjectId = sectionInfinite ? subObject.slice(-1) : '';
 
         let bodyObject = {};
         let infiniteArray = [];
 
         for (let i = 0; i < form.length; i++) {
             const current = form[i];
-            const match = current.uid.match(reg);
-            const key = match[0];
+            const matchField = current.uid.match(regField);
+            const key = matchField[0];
 
             if (current.infinite) {
                 const o = { [key]: [current.value] };
@@ -322,7 +326,7 @@ export const dataFormService = {
                 }
             }
 
-            if (!!match.length) {
+            if (!!matchField.length) {
                 const infiniteObj = infiniteArray.find((elm) => elm[key]);
                 bodyObject[key] =
                     !!infiniteArray.length && current.infinite

@@ -9,6 +9,7 @@ context('Structure form page', () => {
     it('should display notification error on save section data', () => {
         cy.get('[data-testid="siret"] input').type('8765');
         cy.get('[data-testid="informations-save-button"]').click();
+        cy.wait(500);
         cy.get('.cy-notif-error').should('exist');
     });
 
@@ -16,6 +17,7 @@ context('Structure form page', () => {
         cy.get('[data-testid="siret"] input').type('8765');
         cy.get('[data-testid="rnsr"] input').type('545454');
         cy.get('[data-testid="informations-save-button"]').click();
+        cy.wait(500);
         cy.get('.cy-notif-neutral').should('exist');
     });
 

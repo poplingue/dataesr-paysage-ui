@@ -29,6 +29,7 @@ context('Structure new form', () => {
             .type('Officiel1');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.wait(500);
 
         cy.get('[data-testid="btn-add-names"]').click();
 
@@ -37,6 +38,7 @@ context('Structure new form', () => {
             .type('Officiel2');
 
         cy.get('[data-testid="noms#2-save-button"]').click();
+        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#2_officialName#0"]')
@@ -52,6 +54,7 @@ context('Structure new form', () => {
             .type('Brand1');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.wait(500);
 
         cy.get('[data-testid="btn-add-names"]').click();
 

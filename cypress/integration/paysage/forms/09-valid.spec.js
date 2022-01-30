@@ -10,6 +10,7 @@ context('Structure form page', () => {
         cy.get('[data-testid="siret"]').find('input').type('9876543');
         cy.get('[data-testid="rnsr"]').find('input').type('234567');
         cy.get('[data-testid="informations-save-button"]').click();
-        cy.get('.cy-valid').should('exist');
+        cy.wait(500);
+        cy.get('.cy-notif-error').should('exist');
     });
 });

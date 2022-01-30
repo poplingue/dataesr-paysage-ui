@@ -24,6 +24,7 @@ context('Structure new form', () => {
             .type('OtherName#2');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
@@ -43,6 +44,7 @@ context('Structure new form', () => {
             .type('OtherName#1');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')

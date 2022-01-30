@@ -75,6 +75,7 @@ function SignIn() {
                 NotifService.info(err, 'error');
 
                 if (err === inactiveUserError) {
+                    debugger; // eslint-disable-line
                     router.push('/account/activate-account').then(() => {
                         NotifService.info('Activez votre compte', 'valid');
                     });

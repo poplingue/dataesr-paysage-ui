@@ -58,33 +58,8 @@ function Input({
                     formName
                 );
             }
-
-            if (!value) {
-                // dispatch({ type: 'DELETE_FORM_FIELD', payload });
-                // await DBService.delete(uid, formName);
-                //
-                // // TODO refacto duplicate
-                // const form = await DBService.getAllObjects(formName, true);
-                // const filteredForm = form.filter((f) => {
-                //     return (
-                //         (f.unSaved && f.uid.indexOf(`${subObject}`) > -1) || (f.uid.indexOf(`${subObject}`) > -1 && f.infinite)
-                //     );
-                // });
-                // debugger; // eslint-disable-line
-                // dataFormService.save(filteredForm, updateObjectId, subObject).then(() => {
-                //     NotifService.techInfo('Input field deleted');
-                // });
-            }
         },
-        [
-            dispatch,
-            formName,
-            infinite,
-            storeObjects,
-            subObject,
-            uid,
-            updateObjectId,
-        ]
+        [dispatch, formName, infinite, storeObjects, uid]
     );
 
     const onChange = async (e) => {

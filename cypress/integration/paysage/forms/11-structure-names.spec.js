@@ -17,6 +17,7 @@ context('Structure new form', () => {
         cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.wait(500);
         cy.reload();
 
         cy.get('[data-testid="officialName"]')
