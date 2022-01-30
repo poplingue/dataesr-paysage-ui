@@ -136,6 +136,7 @@ export default function CustomSelect({
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
+    // TODO remove data-field / data-testId?
     return (
         <section className="wrapper-select">
             <Select

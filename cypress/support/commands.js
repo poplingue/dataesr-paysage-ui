@@ -14,7 +14,7 @@ Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
     cy.visit(`${baseUrl}/account/sign-in`);
     cy.get('[name="account"]').type('martha@mailinator.com');
-    cy.get('[name="password"]').type('Polk000!');
+    cy.get('[name="password"]').type('Polk000!', { force: true });
 
     cy.get('form').submit();
 
