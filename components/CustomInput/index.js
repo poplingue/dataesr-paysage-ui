@@ -9,6 +9,8 @@ function CustomInput({
     section,
     validatorConfig,
     updateValidSection,
+    validatorId,
+    subObject,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -17,13 +19,19 @@ function CustomInput({
             <section className="wrapper-input">
                 <Row alignItems="bottom" gutters>
                     {infinite ? (
-                        <InfiniteField title={title} section={section}>
+                        <InfiniteField
+                            title={title}
+                            section={section}
+                            validatorId={validatorId}
+                            subObject={subObject}
+                        >
                             <Input
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
-                                title={title}
-                                section={section}
+                                validatorId={validatorId}
+                                subObject={subObject}
                                 label={title}
+                                infinite
                             />
                         </InfiniteField>
                     ) : (
@@ -32,10 +40,10 @@ function CustomInput({
                                 value={value}
                                 updateValidSection={updateValidSection}
                                 validatorConfig={validatorConfig}
-                                title={title}
+                                validatorId={validatorId}
                                 label={title}
                                 index={0}
-                                section={section}
+                                subObject={subObject}
                             />
                         </Col>
                     )}

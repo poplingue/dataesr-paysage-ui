@@ -1,23 +1,36 @@
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
+import { structureSubObjects } from '../../helpers/constants';
+import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
+import DBService from '../../services/DB.service';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import UpdateStructureForm from './form.json';
 
 export default function UpdateStructure({ data, id }) {
-    const { stateForm: state, dispatchForm: dispatch } = useContext(AppContext);
+    const {
+        stateForm: { departments, storeObjects },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
     const [structureForm, setStructureForm] = useState(UpdateStructureForm[0]);
     const workerRef = useRef();
 
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+
     useEffect(() => {
-        if (data && !state.departments.length) {
+        if (data && !departments.length) {
             dispatch({ type: 'UPDATE_DEPARTMENTS', payload: data });
         }
     });
@@ -30,20 +43,60 @@ export default function UpdateStructure({ data, id }) {
     }, []);
 
     useEffect(() => {
-        workerRef.current.onmessage = ({ data }) => {
-            const message = JSON.parse(data);
-            const a = dataFormService.mapping(
-                UpdateStructureForm[0],
-                message.data[message.data.length - 1]
-            );
-            setStructureForm(a);
+        workerRef.current.onmessage = async ({ data }) => {
+            console.log('==== LOG ==== ', JSON.parse(data));
+
+            // TODO only not infinite subObject
+            // const newForm = dataFormService.mapping(
+            //     UpdateStructureForm[0],
+            //     JSON.parse(data).data)
+            // setStructureForm(newForm);
+            //
+            //
+            // const fields = dataFormService.infiniteFields(
+            //     message.data,
+            //     formName,
+            // );
+            // );
         };
-    }, []);
+    });
+
+    useEffect(() => {
+        async function fetchData() {
+            const structureData = await dataFormService.getStructureData(
+                object,
+                id,
+                structureSubObjects
+            );
+
+            const fields = dataFormService.subObjectsFields(
+                structureData,
+                formName
+            );
+
+            dispatch({
+                type: 'UPDATE_FORM_FIELD_LIST',
+                payload: {
+                    formName,
+                    fields,
+                },
+            });
+
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+            if (checkStoreObject) {
+                // indexDB
+                await DBService.setList(fields, formName);
+            }
+        }
+
+        fetchData();
+    }, [dispatch, formName, id, object, storeObjects]);
 
     useEffect(() => {
         async function fetchStructure() {
             workerRef.current.postMessage({
-                type: 'structure',
+                object,
                 id,
             });
         }
@@ -51,7 +104,7 @@ export default function UpdateStructure({ data, id }) {
         if (id) {
             fetchStructure();
         }
-    }, [id]);
+    }, [id, object]);
 
     return (
         <Layout>

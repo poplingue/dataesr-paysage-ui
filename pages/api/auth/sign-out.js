@@ -1,16 +1,14 @@
 import getConfig from 'next/config';
+import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/signout`;
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(req.body),
-        });
+        const requestOptions = fetchHelper.requestOptions('POST', req.body);
+
+        const request = await fetch(url, requestOptions);
 
         const response = await request.text();
         res.status(request.status).json(response);

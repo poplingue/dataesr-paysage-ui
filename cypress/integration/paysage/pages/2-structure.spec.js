@@ -1,17 +1,19 @@
 const baseUrl = Cypress.env('baseUrl');
 
 context('Structure form page', () => {
-    beforeEach(() => {
+    before(() => {
         cy.deleteIndexDB();
         cy.signIn();
-        cy.visit(`${baseUrl}/update/structure`);
+        cy.visit(`${baseUrl}/update`);
     });
 
-    afterEach(() => {
+    after(() => {
         cy.signOut();
     });
 
     it('should display current page BreadCrumbs', () => {
+        cy.get('a[href="/update/structure"]').click();
+
         cy.get('[data-cy="current-page"]')
             .find('a')
             .should('have.text', 'Ajouter une structure');

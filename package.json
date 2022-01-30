@@ -39,6 +39,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-geosearch": "^3.6.0",
     "next": "12.0.0",
+    "next-connect": "^0.11.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.20.5",
@@ -86,5 +87,8 @@
     "*.{js,scss,css}": [
       "prettier --write"
     ]
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

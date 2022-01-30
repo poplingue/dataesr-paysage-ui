@@ -1,10 +1,36 @@
 /**
  *
  * @param str
+ * @returns {*}
+ */
+export function sliceEnd(str) {
+    return str.slice(0, -2);
+}
+
+/**
+ *
+ * @param str
+ * @returns {*}
+ */
+export function camelCase(str) {
+    return str
+        .replace(/\s(.)/g, function (a) {
+            return a.toUpperCase();
+        })
+        .replace(/\s/g, '')
+        .replace(/^(.)/, function (b) {
+            return b.toLowerCase();
+        });
+}
+
+/**
+ *
+ * @param str
  * @returns {string}
  */
 
 export function cleanString(str) {
+    // TODO replace ??=
     if (!str) {
         return '';
     }
@@ -37,20 +63,20 @@ export function containsObject(obj, array) {
 /**
  *
  * @param formName
- * @param name
- * @param id
+ * @param nameId
+ * @param eq
  * @param section
- * @returns {string} format pathname@[section#i]/[name]#[index]
+ * @returns {string} format pathname@[section#i]_[nameId]#[eq]
  */
-export function getUniqueId(formName, section = '', name = '', id) {
+export function getUniqueId(formName, section = '', nameId = '', eq = 0) {
     // TODO standardize this shit
-    let r = `${formName}@${cleanString(section)}/${cleanString(name)}#${id}`;
+    let r = `${formName}@${cleanString(section)}_${nameId}#${eq}`;
 
-    if (!id && id !== 0) {
-        r = `${formName}@${cleanString(section)}/${cleanString(name)}`;
+    if (!nameId && nameId !== 0) {
+        r = `${formName}@${cleanString(section)}_${nameId}`;
     }
 
-    if (!name) {
+    if (!nameId) {
         r = `${formName}@${cleanString(section)}`;
     }
 
@@ -107,8 +133,8 @@ export function uniqueOnlyFilter(value, index, self) {
  * @param contentNumber
  * @returns {string}
  */
-export function sectionUniqueId(title, contentNumber = '0') {
-    return `${cleanString(title)}-${contentNumber}`;
+export function sectionUniqueId(title, contentNumber = '0', separator = '-') {
+    return `${cleanString(title)}${separator}${contentNumber}`;
 }
 
 /**
@@ -200,6 +226,14 @@ export function cleanedPrintPage(pageId) {
     }
 
     return clonePage;
+}
+
+/**
+ *
+ * @param value
+ */
+export function isArray(value) {
+    return value && value.indexOf('') < 0;
 }
 
 export const idToPrint = 'page-to-print';

@@ -58,8 +58,10 @@ const useAccordions = (init = false) => {
         const newList = [...list];
 
         for (let i = 0; i < newList.length; i++) {
-            if (newList[i].section === section) {
-                newList[i].expanded = !newList[i].expanded;
+            const currentList = newList[i];
+
+            if (currentList.section === section) {
+                currentList.expanded = !currentList.expanded;
                 setList(newList);
 
                 return;

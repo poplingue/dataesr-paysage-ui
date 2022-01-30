@@ -13,14 +13,7 @@ const authService = {
     signup: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/signup`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
@@ -43,13 +36,7 @@ const authService = {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/activate-account`;
         let newTokens = '';
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(code),
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', code);
 
         try {
             const response = await fetch(url, requestOptions);
@@ -93,13 +80,7 @@ const authService = {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/renew-activation-code`;
         let newTokens = '';
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('GET', null);
 
         const response = await fetch(url, requestOptions);
 
@@ -141,14 +122,7 @@ const authService = {
     signIn: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/sign-in`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
@@ -193,14 +167,7 @@ const authService = {
     resetPassword: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/reset-password`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
@@ -240,6 +207,7 @@ const authService = {
             .then(({ response, data }) => {
                 if (response.status >= 200 && response.status < 400) {
                     Cookies.set('tokens', JSON.stringify(data));
+                    // TODO console.trace()
                     console.log('==== Tokens refreshed ==== ');
                 }
 
@@ -252,13 +220,7 @@ const authService = {
     forgotPassword: async (email) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/send-password-renewal-code`;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(email),
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', email);
 
         const response = await fetch(url, requestOptions);
 

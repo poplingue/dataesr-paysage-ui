@@ -30,30 +30,30 @@ export default function Update() {
     useEffect(() => {
         workerRef.current.onmessage = ({ data }) => {
             ObjectService.newId(data).then((id) => {
+                dispatch({
+                    type: 'CLEAR_FORM',
+                    payload: { formName: `update/${currentObject}` },
+                });
+
                 if (id) {
                     router.push(`/update/${currentObject}/${id}`);
                 }
             });
         };
-    }, [currentObject, router, workerRef]);
+    }, [currentObject, dispatch, router, workerRef]);
 
     const onClick = (e, object) => {
         e.preventDefault();
 
         setSpinner(true);
 
-        workerRef.current.postMessage({
-            type: object,
-        });
-
         setCurrentObject(object);
 
-        Cookies.remove('updateObjectId');
-
-        dispatch({
-            type: 'UPDATE_UPDATE_OBJECT_ID',
-            payload: { updateObjectId: '' },
+        workerRef.current.postMessage({
+            object,
         });
+
+        Cookies.remove('updateObjectId');
     };
 
     return (

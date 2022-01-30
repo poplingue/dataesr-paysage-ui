@@ -6,17 +6,12 @@ const { serverRuntimeConfig } = getConfig();
 async function handler(req, res) {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/me`;
-        const headers = fetchHelper.authHeader({ accessToken: req.body });
-
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
+        // const headers = fetchHelper.authHeader({ accessToken: req.body });
+        const requestOptions = fetchHelper.requestOptions('GET', null, {
+            accessToken: req.body,
         });
+
+        const request = await fetch(url, requestOptions);
 
         const response = await request.text();
         res.status(request.status).json(response);

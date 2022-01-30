@@ -3,13 +3,13 @@ import { getUniqueId } from './utils';
 
 describe('Helpers utils functions', () => {
     it('should render uniqueId string', () => {
-        const x = getUniqueId('update/person', 'Section', 'Name', 2);
-        expect(x).toEqual('update/person@section/name#2');
+        const x = getUniqueId('update/person', 'Section', 'name', 2);
+        expect(x).toEqual('update/person@section_name#2');
     });
 
     it('should render uniqueId string without key', () => {
-        const x = getUniqueId('update/person', 'Section', 'Name');
-        expect(x).toEqual('update/person@section/name');
+        const x = getUniqueId('update/person', 'Section', 'name');
+        expect(x).toEqual('update/person@section_name#0');
     });
 
     it('should render uniqueId string without name', () => {

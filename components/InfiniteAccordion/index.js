@@ -17,6 +17,7 @@ import {
     uniqueOnlyFilter,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import FieldButton from '../FieldButton';
 import AccordionForm from '../Form/AccordionForm';
@@ -24,7 +25,12 @@ import FormAccordionItem from '../Form/FormAccordionItem';
 import WrapperAccordion from './WrapperAccordion';
 
 // TODO refacto
-export default function InfiniteAccordion({ title, content, dataAttSection }) {
+export default function InfiniteAccordion({
+    title,
+    content,
+    dataAttSection,
+    subObjectType,
+}) {
     const { Col, Row, Container } = grid();
 
     const { style: yellow } = useCSSProperty(
@@ -38,31 +44,32 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         query: { object },
     } = useRouter();
     const [sections, setSections] = useState({});
-    const type = cleanString(title);
     const formName = getFormName(pathname, object);
-
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const sectionRefs = useMemo(
         () =>
-            Array(sections[type] || 1)
+            Array(sections[subObjectType] || 1)
                 .fill(0)
                 .map(() => createRef()),
-        [sections, type]
+        [sections, subObjectType]
     );
     const sectionName = useMemo(
-        () => getUniqueId(formName, type),
-        [formName, type]
+        () => getUniqueId(formName, subObjectType),
+        [formName, subObjectType]
     );
     const currentForm = useCallback(
         () => getForm(forms, formName) || [],
         [formName, forms]
     );
     const formSections = useCallback(
-        () => currentForm().map((c) => c.uid.split('/').slice(0, 2).join('/')),
+        () =>
+            currentForm().map((c) => {
+                return c.uid.split('_')[0];
+            }),
         [currentForm]
     );
 
@@ -75,23 +82,33 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         let fieldsToUpdate = [];
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
+        // TODO dynamic
+        // TODO in sw.js
+        await dataFormService.deleteSubObject(
+            object,
+            updateObjectId,
+            subObjectType,
+            sections[subObjectType]
+        );
+
         // Reassign Section's fields value...
-        for (let i = 0; i < currentForm().length; i = i + 1) {
+        for (let i = 1; i < currentForm().length; i = i + 1) {
             const { uid, value } = currentForm()[i];
-            // get id of section based on uid
-            const reg = new RegExp(`(?<=@${sectionType}).*(?=\/)`, 'g');
+
+            // get #id of section contained in uid
+            const reg = new RegExp(`(?<=@${sectionType}).*(?=\_)`, 'g');
             const match = uid.match(reg);
             const id = match ? parseInt(match[0].substring(1)) : null;
 
-            if (id && (id === index || id === sections[type] - 1)) {
+            if (id && id === index) {
                 fieldsToDelete.push(uid);
             }
 
             if (id && id > index) {
-                const sectionReg = /@.+?\//g.exec(uid);
+                const sectionReg = /@.+?_/g.exec(uid);
                 const newUid = uid.replace(
                     sectionReg[0],
-                    `@${sectionType}#${id - 1}/`
+                    `@${sectionType}#${id - 1}_`
                 );
 
                 fieldsToUpdate.push({ value, uid: newUid });
@@ -107,7 +124,7 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                 payload: {
                     uids: fieldsToDelete,
                     formName,
-                    fieldsNumber: sections[type],
+                    fieldsNumber: sections[subObjectType],
                 },
             });
 
@@ -135,16 +152,22 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
         }
 
         // local state retrieve one section
-        updateSection(sectionType, sections[type] - 1);
+        updateSection(sectionType, sections[subObjectType] - 1);
+    };
+
+    const addSection = () => {
+        updateSection(subObjectType, sections[subObjectType] + 1);
+        // TODO dynamic
+        dataFormService.initSubObject(object, subObjectType, updateObjectId);
     };
 
     useEffect(() => {
         const sectionFields = formSections()
             .filter(uniqueOnlyFilter)
-            .filter((k) => k.split('#')[0] === sectionName);
+            .filter((k) => k.startsWith(sectionName));
 
-        updateSection(type, sectionFields.length);
-    }, [formSections, sectionName, type, updateSection]);
+        updateSection(subObjectType, sectionFields.length);
+    }, [formSections, sectionName, subObjectType, updateSection]);
 
     return (
         <div data-section={dataAttSection}>
@@ -153,13 +176,13 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                     <Col n="12">
                         <ul className="p-0">
                             {Array.apply(null, {
-                                length: sections[type] || 1,
+                                length: sections[subObjectType] || 1,
                             }).map((v, i) => {
-                                if (!sections[type]) {
-                                    updateSection(type, 1);
+                                if (!sections[subObjectType]) {
+                                    updateSection(subObjectType, 1);
                                 }
 
-                                const newTitle = `${title}#${i}`;
+                                const newTitle = `${title}#${i + 1}`;
                                 // TODO make it work with i !== 0 only
                                 const deletable = i !== 0;
 
@@ -171,7 +194,8 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                         >
                                             <AccordionForm
                                                 spacing={
-                                                    i === sections[type] - 1
+                                                    i ===
+                                                    sections[subObjectType] - 1
                                                         ? 'mb-1w'
                                                         : 'mb-3w'
                                                 }
@@ -180,12 +204,15 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                                                 newTitle={newTitle}
                                             >
                                                 <FormAccordionItem
+                                                    subObject={`${subObjectType}#${
+                                                        i + 1
+                                                    }`}
                                                     content={content}
                                                     newTitle={newTitle}
                                                     deleteSection={
                                                         deleteSection
                                                     }
-                                                    index={i}
+                                                    index={i + 1}
                                                     title={title}
                                                     deletable={deletable}
                                                 />
@@ -201,10 +228,8 @@ export default function InfiniteAccordion({ title, content, dataAttSection }) {
                             colors={[dark, white]}
                             icon="ri-add-line"
                             title={`Ajouter un(e) « ${title} »`}
-                            dataTestId={`btn-add-${cleanString(type)}`}
-                            onClick={() =>
-                                updateSection(type, sections[type] + 1)
-                            }
+                            dataTestId={`btn-add-${cleanString(subObjectType)}`}
+                            onClick={addSection}
                         />
                     </Col>
                 </Row>

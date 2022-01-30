@@ -15,7 +15,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const { Col, Row } = grid();
 
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { storeObjects, updateObjectId, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -36,7 +36,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     payload: { value, uid, formName },
                 });
 
-                if (checkStoreObject && !updateObjectId) {
+                if (checkStoreObject) {
                     await DBService.set(
                         {
                             value,
@@ -47,11 +47,10 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 }
             }
         },
-        [dispatch, formName, storeObjects, updateObjectId]
+        [dispatch, formName, storeObjects]
     );
 
     useEffect(() => {
-        // TODO in middleware?
         dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
     }, [dispatch, objectFormType]);
 
@@ -72,8 +71,13 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
             }
         };
 
-        getIndexDBData();
-    }, [retrieveField, storeObjects, formName]);
+        if (!updateObjectId) {
+            getIndexDBData();
+        } else {
+            // Case data coming from DB
+            DBService.clear(formName);
+        }
+    }, [retrieveField, storeObjects, formName, updateObjectId]);
 
     return (
         <PageTheme color={color}>
@@ -82,6 +86,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     {jsonForm.form.map((section, i) => {
                         const {
                             title: sectionTitle,
+                            subObject,
                             content,
                             infinite,
                         } = section;
@@ -101,6 +106,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 <InfiniteAccordion
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
+                                    subObjectType={subObject}
                                     content={content}
                                     index={`${sectionTitle}-${i}`}
                                 />
@@ -114,6 +120,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             >
                                 <FormAccordionItem
                                     content={content}
+                                    subObject={subObject}
                                     newTitle={sectionTitle}
                                 />
                             </AccordionForm>

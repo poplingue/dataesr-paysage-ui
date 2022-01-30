@@ -6,16 +6,16 @@ import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
 
 function Input({
     label,
     index,
-    title,
-    section,
+    subObject,
+    infinite = false,
     value: initValue,
     validatorConfig,
     updateValidSection,
+    validatorId,
 }) {
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -32,7 +32,7 @@ function Input({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, index);
+    const uid = getUniqueId(formName, subObject, validatorId, index);
 
     const saveValue = useCallback(
         async (value) => {
@@ -41,27 +41,25 @@ function Input({
                 value,
                 uid,
                 formName,
+                infinite,
             };
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-            if (checkStoreObject && !updateObjectId) {
+            // TODO add unSaved to Select, Radio etc.
+            if (checkStoreObject) {
                 await DBService.set(
                     {
                         value,
                         uid,
+                        infinite,
+                        unSaved: true,
                     },
                     formName
                 );
             }
-
-            if (!value) {
-                dispatch({ type: 'DELETE_FORM_FIELD', payload });
-                await DBService.delete(uid, formName);
-                NotifService.techInfo('Input field deleted');
-            }
         },
-        [dispatch, formName, storeObjects, uid, updateObjectId]
+        [dispatch, formName, infinite, storeObjects, uid]
     );
 
     const onChange = async (e) => {
@@ -108,7 +106,7 @@ function Input({
                 message={message}
                 messageType={type}
                 data-field={uid}
-                data-testid={title}
+                data-testid={validatorId}
                 ref={inputRef}
                 onChange={onChange}
                 value={textValue}
@@ -121,15 +119,15 @@ function Input({
 
 Input.defaultProps = {
     value: '',
-    index: '',
+    index: 0,
+    infinite: false,
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
+    infinite: PropTypes.bool,
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    title: PropTypes.string.isRequired,
-    section: PropTypes.string.isRequired,
     value: PropTypes.string,
     validatorConfig: PropTypes.shape({
         required: PropTypes.bool,

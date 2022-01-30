@@ -3,6 +3,7 @@
     "form": [
       {
         "title": "Identifiants principaux",
+        "subObject": "identifiers",
         "position": 0,
         "content": [
           {
@@ -54,6 +55,7 @@
       },
       {
         "title": "Dénomination",
+        "subObject": "denomination",
         "position": 1,
         "content": [
           {

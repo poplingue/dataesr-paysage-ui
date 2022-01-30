@@ -18,26 +18,29 @@ export default function CustomSelect({
     title,
     staticValues = [],
     index,
-    section,
     newValue,
     newValueCheck,
     validatorConfig,
     updateValidSection,
     updateCheck,
+    validatorId,
+    subObject,
 }) {
     const {
         stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [options, setOptions] = useState([]);
-    const [selectValue, setSelectValue] = useState(newValue || '');
     const {
         pathname,
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, section, title, index || 0);
-
+    const uid = getUniqueId(formName, subObject, validatorId, index);
+    const fieldValue = getFieldValue(forms, formName, uid);
+    const [selectValue, setSelectValue] = useState(
+        fieldValue || newValue || ''
+    );
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const onSelectChange = useCallback(
@@ -48,6 +51,7 @@ export default function CustomSelect({
                 value,
                 uid,
                 formName,
+                unSaved: true,
             };
 
             if (value) {
@@ -86,12 +90,12 @@ export default function CustomSelect({
             checkField(fieldValue, 'silent');
             setSelectValue(fieldValue);
         }
-    }, [checkField, formName, forms, selectValue, uid]);
+    }, [checkField, formName, forms, selectValue, uid, updateObjectId]);
 
     useEffect(() => {
         if (!staticValues.length && !options.length) {
             // case no static values
-            // TODO rto emove
+            // TODO to remove
             fetch(getUrl(title))
                 .then((res) => res.json())
                 .then(() => {
@@ -132,6 +136,7 @@ export default function CustomSelect({
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
+    // TODO remove data-field / data-testId?
     return (
         <section className="wrapper-select">
             <Select
@@ -140,7 +145,7 @@ export default function CustomSelect({
                 data-field={uid}
                 data-testid={uid}
                 onChange={onChange}
-                selected={selectValue || newValue}
+                selected={fieldValue || selectValue || newValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={title}
                 options={options}
@@ -150,7 +155,7 @@ export default function CustomSelect({
 }
 
 CustomSelect.defaultProps = {
-    index: '',
+    index: 0,
     newValue: '',
     newValueCheck: false,
     updateCheck: () => {},
@@ -160,7 +165,7 @@ CustomSelect.propTypes = {
     title: PropTypes.string.isRequired,
     staticValues: PropTypes.arrayOf(PropTypes.string),
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    section: PropTypes.string.isRequired,
+    subObject: PropTypes.string.isRequired,
     newValue: PropTypes.string,
     newValueCheck: PropTypes.bool,
     validatorConfig: PropTypes.shape({

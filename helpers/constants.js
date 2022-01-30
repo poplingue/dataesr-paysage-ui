@@ -198,3 +198,8 @@ export const StructurePageSkeleton = [
         print: true,
     },
 ];
+
+export const structureSubObjects = [
+    { subObject: 'names', initBody: { usualName: '' } },
+    { subObject: 'identifiers', initBody: {} },
+];

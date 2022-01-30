@@ -10,7 +10,8 @@ import {
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 
-export default function CustomToggle({ index, section, title }) {
+// TODO add propTypes
+export default function CustomToggle({ index, subObject, title, validatorId }) {
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -22,7 +23,7 @@ export default function CustomToggle({ index, section, title }) {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uniqueId = getUniqueId(formName, section, title, index || 0);
+    const uniqueId = getUniqueId(formName, subObject, validatorId, index);
     const toggleValue = getFieldValue(forms, formName, uniqueId);
 
     useEffect(() => {

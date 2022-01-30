@@ -47,7 +47,7 @@ export const configValidator = {
             }),
         ],
     },
-    categories: {
+    type: {
         required: true,
     },
     startDate: {
