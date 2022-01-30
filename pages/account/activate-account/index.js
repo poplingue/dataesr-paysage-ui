@@ -46,12 +46,6 @@ export default function Activate() {
     });
 
     useEffect(() => {
-        if (!Cookies.get('tokens')) {
-            router.push('/account/sign-in');
-        }
-    }, [router]);
-
-    useEffect(() => {
         if (userError === inactiveUserError) {
             NotifService.info(activateAdviceMsg, 'neutral', 10000);
         }
