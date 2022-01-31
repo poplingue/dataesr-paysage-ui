@@ -6,12 +6,16 @@ import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import { connectToAccessMsg } from '../../helpers/internalMessages';
+import NotifService from '../../services/Notif.service';
 import ObjectService from '../../services/Object.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 
 export default function Update() {
+    const tokens = Cookies.get('tokens');
+    const userConnected = Cookies.get('userConnected');
     const { Col, Row, Container } = grid();
     const [spinner, setSpinner] = useState(false);
     const [currentObject, setCurrentObject] = useState('');
@@ -26,6 +30,17 @@ export default function Update() {
             type: 'module',
         });
     }, []);
+
+    useEffect(() => {
+        console.log('==== LOG ==== ', tokens, userConnected);
+
+        if (!tokens || !userConnected) {
+            // TODO manage in a service page access checker
+            router.push('/account/sign-in').then(() => {
+                NotifService.info(connectToAccessMsg, 'valid');
+            });
+        }
+    }, [router, tokens, userConnected]);
 
     useEffect(() => {
         workerRef.current.onmessage = ({ data }) => {

@@ -38,7 +38,6 @@ context('Structure new form', () => {
             .select('aux');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_article#0"]')
@@ -54,7 +53,6 @@ context('Structure new form', () => {
             .type('ShortName');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_shortName#0"]')
@@ -62,7 +60,6 @@ context('Structure new form', () => {
             .type('ShortName');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait(500);
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_shortName#0"]')

@@ -17,12 +17,7 @@ export const DataProvider = ({ user, technicalError, userError, children }) => {
         validSections: [],
         departments: [],
         updateObjectId: '',
-        forms: [
-            { 'update/person': [] },
-            { 'update/structure': [] },
-            { 'demo/structure': [] },
-            { 'demo/person': [] },
-        ],
+        forms: [{ 'update/person': [] }, { 'update/structure': [] }],
     };
 
     const initialStateList = {
@@ -69,15 +64,7 @@ export const DataProvider = ({ user, technicalError, userError, children }) => {
     };
 
     useEffect(() => {
-        DBService.init(
-            [
-                'update/person',
-                'update/structure',
-                'demo/person',
-                'demo/structure',
-            ],
-            cbInit
-        );
+        DBService.init(['update/person', 'update/structure'], cbInit);
     }, []);
 
     return (
