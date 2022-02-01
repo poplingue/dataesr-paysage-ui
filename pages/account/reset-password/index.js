@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
@@ -65,9 +64,8 @@ export default function Index() {
         authService
             .resetPassword({ code, account, password })
             .then(() => {
-                authService.signIn({ account, password }).then(async () => {
-                    router.push('/').then(() => {
-                        Cookies.set('userConnected', true);
+                authService.signIn({ account, password }).then(() => {
+                    router.push('/', null, { shallow: true }).then(() => {
                         NotifService.info('Mot de passe mis à jour', 'valid');
                     });
                 });

@@ -21,24 +21,10 @@ const reducersPage = (state, action) => {
             };
         }
 
-        case ACTIONS.UPDATE_USER_CONNECTION: {
-            return {
-                ...state,
-                userConnected: action.payload,
-            };
-        }
-
         case ACTIONS.UPDATE_ERROR: {
             return {
                 ...state,
                 error: action.payload,
-            };
-        }
-
-        case ACTIONS.UPDATE_USER_ERROR: {
-            return {
-                ...state,
-                userError: action.payload,
             };
         }
 

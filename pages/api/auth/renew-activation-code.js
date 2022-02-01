@@ -7,11 +7,7 @@ async function handler(req, res) {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/renew-activation-code`;
         const tokens = fetchHelper.headerTokens(req);
-        const requestOptions = fetchHelper.requestOptions(
-            'GET',
-            req.body,
-            tokens
-        );
+        const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
 
         const request = await fetch(url, requestOptions);
 

@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { genericErrorMsg, tokenError } from './internalMessages';
+import { genericErrorMsg, invalidToken } from './internalMessages';
 
 export const fetchHelper = {
     authHeader: (tokens) => {
@@ -43,7 +43,7 @@ export const fetchHelper = {
                 try {
                     data = text && JSON.parse(text);
                 } catch (strError) {
-                    return Promise.reject(strError || text);
+                    return Promise.reject(text || strError);
                 }
 
                 if (!response.ok) {
@@ -109,7 +109,7 @@ export const fetchHelper = {
             request.status === 401 &&
             request.statusText === 'Unauthorized'
         ) {
-            res.status(401).send(tokenError);
+            res.status(401).send(invalidToken);
         }
     },
 };

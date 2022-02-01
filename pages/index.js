@@ -1,14 +1,14 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
+
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { AppContext } from '../context/GlobalState';
+import { fetchHelper } from '../helpers/fetch';
 import grid from '../helpers/imports';
 import {
     activateAdviceMsg,
     connectedMsg,
     inactiveUserError,
-    noTokensError,
 } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
@@ -22,75 +22,55 @@ const TileBody = dynamic(() =>
 const HeaderLayout = dynamic(() => import('../components/HeaderLayout'));
 const Layout = dynamic(() => import('../components/Layout'));
 
-function Home() {
+function Home({ tokens }) {
     const { Col, Row, Container } = grid();
-    const [hello, setHello] = useState(null);
 
     const router = useRouter();
-    const tokens = Cookies.get('tokens');
 
     const {
-        statePage: { user, userError, userConnected },
+        statePage: { user, error },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
     useEffect(() => {
-        const tokens = Cookies.get('tokens');
-
-        if (tokens) {
-            const objTokens = JSON.parse(tokens);
-
+        if (!Object.keys(user).length) {
             accountService
-                .me(objTokens)
-                .then(({ data }) => {
-                    if (data && !userConnected) {
+                .me()
+                .then((response) => {
+                    if (response && response.data) {
                         dispatch({
                             type: 'UPDATE_USER',
-                            payload: data,
+                            payload: response.data,
                         });
 
                         dispatch({
-                            type: 'UPDATE_USER_CONNECTION',
-                            payload: true,
+                            type: 'UPDATE_ERROR',
+                            payload: '',
                         });
-
-                        // TODO still usefull??
-                        setHello(`Salut à toi ${user.username}`);
                     }
                 })
                 .catch((error) => {
-                    // TODO refactio
-                    if (
-                        error === inactiveUserError ||
-                        error === noTokensError
-                    ) {
-                        dispatch({
-                            type: 'UPDATE_USER_ERROR',
-                            payload: error,
-                        });
-                    }
-
-                    return dispatch({
+                    dispatch({
                         type: 'UPDATE_ERROR',
                         payload: error,
                     });
                 });
         }
-    }, [dispatch, user, userConnected]);
+    }, [dispatch, router, tokens, user]);
 
     useEffect(() => {
-        if (!userError && userConnected) {
+        if (!error && tokens) {
             NotifService.info(connectedMsg, 'valid');
         }
-    }, [userConnected, userError]);
+    }, [error, tokens]);
 
     useEffect(() => {
-        if (userError === inactiveUserError && tokens) {
+        if (error === inactiveUserError && tokens) {
             router.push('/account/activate-account').then(() => {
                 NotifService.info(activateAdviceMsg, 'neutral', 10000);
             });
         }
-    }, [router, tokens, userConnected, userError]);
+    }, [router, tokens, error]);
 
     return (
         <Layout>
@@ -104,7 +84,7 @@ function Home() {
                 <Row>
                     <Col n="12" spacing="mb-3w">
                         <h2 data-cy="user">
-                            {userConnected
+                            {user
                                 ? `Salut à toi ${user.username || ''}`
                                 : 'Salut'}
                         </h2>
@@ -141,6 +121,12 @@ function Home() {
             </Container>
         </Layout>
     );
+}
+
+export async function getServerSideProps({ req }) {
+    const tokens = fetchHelper.headerTokens(req, true);
+
+    return { props: { tokens: tokens || '' } };
 }
 
 export default Home;
