@@ -23,8 +23,12 @@ context('Structure new form', () => {
             .find('input')
             .type('OtherName#2');
 
+        cy.intercept('PATCH', '/api/structure/**').as('patch');
+
         cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait(500);
+
+        cy.wait('@patch');
+
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
@@ -37,6 +41,8 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure article data', () => {
+        cy.intercept('PATCH', '/api/structure/**').as('patch');
+
         cy.get('a[href="/update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
@@ -44,7 +50,7 @@ context('Structure new form', () => {
             .type('OtherName#1');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait(500);
+        cy.wait('@patch');
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')

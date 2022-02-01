@@ -4,6 +4,8 @@ context('Account manager', () => {
     it('should signup a Mollie user', () => {
         cy.visit(`${baseUrl}/account/signup`);
 
+        cy.intercept('POST', '/api/auth/**').as('auth');
+
         const d = new Date();
         const firstName = `Mollie${d.getTime()}`;
         const lastName = `Dickinson${d.getTime()}`;
@@ -18,9 +20,12 @@ context('Account manager', () => {
         cy.get('[name="username"]').type(username);
 
         cy.get('form').submit();
+        cy.wait('@auth');
 
-        cy.wait(1000);
-        cy.get('.cy-notif-valid').should('exist');
+        cy.location().should((loc) => {
+            expect(loc.pathname).to.eq('/account/activate-account');
+        });
+
         cy.clearCookies();
     });
 });

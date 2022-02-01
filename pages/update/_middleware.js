@@ -6,11 +6,7 @@ export async function middleware(ctx) {
     // TODO refacto cookies
     const cookies = cookie.parse(headersCookies ? headersCookies : '');
 
-    if (
-        Object.keys(cookies).includes('userConnected') &&
-        Object.keys(cookies).includes('tokens') &&
-        cookies.userConnected === 'true'
-    ) {
+    if (Object.keys(cookies).includes('tokens')) {
         return NextResponse.next();
     }
 

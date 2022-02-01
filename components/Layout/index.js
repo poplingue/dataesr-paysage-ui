@@ -10,19 +10,18 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
-import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { disconnectedMsg } from '../../helpers/internalMessages';
+import { inactiveUserError } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
+import accountService from '../../services/Account.service';
 import authService from '../../services/Auth.service';
-import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
 
 const NavLink = dynamic(() => import('./../NavLink'));
@@ -65,42 +64,56 @@ export default function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
+
     const {
-        statePage: { userConnected, user },
+        statePage: { error, user },
         dispatchPage: dispatch,
     } = useContext(AppContext);
+
+    useEffect(() => {
+        if (!Object.keys(user).length) {
+            accountService
+                .me()
+                .then((response) => {
+                    if (response && response.data) {
+                        dispatch({
+                            type: 'UPDATE_USER',
+                            payload: response.data,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: error,
+                    });
+                });
+        }
+    }, [dispatch, user]);
 
     const router = useRouter();
 
     const signOut = () => {
-        authService.signOut().then(() => {
-            dispatch({
-                type: 'UPDATE_USER',
-                payload: {},
-            });
+        authService
+            .signOut()
+            .then(() => {
+                dispatch({
+                    type: 'UPDATE_USER',
+                    payload: {},
+                });
 
-            dispatch({
-                type: 'UPDATE_USER_CONNECTION',
-                payload: false,
-            });
+                dispatch({
+                    type: 'UPDATE_ERROR',
+                    payload: '',
+                });
 
-            // TODO still useful??
-            dispatch({
-                type: 'UPDATE_ERROR',
-                payload: '',
+                window.location = '/account/sign-in';
+            })
+            .catch(() => {
+                router.push('/');
             });
-
-            if (Cookies && Cookies.get('userConnected')) {
-                Cookies.set('userConnected', false);
-            }
-
-            router.push('/account/sign-in').then(() => {
-                NotifService.info(disconnectedMsg, 'valid');
-            });
-        });
     };
 
-    // TODO use it everywhere
     const { Col, Row, Container } = grid();
 
     return (
@@ -175,7 +188,8 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            {userConnected && user ? (
+                            {(user && user.username) ||
+                            error === inactiveUserError ? (
                                 <ToolItem
                                     onClick={signOut}
                                     icon="ri-user-3-line"
@@ -249,6 +263,11 @@ export default function Layout({ children, headTitle }) {
                         title="Aide"
                         asLink={<NavLink href="/help" />}
                         current={pathname.startsWith('/help')}
+                    />
+                    <NavItem
+                        title={user && `${user.firstName} ${user.lastName}`}
+                        asLink={<NavLink href="/profile" />}
+                        current={pathname.startsWith('/profile')}
                     />
                 </HeaderNav>
             </Header>

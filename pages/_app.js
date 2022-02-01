@@ -1,13 +1,10 @@
 import '../styles/styles.scss';
 import { memo, useEffect } from 'react';
-
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
-import { fetchHelper } from '../helpers/fetch';
-import { inactiveUserError, noTokensError } from '../helpers/internalMessages';
 import accountService from '../services/Account.service';
 
-function MyApp({ Component, pageProps, user, userError, technicalError }) {
+function MyApp({ Component, pageProps, error, user = {} }) {
     const MemoizedComponent = memo(Component);
 
     useEffect(() => {
@@ -32,27 +29,21 @@ function MyApp({ Component, pageProps, user, userError, technicalError }) {
     }, []);
 
     return (
-        <DataProvider user={user} error={technicalError} userError={userError}>
+        <DataProvider user={user} error={error}>
             <MemoizedComponent {...pageProps} />
             <Toaster />
         </DataProvider>
     );
 }
 
-MyApp.getInitialProps = async ({ ctx }) => {
-    const tokens = fetchHelper.headerTokens(ctx.req, true);
-
+MyApp.getInitialProps = async () => {
     return await accountService
-        .me(tokens)
-        .then(({ data }) => {
-            return { user: data };
+        .me()
+        .then((response) => {
+            return { user: response.data };
         })
         .catch((error) => {
-            if (error === inactiveUserError || error === noTokensError) {
-                return { userError: error };
-            }
-
-            return { technicalError: error };
+            return { error };
         });
 };
 

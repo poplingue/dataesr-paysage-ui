@@ -12,22 +12,26 @@
 // -- This is a parent command --
 Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
+    cy.intercept('POST', '/api/auth/sign-in').as('auth');
+
     cy.visit(`${baseUrl}/account/sign-in`);
     cy.get('[name="account"]').type('martha@mailinator.com');
     cy.get('[name="password"]').type('Polk000!', { force: true });
 
     cy.get('form').submit();
-
-    cy.wait(2000);
+    cy.wait('@auth');
 });
 
 Cypress.Commands.add('signOut', () => {
     cy.scrollTo(0, 0);
-    cy.get('.fr-header__tools-links').find('.ds-fr--flex.fr-link').click();
+    cy.get('.fr-header__tools-links')
+        .find('.ds-fr--flex.fr-link')
+        .click({ force: true });
 });
 
 Cypress.Commands.add('signup', () => {
     const baseUrl = Cypress.env('baseUrl');
+    cy.intercept('POST', '/api/auth/signup').as('auth');
 
     cy.visit(`${baseUrl}/account/signup`);
 
@@ -44,6 +48,8 @@ Cypress.Commands.add('signup', () => {
     cy.get('[name="username"]').type(username);
 
     cy.get('form').submit();
+
+    cy.wait('@post');
 });
 
 Cypress.Commands.add('deleteIndexDB', () => {

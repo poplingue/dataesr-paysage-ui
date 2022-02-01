@@ -5,11 +5,7 @@ export async function middleware(ctx) {
     const headersCookies = ctx.headers.get('cookie');
     const cookies = cookie.parse(headersCookies ? headersCookies : '');
 
-    if (
-        Object.keys(cookies).includes('userConnected') &&
-        Object.keys(cookies).includes('tokens') &&
-        cookies.userConnected === 'true'
-    ) {
+    if (Object.keys(cookies).includes('tokens')) {
         return NextResponse.next();
     }
 

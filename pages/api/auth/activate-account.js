@@ -9,7 +9,9 @@ async function handler(req, res) {
         const body = {
             activationCode: parseInt(req.body.activationCode),
         };
-        const tokens = fetchHelper.headerTokens(req);
+        const tokens = req.cookies.tokens
+            ? JSON.parse(req.cookies.tokens)
+            : null;
 
         const requestOptions = fetchHelper.requestOptions('POST', body, tokens);
 
