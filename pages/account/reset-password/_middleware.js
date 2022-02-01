@@ -7,11 +7,7 @@ export function middleware(req) {
     // TODO refacto cookies
     const cookies = cookie.parse(headersCookies ? headersCookies : '') || {};
 
-    if (
-        Object.keys(cookies).length > 0 &&
-        Object.keys(cookies).includes('userConnected') &&
-        cookies.userConnected === 'true'
-    ) {
+    if (Object.keys(cookies).includes('tokens')) {
         return NextResponse.redirect('/');
     } else {
         return NextResponse.next();

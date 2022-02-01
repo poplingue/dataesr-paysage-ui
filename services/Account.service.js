@@ -20,8 +20,8 @@ export const accountService = {
 
         return fetchHelper
             .handleResponse(response)
-            .then((response) => {
-                return Promise.resolve(response);
+            .then(({ data }) => {
+                return Promise.resolve(data);
             })
             .catch((err) => {
                 if (err === inactiveUserError || err === noTokensError) {
