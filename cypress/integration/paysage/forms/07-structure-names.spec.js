@@ -37,7 +37,12 @@ context('Structure new form', () => {
             .find('select')
             .select('aux');
 
+        cy.intercept('PATCH', '/api/structure/**').as('patch');
+
         cy.get('[data-testid="noms#1-save-button"]').click();
+
+        cy.wait('@patch');
+
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_article#0"]')
