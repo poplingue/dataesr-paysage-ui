@@ -2,6 +2,20 @@ import cookie from 'cookie';
 import { genericErrorMsg, invalidToken } from './internalMessages';
 
 export const fetchHelper = {
+    setCookieTokens: (res, tokens, maxAge = 60 * 60) => {
+        if (tokens && tokens.accessToken && tokens.refreshToken) {
+            res.setHeader(
+                'Set-Cookie',
+                cookie.serialize('tokens', JSON.stringify(tokens), {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== 'development',
+                    maxAge,
+                    sameSite: 'strict',
+                    path: '/',
+                })
+            );
+        }
+    },
     authHeader: (tokens) => {
         let headers = {};
 
