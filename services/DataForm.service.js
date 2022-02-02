@@ -1,5 +1,11 @@
 import { fetchHelper } from '../helpers/fetch';
-import { getUniqueId, isArray } from '../helpers/utils';
+import {
+    getUniqueId,
+    isArray,
+    lastChar,
+    matchRegex,
+    sliceEnd,
+} from '../helpers/utils';
 
 const mapFields = {
     officialName: 'officialName',
@@ -25,7 +31,14 @@ export const dataFormService = {
     familyFields: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
         const checkFamily = form.find((f) => f.infinite && f.unSaved);
-        const family = checkFamily ? checkFamily.uid.slice(0, -2) : '';
+
+        const obj = {
+            false: () => '',
+            true: (o) => o.uid,
+        };
+
+        const id = sliceEnd(obj[!!checkFamily](checkFamily));
+        const family = checkFamily ? id : '';
         const isUnsaved = field.unSaved;
 
         if (isUnsaved) {
@@ -33,13 +46,14 @@ export const dataFormService = {
         }
 
         if (family && checkFamily) {
-            if (field.uid.startsWith(checkFamily.uid.slice(0, -2))) {
+            if (field.uid.startsWith(id)) {
                 return true;
             }
         }
 
         return false;
     },
+
     deleteField: async (
         object,
         objectId,
@@ -47,7 +61,6 @@ export const dataFormService = {
         subObjectId,
         toDelete
     ) => {
-        // TODO merge with deleteSubObject
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
 
@@ -295,43 +308,37 @@ export const dataFormService = {
         }
     },
     save: async (form, objectId, subObject) => {
-        const regField = new RegExp(`(?<=_).*(?=#)`, 'g');
         const sectionInfinite = !!subObject.match(/\d+$/)[0];
 
-        const subObjectType = sectionInfinite
-            ? subObject.slice(0, -2)
-            : subObject;
-        const subObjectId = sectionInfinite ? subObject.slice(-1) : '';
+        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
+        const subObjectId = sectionInfinite ? lastChar(subObject) : '';
 
         let bodyObject = {};
         let infiniteArray = [];
 
         for (let i = 0; i < form.length; i++) {
-            const current = form[i];
-            const matchField = current.uid.match(regField);
-            const key = matchField[0];
+            const { uid, value, infinite } = form[i];
 
-            if (current.infinite) {
-                const o = { [key]: [current.value] };
+            if (infinite) {
+                const field = matchRegex(`(?<=_).*(?=#)`, uid);
+                const o = { [field]: [value] };
                 const alreadyExists = infiniteArray.filter(
-                    (elm) => Object.keys(elm).indexOf(key) > -1
+                    (elm) => Object.keys(elm).indexOf(field) > -1
                 );
 
                 if (!!alreadyExists.length) {
                     infiniteArray.map((obj) => {
-                        obj[key] = [...obj[key], current.value];
+                        obj[field] = [...obj[field], value];
                     });
                 } else {
                     infiniteArray.push(o);
                 }
-            }
 
-            if (!!matchField.length) {
-                const infiniteObj = infiniteArray.find((elm) => elm[key]);
-                bodyObject[key] =
-                    !!infiniteArray.length && current.infinite
-                        ? infiniteObj[key]
-                        : current.value;
+                const currentObj = infiniteArray.find((elm) => elm[field]);
+                bodyObject[field] = currentObj[field];
+            } else {
+                const field = matchRegex(`([^\_]+)$`, uid);
+                bodyObject[field] = value;
             }
         }
 

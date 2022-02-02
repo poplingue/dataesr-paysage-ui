@@ -4,8 +4,6 @@ context('Account manager', () => {
     it('should signup a Mollie user', () => {
         cy.visit(`${baseUrl}/account/signup`);
 
-        cy.intercept('POST', '/api/auth/**').as('auth');
-
         const d = new Date();
         const firstName = `Mollie${d.getTime()}`;
         const lastName = `Dickinson${d.getTime()}`;
@@ -19,7 +17,10 @@ context('Account manager', () => {
         cy.get('[name="confirm_password"]').type('Polk000!');
         cy.get('[name="username"]').type(username);
 
+        cy.intercept('POST', '/api/auth/signup').as('auth');
+
         cy.get('form').submit();
+
         cy.wait('@auth');
 
         cy.location().should((loc) => {

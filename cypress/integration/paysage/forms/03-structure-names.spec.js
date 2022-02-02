@@ -15,7 +15,7 @@ context('Structure new form', () => {
 
         cy.get('[data-testid="btn-add-names"]').click();
 
-        cy.get('[data-field="update/structure@names#2_officialName#0"]')
+        cy.get('[data-field="update/structure@names#2_officialName"]')
             .find('input')
             .should('be.visible');
     });
@@ -25,7 +25,7 @@ context('Structure new form', () => {
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-field="update/structure@names#1_officialName#0"]')
+        cy.get('[data-field="update/structure@names#1_officialName"]')
             .find('input')
             .type('Officiel1');
 
@@ -34,7 +34,7 @@ context('Structure new form', () => {
 
         cy.get('[data-testid="btn-add-names"]').click();
 
-        cy.get('[data-field="update/structure@names#2_officialName#0"]')
+        cy.get('[data-field="update/structure@names#2_officialName"]')
             .find('input')
             .type('Officiel2');
 
@@ -43,7 +43,7 @@ context('Structure new form', () => {
 
         cy.reload();
 
-        cy.get('[data-field="update/structure@names#2_officialName#0"]')
+        cy.get('[data-field="update/structure@names#2_officialName"]')
             .find('input')
             .should('have.value', 'Officiel2');
     });
@@ -54,7 +54,7 @@ context('Structure new form', () => {
         cy.intercept('DELETE', '/api/structure/**').as('delete');
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-field="update/structure@names#1_brandName#0"]')
+        cy.get('[data-field="update/structure@names#1_brandName"]')
             .find('input')
             .type('Brand1');
 
@@ -63,14 +63,14 @@ context('Structure new form', () => {
 
         cy.get('[data-testid="btn-add-names"]').click();
 
-        cy.get('[data-field="update/structure@names#2_brandName#0"]')
+        cy.get('[data-field="update/structure@names#2_brandName"]')
             .find('input')
             .type('Brand2');
 
         cy.get('[data-testid="btn-delete-noms#2"]').click();
         cy.wait('@delete');
 
-        cy.get('[data-field="update/structure@names#2_officialName#0"]').should(
+        cy.get('[data-field="update/structure@names#2_officialName"]').should(
             'not.exist'
         );
     });

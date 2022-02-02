@@ -12,7 +12,7 @@ async function handler(req, res) {
             : null;
 
         if (!tokens) {
-            throw noTokensError;
+            return res.status(200).send(noTokensError);
         }
 
         const requestOptions = fetchHelper.requestOptions('GET', null, {

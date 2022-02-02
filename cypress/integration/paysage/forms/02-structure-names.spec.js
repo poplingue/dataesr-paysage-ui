@@ -4,6 +4,7 @@ context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
+        cy.wait(300);
     });
 
     afterEach(() => {
@@ -15,15 +16,19 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .type('OtherName#1');
+            .type('OtherName#0');
 
         cy.get('[data-testid="btn-add"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#1"]')
             .find('input')
-            .type('OtherName#2');
+            .type('OtherName#1');
+
+        cy.intercept('DELETE', '/api/structure/**').as('delete');
 
         cy.get('[data-testid="btn-delete-autrenom#1"]').click();
+
+        cy.wait('@delete');
 
         cy.get('[data-field="update/structure@names#1_otherName#1"]').should(
             'not.exist'
@@ -33,7 +38,7 @@ context('Structure new form', () => {
     it('should save Article Select field', () => {
         cy.get('a[href="/update/structure"]').click();
 
-        cy.get('[data-field="update/structure@names#1_article#0"]')
+        cy.get('[data-field="update/structure@names#1_article"]')
             .find('select')
             .select('aux');
 
@@ -42,10 +47,9 @@ context('Structure new form', () => {
         cy.get('[data-testid="noms#1-save-button"]').click();
 
         cy.wait('@patch');
-
         cy.reload();
 
-        cy.get('[data-field="update/structure@names#1_article#0"]')
+        cy.get('[data-field="update/structure@names#1_article"]')
             .find('select')
             .should('have.value', 'aux');
     });
@@ -53,21 +57,32 @@ context('Structure new form', () => {
     it('should save empty ShortName field', () => {
         cy.get('a[href="/update/structure"]').click();
 
-        cy.get('[data-field="update/structure@names#1_shortName#0"]')
+        cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
             .type('ShortName');
 
+        cy.intercept('PATCH', '/api/structure/**').as('ShortName');
+
         cy.get('[data-testid="noms#1-save-button"]').click();
+
+        cy.wait('@ShortName');
+
         cy.reload();
 
-        cy.get('[data-field="update/structure@names#1_shortName#0"]')
+        cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
-            .type('ShortName');
+            .type('toutouyoutou')
+            .clear();
+
+        cy.intercept('PATCH', '/api/structure/**').as('NoShortName');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
+
+        cy.wait('@NoShortName');
+
         cy.reload();
 
-        cy.get('[data-field="update/structure@names#1_shortName#0"]')
+        cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
             .should('have.value', '');
     });

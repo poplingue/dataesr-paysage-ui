@@ -12,6 +12,15 @@ export function sliceEnd(str) {
  * @param str
  * @returns {*}
  */
+export function lastChar(str) {
+    return str.slice(-1);
+}
+
+/**
+ *
+ * @param str
+ * @returns {*}
+ */
 export function camelCase(str) {
     return str
         .replace(/\s(.)/g, function (a) {
@@ -68,19 +77,19 @@ export function containsObject(obj, array) {
  * @param section
  * @returns {string} format pathname@[section#i]_[nameId]#[eq]
  */
-export function getUniqueId(formName, section = '', nameId = '', eq = 0) {
-    // TODO standardize this shit
-    let r = `${formName}@${cleanString(section)}_${nameId}#${eq}`;
+export function getUniqueId(formName, section = '', nameId = '', eq = null) {
+    const checkedEq = eq !== null && eq >= 0 ? `#${eq}` : '';
+    let uniqueId = `${formName}@${cleanString(section)}_${nameId}${checkedEq}`;
 
     if (!nameId && nameId !== 0) {
-        r = `${formName}@${cleanString(section)}_${nameId}`;
+        uniqueId = `${formName}@${cleanString(section)}_${nameId}`;
     }
 
     if (!nameId) {
-        r = `${formName}@${cleanString(section)}`;
+        uniqueId = `${formName}@${cleanString(section)}`;
     }
 
-    return r;
+    return uniqueId;
 }
 
 /**
@@ -242,3 +251,21 @@ export const cookieOptions = {
     maxAge: 30 * 24 * 60 * 60,
     path: '/',
 };
+
+/**
+ *
+ * @param pattern
+ * @param str
+ * @returns {*|string}
+ */
+export function matchRegex(pattern, str) {
+    const regex = new RegExp(pattern, 'g');
+    const matchField = str.match(regex);
+
+    const obj = {
+        true: (matchField) => matchField[0],
+        false: () => '',
+    };
+
+    return obj[!!matchField](matchField);
+}

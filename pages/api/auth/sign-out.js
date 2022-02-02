@@ -1,4 +1,3 @@
-import cookie from 'cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
 import { noTokensError } from '../../../helpers/internalMessages';
@@ -13,7 +12,7 @@ async function handler(req, res) {
             : null;
 
         if (!tokens) {
-            throw noTokensError;
+            return res.status(200).send(noTokensError);
         }
 
         const requestOptions = fetchHelper.requestOptions('POST', {}, tokens);
@@ -23,16 +22,7 @@ async function handler(req, res) {
         const response = await request.json();
 
         if (response && response.message === 'Déconnecté') {
-            res.setHeader(
-                'Set-Cookie',
-                cookie.serialize('tokens', '', {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'development',
-                    maxAge: 0,
-                    sameSite: 'strict',
-                    path: '/',
-                })
-            );
+            fetchHelper.setCookieTokens(res, '', 0);
         }
 
         res.status(request.status).json(response);

@@ -12,8 +12,6 @@ const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 
 export default function Update() {
-    const tokens = Cookies.get('tokens');
-    const userConnected = Cookies.get('userConnected');
     const { Col, Row, Container } = grid();
     const [spinner, setSpinner] = useState(false);
     const [currentObject, setCurrentObject] = useState('');

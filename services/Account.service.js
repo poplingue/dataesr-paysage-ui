@@ -3,8 +3,8 @@ import { fetchHelper } from '../helpers/fetch';
 
 import {
     inactiveUserError,
-    noTokensError,
     invalidToken,
+    noTokensError,
 } from '../helpers/internalMessages';
 import authService from './Auth.service';
 
@@ -20,8 +20,8 @@ export const accountService = {
 
         return fetchHelper
             .handleResponse(response)
-            .then((response) => {
-                return Promise.resolve(response);
+            .then(({ data }) => {
+                return Promise.resolve(data);
             })
             .catch((err) => {
                 if (err === inactiveUserError || err === noTokensError) {

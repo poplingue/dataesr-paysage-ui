@@ -116,14 +116,10 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
     useEffect(() => {
         const currentForm = getForm(forms, formName);
 
-        //TODO refacto
         if (currentForm) {
             const initInfinite = currentForm.filter((field, i) =>
                 field.uid.startsWith(
-                    getUniqueId(formName, subObject, validatorId, i).slice(
-                        0,
-                        -2
-                    )
+                    getUniqueId(formName, subObject, validatorId)
                 )
             );
 

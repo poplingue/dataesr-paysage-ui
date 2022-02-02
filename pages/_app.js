@@ -2,6 +2,7 @@ import '../styles/styles.scss';
 import { memo, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
+import { fetchHelper } from '../helpers/fetch';
 import accountService from '../services/Account.service';
 
 function MyApp({ Component, pageProps, error, user = {} }) {
@@ -36,11 +37,13 @@ function MyApp({ Component, pageProps, error, user = {} }) {
     );
 }
 
-MyApp.getInitialProps = async () => {
+MyApp.getInitialProps = async ({ ctx }) => {
+    const tokens = fetchHelper.headerTokens(ctx.req, true);
+
     return await accountService
         .me()
-        .then((response) => {
-            return { user: response.data };
+        .then((data) => {
+            return { user: data, tokens };
         })
         .catch((error) => {
             return { error };

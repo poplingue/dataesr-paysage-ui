@@ -74,11 +74,16 @@ export default function Layout({ children, headTitle }) {
         if (!Object.keys(user).length) {
             accountService
                 .me()
-                .then((response) => {
-                    if (response && response.data) {
+                .then((data) => {
+                    if (data) {
                         dispatch({
                             type: 'UPDATE_USER',
-                            payload: response.data,
+                            payload: data,
+                        });
+
+                        dispatch({
+                            type: 'UPDATE_ERROR',
+                            payload: '',
                         });
                     }
                 })
