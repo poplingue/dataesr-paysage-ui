@@ -3,8 +3,8 @@ import { fetchHelper } from '../helpers/fetch';
 
 import {
     inactiveUserError,
-    noTokensError,
     invalidToken,
+    noTokensError,
 } from '../helpers/internalMessages';
 import authService from './Auth.service';
 

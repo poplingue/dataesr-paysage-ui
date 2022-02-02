@@ -46,7 +46,6 @@ async function handler(req, res) {
                 res.status(500).send(error);
             });
     } catch (err) {
-        console.log('==== ERROR ==== ', err);
         res.status(500).send(err);
     }
 }

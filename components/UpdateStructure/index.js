@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
 import { AppContext } from '../../context/GlobalState';
@@ -20,7 +20,6 @@ export default function UpdateStructure({ data, id }) {
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
-    const [structureForm, setStructureForm] = useState(UpdateStructureForm[0]);
     const workerRef = useRef();
 
     const {
@@ -44,7 +43,7 @@ export default function UpdateStructure({ data, id }) {
 
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
-            console.log('==== LOG ==== ', JSON.parse(data));
+            console.log('==== onmessage ==== ', JSON.parse(data));
 
             // TODO only not infinite subObject
             // const newForm = dataFormService.mapping(
@@ -62,7 +61,7 @@ export default function UpdateStructure({ data, id }) {
     });
 
     useEffect(() => {
-        async function fetchData() {
+        async function fetchDataStructure() {
             const structureData = await dataFormService.getStructureData(
                 object,
                 id,
@@ -90,7 +89,7 @@ export default function UpdateStructure({ data, id }) {
             }
         }
 
-        fetchData();
+        fetchDataStructure();
     }, [dispatch, formName, id, object, storeObjects]);
 
     useEffect(() => {
@@ -114,7 +113,7 @@ export default function UpdateStructure({ data, id }) {
             />
             <SideNavigation items={UpdateStructureForm[0].form}>
                 <CreateForm
-                    jsonForm={id ? structureForm : UpdateStructureForm[0]}
+                    jsonForm={UpdateStructureForm[0]}
                     color={yellow}
                     objectFormType="structure"
                 />

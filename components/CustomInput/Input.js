@@ -18,7 +18,7 @@ function Input({
     validatorId,
 }) {
     const {
-        stateForm: { forms, storeObjects, updateObjectId },
+        stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -26,13 +26,17 @@ function Input({
     const [textValue, setTextValue] = useState(initValue || '');
 
     const inputRef = useRef(initValue || '');
-    // TODO put in globals ?
     const {
         pathname,
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, validatorId, index);
+    const uid = getUniqueId(
+        formName,
+        subObject,
+        validatorId,
+        infinite ? index : null
+    );
 
     const saveValue = useCallback(
         async (value) => {

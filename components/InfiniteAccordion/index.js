@@ -183,6 +183,7 @@ export default function InfiniteAccordion({
                                 }
 
                                 const newTitle = `${title}#${i + 1}`;
+
                                 // TODO make it work with i !== 0 only
                                 const deletable = i !== 0;
 

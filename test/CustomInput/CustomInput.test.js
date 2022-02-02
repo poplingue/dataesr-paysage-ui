@@ -38,10 +38,11 @@ describe('Field component', () => {
                     ],
                 }}
                 index={1}
+                infinite
                 label="Label"
                 value="Content value"
                 subObject="subObject"
-                validatorId="validator"
+                validatorId="validator-infinite"
             />
         );
     });
@@ -54,12 +55,44 @@ describe('Field component', () => {
         expect(screen.getByDisplayValue('Content value')).toBeVisible();
     });
 
-    it('should have Title as data-field', () => {
+    it('should have Title as data-field case infinite', () => {
         const uniqueId = getUniqueId(
             'update/person',
             'subObject',
-            'validator',
+            'validator-infinite',
             1
+        );
+
+        expect(screen.getByTestId('validator-infinite')).toHaveAttribute(
+            'data-field',
+            uniqueId
+        );
+    });
+
+    it('should have Title as data-field', () => {
+        const uniqueId = getUniqueId('update/person', 'subObject', 'validator');
+
+        wrapper = render(
+            <Input
+                validatorConfig={{
+                    required: true,
+                    validators: [
+                        (value) => ({
+                            valid:
+                                value.length > 2 &&
+                                !!value.match(/^\d+(\.\d{1,2})?$/),
+                            errorMsg:
+                                '3 caractères minimum, uniquement numériques',
+                        }),
+                    ],
+                }}
+                index={0}
+                infinite={false}
+                label="Label"
+                value="Content value"
+                subObject="subObject"
+                validatorId="validator"
+            />
         );
 
         expect(screen.getByTestId('validator')).toHaveAttribute(

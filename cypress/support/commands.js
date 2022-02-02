@@ -12,26 +12,34 @@
 // -- This is a parent command --
 Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
-    cy.intercept('POST', '/api/auth/sign-in').as('auth');
+    cy.intercept('POST', '/api/auth/sign-in').as('sign-in');
 
     cy.visit(`${baseUrl}/account/sign-in`);
     cy.get('[name="account"]').type('martha@mailinator.com');
     cy.get('[name="password"]').type('Polk000!', { force: true });
 
     cy.get('form').submit();
-    cy.wait('@auth');
+
+    cy.wait('@sign-in');
+
+    cy.wait(500);
 });
 
 Cypress.Commands.add('signOut', () => {
     cy.scrollTo(0, 0);
+
+    cy.intercept('POST', '/api/auth/sign-out').as('sign-out');
+
     cy.get('.fr-header__tools-links')
         .find('.ds-fr--flex.fr-link')
         .click({ force: true });
+
+    cy.wait('@sign-out');
 });
 
 Cypress.Commands.add('signup', () => {
     const baseUrl = Cypress.env('baseUrl');
-    cy.intercept('POST', '/api/auth/signup').as('auth');
+    cy.intercept('POST', '/api/auth/signup').as('signup');
 
     cy.visit(`${baseUrl}/account/signup`);
 
@@ -49,7 +57,9 @@ Cypress.Commands.add('signup', () => {
 
     cy.get('form').submit();
 
-    cy.wait('@post');
+    cy.wait('@signup');
+
+    cy.wait(500);
 });
 
 Cypress.Commands.add('deleteIndexDB', () => {

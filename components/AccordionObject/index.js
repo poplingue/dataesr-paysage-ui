@@ -8,7 +8,6 @@ import grid from '../../helpers/imports';
 import { sectionUniqueId } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 
-// TODO add proptypes
 export default function AccordionObject({
     components,
     initExpand,

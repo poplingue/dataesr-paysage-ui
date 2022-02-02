@@ -41,11 +41,11 @@ export default function Field({
                                             {field}
                                         </Col>
                                         {index > 0 && (
-                                            // TODO remove props label
                                             <Col n="4">
                                                 <DeleteButton
+                                                    index={index}
+                                                    title={title}
                                                     display
-                                                    label={label}
                                                     onclick={deleteCurrentField}
                                                 />
                                             </Col>

@@ -36,7 +36,7 @@ export default function CustomSelect({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, validatorId, index);
+    const uid = getUniqueId(formName, subObject, validatorId);
     const fieldValue = getFieldValue(forms, formName, uid);
     const [selectValue, setSelectValue] = useState(
         fieldValue || newValue || ''
@@ -62,9 +62,10 @@ export default function CustomSelect({
                 }
             } else {
                 dispatch({ type: 'DELETE_FORM_FIELD', payload });
-                // TODO Make it async
-                await DBService.delete(uid, formName);
-                NotifService.techInfo('Select field deleted');
+
+                await DBService.delete(uid, formName).then(() => {
+                    NotifService.techInfo('Select field deleted');
+                });
             }
         },
         [dispatch, formName, storeObjects, uid]
@@ -136,14 +137,12 @@ export default function CustomSelect({
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
-    // TODO remove data-field / data-testId?
     return (
         <section className="wrapper-select">
             <Select
                 message={message}
                 messageType={type || undefined}
                 data-field={uid}
-                data-testid={uid}
                 onChange={onChange}
                 selected={fieldValue || selectValue || newValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}

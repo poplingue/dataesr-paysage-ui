@@ -13,7 +13,7 @@ async function handler(req, res) {
             : null;
 
         if (!tokens) {
-            throw noTokensError;
+            return res.status(200).send(noTokensError);
         }
 
         const requestOptions = fetchHelper.requestOptions('POST', {}, tokens);
@@ -23,6 +23,7 @@ async function handler(req, res) {
         const response = await request.json();
 
         if (response && response.message === 'Déconnecté') {
+            // TODO refacto
             res.setHeader(
                 'Set-Cookie',
                 cookie.serialize('tokens', '', {

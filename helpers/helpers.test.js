@@ -9,7 +9,7 @@ describe('Helpers utils functions', () => {
 
     it('should render uniqueId string without key', () => {
         const x = getUniqueId('update/person', 'Section', 'name');
-        expect(x).toEqual('update/person@section_name#0');
+        expect(x).toEqual('update/person@section_name');
     });
 
     it('should render uniqueId string without name', () => {

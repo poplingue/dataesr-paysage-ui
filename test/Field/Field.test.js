@@ -2,8 +2,9 @@ import preloadAll from 'jest-next-dynamic';
 import * as nextRouter from 'next/router';
 import React from 'react';
 import Field from '../../components/Field';
-import { render, screen } from '../test-utils';
 import '@testing-library/jest-dom/extend-expect';
+import DeleteButton from '../../components/InfiniteAccordion/DeleteButton';
+import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
@@ -40,20 +41,12 @@ describe('Field component', () => {
     });
 
     it('should render the Delete field button', async () => {
-        // const setState = jest.fn();
-        // React.useState.mockImplementation((init) => [init, setState]);
-        // render(
-        //     <Field
-        //         label='Field'
-        //         index={1}
-        //         section='Section'
-        //         title='Field'
-        //         value='Content field'
-        //     >
-        //         <p>Test</p>
-        //     </Field>,
-        // );
+        const setState = jest.fn();
+        React.useState.mockImplementation((init) => [init, setState]);
+        render(
+            <DeleteButton display title="title" index="1" onclick={() => {}} />
+        );
 
-        expect(screen.getByTestId('btn-delete-field')).toBeVisible();
+        expect(screen.getByTestId('btn-delete-title#1')).toBeVisible();
     });
 });
