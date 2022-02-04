@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { Text } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useContext, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { camelCase, cleanString, range } from '../../helpers/utils';
+import {
+    camelCase,
+    cleanString,
+    getFieldValue,
+    getFormName,
+    getUniqueId,
+    range,
+} from '../../helpers/utils';
+import DBService from '../../services/DB.service';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
 
 export default function CustomDate({
     title,
     section,
-    index,
     validatorConfig,
     updateValidSection,
-    validatorId,
     subObject,
+    validatorId,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -20,27 +30,109 @@ export default function CustomDate({
     const months = range(1, 12, true);
     const years = range(1900, d.getFullYear(), true);
     const [newValueCheck, setNewValueCheck] = useState(false);
+    const {
+        stateForm: { storeObjects, forms },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, subObject, validatorId);
+
+    const onChange = async (regex, fieldId, params) => {
+        const [value, updateCheck] = params;
+        const fieldValue = getFieldValue(forms, formName, uid) || 'xxxx-xx-xx';
+        const reg = new RegExp(regex);
+        const newValue = fieldValue.replace(reg, value);
+        const currentValue = fieldValue.match(reg);
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+        // TODO manage select empty?
+        // TODO refacto with CustomSelect
+
+        // Save xxxx-xx-xx
+        if (currentValue[0] !== value) {
+            const payloadA = {
+                value: newValue,
+                uid,
+                formName,
+                unSaved: true,
+            };
+
+            if (value) {
+                dispatch({ type: 'UPDATE_FORM_FIELD', payload: payloadA });
+
+                if (checkStoreObject) {
+                    await DBService.set(payloadA, formName).then(() => {
+                        // NotifService.techInfo('Select field updated');
+                    });
+                }
+            } else {
+                dispatch({ type: 'DELETE_FORM_FIELD', payload: payloadA });
+
+                await DBService.delete(uid, formName).then(() => {
+                    // NotifService.techInfo('Select field deleted');
+                });
+            }
+
+            if (updateCheck !== undefined) {
+                setNewValueCheck(updateCheck);
+            }
+        }
+
+        const payloadB = {
+            value,
+            uid: getUniqueId(formName, subObject, fieldId),
+            formName,
+            unSaved: false,
+        };
+
+        if (value) {
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload: payloadB });
+
+            if (checkStoreObject) {
+                await DBService.set(payloadB, formName).then(() => {
+                    // NotifService.techInfo('Select field updated');
+                });
+            }
+        } else {
+            dispatch({ type: 'DELETE_FORM_FIELD', payload: payloadB });
+
+            await DBService.delete(uid, formName).then(() => {
+                // NotifService.techInfo('Select field deleted');
+            });
+        }
+    };
+
     const [dateData, setDateData] = useState([
         {
             options: days,
-            title: `${title} day`,
+            fieldId: `${camelCase(title)}Day`,
+            title: `Jour`,
+            regex: '[^-]*$',
             selectedValue: '',
         },
         {
             options: months,
-            title: `${title} month`,
+            fieldId: `${camelCase(title)}Month`,
+            title: `Mois`,
+            regex: '(?<=-).*(?=-)',
             selectedValue: '',
         },
         {
             options: years,
-            title: `${title} year`,
+            fieldId: `${camelCase(title)}Year`,
+            title: `Année`,
+            regex: '[\\s\\S]*?(?=-)',
             selectedValue: '',
         },
     ]);
 
     const automaticDate = (when) => {
         const now = new Date();
-        let newDate = null;
+        let newDate;
         setNewValueCheck(!newValueCheck);
         updateValidSection(null, null);
 
@@ -48,17 +140,23 @@ export default function CustomDate({
             newDate = [
                 {
                     options: days,
-                    title: `${title} day`,
+                    fieldId: `${camelCase(title)}Day`,
+                    title: `Jour`,
+                    regex: '[^-]*$',
                     selectedValue: now.getDate().toString(),
                 },
                 {
                     options: months,
-                    title: `${title} month`,
+                    fieldId: `${camelCase(title)}Month`,
+                    title: `Mois`,
+                    regex: '(?<=-).*(?=-)',
                     selectedValue: (now.getMonth() + 1).toString(),
                 },
                 {
                     options: years,
-                    title: `${title} year`,
+                    fieldId: `${camelCase(title)}Year`,
+                    title: `Année`,
+                    regex: '[\\s\\S]*?(?=-)',
                     selectedValue: now.getFullYear().toString(),
                 },
             ];
@@ -66,17 +164,23 @@ export default function CustomDate({
             newDate = [
                 {
                     options: days,
-                    title: `${title} day`,
+                    fieldId: `${camelCase(title)}Day`,
+                    title: `Jour`,
+                    regex: '[^-]*$',
                     selectedValue: '01',
                 },
                 {
                     options: months,
-                    title: `${title} month`,
+                    fieldId: `${camelCase(title)}Month`,
+                    title: `Mois`,
+                    regex: '(?<=-).*(?=-)',
                     selectedValue: '01',
                 },
                 {
                     options: years,
-                    title: `${title} year`,
+                    fieldId: `${camelCase(title)}Year`,
+                    title: `Année`,
+                    regex: '[\\s\\S]*?(?=-)',
                     selectedValue: now.getFullYear().toString(),
                 },
             ];
@@ -89,31 +193,15 @@ export default function CustomDate({
         <section className="wrapper-select">
             <Container fluid>
                 <Row gutters alignItems="middle">
-                    {dateData.map((select) => {
-                        const { title, selectedValue, options } = select;
-
-                        return (
-                            <Col n="12 md-2" key={title} spacing="py-1w">
-                                <CustomSelect
-                                    updateValidSection={updateValidSection}
-                                    validatorConfig={validatorConfig}
-                                    section={section}
-                                    index={index}
-                                    title={title}
-                                    validatorId={camelCase(title)}
-                                    staticValues={options}
-                                    newValue={selectedValue}
-                                    newValueCheck={newValueCheck}
-                                    updateCheck={(v) => setNewValueCheck(v)}
-                                    subObject={subObject}
-                                />
-                            </Col>
-                        );
-                    })}
-                    <Col n="6">
+                    <Col n="12" spacing="pb-1w">
+                        <Text spacing="mb-1w" size="md">
+                            {title}
+                        </Text>
+                    </Col>
+                    <Col n="8 xl-3" spacing="p-1w">
                         <Container fluid>
-                            <Row>
-                                <Col n="4">
+                            <Row gutters>
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
                                             section
@@ -122,7 +210,7 @@ export default function CustomDate({
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="4">
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
                                             section
@@ -135,6 +223,44 @@ export default function CustomDate({
                                 </Col>
                             </Row>
                         </Container>
+                    </Col>
+                    <Col n="12 xl-9">
+                        <Row gutters>
+                            {dateData.map((select) => {
+                                const {
+                                    selectedValue,
+                                    options,
+                                    regex,
+                                    fieldId,
+                                    title,
+                                } = select;
+
+                                return (
+                                    <Col
+                                        n="12 xl-4"
+                                        key={title}
+                                        spacing="py-1w"
+                                    >
+                                        <CustomSelect
+                                            customOnChange={(...params) =>
+                                                onChange(regex, fieldId, params)
+                                            }
+                                            updateValidSection={
+                                                updateValidSection
+                                            }
+                                            validatorConfig={validatorConfig}
+                                            section={section}
+                                            title={title}
+                                            validatorId={fieldId}
+                                            staticValues={options}
+                                            newValue={selectedValue}
+                                            newValueCheck={newValueCheck}
+                                            subObject={subObject}
+                                        />
+                                    </Col>
+                                );
+                            })}
+                        </Row>
                     </Col>
                 </Row>
             </Container>

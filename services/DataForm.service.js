@@ -10,6 +10,8 @@ import {
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
+    startDate: 'startDate',
+    endDate: 'endDate',
     article: 'article',
     shortName: 'shortName',
     brandName: 'brandName',
@@ -28,6 +30,15 @@ const mapFields = {
 };
 
 export const dataFormService = {
+    mapDate: () => {
+        const day = 'xx-xx-31';
+
+        return {
+            day: '1',
+            month: '12',
+            year: '2022',
+        };
+    },
     familyFields: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
         const checkFamily = form.find((f) => f.infinite && f.unSaved);
@@ -256,8 +267,6 @@ export const dataFormService = {
                 newForm.push(section);
             }
         }
-
-        console.log('==== newForm ==== ', newForm);
 
         return { form: newForm };
     },

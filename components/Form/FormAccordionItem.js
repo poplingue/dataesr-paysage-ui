@@ -2,7 +2,11 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString, getFormName, getUniqueId } from '../../helpers/utils';
+import {
+    cleanString,
+    getFormName,
+    getUniqueId,
+} from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -30,7 +34,7 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId },
+        stateForm: { validSections, updateObjectId, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -109,12 +113,13 @@ export default function FormAccordionItem({
 
             // Save data
             // TODO add objecStoreCheck
+            // TODO instead DBservice use form props??
             const form = await DBService.getAllObjects(formName, true);
 
             const filteredForm = form
                 .filter(dataFormService.familyFields)
                 .filter((f) => {
-                    return f.uid.indexOf(`${subObject}`) > -1;
+                    return f.uid.indexOf(subObject) > -1;
                 });
 
             dataFormService

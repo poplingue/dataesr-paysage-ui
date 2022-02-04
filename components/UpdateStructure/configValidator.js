@@ -51,10 +51,10 @@ export const configValidator = {
         required: true,
     },
     startDate: {
-        required: true,
+        required: false,
     },
     endDate: {
-        required: true,
+        required: false,
     },
     title: {
         required: true,
