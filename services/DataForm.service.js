@@ -29,15 +29,28 @@ const mapFields = {
     socialAccount: 'socialMedia.account',
 };
 
-export const dataFormService = {
-    mapDate: () => {
-        const day = 'xx-xx-31';
+const fieldMapping = {
+    endDate: (uid, value) => dataFormService.mapDate(uid, value),
+    startDate: (uid, value) => dataFormService.mapDate(uid, value),
+};
 
-        return {
-            day: '1',
-            month: '12',
-            year: '2022',
+export const dataFormService = {
+    mapDate: (uid, value) => {
+        let mapping = [];
+        const splitedDate = value.split('-');
+        const fieldId = {
+            0: 'Year',
+            1: 'Month',
+            2: 'Day',
         };
+
+        mapping.push({ uid, value });
+
+        for (let i = 0; i < splitedDate.length; i = i + 1) {
+            mapping.push({ uid: `${uid}${fieldId[i]}`, value: splitedDate[i] });
+        }
+
+        return mapping;
     },
     familyFields: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
@@ -96,11 +109,13 @@ export const dataFormService = {
 
                 for (let j = 0; j < sections.length; j++) {
                     const field = sections[j];
+
                     const value = section[field];
 
                     if (mapFields[field] && value) {
                         const infinite = isArray(value);
 
+                        // TODO refacto with obj
                         if (infinite) {
                             value.map((v, vIndex) => {
                                 const uid = getUniqueId(
@@ -121,12 +136,28 @@ export const dataFormService = {
                                 `${subObject}#${dataIndex + 1}`,
                                 field
                             );
-                            subObjectsFields.push({ uid, value });
+
+                            const needMapping =
+                                Object.keys(fieldMapping).indexOf(field) > -1;
+
+                            const objField = {
+                                false: (uid, value) => {
+                                    return [{ uid, value }];
+                                },
+                                true: (uid, value) =>
+                                    fieldMapping[field](uid, value),
+                            };
+
+                            subObjectsFields.push(
+                                ...objField[needMapping](uid, value)
+                            );
                         }
                     }
                 }
             });
         }
+
+        console.log('==== subObjectsFields ==== ', subObjectsFields);
 
         return subObjectsFields;
     },

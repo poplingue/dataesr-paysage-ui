@@ -41,6 +41,7 @@ export default function CustomDate({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
+    const camelValidator = camelCase(validatorId);
 
     const updateDate = useCallback(
         async (payload) => {
@@ -82,8 +83,6 @@ export default function CustomDate({
             const currentValue = dateValue.match(reg);
 
             // Save full date xxxx-xx-xx
-            console.log('==== LOG ==== ', value);
-
             if (currentValue[0] !== value) {
                 await dispatchDate[!!value]({
                     value: newValue,
@@ -111,21 +110,21 @@ export default function CustomDate({
     const [dateData, setDateData] = useState([
         {
             options: days,
-            fieldId: `${camelCase(title)}Day`,
+            fieldId: `${camelValidator}Day`,
             title: `Jour`,
             regex: '[^-]*$',
             selectedValue: '',
         },
         {
             options: months,
-            fieldId: `${camelCase(title)}Month`,
+            fieldId: `${camelValidator}Month`,
             title: `Mois`,
             regex: '(?<=-).*(?=-)',
             selectedValue: '',
         },
         {
             options: years,
-            fieldId: `${camelCase(title)}Year`,
+            fieldId: `${camelValidator}Year`,
             title: `Année`,
             regex: '[\\s\\S]*?(?=-)',
             selectedValue: '',
@@ -138,7 +137,6 @@ export default function CustomDate({
         const currentYear = now.getFullYear().toString();
         const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
         const currentDay = now.getDate().toString().padStart(2, '0');
-        const camelTitle = camelCase(title);
 
         setNewValueCheck(!newValueCheck);
         updateValidSection(null, null);
@@ -157,21 +155,21 @@ export default function CustomDate({
             newDate = [
                 {
                     options: days,
-                    fieldId: `${camelTitle}Day`,
+                    fieldId: `${camelValidator}Day`,
                     title: `Jour`,
                     regex: '[^-]*$',
                     selectedValue: currentDay,
                 },
                 {
                     options: months,
-                    fieldId: `${camelTitle}Month`,
+                    fieldId: `${camelValidator}Month`,
                     title: `Mois`,
                     regex: '(?<=-).*(?=-)',
                     selectedValue: currentMonth,
                 },
                 {
                     options: years,
-                    fieldId: `${camelTitle}Year`,
+                    fieldId: `${camelValidator}Year`,
                     title: `Année`,
                     regex: '[\\s\\S]*?(?=-)',
                     selectedValue: currentYear,
@@ -183,21 +181,21 @@ export default function CustomDate({
             newDate = [
                 {
                     options: days,
-                    fieldId: `${camelTitle}Day`,
+                    fieldId: `${camelValidator}Day`,
                     title: `Jour`,
                     regex: '[^-]*$',
                     selectedValue: '01',
                 },
                 {
                     options: months,
-                    fieldId: `${camelTitle}Month`,
+                    fieldId: `${camelValidator}Month`,
                     title: `Mois`,
                     regex: '(?<=-).*(?=-)',
                     selectedValue: '01',
                 },
                 {
                     options: years,
-                    fieldId: `${camelTitle}Year`,
+                    fieldId: `${camelValidator}Year`,
                     title: `Année`,
                     regex: '[\\s\\S]*?(?=-)',
                     selectedValue: currentYear,
