@@ -34,6 +34,11 @@ const fieldMapping = {
     startDate: (uid, value) => dataFormService.mapDate(uid, value),
 };
 
+const fields = {
+    true: (...params) => dataFormService.infiniteField(params),
+    false: (...params) => dataFormService.uniqueField(params),
+};
+
 export const dataFormService = {
     mapDate: (uid, value) => {
         let mapping = [];
@@ -98,6 +103,46 @@ export const dataFormService = {
         return await fetch(url, requestOptions);
     },
 
+    uniqueField: (params) => {
+        const [value, subObject, dataIndex, field, formName] = params;
+
+        const uid = getUniqueId(
+            formName,
+            `${subObject}#${dataIndex + 1}`,
+            field
+        );
+
+        const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
+
+        const objField = {
+            false: (uid, value) => {
+                return [{ uid, value }];
+            },
+            true: (uid, value) => fieldMapping[field](uid, value),
+        };
+
+        return objField[needMapping](uid, value);
+    },
+
+    infiniteField: (params) => {
+        const [values, subObject, dataIndex, field, formName] = params;
+
+        return values.map((value, vIndex) => {
+            const uid = getUniqueId(
+                formName,
+                `${subObject}#${dataIndex + 1}`,
+                field,
+                vIndex
+            );
+
+            return {
+                uid,
+                value,
+                infinite: true,
+            };
+        });
+    },
+
     subObjectsFields: (subObjects, formName) => {
         const subObjectsFields = [];
 
@@ -114,50 +159,19 @@ export const dataFormService = {
 
                     if (mapFields[field] && value) {
                         const infinite = isArray(value);
-
-                        // TODO refacto with obj
-                        if (infinite) {
-                            value.map((v, vIndex) => {
-                                const uid = getUniqueId(
-                                    formName,
-                                    `${subObject}#${dataIndex + 1}`,
-                                    field,
-                                    vIndex
-                                );
-                                subObjectsFields.push({
-                                    uid,
-                                    value: v,
-                                    infinite,
-                                });
-                            });
-                        } else {
-                            const uid = getUniqueId(
-                                formName,
-                                `${subObject}#${dataIndex + 1}`,
-                                field
-                            );
-
-                            const needMapping =
-                                Object.keys(fieldMapping).indexOf(field) > -1;
-
-                            const objField = {
-                                false: (uid, value) => {
-                                    return [{ uid, value }];
-                                },
-                                true: (uid, value) =>
-                                    fieldMapping[field](uid, value),
-                            };
-
-                            subObjectsFields.push(
-                                ...objField[needMapping](uid, value)
-                            );
-                        }
+                        subObjectsFields.push(
+                            ...fields[infinite](
+                                value,
+                                subObject,
+                                dataIndex,
+                                field,
+                                formName
+                            )
+                        );
                     }
                 }
             });
         }
-
-        console.log('==== subObjectsFields ==== ', subObjectsFields);
 
         return subObjectsFields;
     },
