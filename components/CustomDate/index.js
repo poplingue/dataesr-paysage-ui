@@ -1,6 +1,6 @@
 import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -14,6 +14,7 @@ import {
 import DBService from '../../services/DB.service';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
+import styles from './CustomDate.module.scss';
 
 export default function CustomDate({
     title,
@@ -41,70 +42,71 @@ export default function CustomDate({
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
 
-    const onChange = async (regex, fieldId, params) => {
-        const [value, updateCheck] = params;
-        const fieldValue = getFieldValue(forms, formName, uid) || 'xxxx-xx-xx';
-        const reg = new RegExp(regex);
-        const newValue = fieldValue.replace(reg, value);
-        const currentValue = fieldValue.match(reg);
-        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+    const updateDate = useCallback(
+        async (payload) => {
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-        // TODO manage select empty?
-        // TODO refacto with CustomSelect
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        // Save xxxx-xx-xx
-        if (currentValue[0] !== value) {
-            const payloadA = {
-                value: newValue,
-                uid,
-                formName,
-                unSaved: true,
-            };
+            if (checkStoreObject) {
+                await DBService.set(payload, formName);
+            }
+        },
+        [dispatch, formName, storeObjects]
+    );
 
-            if (value) {
-                dispatch({ type: 'UPDATE_FORM_FIELD', payload: payloadA });
+    const deleteDate = useCallback(
+        async (payload) => {
+            dispatch({ type: 'DELETE_FORM_FIELD', payload });
 
-                if (checkStoreObject) {
-                    await DBService.set(payloadA, formName).then(() => {
-                        // NotifService.techInfo('Select field updated');
-                    });
-                }
-            } else {
-                dispatch({ type: 'DELETE_FORM_FIELD', payload: payloadA });
+            await DBService.delete(uid, formName);
+        },
+        [dispatch, formName, uid]
+    );
 
-                await DBService.delete(uid, formName).then(() => {
-                    // NotifService.techInfo('Select field deleted');
+    const dispatchDate = useMemo(() => {
+        return {
+            true: (payload) => updateDate(payload),
+            false: (payload) => deleteDate(payload),
+        };
+    }, [deleteDate, updateDate]);
+
+    const onChange = useCallback(
+        async (regex, fieldId, params) => {
+            // TODO manage select empty?
+            const [value, updateCheck] = params;
+            const dateValue =
+                getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
+            const reg = new RegExp(regex);
+            const newValue = dateValue.replace(reg, value);
+            const currentValue = dateValue.match(reg);
+
+            // Save full date xxxx-xx-xx
+            console.log('==== LOG ==== ', value);
+
+            if (currentValue[0] !== value) {
+                await dispatchDate[!!value]({
+                    value: newValue,
+                    uid,
+                    formName,
+                    unSaved: true,
                 });
             }
+
+            // Save field (day, month or year)
+            await dispatchDate[!!value]({
+                value,
+                uid: getUniqueId(formName, subObject, fieldId),
+                formName,
+                unSaved: false,
+            });
 
             if (updateCheck !== undefined) {
                 setNewValueCheck(updateCheck);
             }
-        }
-
-        const payloadB = {
-            value,
-            uid: getUniqueId(formName, subObject, fieldId),
-            formName,
-            unSaved: false,
-        };
-
-        if (value) {
-            dispatch({ type: 'UPDATE_FORM_FIELD', payload: payloadB });
-
-            if (checkStoreObject) {
-                await DBService.set(payloadB, formName).then(() => {
-                    // NotifService.techInfo('Select field updated');
-                });
-            }
-        } else {
-            dispatch({ type: 'DELETE_FORM_FIELD', payload: payloadB });
-
-            await DBService.delete(uid, formName).then(() => {
-                // NotifService.techInfo('Select field deleted');
-            });
-        }
-    };
+        },
+        [dispatchDate, formName, forms, subObject, uid]
+    );
 
     const [dateData, setDateData] = useState([
         {
@@ -130,58 +132,75 @@ export default function CustomDate({
         },
     ]);
 
-    const automaticDate = (when) => {
+    const automaticDate = async (when) => {
         const now = new Date();
         let newDate;
+        const currentYear = now.getFullYear().toString();
+        const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+        const currentDay = now.getDate().toString().padStart(2, '0');
+        const camelTitle = camelCase(title);
+
         setNewValueCheck(!newValueCheck);
         updateValidSection(null, null);
 
+        // Save xxxx-xx-xx
+        const payload = {
+            value: `${currentYear}-${currentMonth}-${currentDay}`,
+            uid,
+            formName,
+            unSaved: true,
+        };
+
         if (when === 'today') {
+            await updateDate(payload);
+
             newDate = [
                 {
                     options: days,
-                    fieldId: `${camelCase(title)}Day`,
+                    fieldId: `${camelTitle}Day`,
                     title: `Jour`,
                     regex: '[^-]*$',
-                    selectedValue: now.getDate().toString(),
+                    selectedValue: currentDay,
                 },
                 {
                     options: months,
-                    fieldId: `${camelCase(title)}Month`,
+                    fieldId: `${camelTitle}Month`,
                     title: `Mois`,
                     regex: '(?<=-).*(?=-)',
-                    selectedValue: (now.getMonth() + 1).toString(),
+                    selectedValue: currentMonth,
                 },
                 {
                     options: years,
-                    fieldId: `${camelCase(title)}Year`,
+                    fieldId: `${camelTitle}Year`,
                     title: `Année`,
                     regex: '[\\s\\S]*?(?=-)',
-                    selectedValue: now.getFullYear().toString(),
+                    selectedValue: currentYear,
                 },
             ];
         } else {
+            await updateDate({ ...payload, value: `${currentYear}-01-01` });
+
             newDate = [
                 {
                     options: days,
-                    fieldId: `${camelCase(title)}Day`,
+                    fieldId: `${camelTitle}Day`,
                     title: `Jour`,
                     regex: '[^-]*$',
                     selectedValue: '01',
                 },
                 {
                     options: months,
-                    fieldId: `${camelCase(title)}Month`,
+                    fieldId: `${camelTitle}Month`,
                     title: `Mois`,
                     regex: '(?<=-).*(?=-)',
                     selectedValue: '01',
                 },
                 {
                     options: years,
-                    fieldId: `${camelCase(title)}Year`,
+                    fieldId: `${camelTitle}Year`,
                     title: `Année`,
                     regex: '[\\s\\S]*?(?=-)',
-                    selectedValue: now.getFullYear().toString(),
+                    selectedValue: currentYear,
                 },
             ];
         }
@@ -192,7 +211,12 @@ export default function CustomDate({
     return (
         <section className="wrapper-select">
             <Container fluid>
-                <Row gutters alignItems="middle">
+                <Row
+                    gutters
+                    alignItems="middle"
+                    className={styles.Background}
+                    spacing="mb-1v"
+                >
                     <Col n="12" spacing="pb-1w">
                         <Text spacing="mb-1w" size="md">
                             {title}

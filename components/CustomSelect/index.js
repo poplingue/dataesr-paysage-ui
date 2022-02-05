@@ -42,10 +42,39 @@ export default function CustomSelect({
 
     const { checkField, message, type } = useValidator(validatorConfig);
 
+    const updateSelect = async (payload) => {
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+        dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+
+        if (checkStoreObject) {
+            return await DBService.set(payload, formName).then(() => {
+                NotifService.techInfo('Select field updated');
+            });
+        }
+    };
+
+    const deleteSelect = useCallback(
+        async (payload) => {
+            dispatch({ type: 'DELETE_FORM_FIELD', payload });
+
+            await DBService.delete(uid, formName).then(() => {
+                NotifService.techInfo('Select field deleted');
+            });
+        },
+        [dispatch, formName, uid]
+    );
+
+    const dispatchSelect = useMemo(() => {
+        return {
+            true: (payload) => updateSelect(payload),
+            false: (payload) => deleteSelect(payload),
+        };
+    }, [deleteSelect, updateSelect]);
+
     const onSelectChange = useCallback(
         async (value) => {
             // TODO manage select empty?
-            const checkStoreObject = storeObjects.indexOf(formName) > -1;
             const payload = {
                 value,
                 uid,
@@ -53,23 +82,9 @@ export default function CustomSelect({
                 unSaved: true,
             };
 
-            if (value) {
-                dispatch({ type: 'UPDATE_FORM_FIELD', payload });
-
-                if (checkStoreObject) {
-                    await DBService.set(payload, formName).then(() => {
-                        NotifService.techInfo('Select field updated');
-                    });
-                }
-            } else {
-                dispatch({ type: 'DELETE_FORM_FIELD', payload });
-
-                await DBService.delete(uid, formName).then(() => {
-                    NotifService.techInfo('Select field deleted');
-                });
-            }
+            dispatchSelect[!!value](payload);
         },
-        [dispatch, formName, storeObjects, uid]
+        [dispatchSelect, formName, uid]
     );
 
     const onChangeObj = useMemo(() => {
@@ -135,7 +150,6 @@ export default function CustomSelect({
 
     const onChange = (e) => {
         const { value } = e.target;
-
         onChangeObj[!!customOnChange](value);
         handleValue(value);
         updateValidSection(null, null);
