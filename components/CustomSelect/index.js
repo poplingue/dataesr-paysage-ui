@@ -42,17 +42,20 @@ export default function CustomSelect({
 
     const { checkField, message, type } = useValidator(validatorConfig);
 
-    const updateSelect = async (payload) => {
-        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+    const updateSelect = useCallback(
+        async (payload) => {
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-        if (checkStoreObject) {
-            return await DBService.set(payload, formName).then(() => {
-                NotifService.techInfo('Select field updated');
-            });
-        }
-    };
+            if (checkStoreObject) {
+                return await DBService.set(payload, formName).then(() => {
+                    NotifService.techInfo('Select field updated');
+                });
+            }
+        },
+        [dispatch, formName, storeObjects]
+    );
 
     const deleteSelect = useCallback(
         async (payload) => {
@@ -83,6 +86,7 @@ export default function CustomSelect({
             };
 
             dispatchSelect[!!value](payload);
+            // await updateSelect(payload);
         },
         [dispatchSelect, formName, uid]
     );
@@ -103,7 +107,7 @@ export default function CustomSelect({
     );
 
     useEffect(() => {
-        if (newValue && newValueCheck) {
+        if (newValue !== undefined && newValueCheck) {
             onChangeObj[!!customOnChange](newValue, false);
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
@@ -143,7 +147,7 @@ export default function CustomSelect({
             );
             setOptions((prev) => [
                 ...prev,
-                { value: '', label: 'Select an option' },
+                { value: '', label: 'Sélectionnez...', disabled: true },
             ]);
         }
     }, [options, setOptions, staticValues, title]);
@@ -166,7 +170,10 @@ export default function CustomSelect({
                 messageType={type || undefined}
                 data-field={uid}
                 onChange={onChange}
-                selected={fieldValue || newValue || selectValue}
+                selected={
+                    fieldValue ||
+                    (newValue !== undefined ? newValue : selectValue)
+                }
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={title}
                 options={options}

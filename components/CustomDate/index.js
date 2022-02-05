@@ -2,6 +2,7 @@ import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import { fetchHelper } from '../../helpers/fetch';
 import grid from '../../helpers/imports';
 import {
     camelCase,
@@ -9,11 +10,15 @@ import {
     getFieldValue,
     getFormName,
     getUniqueId,
+    lastChar,
     range,
+    sliceEnd,
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
+import NotifService from '../../services/Notif.service';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
+import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './CustomDate.module.scss';
 
 export default function CustomDate({
@@ -32,7 +37,7 @@ export default function CustomDate({
     const years = range(1900, d.getFullYear(), true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const {
-        stateForm: { storeObjects, forms },
+        stateForm: { storeObjects, forms, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -42,6 +47,29 @@ export default function CustomDate({
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
     const camelValidator = camelCase(validatorId);
+    const initDateData = [
+        {
+            options: days,
+            fieldId: `${camelValidator}Day`,
+            title: `Jour`,
+            regex: '[^-]*$',
+            selectedValue: '',
+        },
+        {
+            options: months,
+            fieldId: `${camelValidator}Month`,
+            title: `Mois`,
+            regex: '(?<=-).*(?=-)',
+            selectedValue: '',
+        },
+        {
+            options: years,
+            fieldId: `${camelValidator}Year`,
+            title: `Année`,
+            regex: '[\\s\\S]*?(?=-)',
+            selectedValue: '',
+        },
+    ];
 
     const updateDate = useCallback(
         async (payload) => {
@@ -50,6 +78,7 @@ export default function CustomDate({
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             if (checkStoreObject) {
+                console.log('==== payload ==== ', payload.uid, payload.value);
                 await DBService.set(payload, formName);
             }
         },
@@ -59,7 +88,7 @@ export default function CustomDate({
     const deleteDate = useCallback(
         async (payload) => {
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
-
+            console.log('==== DELETE ==== ', payload.uid, payload.value);
             await DBService.delete(uid, formName);
         },
         [dispatch, formName, uid]
@@ -83,7 +112,7 @@ export default function CustomDate({
             const currentValue = dateValue.match(reg);
 
             // Save full date xxxx-xx-xx
-            if (currentValue[0] !== value) {
+            if (currentValue && currentValue[0] !== value) {
                 await dispatchDate[!!value]({
                     value: newValue,
                     uid,
@@ -106,30 +135,7 @@ export default function CustomDate({
         },
         [dispatchDate, formName, forms, subObject, uid]
     );
-
-    const [dateData, setDateData] = useState([
-        {
-            options: days,
-            fieldId: `${camelValidator}Day`,
-            title: `Jour`,
-            regex: '[^-]*$',
-            selectedValue: '',
-        },
-        {
-            options: months,
-            fieldId: `${camelValidator}Month`,
-            title: `Mois`,
-            regex: '(?<=-).*(?=-)',
-            selectedValue: '',
-        },
-        {
-            options: years,
-            fieldId: `${camelValidator}Year`,
-            title: `Année`,
-            regex: '[\\s\\S]*?(?=-)',
-            selectedValue: '',
-        },
-    ]);
+    const [dateData, setDateData] = useState(initDateData);
 
     const automaticDate = async (when) => {
         const now = new Date();
@@ -178,6 +184,7 @@ export default function CustomDate({
         } else {
             await updateDate({ ...payload, value: `${currentYear}-01-01` });
 
+            // TODO refacto
             newDate = [
                 {
                     options: days,
@@ -206,6 +213,42 @@ export default function CustomDate({
         setDateData(newDate);
     };
 
+    const reset = async () => {
+        const uids = [
+            uid,
+            getUniqueId(formName, subObject, `${camelValidator}Year`),
+            getUniqueId(formName, subObject, `${camelValidator}Day`),
+            getUniqueId(formName, subObject, `${camelValidator}Month`),
+        ];
+
+        dispatch({
+            type: 'DELETE_FORM_FIELD_LIST',
+            payload: {
+                uids,
+                formName,
+            },
+        });
+
+        await DBService.deleteList(uids, formName);
+
+        setDateData(initDateData);
+
+        const requestOptions = fetchHelper.requestOptions('PATCH', {
+            [validatorId]: null,
+        });
+        const subObjectType = sliceEnd(subObject);
+        const subObjectId = lastChar(subObject);
+
+        const response = await fetch(
+            `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,
+            requestOptions
+        );
+
+        await response.json();
+
+        NotifService.info('Date supprimée', 'valid');
+    };
+
     return (
         <section className="wrapper-select">
             <Container fluid>
@@ -223,7 +266,7 @@ export default function CustomDate({
                     <Col n="8 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
-                                <Col n="4 xl-12">
+                                <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
                                             section
@@ -232,7 +275,7 @@ export default function CustomDate({
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="4 xl-12">
+                                <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
                                             section
@@ -242,6 +285,9 @@ export default function CustomDate({
                                             automaticDate('firstJanuary')
                                         }
                                     />
+                                </Col>
+                                <Col n="3 xl-12">
+                                    <DeleteButton display onclick={reset} />
                                 </Col>
                             </Row>
                         </Container>
