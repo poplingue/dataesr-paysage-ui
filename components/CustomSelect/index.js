@@ -181,7 +181,7 @@ export default function CustomSelect({
 }
 
 CustomSelect.defaultProps = {
-    newValue: '',
+    newValue: undefined,
     newValueCheck: false,
     customOnChange: undefined,
     updateValidSection: () => {},

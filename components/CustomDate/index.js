@@ -86,7 +86,6 @@ export default function CustomDate({
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
-            // TODO manage select empty?
             const [value, updateCheck] = params;
             const dateValue =
                 getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
@@ -165,9 +164,9 @@ export default function CustomDate({
     const reset = async () => {
         const uids = [
             uid,
-            getUniqueId(formName, subObject, `${camelValidator}Year`),
             getUniqueId(formName, subObject, `${camelValidator}Day`),
             getUniqueId(formName, subObject, `${camelValidator}Month`),
+            getUniqueId(formName, subObject, `${camelValidator}Year`),
         ];
 
         dispatch({
@@ -182,8 +181,9 @@ export default function CustomDate({
 
         setDateData(initDateData);
 
+        // TODO move to ServiceForm
         const requestOptions = fetchHelper.requestOptions('PATCH', {
-            [validatorId]: null,
+            [validatorId]: '',
         });
         const subObjectType = sliceEnd(subObject);
         const subObjectId = lastChar(subObject);

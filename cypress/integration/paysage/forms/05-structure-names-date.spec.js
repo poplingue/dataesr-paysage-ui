@@ -124,8 +124,6 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure automatic today data', () => {
-        const now = new Date();
-
         cy.get('a[href="/update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');

@@ -122,8 +122,6 @@ const DBService = {
             // transaction completes
             txn.oncomplete = function () {
                 db.close();
-
-                return true;
             };
         };
     },

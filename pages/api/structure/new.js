@@ -36,7 +36,7 @@ async function handler(req, res) {
             promises.push(fetch(url, requestOptions));
         }
 
-        Promise.all(promises)
+        return Promise.all(promises)
             .then((resp) => {
                 //TODO return also structureSubObjects response
                 res.status(request.status).json(response);
