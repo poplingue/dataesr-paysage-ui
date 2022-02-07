@@ -109,11 +109,9 @@ const reducersForm = (state, action) => {
 
             for (let i = 0; i < uids.length; i = i + 1) {
                 const currentFieldIndex = uids[i];
-                const index = currentForm.findIndex((obj) => {
-                    const a = Object.entries(obj)[1][1];
-
-                    return obj.uid === currentFieldIndex;
-                });
+                const index = currentForm.findIndex(
+                    (obj) => obj.uid === currentFieldIndex
+                );
                 indexes.push(index);
             }
 

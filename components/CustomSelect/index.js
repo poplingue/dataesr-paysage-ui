@@ -77,7 +77,6 @@ export default function CustomSelect({
 
     const onSelectChange = useCallback(
         async (value) => {
-            // TODO manage select empty?
             const payload = {
                 value,
                 uid,
@@ -86,7 +85,6 @@ export default function CustomSelect({
             };
 
             dispatchSelect[!!value](payload);
-            // await updateSelect(payload);
         },
         [dispatchSelect, formName, uid]
     );

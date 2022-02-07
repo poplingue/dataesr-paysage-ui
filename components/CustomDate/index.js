@@ -47,29 +47,29 @@ export default function CustomDate({
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
     const camelValidator = camelCase(validatorId);
-    const initDateData = [
-        {
-            options: days,
-            fieldId: `${camelValidator}Day`,
-            title: `Jour`,
-            regex: '[^-]*$',
-            selectedValue: '',
-        },
-        {
-            options: months,
-            fieldId: `${camelValidator}Month`,
-            title: `Mois`,
-            regex: '(?<=-).*(?=-)',
-            selectedValue: '',
-        },
-        {
-            options: years,
-            fieldId: `${camelValidator}Year`,
-            title: `Année`,
-            regex: '[\\s\\S]*?(?=-)',
-            selectedValue: '',
-        },
-    ];
+    const daysObj = {
+        options: days,
+        fieldId: `${camelValidator}Day`,
+        title: `Jour`,
+        regex: '[^-]*$',
+        selectedValue: '',
+    };
+    const monthsObj = {
+        options: months,
+        fieldId: `${camelValidator}Month`,
+        title: `Mois`,
+        regex: '(?<=-).*(?=-)',
+        selectedValue: '',
+    };
+    const yearsObj = {
+        options: years,
+        fieldId: `${camelValidator}Year`,
+        title: `Année`,
+        regex: '[\\s\\S]*?(?=-)',
+        selectedValue: '',
+    };
+
+    const initDateData = [daysObj, monthsObj, yearsObj];
 
     const updateDate = useCallback(
         async (payload) => {
@@ -140,29 +140,10 @@ export default function CustomDate({
 
         if (when === 'today') {
             await updateDate(payload);
-
             newDate = [
-                {
-                    options: days,
-                    fieldId: `${camelValidator}Day`,
-                    title: `Jour`,
-                    regex: '[^-]*$',
-                    selectedValue: currentDay,
-                },
-                {
-                    options: months,
-                    fieldId: `${camelValidator}Month`,
-                    title: `Mois`,
-                    regex: '(?<=-).*(?=-)',
-                    selectedValue: currentMonth,
-                },
-                {
-                    options: years,
-                    fieldId: `${camelValidator}Year`,
-                    title: `Année`,
-                    regex: '[\\s\\S]*?(?=-)',
-                    selectedValue: currentYear,
-                },
+                { ...daysObj, selectedValue: currentDay },
+                { ...monthsObj, selectedValue: currentMonth },
+                { ...yearsObj, selectedValue: currentYear },
             ];
         } else {
             await updateDate({
@@ -171,29 +152,10 @@ export default function CustomDate({
                 unSaved: true,
             });
 
-            // TODO refacto
             newDate = [
-                {
-                    options: days,
-                    fieldId: `${camelValidator}Day`,
-                    title: `Jour`,
-                    regex: '[^-]*$',
-                    selectedValue: '01',
-                },
-                {
-                    options: months,
-                    fieldId: `${camelValidator}Month`,
-                    title: `Mois`,
-                    regex: '(?<=-).*(?=-)',
-                    selectedValue: '01',
-                },
-                {
-                    options: years,
-                    fieldId: `${camelValidator}Year`,
-                    title: `Année`,
-                    regex: '[\\s\\S]*?(?=-)',
-                    selectedValue: currentYear,
-                },
+                { ...daysObj, selectedValue: '01' },
+                { ...monthsObj, selectedValue: '01' },
+                { ...yearsObj, selectedValue: currentYear },
             ];
         }
 
@@ -256,7 +218,7 @@ export default function CustomDate({
                                 <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
-                                            section
+                                            validatorId
                                         )}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
@@ -265,7 +227,7 @@ export default function CustomDate({
                                 <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
-                                            section
+                                            validatorId
                                         )}`}
                                         title="1er janvier"
                                         onClick={() =>
@@ -274,7 +236,11 @@ export default function CustomDate({
                                     />
                                 </Col>
                                 <Col n="3 xl-12">
-                                    <DeleteButton display onclick={reset} />
+                                    <DeleteButton
+                                        display
+                                        onclick={reset}
+                                        title={validatorId}
+                                    />
                                 </Col>
                             </Row>
                         </Container>

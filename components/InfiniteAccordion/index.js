@@ -119,13 +119,11 @@ export default function InfiniteAccordion({
         // remove stored fields
         if (fieldsToDelete.length) {
             // global state
-            // TODO check still need fieldNumber??
             dispatch({
                 type: 'DELETE_FORM_FIELD_LIST',
                 payload: {
                     uids: fieldsToDelete,
                     formName,
-                    fieldsNumber: sections[subObjectType],
                 },
             });
 

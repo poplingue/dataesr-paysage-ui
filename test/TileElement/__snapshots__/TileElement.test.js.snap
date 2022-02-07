@@ -18,8 +18,9 @@ Object {
             class="fr-tile__title"
           >
             <a
+              aria-disabled="true"
               class="fr-tile__link"
-              href=""
+              role="link"
               target="_self"
             >
               Title 0
@@ -73,8 +74,9 @@ Object {
           class="fr-tile__title"
         >
           <a
+            aria-disabled="true"
             class="fr-tile__link"
-            href=""
+            role="link"
             target="_self"
           >
             Title 0
