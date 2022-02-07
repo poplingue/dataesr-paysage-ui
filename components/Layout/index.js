@@ -9,6 +9,9 @@ import {
     Tool,
     ToolItem,
     ToolItemGroup,
+    HeaderNav,
+    Header,
+    HeaderBody,
 } from '@dataesr/react-dsfr';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
@@ -37,15 +40,6 @@ const FooterTop = dynamic(() =>
 );
 const FooterTopCategory = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.FooterTopCategory)
-);
-const HeaderNav = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.HeaderNav)
-);
-const Header = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.Header)
-);
-const HeaderBody = dynamic(() =>
-    import('@dataesr/react-dsfr').then((mod) => mod.HeaderBody)
 );
 const Footer = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.Footer)
@@ -268,11 +262,6 @@ export default function Layout({ children, headTitle }) {
                         title="Aide"
                         asLink={<NavLink href="/help" />}
                         current={pathname.startsWith('/help')}
-                    />
-                    <NavItem
-                        title={user && `${user.firstName} ${user.lastName}`}
-                        asLink={<NavLink href="/profile" />}
-                        current={pathname.startsWith('/profile')}
                     />
                 </HeaderNav>
             </Header>

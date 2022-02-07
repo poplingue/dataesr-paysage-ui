@@ -110,6 +110,7 @@ const DBService = {
                 // TODO handle popup success
                 // console.log(event);
                 // event.target.result.close();
+                return event;
             };
 
             query.onerror = function (event) {

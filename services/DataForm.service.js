@@ -10,6 +10,8 @@ import {
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
+    startDate: 'startDate',
+    endDate: 'endDate',
     article: 'article',
     shortName: 'shortName',
     brandName: 'brandName',
@@ -27,7 +29,48 @@ const mapFields = {
     socialAccount: 'socialMedia.account',
 };
 
+const fieldMapping = {
+    endDate: (uid, value) => dataFormService.mapDate(uid, value),
+    startDate: (uid, value) => dataFormService.mapDate(uid, value),
+};
+
+const fields = {
+    true: (...params) => dataFormService.infiniteField(params),
+    false: (...params) => dataFormService.uniqueField(params),
+};
+
 export const dataFormService = {
+    mapDate: (uid, value) => {
+        let mapping = [];
+        const splitedDate = value.split('-');
+        const fieldId = {
+            0: 'Year',
+            1: 'Month',
+            2: 'Day',
+        };
+
+        mapping.push({ uid, value });
+
+        for (let i = 0; i < splitedDate.length; i = i + 1) {
+            mapping.push({ uid: `${uid}${fieldId[i]}`, value: splitedDate[i] });
+        }
+
+        return mapping;
+    },
+
+    clean: (field) => {
+        const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
+        const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
+
+        if (needClean) {
+            const value = field.value.replace(/(\-[a-z]).{1}|,/g, '');
+
+            return { ...field, value };
+        }
+
+        return field;
+    },
+
     familyFields: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
         const checkFamily = form.find((f) => f.infinite && f.unSaved);
@@ -74,6 +117,46 @@ export const dataFormService = {
         return await fetch(url, requestOptions);
     },
 
+    uniqueField: (params) => {
+        const [value, subObject, dataIndex, field, formName] = params;
+
+        const uid = getUniqueId(
+            formName,
+            `${subObject}#${dataIndex + 1}`,
+            field
+        );
+
+        const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
+
+        const objField = {
+            false: (uid, value) => {
+                return [{ uid, value }];
+            },
+            true: (uid, value) => fieldMapping[field](uid, value),
+        };
+
+        return objField[needMapping](uid, value);
+    },
+
+    infiniteField: (params) => {
+        const [values, subObject, dataIndex, field, formName] = params;
+
+        return values.map((value, vIndex) => {
+            const uid = getUniqueId(
+                formName,
+                `${subObject}#${dataIndex + 1}`,
+                field,
+                vIndex
+            );
+
+            return {
+                uid,
+                value,
+                infinite: true,
+            };
+        });
+    },
+
     subObjectsFields: (subObjects, formName) => {
         const subObjectsFields = [];
 
@@ -85,33 +168,20 @@ export const dataFormService = {
 
                 for (let j = 0; j < sections.length; j++) {
                     const field = sections[j];
+
                     const value = section[field];
 
                     if (mapFields[field] && value) {
                         const infinite = isArray(value);
-
-                        if (infinite) {
-                            value.map((v, vIndex) => {
-                                const uid = getUniqueId(
-                                    formName,
-                                    `${subObject}#${dataIndex + 1}`,
-                                    field,
-                                    vIndex
-                                );
-                                subObjectsFields.push({
-                                    uid,
-                                    value: v,
-                                    infinite,
-                                });
-                            });
-                        } else {
-                            const uid = getUniqueId(
-                                formName,
-                                `${subObject}#${dataIndex + 1}`,
-                                field
-                            );
-                            subObjectsFields.push({ uid, value });
-                        }
+                        subObjectsFields.push(
+                            ...fields[infinite](
+                                value,
+                                subObject,
+                                dataIndex,
+                                field,
+                                formName
+                            )
+                        );
                     }
                 }
             });
@@ -256,8 +326,6 @@ export const dataFormService = {
                 newForm.push(section);
             }
         }
-
-        console.log('==== newForm ==== ', newForm);
 
         return { form: newForm };
     },

@@ -61,7 +61,6 @@ export default function SwitchField({
                         title={title}
                         validatorId={validatorId}
                         staticValues={staticValues}
-                        index={index}
                         section={section}
                         subObject={subObject}
                     />
@@ -94,12 +93,11 @@ export default function SwitchField({
             case 'date':
                 return (
                     <CustomDate
+                        validatorId={validatorId}
                         updateValidSection={updateValidSection}
                         validatorConfig={validatorConfig}
                         title={title}
-                        validatorId={validatorId}
                         section={section}
-                        index={index}
                         subObject={subObject}
                     />
                 );

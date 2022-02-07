@@ -1,17 +1,33 @@
-import { useState } from 'react';
+import { Text } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useCallback, useContext, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { fetchHelper } from '../../helpers/fetch';
 import grid from '../../helpers/imports';
-import { camelCase, cleanString, range } from '../../helpers/utils';
+import {
+    camelCase,
+    cleanString,
+    getFieldValue,
+    getFormName,
+    getUniqueId,
+    lastChar,
+    range,
+    sliceEnd,
+} from '../../helpers/utils';
+import DBService from '../../services/DB.service';
+import NotifService from '../../services/Notif.service';
 import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
+import DeleteButton from '../InfiniteAccordion/DeleteButton';
+import styles from './CustomDate.module.scss';
 
 export default function CustomDate({
     title,
     section,
-    index,
     validatorConfig,
     updateValidSection,
-    validatorId,
     subObject,
+    validatorId,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -20,112 +36,198 @@ export default function CustomDate({
     const months = range(1, 12, true);
     const years = range(1900, d.getFullYear(), true);
     const [newValueCheck, setNewValueCheck] = useState(false);
-    const [dateData, setDateData] = useState([
-        {
-            options: days,
-            title: `${title} day`,
-            selectedValue: '',
-        },
-        {
-            options: months,
-            title: `${title} month`,
-            selectedValue: '',
-        },
-        {
-            options: years,
-            title: `${title} year`,
-            selectedValue: '',
-        },
-    ]);
+    const {
+        stateForm: { storeObjects, forms, updateObjectId },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+    const uid = getUniqueId(formName, subObject, validatorId);
+    const camelValidator = camelCase(validatorId);
+    const daysObj = {
+        options: days,
+        fieldId: `${camelValidator}Day`,
+        title: `Jour`,
+        regex: '[^-]*$',
+        selectedValue: '',
+    };
+    const monthsObj = {
+        options: months,
+        fieldId: `${camelValidator}Month`,
+        title: `Mois`,
+        regex: '(?<=-).*(?=-)',
+        selectedValue: '',
+    };
+    const yearsObj = {
+        options: years,
+        fieldId: `${camelValidator}Year`,
+        title: `Année`,
+        regex: '[\\s\\S]*?(?=-)',
+        selectedValue: '',
+    };
 
-    const automaticDate = (when) => {
+    const initDateData = [daysObj, monthsObj, yearsObj];
+
+    const updateDate = useCallback(
+        async (payload) => {
+            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+            if (checkStoreObject) {
+                await DBService.set(payload, formName);
+            }
+        },
+        [dispatch, formName, storeObjects]
+    );
+
+    const onChange = useCallback(
+        async (regex, fieldId, params) => {
+            const [value, updateCheck] = params;
+            const dateValue =
+                getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
+            const reg = new RegExp(regex);
+            const newValue = dateValue.replace(reg, value);
+            const currentValue = dateValue.match(reg);
+
+            // Save full date xxxx-xx-xx
+            if (currentValue && currentValue[0] !== value) {
+                await updateDate({
+                    value: newValue,
+                    uid,
+                    formName,
+                    unSaved: true,
+                });
+            }
+
+            // Save field (day, month or year)
+            await updateDate({
+                value,
+                uid: getUniqueId(formName, subObject, fieldId),
+                formName,
+                unSaved: false,
+            });
+
+            if (updateCheck !== undefined) {
+                setNewValueCheck(updateCheck);
+            }
+        },
+        [formName, forms, subObject, uid, updateDate]
+    );
+    const [dateData, setDateData] = useState(initDateData);
+
+    const automaticDate = async (when) => {
         const now = new Date();
-        let newDate = null;
+        let newDate;
+        const currentYear = now.getFullYear().toString();
+        const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
+        const currentDay = now.getDate().toString().padStart(2, '0');
+
         setNewValueCheck(!newValueCheck);
         updateValidSection(null, null);
 
+        // Save xxxx-xx-xx
+        const payload = {
+            value: `${currentYear}-${currentMonth}-${currentDay}`,
+            uid,
+            formName,
+            unSaved: true,
+        };
+
         if (when === 'today') {
+            await updateDate(payload);
             newDate = [
-                {
-                    options: days,
-                    title: `${title} day`,
-                    selectedValue: now.getDate().toString(),
-                },
-                {
-                    options: months,
-                    title: `${title} month`,
-                    selectedValue: (now.getMonth() + 1).toString(),
-                },
-                {
-                    options: years,
-                    title: `${title} year`,
-                    selectedValue: now.getFullYear().toString(),
-                },
+                { ...daysObj, selectedValue: currentDay },
+                { ...monthsObj, selectedValue: currentMonth },
+                { ...yearsObj, selectedValue: currentYear },
             ];
         } else {
+            await updateDate({
+                ...payload,
+                value: `${currentYear}-01-01`,
+                unSaved: true,
+            });
+
             newDate = [
-                {
-                    options: days,
-                    title: `${title} day`,
-                    selectedValue: '01',
-                },
-                {
-                    options: months,
-                    title: `${title} month`,
-                    selectedValue: '01',
-                },
-                {
-                    options: years,
-                    title: `${title} year`,
-                    selectedValue: now.getFullYear().toString(),
-                },
+                { ...daysObj, selectedValue: '01' },
+                { ...monthsObj, selectedValue: '01' },
+                { ...yearsObj, selectedValue: currentYear },
             ];
         }
 
         setDateData(newDate);
     };
 
+    const reset = async () => {
+        const uids = [
+            uid,
+            getUniqueId(formName, subObject, `${camelValidator}Day`),
+            getUniqueId(formName, subObject, `${camelValidator}Month`),
+            getUniqueId(formName, subObject, `${camelValidator}Year`),
+        ];
+
+        dispatch({
+            type: 'DELETE_FORM_FIELD_LIST',
+            payload: {
+                uids,
+                formName,
+            },
+        });
+
+        await DBService.deleteList(uids, formName);
+
+        setDateData(initDateData);
+
+        // TODO move to ServiceForm
+        const requestOptions = fetchHelper.requestOptions('PATCH', {
+            [validatorId]: '',
+        });
+        const subObjectType = sliceEnd(subObject);
+        const subObjectId = lastChar(subObject);
+
+        const response = await fetch(
+            `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,
+            requestOptions
+        );
+
+        await response.json();
+
+        NotifService.info('Date supprimée', 'valid');
+    };
+
     return (
         <section className="wrapper-select">
             <Container fluid>
-                <Row gutters alignItems="middle">
-                    {dateData.map((select) => {
-                        const { title, selectedValue, options } = select;
-
-                        return (
-                            <Col n="12 md-2" key={title} spacing="py-1w">
-                                <CustomSelect
-                                    updateValidSection={updateValidSection}
-                                    validatorConfig={validatorConfig}
-                                    section={section}
-                                    index={index}
-                                    title={title}
-                                    validatorId={camelCase(title)}
-                                    staticValues={options}
-                                    newValue={selectedValue}
-                                    newValueCheck={newValueCheck}
-                                    updateCheck={(v) => setNewValueCheck(v)}
-                                    subObject={subObject}
-                                />
-                            </Col>
-                        );
-                    })}
-                    <Col n="6">
+                <Row
+                    gutters
+                    alignItems="middle"
+                    className={styles.Background}
+                    spacing="mb-1v"
+                >
+                    <Col n="12" spacing="pb-1w">
+                        <Text spacing="mb-1w" size="md">
+                            {title}
+                        </Text>
+                    </Col>
+                    <Col n="8 xl-3" spacing="p-1w">
                         <Container fluid>
-                            <Row>
-                                <Col n="4">
+                            <Row gutters>
+                                <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
-                                            section
+                                            validatorId
                                         )}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="4">
+                                <Col n="3 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
-                                            section
+                                            validatorId
                                         )}`}
                                         title="1er janvier"
                                         onClick={() =>
@@ -133,8 +235,53 @@ export default function CustomDate({
                                         }
                                     />
                                 </Col>
+                                <Col n="3 xl-12">
+                                    <DeleteButton
+                                        display
+                                        onclick={reset}
+                                        title={validatorId}
+                                    />
+                                </Col>
                             </Row>
                         </Container>
+                    </Col>
+                    <Col n="12 xl-9">
+                        <Row gutters>
+                            {dateData.map((select) => {
+                                const {
+                                    selectedValue,
+                                    options,
+                                    regex,
+                                    fieldId,
+                                    title,
+                                } = select;
+
+                                return (
+                                    <Col
+                                        n="12 xl-4"
+                                        key={title}
+                                        spacing="py-1w"
+                                    >
+                                        <CustomSelect
+                                            customOnChange={(...params) =>
+                                                onChange(regex, fieldId, params)
+                                            }
+                                            updateValidSection={
+                                                updateValidSection
+                                            }
+                                            validatorConfig={validatorConfig}
+                                            section={section}
+                                            title={title}
+                                            validatorId={fieldId}
+                                            staticValues={options}
+                                            newValue={selectedValue}
+                                            newValueCheck={newValueCheck}
+                                            subObject={subObject}
+                                        />
+                                    </Col>
+                                );
+                            })}
+                        </Row>
                     </Col>
                 </Row>
             </Container>

@@ -122,7 +122,9 @@ export function removeKey(obj, keyToDelete) {
 export function range(min, max, string) {
     return Array(max - min + 1)
         .fill(0)
-        .map((_, i) => (string ? (i + min).toString() : i + min));
+        .map((_, i) =>
+            string ? (i + min).toString().padStart(2, '0') : i + min
+        );
 }
 
 /**

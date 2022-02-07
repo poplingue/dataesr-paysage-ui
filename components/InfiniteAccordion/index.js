@@ -124,7 +124,6 @@ export default function InfiniteAccordion({
                 payload: {
                     uids: fieldsToDelete,
                     formName,
-                    fieldsNumber: sections[subObjectType],
                 },
             });
 

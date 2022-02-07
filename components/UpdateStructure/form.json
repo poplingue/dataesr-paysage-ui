@@ -62,12 +62,12 @@
             "validatorId": "otherName"
           },
           {
-            "title": "Start",
+            "title": "Date de début",
             "type": "date",
             "validatorId": "startDate"
           },
           {
-            "title": "End",
+            "title": "Date de fin",
             "type": "date",
             "validatorId": "endDate"
           }
