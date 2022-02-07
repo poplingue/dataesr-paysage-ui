@@ -1,6 +1,6 @@
 import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { fetchHelper } from '../../helpers/fetch';
 import grid from '../../helpers/imports';
@@ -78,28 +78,11 @@ export default function CustomDate({
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             if (checkStoreObject) {
-                console.log('==== payload ==== ', payload.uid, payload.value);
                 await DBService.set(payload, formName);
             }
         },
         [dispatch, formName, storeObjects]
     );
-
-    const deleteDate = useCallback(
-        async (payload) => {
-            dispatch({ type: 'DELETE_FORM_FIELD', payload });
-            console.log('==== DELETE ==== ', payload.uid, payload.value);
-            await DBService.delete(uid, formName);
-        },
-        [dispatch, formName, uid]
-    );
-
-    const dispatchDate = useMemo(() => {
-        return {
-            true: (payload) => updateDate(payload),
-            false: (payload) => deleteDate(payload),
-        };
-    }, [deleteDate, updateDate]);
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
@@ -113,7 +96,7 @@ export default function CustomDate({
 
             // Save full date xxxx-xx-xx
             if (currentValue && currentValue[0] !== value) {
-                await dispatchDate[!!value]({
+                await updateDate({
                     value: newValue,
                     uid,
                     formName,
@@ -122,7 +105,7 @@ export default function CustomDate({
             }
 
             // Save field (day, month or year)
-            await dispatchDate[!!value]({
+            await updateDate({
                 value,
                 uid: getUniqueId(formName, subObject, fieldId),
                 formName,
@@ -133,7 +116,7 @@ export default function CustomDate({
                 setNewValueCheck(updateCheck);
             }
         },
-        [dispatchDate, formName, forms, subObject, uid]
+        [formName, forms, subObject, uid, updateDate]
     );
     const [dateData, setDateData] = useState(initDateData);
 
@@ -182,7 +165,11 @@ export default function CustomDate({
                 },
             ];
         } else {
-            await updateDate({ ...payload, value: `${currentYear}-01-01` });
+            await updateDate({
+                ...payload,
+                value: `${currentYear}-01-01`,
+                unSaved: true,
+            });
 
             // TODO refacto
             newDate = [

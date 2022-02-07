@@ -2,11 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import {
-    cleanString,
-    getFormName,
-    getUniqueId,
-} from '../../helpers/utils';
+import { cleanString, getFormName, getUniqueId } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -118,6 +114,7 @@ export default function FormAccordionItem({
 
             const filteredForm = form
                 .filter(dataFormService.familyFields)
+                .map(dataFormService.clean)
                 .filter((f) => {
                     return f.uid.indexOf(subObject) > -1;
                 });
