@@ -2,9 +2,9 @@ import { Col, Container, Icon, Row, Text } from '@dataesr/react-dsfr';
 import { cloneElement } from 'react';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import useViewport from '../../hooks/useViewport';
-import styles from './UnSavedField.module.scss';
+import styles from './WrapperField.module.scss';
 
-function UnSavedField({ children, unSaved, inline }) {
+function WrapperField({ children, unSaved, inline }) {
     const { style: orange } = useCSSProperty('--warning-main-525');
     const { mobile, tablet } = useViewport();
 
@@ -31,7 +31,7 @@ function UnSavedField({ children, unSaved, inline }) {
                         iconPosition={inlineActive ? 'left' : 'center'}
                     >
                         <div
-                            className={`${styles.UnSaved} ${
+                            className={`${styles.UnSavedText} ${
                                 inlineActive ? '' : 'txt-center'
                             }`}
                         >
@@ -50,4 +50,4 @@ function UnSavedField({ children, unSaved, inline }) {
     );
 }
 
-export default UnSavedField;
+export default WrapperField;

@@ -14,7 +14,7 @@ import {
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import UnSavedField from '../UnSavedField';
+import WrapperField from '../WrapperField';
 
 export default function CustomSelect({
     title,
@@ -165,7 +165,7 @@ export default function CustomSelect({
     }, [type, uid, updateValidSection]);
 
     return (
-        <UnSavedField
+        <WrapperField
             unSaved={unSaved}
             inline={matchRegex(`Day|Year|Month$`, uid)}
         >
@@ -184,7 +184,7 @@ export default function CustomSelect({
                     options={options}
                 />
             </section>
-        </UnSavedField>
+        </WrapperField>
     );
 }
 

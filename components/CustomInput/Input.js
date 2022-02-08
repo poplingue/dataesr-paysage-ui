@@ -11,7 +11,7 @@ import {
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
-import UnSavedField from '../UnSavedField';
+import WrapperField from '../WrapperField';
 
 function Input({
     label,
@@ -63,7 +63,7 @@ function Input({
                 payload: { ...payload, formName },
             });
 
-            // TODO add unSaved to Select, Radio etc.
+            // TODO add unSaved Radio
             if (checkStoreObject) {
                 await DBService.set(payload, formName);
             }
@@ -108,7 +108,7 @@ function Input({
     }, [type, uid, updateValidSection]);
 
     return (
-        <UnSavedField unSaved={unSaved && textValue}>
+        <WrapperField unSaved={unSaved && textValue}>
             <TextInput
                 message={message}
                 messageType={type}
@@ -120,7 +120,7 @@ function Input({
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={label}
             />
-        </UnSavedField>
+        </WrapperField>
     );
 }
 
