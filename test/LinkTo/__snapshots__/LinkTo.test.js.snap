@@ -12,6 +12,7 @@ exports[`<LinkTo /> renders correctly LinkTo 1`] = `
     <span>
       Ceci est mon texte
       <span
+        aria-hidden={true}
         className="ri-lg icon-right ds-fr--v-middle ri-arrow-right-line"
       />
     </span>
