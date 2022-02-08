@@ -2,6 +2,9 @@ import {
     FooterBodyItem,
     FooterCopy,
     FooterLink,
+    Header,
+    HeaderBody,
+    HeaderNav,
     Logo,
     NavItem,
     NavSubItem,
@@ -9,9 +12,6 @@ import {
     Tool,
     ToolItem,
     ToolItemGroup,
-    HeaderNav,
-    Header,
-    HeaderBody,
 } from '@dataesr/react-dsfr';
 import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
