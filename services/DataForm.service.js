@@ -52,13 +52,17 @@ export const dataFormService = {
         mapping.push({ uid, value });
 
         for (let i = 0; i < splitedDate.length; i = i + 1) {
-            mapping.push({ uid: `${uid}${fieldId[i]}`, value: splitedDate[i] });
+            mapping.push({
+                uid: `${uid}${fieldId[i]}`,
+                value: splitedDate[i],
+                unSaved: false,
+            });
         }
 
         return mapping;
     },
 
-    clean: (field) => {
+    cleanDateFormat: (field) => {
         const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
         const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
 
@@ -71,7 +75,11 @@ export const dataFormService = {
         return field;
     },
 
-    familyFields: (field, index, form) => {
+    checkDateField: (field) => !matchRegex(`Day|Year|Month$`, field.uid),
+
+    bySubObject: (field, subObject) => field.uid.indexOf(subObject) > -1,
+
+    byInfiniteFamily: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
         const checkFamily = form.find((f) => f.infinite && f.unSaved);
 

@@ -70,7 +70,10 @@ function CustomRadio({
             );
         }
 
-        checkField(getFieldValue(forms, formName, uid), 'silent');
+        checkField({
+            value: getFieldValue(forms, formName, uid),
+            mode: 'silent',
+        });
     }, [
         checkField,
         formName,
@@ -85,7 +88,7 @@ function CustomRadio({
     const onChange = (e) => {
         const { value } = e.target;
         onRadioChange(value);
-        checkField(value);
+        checkField({ value });
         updateValidSection(null, null);
     };
 

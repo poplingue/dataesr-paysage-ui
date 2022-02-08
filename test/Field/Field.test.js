@@ -44,7 +44,7 @@ describe('Field component', () => {
         const setState = jest.fn();
         React.useState.mockImplementation((init) => [init, setState]);
         render(
-            <DeleteButton display title="title" index="1" onclick={() => {}} />
+            <DeleteButton display title="title" index={1} onClick={() => {}} />
         );
 
         expect(screen.getByTestId('btn-delete-title#1')).toBeVisible();

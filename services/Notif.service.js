@@ -23,7 +23,7 @@ const NotifService = {
                     icon: '☀️',
                     style: {
                         fontSize: 14,
-                        background: bgValid,
+                        background: bgNeutral,
                     },
                 },
                 loading: {

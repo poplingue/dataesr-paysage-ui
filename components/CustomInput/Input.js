@@ -3,9 +3,15 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import {
+    getFieldValue,
+    getFormName,
+    getUniqueId,
+    isFieldUnSaved,
+} from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
+import WrapperField from '../WrapperField';
 
 function Input({
     label,
@@ -38,29 +44,28 @@ function Input({
         infinite ? index : null
     );
 
+    const currentValue = getFieldValue(forms, formName, uid);
+    const unSaved = isFieldUnSaved(forms, formName, uid);
+
     const saveValue = useCallback(
         async (value) => {
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
             const payload = {
                 value,
                 uid,
-                formName,
                 infinite,
+                unSaved: true,
             };
 
-            dispatch({ type: 'UPDATE_FORM_FIELD', payload });
+            dispatch({
+                type: 'UPDATE_FORM_FIELD',
+                payload: { ...payload, formName },
+            });
 
-            // TODO add unSaved to Select, Radio etc.
+            // TODO add unSaved Radio
             if (checkStoreObject) {
-                await DBService.set(
-                    {
-                        value,
-                        uid,
-                        infinite,
-                        unSaved: true,
-                    },
-                    formName
-                );
+                await DBService.set(payload, formName);
             }
         },
         [dispatch, formName, infinite, storeObjects, uid]
@@ -68,7 +73,7 @@ function Input({
 
     const onChange = async (e) => {
         const { value } = e.target;
-        checkField(value);
+        checkField({ value });
         setTextValue(value);
         updateValidSection(null, null);
 
@@ -89,23 +94,21 @@ function Input({
 
     useEffect(() => {
         // init check validity field
-        checkField(textValue || '');
+        checkField({ value: textValue || '' });
     }, [checkField, textValue]);
 
     useEffect(() => {
-        const current = getFieldValue(forms, formName, uid);
-
-        if (current && textValue !== current) {
-            setTextValue(current);
+        if (textValue !== currentValue) {
+            setTextValue(currentValue);
         }
-    }, [formName, forms, textValue, uid]);
+    }, [currentValue, formName, forms, textValue, uid]);
 
     useEffect(() => {
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
     return (
-        <>
+        <WrapperField unSaved={unSaved && textValue}>
             <TextInput
                 message={message}
                 messageType={type}
@@ -117,7 +120,7 @@ function Input({
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                 label={label}
             />
-        </>
+        </WrapperField>
     );
 }
 

@@ -108,7 +108,6 @@ const DBService = {
 
             query.onsuccess = function (event) {
                 // TODO handle popup success
-                // console.log(event);
                 // event.target.result.close();
                 return event;
             };

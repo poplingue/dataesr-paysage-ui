@@ -8,10 +8,13 @@ import {
     getForm,
     getFormName,
     getUniqueId,
+    isFieldUnSaved,
+    matchRegex,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
+import WrapperField from '../WrapperField';
 
 export default function CustomSelect({
     title,
@@ -39,7 +42,7 @@ export default function CustomSelect({
     const [selectValue, setSelectValue] = useState(
         newValue || fieldValue || ''
     );
-
+    const unSaved = isFieldUnSaved(forms, formName, uid);
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const updateSelect = useCallback(
@@ -98,7 +101,7 @@ export default function CustomSelect({
 
     const handleValue = useCallback(
         (value) => {
-            checkField(value, 'silent');
+            checkField({ value, mode: 'silent' });
             setSelectValue(value);
         },
         [checkField]
@@ -111,7 +114,6 @@ export default function CustomSelect({
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
     useEffect(() => {
-        const fieldValue = getFieldValue(forms, formName, uid);
         const mustBeUpdated = selectValue !== fieldValue;
 
         const handleValueObj = {
@@ -125,8 +127,9 @@ export default function CustomSelect({
                 !selectValue) ||
             mustBeUpdated;
 
-        handleValueObj[check](fieldValue || selectValue);
+        handleValueObj[check](fieldValue);
     }, [
+        fieldValue,
         formName,
         forms,
         handleValue,
@@ -162,21 +165,26 @@ export default function CustomSelect({
     }, [type, uid, updateValidSection]);
 
     return (
-        <section className="wrapper-select">
-            <Select
-                message={message}
-                messageType={type || undefined}
-                data-field={uid}
-                onChange={onChange}
-                selected={
-                    fieldValue ||
-                    (newValue !== undefined ? newValue : selectValue)
-                }
-                hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
-                label={title}
-                options={options}
-            />
-        </section>
+        <WrapperField
+            unSaved={unSaved}
+            inline={matchRegex(`Day|Year|Month$`, uid)}
+        >
+            <section className="wrapper-select">
+                <Select
+                    message={message}
+                    messageType={type || undefined}
+                    data-field={uid}
+                    onChange={onChange}
+                    selected={
+                        fieldValue ||
+                        (newValue !== undefined ? newValue : selectValue)
+                    }
+                    hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
+                    label={title}
+                    options={options}
+                />
+            </section>
+        </WrapperField>
     );
 }
 

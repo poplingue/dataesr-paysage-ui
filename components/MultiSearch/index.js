@@ -80,7 +80,7 @@ function MultiSearch({
             );
         }
 
-        checkField(newValue.join(' '));
+        checkField({ value: newValue.join(' ') });
         updateValidSection(null, null);
     };
 

@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString, getFormName, getUniqueId } from '../../helpers/utils';
+import { cleanString, getFormName, getSection } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -30,7 +30,7 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId, forms },
+        stateForm: { validSections, updateObjectId, savingSections },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -38,13 +38,10 @@ export default function FormAccordionItem({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const sectionName = useMemo(
-        () => getUniqueId(formName, subObject),
-        [formName, subObject]
-    );
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
+    const { style: orange } = useCSSProperty('--warning-main-525');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
@@ -52,6 +49,10 @@ export default function FormAccordionItem({
             const title = cleanString(newTitle);
             const section = validSections[title];
             let payload = null;
+
+            if (savingSections.indexOf(subObject) > -1) {
+                setDisabled(false);
+            }
 
             if (!id && !validType && disabled) {
                 setDisabled(false);
@@ -113,32 +114,48 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
 
             const filteredForm = form
-                .filter(dataFormService.familyFields)
-                .map(dataFormService.clean)
-                .filter((f) => {
-                    return f.uid.indexOf(subObject) > -1;
-                });
+                .filter((field) =>
+                    dataFormService.bySubObject(field, subObject)
+                )
+                .filter(dataFormService.byInfiniteFamily);
+
+            const cleanedForm = filteredForm
+                .filter(dataFormService.checkDateField)
+                .map(dataFormService.cleanDateFormat);
 
             dataFormService
-                .save(filteredForm, updateObjectId, subObject)
+                .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
                     for (let i = 0; i < filteredForm.length; i = i + 1) {
                         const uid = filteredForm[i].uid;
+                        const section = getSection(uid);
 
-                        if (uid.startsWith(sectionName)) {
-                            DBService.set(
-                                {
-                                    ...filteredForm[i],
-                                    unSaved: false,
-                                },
-                                formName
-                            ).then(() => {
-                                NotifService.info(
-                                    'Données sauvegardées',
-                                    'valid'
-                                );
-                            });
-                        }
+                        dispatch({
+                            type: 'UPDATE_FORM_FIELD',
+                            payload: {
+                                value: filteredForm[i].value,
+                                uid,
+                                formName,
+                                unSaved: false,
+                            },
+                        });
+
+                        dispatch({
+                            type: 'DELETE_SAVING_SECTION',
+                            payload: { section },
+                        });
+
+                        setDisabled(true);
+
+                        DBService.set(
+                            {
+                                ...filteredForm[i],
+                                unSaved: false,
+                            },
+                            formName
+                        ).then(() => {
+                            NotifService.info('Données sauvegardées', 'valid');
+                        });
                     }
                 })
                 .catch((err) => {
@@ -150,6 +167,25 @@ export default function FormAccordionItem({
     const onSubmit = (e) => {
         e.preventDefault();
         save();
+    };
+
+    const resetSection = async () => {
+        const form = await DBService.getAllObjects(formName, true);
+        const uids = form.flatMap((f) => {
+            const { uid, unSaved } = f;
+
+            return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
+        });
+
+        dispatch({
+            type: 'DELETE_FORM_FIELD_LIST',
+            payload: {
+                uids,
+                formName,
+            },
+        });
+
+        await DBService.deleteList(uids, formName);
     };
 
     return (
@@ -195,7 +231,7 @@ export default function FormAccordionItem({
                             display={deletable}
                             title={title}
                             index={index}
-                            onclick={async () =>
+                            onClick={async () =>
                                 await deleteSection(
                                     cleanString(subObject.slice(0, -2)),
                                     index,
@@ -204,6 +240,17 @@ export default function FormAccordionItem({
                             }
                         />
                         {/* TODO remove data-testId */}
+                        <Col n="2" className="txt-right">
+                            <FieldButton
+                                onClick={resetSection}
+                                disabled={disabled}
+                                colors={disabled ? [] : [white, orange]}
+                                title="Reset"
+                                dataTestId={`${cleanString(
+                                    newTitle
+                                )}-resetSection-button`}
+                            />
+                        </Col>
                         <Col n="2" className="txt-right">
                             <FieldButton
                                 submit

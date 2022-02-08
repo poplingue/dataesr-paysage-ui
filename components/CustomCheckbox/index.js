@@ -82,7 +82,7 @@ function CustomCheckbox({
             }
         }
 
-        checkField(newValues.join(' '));
+        checkField({ value: newValues.join(' ') });
         updateValidSection(null, null);
     };
 
@@ -119,7 +119,10 @@ function CustomCheckbox({
             update = false;
         }
 
-        checkField(getFieldValue(forms, formName, uid), 'silent');
+        checkField({
+            value: getFieldValue(forms, formName, uid),
+            mode: 'silent',
+        });
     }, [checkField, checkboxValues, formName, forms, uid]);
 
     useEffect(() => {

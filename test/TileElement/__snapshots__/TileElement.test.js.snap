@@ -49,6 +49,7 @@ Object {
               >
                 <span>
                   <span
+                    aria-hidden="false"
                     class="ri-2x icon-left ds-fr--v-middle ri-focus-2-fill"
                     style="color: rgb(0, 0, 145);"
                   />
@@ -105,6 +106,7 @@ Object {
             >
               <span>
                 <span
+                  aria-hidden="false"
                   class="ri-2x icon-left ds-fr--v-middle ri-focus-2-fill"
                   style="color: rgb(0, 0, 145);"
                 />

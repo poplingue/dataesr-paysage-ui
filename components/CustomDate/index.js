@@ -14,6 +14,7 @@ import {
     range,
     sliceEnd,
 } from '../../helpers/utils';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import CustomSelect from '../CustomSelect';
@@ -34,7 +35,7 @@ export default function CustomDate({
     const d = new Date();
     const days = range(1, 31, true);
     const months = range(1, 12, true);
-    const years = range(1900, d.getFullYear(), true);
+    const years = range(1930, 2030, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const {
         stateForm: { storeObjects, forms, updateObjectId },
@@ -108,7 +109,7 @@ export default function CustomDate({
                 value,
                 uid: getUniqueId(formName, subObject, fieldId),
                 formName,
-                unSaved: false,
+                unSaved: true,
             });
 
             if (updateCheck !== undefined) {
@@ -212,10 +213,10 @@ export default function CustomDate({
                             {title}
                         </Text>
                     </Col>
-                    <Col n="8 xl-3" spacing="p-1w">
+                    <Col n="10 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
                                             validatorId
@@ -224,7 +225,7 @@ export default function CustomDate({
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
                                             validatorId
@@ -235,10 +236,14 @@ export default function CustomDate({
                                         }
                                     />
                                 </Col>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <DeleteButton
+                                        background={
+                                            useCSSProperty('--grey-925-125')
+                                                .style
+                                        }
                                         display
-                                        onclick={reset}
+                                        onClick={reset}
                                         title={validatorId}
                                     />
                                 </Col>

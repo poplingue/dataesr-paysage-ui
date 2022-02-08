@@ -170,6 +170,17 @@ export function getForm(forms, name) {
 
 /**
  *
+ * @param uid
+ * @returns {RegExpExecArray}
+ */
+export function getSection(uid) {
+    const match = /(?<=\@).+?(?=\_)/.exec(uid);
+
+    return match && match[0];
+}
+
+/**
+ *
  * @param forms
  * @param name
  * @param id
@@ -185,6 +196,25 @@ export function getFieldValue(forms, name, id) {
     }
 
     return fieldValue ? fieldValue.value : '';
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {*}
+ */
+export function isFieldUnSaved(forms, name, id) {
+    let fieldUnSaved = { unSaved: false };
+
+    if (getForm(forms, name) && id) {
+        fieldUnSaved = getForm(forms, name).find((field) => {
+            return field.uid === id;
+        });
+    }
+
+    return fieldUnSaved && fieldUnSaved.unSaved;
 }
 
 /**
