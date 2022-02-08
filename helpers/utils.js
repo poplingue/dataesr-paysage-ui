@@ -189,6 +189,25 @@ export function getFieldValue(forms, name, id) {
 
 /**
  *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {*}
+ */
+export function isFieldUnSaved(forms, name, id) {
+    let fieldUnSaved = { unSaved: false };
+
+    if (getForm(forms, name) && id) {
+        fieldUnSaved = getForm(forms, name).find((field) => {
+            return field.uid === id;
+        });
+    }
+
+    return fieldUnSaved && fieldUnSaved.unSaved;
+}
+
+/**
+ *
  * @param property
  * @returns {string}
  */

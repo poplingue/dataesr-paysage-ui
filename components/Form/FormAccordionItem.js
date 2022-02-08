@@ -114,32 +114,40 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
 
             const filteredForm = form
-                .filter(dataFormService.checkFields)
-                .map(dataFormService.cleanDate)
-                .filter((f) => {
-                    return f.uid.indexOf(subObject) > -1;
-                });
+                .filter((field) =>
+                    dataFormService.bySubObject(field, subObject)
+                )
+                .filter(dataFormService.byInfiniteFamily);
+
+            const cleanedForm = filteredForm
+                .filter(dataFormService.checkDateField)
+                .map(dataFormService.cleanDateFormat);
 
             dataFormService
-                .save(filteredForm, updateObjectId, subObject)
+                .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
                     for (let i = 0; i < filteredForm.length; i = i + 1) {
                         const uid = filteredForm[i].uid;
 
-                        if (uid.startsWith(sectionName)) {
-                            DBService.set(
-                                {
-                                    ...filteredForm[i],
-                                    unSaved: false,
-                                },
-                                formName
-                            ).then(() => {
-                                NotifService.info(
-                                    'Données sauvegardées',
-                                    'valid'
-                                );
-                            });
-                        }
+                        dispatch({
+                            type: 'UPDATE_FORM_FIELD',
+                            payload: {
+                                value: filteredForm[i].value,
+                                uid,
+                                formName,
+                                unSaved: false,
+                            },
+                        });
+
+                        DBService.set(
+                            {
+                                ...filteredForm[i],
+                                unSaved: false,
+                            },
+                            formName
+                        ).then(() => {
+                            NotifService.info('Données sauvegardées', 'valid');
+                        });
                     }
                 })
                 .catch((err) => {

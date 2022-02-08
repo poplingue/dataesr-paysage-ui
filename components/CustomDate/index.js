@@ -213,10 +213,10 @@ export default function CustomDate({
                             {title}
                         </Text>
                     </Col>
-                    <Col n="8 xl-3" spacing="p-1w">
+                    <Col n="10 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${cleanString(
                                             validatorId
@@ -225,7 +225,7 @@ export default function CustomDate({
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${cleanString(
                                             validatorId
@@ -236,7 +236,7 @@ export default function CustomDate({
                                         }
                                     />
                                 </Col>
-                                <Col n="3 xl-12">
+                                <Col n="4 xl-12">
                                     <DeleteButton
                                         background={useCSSProperty(
                                             '--grey-925-125'
