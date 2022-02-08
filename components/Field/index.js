@@ -46,7 +46,7 @@ export default function Field({
                                                     index={index}
                                                     title={title}
                                                     display
-                                                    onclick={deleteCurrentField}
+                                                    onClick={deleteCurrentField}
                                                 />
                                             </Col>
                                         )}

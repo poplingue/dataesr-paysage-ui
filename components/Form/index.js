@@ -27,13 +27,13 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
 
     const retrieveField = useCallback(
         async (field) => {
-            const { value, uid } = field;
+            const { value, uid, unSaved } = field;
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             if (value) {
                 dispatch({
                     type: 'UPDATE_FORM_FIELD',
-                    payload: { value, uid, formName },
+                    payload: { value, uid, formName, unSaved },
                 });
 
                 if (checkStoreObject) {
@@ -41,6 +41,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                         {
                             value,
                             uid,
+                            unSaved,
                         },
                         formName
                     );
@@ -65,18 +66,20 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     ),
                     'Data from IndexDB fetched'
                 );
-                indexDBData.forEach((elm) => {
-                    retrieveField(elm);
-                });
+                indexDBData
+                    .filter((data) => data.unSaved === true)
+                    .forEach((elm) => {
+                        retrieveField(elm);
+                    });
             }
         };
 
-        if (!updateObjectId) {
-            getIndexDBData();
-        } else {
-            // Case data coming from DB
-            DBService.clear(formName);
-        }
+        // if (!updateObjectId) {
+        getIndexDBData();
+        // } else {
+        // Case data coming from DB
+        // DBService.clear(formName);
+        // }
     }, [retrieveField, storeObjects, formName, updateObjectId]);
 
     return (

@@ -113,8 +113,8 @@ export default function FormAccordionItem({
             const form = await DBService.getAllObjects(formName, true);
 
             const filteredForm = form
-                .filter(dataFormService.familyFields)
-                .map(dataFormService.clean)
+                .filter(dataFormService.checkFields)
+                .map(dataFormService.cleanDate)
                 .filter((f) => {
                     return f.uid.indexOf(subObject) > -1;
                 });
@@ -195,7 +195,7 @@ export default function FormAccordionItem({
                             display={deletable}
                             title={title}
                             index={index}
-                            onclick={async () =>
+                            onClick={async () =>
                                 await deleteSection(
                                     cleanString(subObject.slice(0, -2)),
                                     index,

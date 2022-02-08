@@ -95,6 +95,8 @@ function Input({
     useEffect(() => {
         const current = getFieldValue(forms, formName, uid);
 
+        console.log('==== current ==== ', current);
+
         if (current && textValue !== current) {
             setTextValue(current);
         }

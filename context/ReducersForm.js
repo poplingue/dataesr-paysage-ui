@@ -4,7 +4,7 @@ import ACTIONS from './Actions';
 const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
-            const { value, formName, uid } = action.payload;
+            const { value, formName, uid, unSaved = false } = action.payload;
 
             const formIndex = state.forms.findIndex(
                 (obj) => Object.keys(obj)[0] === formName
@@ -18,9 +18,9 @@ const reducersForm = (state, action) => {
 
                 if (fieldIndex > -1) {
                     // replace object field at fieldIndex
-                    newForm[fieldIndex] = { value, uid };
+                    newForm[fieldIndex] = { value, uid, unSaved };
                 } else {
-                    newForm.push({ value, uid });
+                    newForm.push({ value, uid, unSaved });
                 }
             }
 

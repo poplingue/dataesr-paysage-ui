@@ -6,6 +6,7 @@ import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import DBService from '../../services/DB.service';
 import ObjectService from '../../services/Object.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
@@ -42,18 +43,20 @@ export default function Update() {
         };
     }, [currentObject, dispatch, router, workerRef]);
 
-    const onClick = (e, object) => {
+    const onClick = async (e, object) => {
         e.preventDefault();
 
         setSpinner(true);
 
-        setCurrentObject(object);
+        await DBService.clear(`update/${object}`).then(() => {
+            setCurrentObject(object);
 
-        workerRef.current.postMessage({
-            object,
+            workerRef.current.postMessage({
+                object,
+            });
+
+            Cookies.remove('updateObjectId');
         });
-
-        Cookies.remove('updateObjectId');
     };
 
     return (
