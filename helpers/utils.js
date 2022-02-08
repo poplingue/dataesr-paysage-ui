@@ -170,6 +170,17 @@ export function getForm(forms, name) {
 
 /**
  *
+ * @param uid
+ * @returns {RegExpExecArray}
+ */
+export function getSection(uid) {
+    const match = /(?<=\@).+?(?=\_)/.exec(uid);
+
+    return match && match[0];
+}
+
+/**
+ *
  * @param forms
  * @param name
  * @param id

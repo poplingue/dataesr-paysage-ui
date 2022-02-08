@@ -238,9 +238,10 @@ export default function CustomDate({
                                 </Col>
                                 <Col n="4 xl-12">
                                     <DeleteButton
-                                        background={useCSSProperty(
-                                            '--grey-925-125'
-                                        )}
+                                        background={
+                                            useCSSProperty('--grey-925-125')
+                                                .style
+                                        }
                                         display
                                         onClick={reset}
                                         title={validatorId}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import { getFormName, getSection, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import InfiniteAccordion from '../InfiniteAccordion';
@@ -15,7 +15,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const { Col, Row } = grid();
 
     const {
-        stateForm: { storeObjects, updateObjectId, forms },
+        stateForm: { storeObjects, updateObjectId, savingSections },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -69,6 +69,15 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 indexDBData
                     .filter((data) => data.unSaved === true)
                     .forEach((elm) => {
+                        const section = getSection(elm.uid);
+
+                        if (section) {
+                            dispatch({
+                                type: 'ADD_SAVING_SECTION',
+                                payload: { section },
+                            });
+                        }
+
                         retrieveField(elm);
                     });
             }

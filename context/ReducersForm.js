@@ -166,6 +166,29 @@ const reducersForm = (state, action) => {
             };
         }
 
+        case ACTIONS.ADD_SAVING_SECTION: {
+            const { section } = action.payload;
+            let newSavingsSection = state.savingSections;
+
+            if (state.savingSections.indexOf(section) < 0) {
+                newSavingsSection = [...state.savingSections, section];
+            }
+
+            return {
+                ...state,
+                savingSections: newSavingsSection,
+            };
+        }
+
+        case ACTIONS.DELETE_SAVING_SECTION: {
+            return {
+                ...state,
+                savingSections: state.savingSections.filter(
+                    (section) => section !== action.payload.section
+                ),
+            };
+        }
+
         case ACTIONS.CLEAR_FORM: {
             const { formName } = action.payload;
 

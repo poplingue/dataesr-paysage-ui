@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString, getFormName, getUniqueId } from '../../helpers/utils';
+import { cleanString, getFormName, getSection } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -30,7 +30,7 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId, forms },
+        stateForm: { validSections, updateObjectId, savingSections },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -38,10 +38,6 @@ export default function FormAccordionItem({
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
-    const sectionName = useMemo(
-        () => getUniqueId(formName, subObject),
-        [formName, subObject]
-    );
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
@@ -53,6 +49,10 @@ export default function FormAccordionItem({
             const title = cleanString(newTitle);
             const section = validSections[title];
             let payload = null;
+
+            if (savingSections.indexOf(subObject) > -1) {
+                setDisabled(false);
+            }
 
             if (!id && !validType && disabled) {
                 setDisabled(false);
@@ -128,6 +128,7 @@ export default function FormAccordionItem({
                 .then(async () => {
                     for (let i = 0; i < filteredForm.length; i = i + 1) {
                         const uid = filteredForm[i].uid;
+                        const section = getSection(uid);
 
                         dispatch({
                             type: 'UPDATE_FORM_FIELD',
@@ -138,6 +139,13 @@ export default function FormAccordionItem({
                                 unSaved: false,
                             },
                         });
+
+                        dispatch({
+                            type: 'DELETE_SAVING_SECTION',
+                            payload: { section },
+                        });
+
+                        setDisabled(true);
 
                         DBService.set(
                             {
@@ -161,21 +169,23 @@ export default function FormAccordionItem({
         save();
     };
 
-    const reset = async () => {
+    const resetSection = async () => {
         const form = await DBService.getAllObjects(formName, true);
-        const uidsToDelete = form.flatMap((f) => {
-            return f.uid.indexOf(subObject) > -1 && f.unSaved ? f.uid : [];
+        const uids = form.flatMap((f) => {
+            const { uid, unSaved } = f;
+
+            return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
         });
 
         dispatch({
             type: 'DELETE_FORM_FIELD_LIST',
             payload: {
-                uids: uidsToDelete,
+                uids,
                 formName,
             },
         });
 
-        await DBService.deleteList(uidsToDelete, formName);
+        await DBService.deleteList(uids, formName);
     };
 
     return (
@@ -232,12 +242,13 @@ export default function FormAccordionItem({
                         {/* TODO remove data-testId */}
                         <Col n="2" className="txt-right">
                             <FieldButton
-                                onClick={reset}
-                                colors={[white, orange]}
+                                onClick={resetSection}
+                                disabled={disabled}
+                                colors={disabled ? [] : [white, orange]}
                                 title="Reset"
                                 dataTestId={`${cleanString(
                                     newTitle
-                                )}-reset-button`}
+                                )}-resetSection-button`}
                             />
                         </Col>
                         <Col n="2" className="txt-right">

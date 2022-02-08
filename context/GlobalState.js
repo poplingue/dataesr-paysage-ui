@@ -15,6 +15,7 @@ export const DataProvider = ({ user, error, children }) => {
         departments: [],
         updateObjectId: '',
         forms: [{ 'update/person': [] }, { 'update/structure': [] }],
+        savingSections: [],
     };
 
     const initialStateList = {
