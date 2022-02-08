@@ -111,7 +111,6 @@ export default function CustomSelect({
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
     useEffect(() => {
-        const fieldValue = getFieldValue(forms, formName, uid);
         const mustBeUpdated = selectValue !== fieldValue;
 
         const handleValueObj = {
@@ -125,8 +124,9 @@ export default function CustomSelect({
                 !selectValue) ||
             mustBeUpdated;
 
-        handleValueObj[check](fieldValue || selectValue);
+        handleValueObj[check](fieldValue);
     }, [
+        fieldValue,
         formName,
         forms,
         handleValue,

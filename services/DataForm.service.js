@@ -52,7 +52,11 @@ export const dataFormService = {
         mapping.push({ uid, value });
 
         for (let i = 0; i < splitedDate.length; i = i + 1) {
-            mapping.push({ uid: `${uid}${fieldId[i]}`, value: splitedDate[i] });
+            mapping.push({
+                uid: `${uid}${fieldId[i]}`,
+                value: splitedDate[i],
+                unSaved: false,
+            });
         }
 
         return mapping;

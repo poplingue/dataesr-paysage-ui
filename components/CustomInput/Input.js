@@ -46,6 +46,7 @@ function Input({
                 uid,
                 formName,
                 infinite,
+                unSaved: true,
             };
 
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
@@ -95,9 +96,7 @@ function Input({
     useEffect(() => {
         const current = getFieldValue(forms, formName, uid);
 
-        console.log('==== current ==== ', current);
-
-        if (current && textValue !== current) {
+        if (textValue !== current) {
             setTextValue(current);
         }
     }, [formName, forms, textValue, uid]);

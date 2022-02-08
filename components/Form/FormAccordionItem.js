@@ -45,6 +45,7 @@ export default function FormAccordionItem({
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
+    const { style: orange } = useCSSProperty('--warning-main-525');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
@@ -152,6 +153,23 @@ export default function FormAccordionItem({
         save();
     };
 
+    const reset = async () => {
+        const form = await DBService.getAllObjects(formName, true);
+        const uidsToDelete = form.flatMap((f) => {
+            return f.uid.indexOf(subObject) > -1 && f.unSaved ? f.uid : [];
+        });
+
+        dispatch({
+            type: 'DELETE_FORM_FIELD_LIST',
+            payload: {
+                uids: uidsToDelete,
+                formName,
+            },
+        });
+
+        await DBService.deleteList(uidsToDelete, formName);
+    };
+
     return (
         <form onSubmit={onSubmit}>
             {content.map((field) => {
@@ -204,6 +222,16 @@ export default function FormAccordionItem({
                             }
                         />
                         {/* TODO remove data-testId */}
+                        <Col n="2" className="txt-right">
+                            <FieldButton
+                                onClick={reset}
+                                colors={[white, orange]}
+                                title="Reset"
+                                dataTestId={`${cleanString(
+                                    newTitle
+                                )}-reset-button`}
+                            />
+                        </Col>
                         <Col n="2" className="txt-right">
                             <FieldButton
                                 submit
