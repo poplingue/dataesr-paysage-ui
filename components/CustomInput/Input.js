@@ -31,8 +31,6 @@ function Input({
     const { checkField, message, type } = useValidator(validatorConfig);
     const [textValue, setTextValue] = useState(initValue || '');
 
-    // const inputRef = useRef(initValue || '');
-
     const {
         pathname,
         query: { object },
