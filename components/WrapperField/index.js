@@ -8,43 +8,46 @@ function WrapperField({ children, unSaved, inline }) {
     const { style: orange } = useCSSProperty('--warning-main-525');
     const { mobile, tablet } = useViewport();
 
-    if (!unSaved) {
-        return children;
-    }
-
     const inlineActive = tablet || mobile || inline;
+    const newChildren = cloneElement(children, {
+        ...children.props,
+        className: styles.UnSavedField,
+    });
 
     return (
         <Container fluid>
-            <Row alignItems="middle">
-                <Col n={`${inline ? '12' : '12 lg-11'}`}>
-                    {cloneElement(children, {
-                        ...children.props,
-                        className: styles.UnSavedField,
-                    })}
-                </Col>
-                <Col n={`${inline ? '12' : '12 lg-1'}`}>
-                    <Icon
-                        name="ri-error-warning-line"
-                        size="1x"
-                        color={orange}
-                        iconPosition={inlineActive ? 'left' : 'center'}
-                    >
-                        <div
-                            className={`${styles.UnSavedText} ${
-                                inlineActive ? '' : 'txt-center'
-                            }`}
-                        >
-                            <Text
-                                size="xs"
-                                spacing="m-0"
-                                as={inlineActive ? 'span' : 'p'}
+            <Row alignItems="bottom">
+                {unSaved ? (
+                    <>
+                        <Col n={`${inline ? '12' : '12 lg-11'}`}>
+                            {newChildren}
+                        </Col>
+                        <Col n={`${inline ? '12' : '12 lg-1'}`}>
+                            <Icon
+                                name="ri-error-warning-line"
+                                size="1x"
+                                color={orange}
+                                iconPosition={inlineActive ? 'left' : 'center'}
                             >
-                                non sauvegardé
-                            </Text>
-                        </div>
-                    </Icon>
-                </Col>
+                                <div
+                                    className={`${styles.UnSavedText} ${
+                                        inlineActive ? '' : 'txt-center'
+                                    }`}
+                                >
+                                    <Text
+                                        size="xs"
+                                        spacing="m-0"
+                                        as={inlineActive ? 'span' : 'p'}
+                                    >
+                                        non sauvegardé
+                                    </Text>
+                                </div>
+                            </Icon>
+                        </Col>
+                    </>
+                ) : (
+                    <Col>{children}</Col>
+                )}
             </Row>
         </Container>
     );

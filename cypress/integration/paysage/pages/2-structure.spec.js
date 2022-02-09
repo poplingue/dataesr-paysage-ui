@@ -12,7 +12,7 @@ context('Structure form page', () => {
     });
 
     it('should display current page BreadCrumbs', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-cy="current-page"]')
             .find('a')
