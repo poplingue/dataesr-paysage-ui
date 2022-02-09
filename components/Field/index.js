@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Children, cloneElement, useRef } from 'react';
 import grid from '../../helpers/imports';
+import useCSSProperty from '../../hooks/useCSSProperty';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './Field.module.scss';
 
@@ -15,6 +16,8 @@ export default function Field({
 }) {
     const { Col, Row, Container } = grid();
     const ref = useRef(null);
+
+    const { style: grey } = useCSSProperty('--grey-975');
 
     const deleteCurrentField = () => {
         deleteField(ref.current);
@@ -41,12 +44,13 @@ export default function Field({
                                             {field}
                                         </Col>
                                         {index > 0 && (
-                                            // TODO remove props label
                                             <Col n="4">
                                                 <DeleteButton
+                                                    background={grey}
+                                                    index={index}
+                                                    title={title}
                                                     display
-                                                    label={label}
-                                                    onclick={deleteCurrentField}
+                                                    onClick={deleteCurrentField}
                                                 />
                                             </Col>
                                         )}

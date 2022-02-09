@@ -11,6 +11,12 @@ UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@
 
 ## Getting Started
 
+Add .env file
+```
+API_URL=''
+BASE_PATH=''
+```
+
 Run the development server:
 
 ```bash

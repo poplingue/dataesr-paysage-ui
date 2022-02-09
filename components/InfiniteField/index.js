@@ -9,16 +9,18 @@ import {
     getUniqueId,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import Field from '../Field';
 import FieldButton from '../FieldButton';
 
-function InfiniteField({ children, title, section }) {
+// TODO add propTypes
+function InfiniteField({ children, title, section, validatorId, subObject }) {
     const { Col, Row, Container } = grid();
 
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [number, setNumber] = useState(0);
@@ -35,6 +37,19 @@ function InfiniteField({ children, title, section }) {
 
         if (element && element.length) {
             const uid = element[0].getAttribute('data-field');
+
+            // TODO in sw.js
+            // TODO fn to get subObjectType, subObjectId, object etc. from uid
+            dataFormService.deleteField(
+                object,
+                updateObjectId,
+                subObject.slice(0, -2),
+                subObject.slice(-1),
+                {
+                    [validatorId]: getFieldValue(forms, formName, uid),
+                }
+            );
+
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
@@ -43,11 +58,16 @@ function InfiniteField({ children, title, section }) {
                 // all field after the delete one
                 if (i > indexRef) {
                     const update = {
-                        uid: getUniqueId(formName, section, title, i - 1),
+                        uid: getUniqueId(
+                            formName,
+                            subObject,
+                            validatorId,
+                            i - 1
+                        ),
                         value: getFieldValue(
                             forms,
                             formName,
-                            getUniqueId(formName, section, title, i)
+                            getUniqueId(formName, subObject, validatorId, i)
                         ),
                     };
 
@@ -73,7 +93,12 @@ function InfiniteField({ children, title, section }) {
                 key = number - 1;
             }
 
-            const uidToDelete = getUniqueId(formName, section, title, key);
+            const uidToDelete = getUniqueId(
+                formName,
+                subObject,
+                validatorId,
+                key
+            );
 
             const payload = {
                 uid: uidToDelete,
@@ -92,12 +117,15 @@ function InfiniteField({ children, title, section }) {
         const currentForm = getForm(forms, formName);
 
         if (currentForm) {
-            const initInfinite = currentForm.filter((field) =>
-                field.uid.startsWith(getUniqueId(formName, section, title))
+            const initInfinite = currentForm.filter((field, i) =>
+                field.uid.startsWith(
+                    getUniqueId(formName, subObject, validatorId)
+                )
             );
+
             setNumber(initInfinite.length || 1);
         }
-    }, [forms, title, section, formName, pathname]);
+    }, [forms, section, formName, pathname, validatorId, subObject]);
 
     return (
         <Col n="12">
@@ -109,7 +137,12 @@ function InfiniteField({ children, title, section }) {
                                 getFieldValue(
                                     forms,
                                     formName,
-                                    getUniqueId(formName, section, title, i)
+                                    getUniqueId(
+                                        formName,
+                                        subObject,
+                                        validatorId,
+                                        i
+                                    )
                                 ) || '';
                             const newTitle = `${title}#${i}`;
 

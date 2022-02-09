@@ -1,12 +1,24 @@
+import { fetchHelper } from '../helpers/fetch';
+import {
+    getUniqueId,
+    isArray,
+    lastChar,
+    matchRegex,
+    sliceEnd,
+} from '../helpers/utils';
+
 const mapFields = {
     officialName: 'officialName',
     usualName: 'usualName',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    article: 'article',
     shortName: 'shortName',
     brandName: 'brandName',
     nameEn: 'nameEn',
     acronymFr: 'acronymFr',
     acronymEn: 'acronymEn',
-    otherName: 'otherName',
+    otherName: 'currentName.otherName',
     wikidata: 'identifiers',
     idref: 'identifiers',
     uai: 'identifiers',
@@ -17,7 +29,232 @@ const mapFields = {
     socialAccount: 'socialMedia.account',
 };
 
+const fieldMapping = {
+    endDate: (uid, value) => dataFormService.mapDate(uid, value),
+    startDate: (uid, value) => dataFormService.mapDate(uid, value),
+};
+
+const fields = {
+    true: (...params) => dataFormService.infiniteField(params),
+    false: (...params) => dataFormService.uniqueField(params),
+};
+
 export const dataFormService = {
+    mapDate: (uid, value) => {
+        let mapping = [];
+        const splitedDate = value.split('-');
+        const fieldId = {
+            0: 'Year',
+            1: 'Month',
+            2: 'Day',
+        };
+
+        mapping.push({ uid, value });
+
+        for (let i = 0; i < splitedDate.length; i = i + 1) {
+            mapping.push({
+                uid: `${uid}${fieldId[i]}`,
+                value: splitedDate[i],
+                unSaved: false,
+            });
+        }
+
+        return mapping;
+    },
+
+    cleanDateFormat: (field) => {
+        const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
+        const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
+
+        if (needClean) {
+            const value = field.value.replace(/(\-[a-z]).{1}|,/g, '');
+
+            return { ...field, value };
+        }
+
+        return field;
+    },
+
+    checkDateField: (field) => !matchRegex(`Day|Year|Month$`, field.uid),
+
+    bySubObject: (field, subObject) => field.uid.indexOf(subObject) > -1,
+
+    byInfiniteFamily: (field, index, form) => {
+        // TODO refacto: work only with 1 infinite field in section
+        const checkFamily = form.find((f) => f.infinite && f.unSaved);
+
+        const obj = {
+            false: () => '',
+            true: (o) => o.uid,
+        };
+
+        const id = sliceEnd(obj[!!checkFamily](checkFamily));
+        const family = checkFamily ? id : '';
+        const isUnsaved = field.unSaved;
+
+        if (isUnsaved) {
+            return true;
+        }
+
+        if (family && checkFamily) {
+            if (field.uid.startsWith(id)) {
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    deleteField: async (
+        object,
+        objectId,
+        subObjectType,
+        subObjectId,
+        toDelete
+    ) => {
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
+        const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
+
+        return await fetch(url, requestOptions);
+    },
+
+    deleteSubObject: async (object, objectId, subObjectType, subObjectId) => {
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
+        const requestOptions = fetchHelper.requestOptions('DELETE');
+
+        return await fetch(url, requestOptions);
+    },
+
+    uniqueField: (params) => {
+        const [value, subObject, dataIndex, field, formName] = params;
+
+        const uid = getUniqueId(
+            formName,
+            `${subObject}#${dataIndex + 1}`,
+            field
+        );
+
+        const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
+
+        const objField = {
+            false: (uid, value) => {
+                return [{ uid, value }];
+            },
+            true: (uid, value) => fieldMapping[field](uid, value),
+        };
+
+        return objField[needMapping](uid, value);
+    },
+
+    infiniteField: (params) => {
+        const [values, subObject, dataIndex, field, formName] = params;
+
+        return values.map((value, vIndex) => {
+            const uid = getUniqueId(
+                formName,
+                `${subObject}#${dataIndex + 1}`,
+                field,
+                vIndex
+            );
+
+            return {
+                uid,
+                value,
+                infinite: true,
+            };
+        });
+    },
+
+    subObjectsFields: (subObjects, formName) => {
+        const subObjectsFields = [];
+
+        for (let i = 0; i < subObjects.length; i++) {
+            const { data, subObject } = subObjects[i];
+
+            data.map((section, dataIndex) => {
+                const sections = Object.keys(section);
+
+                for (let j = 0; j < sections.length; j++) {
+                    const field = sections[j];
+
+                    const value = section[field];
+
+                    if (mapFields[field] && value) {
+                        const infinite = isArray(value);
+                        subObjectsFields.push(
+                            ...fields[infinite](
+                                value,
+                                subObject,
+                                dataIndex,
+                                field,
+                                formName
+                            )
+                        );
+                    }
+                }
+            });
+        }
+
+        return subObjectsFields;
+    },
+
+    getStructureData: async (object, id, subObjects) => {
+        const promises = [];
+
+        for (let i = 0; i < subObjects.length; i++) {
+            const url = `/api/${object}/${id}/${subObjects[i].subObject}`;
+            const requestOptions = fetchHelper.requestOptions('GET');
+
+            promises.push({ url, requestOptions });
+        }
+
+        const res = await Promise.all(
+            promises.map((obj) => fetch(obj.url, obj.requestOptions))
+        );
+
+        const jsons = await Promise.all(
+            res.map((r) => fetchHelper.handleResponse(r))
+        );
+
+        return fetchHelper.handleJsons(jsons);
+    },
+
+    initSubObject: async (type, subObject, id) => {
+        const requestOptions = fetchHelper.requestOptions('POST', {});
+
+        return await fetch(
+            `/api/${type}/${id}/${subObject}`,
+            requestOptions
+        ).then(async (resp) => {
+            return await resp.clone().json();
+        });
+    },
+    infiniteFields: (data, formName, subObject) => {
+        const fields = [];
+
+        for (let i = 0; i < Object.keys(mapFields).length; i++) {
+            const path = mapFields[Object.keys(mapFields)[i]];
+            const validatorId = Object.keys(mapFields)[i];
+
+            if (path) {
+                let dataValue =
+                    dataFormService.getProp(data, path.split('.')) || [];
+
+                for (let j = 0; j < dataValue.length; j++) {
+                    const uid = getUniqueId(
+                        formName,
+                        subObject,
+                        validatorId,
+                        j
+                    );
+                    fields.push({ uid, value: dataValue[j] });
+                }
+            }
+        }
+
+        return fields;
+    },
+
     mapping: ({ form }, data) => {
         let copy = [...form];
         let newForm = [];
@@ -29,7 +266,6 @@ export const dataFormService = {
             let infiniteSection = copy[i].infinite;
 
             if (infiniteSection) {
-                // TODO make it generic
                 if (Object.keys(data).indexOf('socialMedia') > -1) {
                     const frontSections = dataFormService.socialMediaSection(
                         data.socialMedia,
@@ -38,12 +274,22 @@ export const dataFormService = {
                     );
                     newForm = [...frontSections];
                 }
+
+                // TODO make it generic
+                if (Object.keys(data).indexOf('currentName') > -1) {
+                    newContent = dataFormService.infiniteSection(
+                        contentSection,
+                        'currentName',
+                        data
+                    );
+                }
             } else {
                 let fieldWithValue;
 
                 for (let k = 0; k < contentSection.length; k++) {
+                    const currentSection = contentSection[k];
+                    const path = mapFields[currentSection.validatorId];
                     let newField = null;
-                    const path = mapFields[contentSection[k].validatorId];
 
                     if (path) {
                         let dataValue = dataFormService.getProp(
@@ -51,29 +297,27 @@ export const dataFormService = {
                             path.split('.')
                         );
 
-                        // Case array
-                        if (dataValue && dataValue.indexOf('') < 0) {
+                        if (isArray(dataValue)) {
                             const dataField = dataValue.find((elm) => {
-                                return (
-                                    elm.type === contentSection[k].validatorId
-                                );
+                                return elm.type === currentSection.validatorId;
                             });
 
                             dataValue = dataField ? dataField.value : '';
                         }
 
                         fieldWithValue = {
-                            ...contentSection[k],
+                            ...currentSection,
                             value: dataValue,
                         };
 
-                        contentSection.map((field, k) => {
+                        // TODO check necessary loop in loop
+                        contentSection.map((field, j) => {
                             if (
                                 field.validatorId === fieldWithValue.validatorId
                             ) {
                                 newField = fieldWithValue;
                             } else if (
-                                k === contentSection[k].length &&
+                                j === contentSection[j].length &&
                                 field.validatorId !== fieldWithValue.validatorId
                             ) {
                                 newField = field;
@@ -91,9 +335,7 @@ export const dataFormService = {
             }
         }
 
-        console.log('==== newForm ==== ', newForm);
-        
-return { form: newForm };
+        return { form: newForm };
     },
     socialMediaSection: (data, contentSection, copy) => {
         return data.map((m) => {
@@ -112,10 +354,21 @@ return { form: newForm };
             return { ...copy, content: z };
         });
     },
-    getProp: (o, path) => {
-        if (path.indexOf('x') >= 0) {
-        }
 
+    infiniteSection: (sections, key, data) => {
+        return sections.map((p) => {
+            const value = data[key][p.validatorId];
+
+            if (value) {
+                return { ...p, value };
+            } else {
+                // TODO still needed ??
+                return p;
+            }
+        });
+    },
+
+    getProp: (o, path) => {
         const object = Object.assign(o, {});
 
         if (path.length === 1) return object[path[0]];
@@ -130,5 +383,56 @@ return { form: newForm };
             }
         }
     },
-    save: () => {},
+    save: async (form, objectId, subObject) => {
+        const sectionInfinite = !!subObject.match(/\d+$/)[0];
+
+        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
+        const subObjectId = sectionInfinite ? lastChar(subObject) : '';
+
+        let bodyObject = {};
+        let infiniteArray = [];
+
+        for (let i = 0; i < form.length; i++) {
+            const { uid, value, infinite } = form[i];
+
+            if (infinite) {
+                const field = matchRegex(`(?<=_).*(?=#)`, uid);
+                const o = { [field]: [value] };
+                const alreadyExists = infiniteArray.filter(
+                    (elm) => Object.keys(elm).indexOf(field) > -1
+                );
+
+                if (!!alreadyExists.length) {
+                    infiniteArray.map((obj) => {
+                        obj[field] = [...obj[field], value];
+                    });
+                } else {
+                    infiniteArray.push(o);
+                }
+
+                const currentObj = infiniteArray.find((elm) => elm[field]);
+                bodyObject[field] = currentObj[field];
+            } else {
+                const field = matchRegex(`([^\_]+)$`, uid);
+                bodyObject[field] = value;
+            }
+        }
+
+        const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
+        const response = await fetch(
+            `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
+            requestOptions
+        );
+
+        const r = await response.json();
+
+        if (response.status >= 400) {
+            console.error('==== Err ==== ', r);
+            throw r.error;
+        }
+
+        if (response.status >= 200 && response.status < 400) {
+            return r;
+        }
+    },
 };

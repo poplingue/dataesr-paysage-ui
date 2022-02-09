@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { getFormName, sectionUniqueId } from '../../helpers/utils';
+import { getFormName, getSection, sectionUniqueId } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import InfiniteAccordion from '../InfiniteAccordion';
@@ -15,7 +15,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const { Col, Row } = grid();
 
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { storeObjects, updateObjectId, savingSections },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -27,31 +27,31 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
 
     const retrieveField = useCallback(
         async (field) => {
-            const { value, uid } = field;
+            const { value, uid, unSaved } = field;
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             if (value) {
                 dispatch({
                     type: 'UPDATE_FORM_FIELD',
-                    payload: { value, uid, formName },
+                    payload: { value, uid, formName, unSaved },
                 });
 
-                if (checkStoreObject && !updateObjectId) {
+                if (checkStoreObject) {
                     await DBService.set(
                         {
                             value,
                             uid,
+                            unSaved,
                         },
                         formName
                     );
                 }
             }
         },
-        [dispatch, formName, storeObjects, updateObjectId]
+        [dispatch, formName, storeObjects]
     );
 
     useEffect(() => {
-        // TODO in middleware?
         dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
     }, [dispatch, objectFormType]);
 
@@ -66,14 +66,25 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     ),
                     'Data from IndexDB fetched'
                 );
-                indexDBData.forEach((elm) => {
-                    retrieveField(elm);
-                });
+                indexDBData
+                    .filter((data) => data.unSaved === true)
+                    .forEach((elm) => {
+                        const section = getSection(elm.uid);
+
+                        if (section) {
+                            dispatch({
+                                type: 'ADD_SAVING_SECTION',
+                                payload: { section },
+                            });
+                        }
+
+                        retrieveField(elm);
+                    });
             }
         };
 
         getIndexDBData();
-    }, [retrieveField, storeObjects, formName]);
+    }, [retrieveField, storeObjects, formName, updateObjectId]);
 
     return (
         <PageTheme color={color}>
@@ -82,6 +93,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                     {jsonForm.form.map((section, i) => {
                         const {
                             title: sectionTitle,
+                            subObject,
                             content,
                             infinite,
                         } = section;
@@ -101,6 +113,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                                 <InfiniteAccordion
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
+                                    subObjectType={subObject}
                                     content={content}
                                     index={`${sectionTitle}-${i}`}
                                 />
@@ -114,6 +127,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                             >
                                 <FormAccordionItem
                                     content={content}
+                                    subObject={subObject}
                                     newTitle={sectionTitle}
                                 />
                             </AccordionForm>

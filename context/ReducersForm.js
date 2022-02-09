@@ -4,7 +4,7 @@ import ACTIONS from './Actions';
 const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {
-            const { value, formName, uid } = action.payload;
+            const { value, formName, uid, unSaved = false } = action.payload;
 
             const formIndex = state.forms.findIndex(
                 (obj) => Object.keys(obj)[0] === formName
@@ -18,9 +18,9 @@ const reducersForm = (state, action) => {
 
                 if (fieldIndex > -1) {
                     // replace object field at fieldIndex
-                    newForm[fieldIndex] = { value, uid };
+                    newForm[fieldIndex] = { value, uid, unSaved };
                 } else {
-                    newForm.push({ value, uid });
+                    newForm.push({ value, uid, unSaved });
                 }
             }
 
@@ -109,9 +109,9 @@ const reducersForm = (state, action) => {
 
             for (let i = 0; i < uids.length; i = i + 1) {
                 const currentFieldIndex = uids[i];
-                const index = currentForm.findIndex((obj) => {
-                    return Object.entries(obj)[1][1] === currentFieldIndex;
-                });
+                const index = currentForm.findIndex(
+                    (obj) => obj.uid === currentFieldIndex
+                );
                 indexes.push(index);
             }
 
@@ -166,10 +166,33 @@ const reducersForm = (state, action) => {
             };
         }
 
+        case ACTIONS.ADD_SAVING_SECTION: {
+            const { section } = action.payload;
+            let newSavingsSection = state.savingSections;
+
+            if (state.savingSections.indexOf(section) < 0) {
+                newSavingsSection = [...state.savingSections, section];
+            }
+
+            return {
+                ...state,
+                savingSections: newSavingsSection,
+            };
+        }
+
+        case ACTIONS.DELETE_SAVING_SECTION: {
+            return {
+                ...state,
+                savingSections: state.savingSections.filter(
+                    (section) => section !== action.payload.section
+                ),
+            };
+        }
+
         case ACTIONS.CLEAR_FORM: {
             const { formName } = action.payload;
 
-            const x = {
+            return {
                 ...state,
                 forms: [
                     ...state.forms.map((form) => {
@@ -179,8 +202,6 @@ const reducersForm = (state, action) => {
                     }),
                 ],
             };
-
-            return x;
         }
 
         default:

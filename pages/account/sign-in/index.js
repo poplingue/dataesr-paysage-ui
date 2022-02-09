@@ -1,9 +1,6 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
 import * as Yup from 'yup';
-import { AppContext } from '../../../context/GlobalState';
 import grid from '../../../helpers/imports';
 import {
     connectedMsg,
@@ -42,16 +39,6 @@ function SignIn() {
     const { Col, Row, Container } = grid();
     const router = useRouter();
 
-    const {
-        statePage: { userError, userConnected },
-    } = useContext(AppContext);
-
-    useEffect(() => {
-        if (userConnected) {
-            router.push('/');
-        }
-    }, [router, userConnected]);
-
     const validationSchema = Yup.object().shape({
         account: Yup.string()
             .required(`${emailMandatoryMsg}`)
@@ -66,7 +53,6 @@ function SignIn() {
             .signIn(formData)
             .then(() => {
                 router.push('/').then(() => {
-                    Cookies.set('userConnected', true);
                     NotifService.info(connectedMsg, 'valid');
                 });
             })

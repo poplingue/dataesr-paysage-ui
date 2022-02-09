@@ -16,9 +16,9 @@ const Providers = (props, options) => {
                     formName: 'update/person',
                     forms: {
                         'update/person': {
-                            'update/person@section/infinite#0': 'test 1',
-                            'update/person@section/infinite#1': 'test 2',
-                            'update/person@section/infinite#2': 'test 3',
+                            'update/person@section_infinite#0': 'test 1',
+                            'update/person@section_infinite#1': 'test 2',
+                            'update/person@section_infinite#2': 'test 3',
                         },
                         'update/structure': {},
                     },

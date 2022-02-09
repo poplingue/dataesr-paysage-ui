@@ -1,4 +1,3 @@
-import cookie from 'cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
 
@@ -10,30 +9,13 @@ async function handler(req, res) {
         const body = {
             activationCode: parseInt(req.body.activationCode),
         };
+        const tokens = req.cookies.tokens
+            ? JSON.parse(req.cookies.tokens)
+            : null;
 
-        let cookiesHeader = '';
-        let tokens = null;
+        const requestOptions = fetchHelper.requestOptions('POST', body, tokens);
 
-        if (req && req.headers && req.headers.cookie) {
-            cookiesHeader = cookie.parse(req.headers.cookie);
-        }
-
-        if (!cookiesHeader) {
-            throw Error('Cookie missing');
-        } else if (Object.keys(cookiesHeader).includes('tokens')) {
-            tokens = JSON.parse(cookiesHeader.tokens);
-        }
-
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                ...fetchHelper.authHeader(tokens),
-            },
-            body: JSON.stringify(body),
-        });
+        const request = await fetch(url, requestOptions);
 
         const response = await request.text();
         res.status(request.status).json(response);

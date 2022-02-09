@@ -6,6 +6,7 @@ import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import DBService from '../../services/DB.service';
 import ObjectService from '../../services/Object.service';
 
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
@@ -30,29 +31,31 @@ export default function Update() {
     useEffect(() => {
         workerRef.current.onmessage = ({ data }) => {
             ObjectService.newId(data).then((id) => {
+                dispatch({
+                    type: 'CLEAR_FORM',
+                    payload: { formName: `update/${currentObject}` },
+                });
+
                 if (id) {
                     router.push(`/update/${currentObject}/${id}`);
                 }
             });
         };
-    }, [currentObject, router, workerRef]);
+    }, [currentObject, dispatch, router, workerRef]);
 
-    const onClick = (e, object) => {
+    const onClick = async (e, object) => {
         e.preventDefault();
 
         setSpinner(true);
 
-        workerRef.current.postMessage({
-            type: object,
-        });
+        await DBService.clear(`update/${object}`).then(() => {
+            setCurrentObject(object);
 
-        setCurrentObject(object);
+            workerRef.current.postMessage({
+                object,
+            });
 
-        Cookies.remove('updateObjectId');
-
-        dispatch({
-            type: 'UPDATE_UPDATE_OBJECT_ID',
-            payload: { updateObjectId: '' },
+            Cookies.remove('updateObjectId');
         });
     };
 

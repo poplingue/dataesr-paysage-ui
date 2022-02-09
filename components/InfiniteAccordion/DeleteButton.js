@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import grid from '../../helpers/imports';
 import { cleanString } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
@@ -7,8 +8,8 @@ export default function DeleteButton({
     display,
     title,
     index,
-    onclick,
-    label = '',
+    background,
+    onClick,
 }) {
     const { Col } = grid();
 
@@ -19,14 +20,28 @@ export default function DeleteButton({
         display && (
             <Col n="2" className="txt-right">
                 <FieldButton
-                    colors={[red, white]}
-                    dataTestId={`btn-delete-${cleanString(label || title)}${
+                    colors={[red, background || white]}
+                    dataTestId={`btn-delete-${cleanString(title)}${
                         index ? `#${index}` : ''
                     }`}
-                    onClick={onclick}
+                    onClick={onClick}
                     title="Supprimer"
                 />
             </Col>
         )
     );
 }
+
+DeleteButton.defaultProps = {
+    display: true,
+    title: '',
+    background: '',
+};
+
+DeleteButton.propTypes = {
+    display: PropTypes.bool,
+    title: PropTypes.string,
+    index: PropTypes.number,
+    background: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
+};

@@ -12,8 +12,6 @@ export const emailErrorMsg = 'Email incorrect';
 export const codeSendByEmailMsg = 'Vous avez reçu un code par mail';
 export const passwordMandatoryMsg = 'Le mot de passe est obligatoire';
 export const emailMandatoryMsg = "L'email est obligatoire";
-export const tokenMissingError = 'Tokens cookie missing';
-export const disconnectedMsg = 'Vous êtes hors ligne';
 export const connectedMsg = 'Vous êtes connecté';
 export const codeMandatoryMsg = "Code d'activation obligatoire";
 export const connectAdviceMsg = 'Connectez-vous pour recevoir un nouveau code';
@@ -23,4 +21,4 @@ export const noTokensError = 'No Tokens';
 
 // External errors
 export const combinationError = 'Mauvaise combinaison utilisateur/mot de passe';
-export const tokenError = "Token d'access invalide ou expiré";
+export const invalidToken = "Token d'access invalide ou expiré";

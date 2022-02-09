@@ -1,10 +1,45 @@
 /**
  *
  * @param str
+ * @returns {*}
+ */
+export function sliceEnd(str) {
+    return str.slice(0, -2);
+}
+
+/**
+ *
+ * @param str
+ * @returns {*}
+ */
+export function lastChar(str) {
+    return str.slice(-1);
+}
+
+/**
+ *
+ * @param str
+ * @returns {*}
+ */
+export function camelCase(str) {
+    return str
+        .replace(/\s(.)/g, function (a) {
+            return a.toUpperCase();
+        })
+        .replace(/\s/g, '')
+        .replace(/^(.)/, function (b) {
+            return b.toLowerCase();
+        });
+}
+
+/**
+ *
+ * @param str
  * @returns {string}
  */
 
 export function cleanString(str) {
+    // TODO replace ??=
     if (!str) {
         return '';
     }
@@ -37,24 +72,24 @@ export function containsObject(obj, array) {
 /**
  *
  * @param formName
- * @param name
- * @param id
+ * @param nameId
+ * @param eq
  * @param section
- * @returns {string} format pathname@[section#i]/[name]#[index]
+ * @returns {string} format pathname@[section#i]_[nameId]#[eq]
  */
-export function getUniqueId(formName, section = '', name = '', id) {
-    // TODO standardize this shit
-    let r = `${formName}@${cleanString(section)}/${cleanString(name)}#${id}`;
+export function getUniqueId(formName, section = '', nameId = '', eq = null) {
+    const checkedEq = eq !== null && eq >= 0 ? `#${eq}` : '';
+    let uniqueId = `${formName}@${cleanString(section)}_${nameId}${checkedEq}`;
 
-    if (!id && id !== 0) {
-        r = `${formName}@${cleanString(section)}/${cleanString(name)}`;
+    if (!nameId && nameId !== 0) {
+        uniqueId = `${formName}@${cleanString(section)}_${nameId}`;
     }
 
-    if (!name) {
-        r = `${formName}@${cleanString(section)}`;
+    if (!nameId) {
+        uniqueId = `${formName}@${cleanString(section)}`;
     }
 
-    return r;
+    return uniqueId;
 }
 
 /**
@@ -87,7 +122,9 @@ export function removeKey(obj, keyToDelete) {
 export function range(min, max, string) {
     return Array(max - min + 1)
         .fill(0)
-        .map((_, i) => (string ? (i + min).toString() : i + min));
+        .map((_, i) =>
+            string ? (i + min).toString().padStart(2, '0') : i + min
+        );
 }
 
 /**
@@ -107,8 +144,8 @@ export function uniqueOnlyFilter(value, index, self) {
  * @param contentNumber
  * @returns {string}
  */
-export function sectionUniqueId(title, contentNumber = '0') {
-    return `${cleanString(title)}-${contentNumber}`;
+export function sectionUniqueId(title, contentNumber = '0', separator = '-') {
+    return `${cleanString(title)}${separator}${contentNumber}`;
 }
 
 /**
@@ -133,6 +170,17 @@ export function getForm(forms, name) {
 
 /**
  *
+ * @param uid
+ * @returns {RegExpExecArray}
+ */
+export function getSection(uid) {
+    const match = /(?<=\@).+?(?=\_)/.exec(uid);
+
+    return match && match[0];
+}
+
+/**
+ *
  * @param forms
  * @param name
  * @param id
@@ -148,6 +196,25 @@ export function getFieldValue(forms, name, id) {
     }
 
     return fieldValue ? fieldValue.value : '';
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {*}
+ */
+export function isFieldUnSaved(forms, name, id) {
+    let fieldUnSaved = { unSaved: false };
+
+    if (getForm(forms, name) && id) {
+        fieldUnSaved = getForm(forms, name).find((field) => {
+            return field.uid === id;
+        });
+    }
+
+    return fieldUnSaved && fieldUnSaved.unSaved;
 }
 
 /**
@@ -202,9 +269,35 @@ export function cleanedPrintPage(pageId) {
     return clonePage;
 }
 
+/**
+ *
+ * @param value
+ */
+export function isArray(value) {
+    return value && value.indexOf('') < 0;
+}
+
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
 export const cookieOptions = {
     maxAge: 30 * 24 * 60 * 60,
     path: '/',
 };
+
+/**
+ *
+ * @param pattern
+ * @param str
+ * @returns {*|string}
+ */
+export function matchRegex(pattern, str) {
+    const regex = new RegExp(pattern, 'g');
+    const matchField = str.match(regex);
+
+    const obj = {
+        true: (matchField) => matchField[0],
+        false: () => '',
+    };
+
+    return obj[!!matchField](matchField);
+}

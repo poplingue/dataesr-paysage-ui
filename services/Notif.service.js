@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast';
+import { genericErrorMsg } from '../helpers/internalMessages';
 
 const bgError = 'rgba(247, 191, 195, 0.6)';
 const bgValid = 'rgba(197, 230, 216, 0.6)';
@@ -22,7 +23,7 @@ const NotifService = {
                     icon: '☀️',
                     style: {
                         fontSize: 14,
-                        background: bgValid,
+                        background: bgNeutral,
                     },
                 },
                 loading: {
@@ -51,7 +52,7 @@ const NotifService = {
     },
 
     info(message, type = 'valid', duration = 4000) {
-        let stringMessage = message;
+        let stringMessage = message.toString();
 
         const typeObject = {
             error: { background: bgError, icon: iconError },
@@ -59,8 +60,9 @@ const NotifService = {
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        if (!typeof message === 'string' || !message instanceof String) {
-            stringMessage = JSON.stringify(message);
+        if (stringMessage.startsWith('TypeError')) {
+            console.error('==== stringMessage ==== ', message);
+            stringMessage = genericErrorMsg;
         }
 
         toast(stringMessage, {
@@ -77,11 +79,7 @@ const NotifService = {
     },
 
     techInfo(message, type = 'neutral', duration = 4000) {
-        let stringMessage = message;
-
-        if (!typeof message === 'string' || !message instanceof String) {
-            stringMessage = JSON.stringify(message);
-        }
+        let stringMessage = message.toString();
 
         const typeObject = {
             error: { background: bgError, icon: iconError },
@@ -89,7 +87,7 @@ const NotifService = {
             neutral: { background: bgNeutral, icon: iconNeutral },
         };
 
-        toast(message, {
+        toast(stringMessage, {
             position: 'bottom-right',
             className: `cy-notif-${type}`,
             icon: typeObject[type].icon,

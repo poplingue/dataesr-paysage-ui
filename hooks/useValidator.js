@@ -17,7 +17,7 @@ const useValidator = (validatorConfig = init) => {
     const { required } = validatorConfig;
 
     const checkField = useCallback(
-        (value = '', mode) => {
+        ({ value = '', mode }) => {
             const valid = validatorConfig.validators
                 ? validatorConfig.validators[0](value).valid
                 : true;

@@ -14,7 +14,7 @@ export function getUrl(key) {
 export function getVal(key) {
     const data = {
         IDB_DATABASE_NAME: 'SERVICE_FORMS',
-        IDB_DATABASE_VERSION: 2,
+        IDB_DATABASE_VERSION: 3,
     };
 
     return data[key];
@@ -197,4 +197,9 @@ export const StructurePageSkeleton = [
         content: [],
         print: true,
     },
+];
+
+export const structureSubObjects = [
+    { subObject: 'names', initBody: { usualName: '' } },
+    { subObject: 'identifiers', initBody: {} },
 ];

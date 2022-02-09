@@ -15,8 +15,9 @@ export default function Help() {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
+
     const {
-        statePage: { user, userConnected },
+        statePage: { user },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -24,7 +25,7 @@ export default function Help() {
         e.preventDefault();
 
         // TODO refacto
-        if (userConnected) {
+        if (user && user.username) {
             authService.signOut().then(() => {
                 dispatch({
                     type: 'UPDATE_USER',
@@ -35,13 +36,6 @@ export default function Help() {
                     type: 'UPDATE_ERROR',
                     payload: '',
                 });
-
-                dispatch({
-                    type: 'UPDATE_USER_CONNECTION',
-                    payload: false,
-                });
-
-                Cookies.set('userConnected', false);
 
                 router.push({
                     pathname: '/account/forgot-password',
@@ -61,7 +55,7 @@ export default function Help() {
                     <Col n="12">
                         <NavLink
                             href={
-                                userConnected
+                                user && user.username
                                     ? '/account/activate-account'
                                     : '/account/sign-in'
                             }

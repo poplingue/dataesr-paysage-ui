@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 import {
@@ -6,31 +5,20 @@ import {
     emailErrorMsg,
     genericErrorMsg,
     passwordErrorMsg,
-    tokenError,
+    invalidToken,
 } from '../helpers/internalMessages';
 
 const authService = {
     signup: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/signup`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ response, data }) => {
-                if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
-                }
-
+            .then(({ response }) => {
                 return response;
             })
             .catch((err) => {
@@ -42,14 +30,7 @@ const authService = {
     activate: async (code) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/activate-account`;
-        let newTokens = '';
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(code),
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', code);
 
         try {
             const response = await fetch(url, requestOptions);
@@ -60,25 +41,16 @@ const authService = {
                     return { response, data };
                 })
                 .catch((err) => {
-                    if (err === tokenError) {
+                    if (err === invalidToken) {
                         return authService
                             .refreshAccessToken()
-                            .then(async (resp) => {
-                                newTokens = resp.data;
-
-                                const newBody = {
-                                    activationCode: code.activationCode,
-                                    tokens: newTokens,
-                                };
-                                const r = await fetch(url, {
-                                    ...requestOptions,
-                                    body: JSON.stringify(newBody),
-                                });
+                            .then(async () => {
+                                const r = await fetch(url, requestOptions);
 
                                 return fetchHelper
                                     .handleResponse(r)
-                                    .then(async (res) => {
-                                        return { response: res, newTokens };
+                                    .then(async (response) => {
+                                        return { response };
                                     });
                             });
                     } else {
@@ -92,14 +64,7 @@ const authService = {
     renewActivationCode: async () => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/renew-activation-code`;
-        let newTokens = '';
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('GET', null);
 
         const response = await fetch(url, requestOptions);
 
@@ -109,18 +74,11 @@ const authService = {
                 return { response, data };
             })
             .catch((err) => {
-                if (err === tokenError) {
+                if (err === invalidToken) {
                     return authService
                         .refreshAccessToken()
-                        .then(async (resp) => {
-                            newTokens = resp.data;
-
-                            const newBody = { tokens: newTokens };
-                            const r = await fetch(url, {
-                                ...requestOptions,
-                                body: JSON.stringify(newBody),
-                                method: 'POST',
-                            });
+                        .then(async () => {
+                            const r = await fetch(url, requestOptions);
 
                             return fetchHelper
                                 .handleResponse(r)
@@ -141,29 +99,16 @@ const authService = {
     signIn: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/sign-in`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ response, data }) => {
-                if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
-                }
-
+            .then(({ response }) => {
                 return response;
             })
             .catch((err) => {
-                console.error('==== SignIn Error ==== ', err);
-
                 if (err === genericErrorMsg) {
                     return Promise.reject(emailErrorMsg);
                 }
@@ -176,31 +121,25 @@ const authService = {
             });
     },
     signOut: async () => {
-        // TODO route auth/signout
-        let resp = 'No Cookie tokens to remove';
+        const { publicRuntimeConfig } = getConfig();
+        const url = `${publicRuntimeConfig.baseApiUrl}/auth/sign-out`;
+        const requestOptions = fetchHelper.requestOptions('POST');
 
-        try {
-            if (Cookies.get('tokens')) {
-                Cookies.remove('tokens');
-                resp = 'Cookie tokens removed';
-            }
+        const response = await fetch(url, requestOptions);
 
-            return resp;
-        } catch (err) {
-            return Promise.reject(err);
-        }
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ response }) => {
+                return { response };
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
     },
     resetPassword: async (userData) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/reset-password`;
-
-        // TODO Tidy options
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(userData),
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', userData);
 
         const response = await fetch(url, requestOptions);
 
@@ -213,35 +152,24 @@ const authService = {
                 return Promise.reject(err);
             });
     },
-    refreshAccessToken: async (refreshToken, refreshTokenUrl) => {
+    refreshAccessToken: async (refreshTokenUrl) => {
         const { publicRuntimeConfig } = getConfig();
         const url =
             refreshTokenUrl ||
             `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
-        const tokens = Cookies.get('tokens')
-            ? JSON.parse(Cookies.get('tokens'))
-            : null;
-
+        // TODO requestOtion refacto
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                refreshToken:
-                    tokens && Object.keys(tokens).length > 0
-                        ? tokens.refreshToken
-                        : refreshToken,
-            }),
+            body: JSON.stringify({}),
             credentials: 'include',
         });
 
         return fetchHelper
             .handleResponse(response)
             .then(({ response, data }) => {
-                if (response.status >= 200 && response.status < 400) {
-                    Cookies.set('tokens', JSON.stringify(data));
-                    console.log('==== Tokens refreshed ==== ');
-                }
+                console.log('==== Tokens refreshed ==== ');
 
                 return { response, data };
             })
@@ -252,13 +180,7 @@ const authService = {
     forgotPassword: async (email) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/auth/send-password-renewal-code`;
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(email),
-            credentials: 'include',
-        };
+        const requestOptions = fetchHelper.requestOptions('POST', email);
 
         const response = await fetch(url, requestOptions);
 

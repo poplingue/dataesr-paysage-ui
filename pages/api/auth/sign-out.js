@@ -1,18 +1,30 @@
 import getConfig from 'next/config';
+import { fetchHelper } from '../../../helpers/fetch';
+import { noTokensError } from '../../../helpers/internalMessages';
 
 const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/signout`;
-        // TODO Tidy options
-        const request = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(req.body),
-        });
+        const tokens = req.cookies.tokens
+            ? JSON.parse(req.cookies.tokens)
+            : null;
 
-        const response = await request.text();
+        if (!tokens) {
+            return res.status(200).send(noTokensError);
+        }
+
+        const requestOptions = fetchHelper.requestOptions('POST', {}, tokens);
+
+        const request = await fetch(url, requestOptions);
+
+        const response = await request.json();
+
+        if (response && response.message === 'Déconnecté') {
+            fetchHelper.setCookieTokens(res, '', 0);
+        }
+
         res.status(request.status).json(response);
     } catch (err) {
         res.status(500).send(err);

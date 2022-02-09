@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
@@ -9,9 +8,7 @@ import {
     activateAdviceMsg,
     activationCodePattern,
     codeMandatoryMsg,
-    connectAdviceMsg,
     inactiveUserError,
-    tokenMissingError,
 } from '../../../helpers/internalMessages';
 import authService from '../../../services/Auth.service';
 import NotifService from '../../../services/Notif.service';
@@ -35,7 +32,7 @@ export default function Activate() {
 
     const router = useRouter();
     const {
-        statePage: { userError },
+        statePage: { error },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -46,10 +43,10 @@ export default function Activate() {
     });
 
     useEffect(() => {
-        if (userError === inactiveUserError) {
+        if (error === inactiveUserError) {
             NotifService.info(activateAdviceMsg, 'neutral', 10000);
         }
-    }, [router, userError]);
+    }, [router, error]);
 
     const getNewCode = () => {
         authService
@@ -68,13 +65,6 @@ export default function Activate() {
                     '==== authService.renewActivationCode ==== ',
                     err
                 );
-
-                // Todo still useful??
-                if (err === tokenMissingError) {
-                    router.push('/account/sign-in').then(() => {
-                        NotifService.info(connectAdviceMsg, 'neutral', 6000);
-                    });
-                }
             });
     };
 
@@ -87,15 +77,6 @@ export default function Activate() {
                         type: 'UPDATE_ERROR',
                         payload: '',
                     });
-
-                    dispatch({
-                        type: 'UPDATE_USER_CONNECTION',
-                        payload: false,
-                    });
-
-                    if (Cookies && Cookies.get('userConnected')) {
-                        Cookies.set('userConnected', false);
-                    }
 
                     router.push('/account/sign-in').then(() => {
                         NotifService.info(
