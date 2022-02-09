@@ -19,7 +19,10 @@ export default function Update() {
     const workerRef = useRef();
 
     const router = useRouter();
-    const { dispatchForm: dispatch } = useContext(AppContext);
+    const {
+        stateForm: { updateObjectId },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
 
     useEffect(() => {
         workerRef.current = new Worker('sw.js', {
@@ -76,6 +79,12 @@ export default function Update() {
                                 text="Créer un nouvel Établissement"
                             />
                         )}
+                    </Col>
+                    <Col>
+                        <LinkClick
+                            href={`/update/structure/${updateObjectId}`}
+                            text={`Reprendre la modification de ${updateObjectId}`}
+                        />
                     </Col>
                 </Row>
             </Container>
