@@ -74,6 +74,7 @@ export default function Update() {
                             </Spinner>
                         ) : (
                             <LinkClick
+                                dataCy="update/structure"
                                 href="/update/structure"
                                 onClick={(e) => onClick(e, 'structure')}
                                 text="Créer un nouvel Établissement"

@@ -11,7 +11,7 @@ context('Structure new form', () => {
     });
 
     it('should add Name section', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-testid="btn-add-names"]').click();
 
@@ -21,7 +21,7 @@ context('Structure new form', () => {
     });
 
     it('should save in new section', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
@@ -49,7 +49,7 @@ context('Structure new form', () => {
     });
 
     it('should delete new section', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('DELETE', '/api/structure/**').as('delete');
         cy.intercept('PATCH', '/api/structure/**').as('patch');

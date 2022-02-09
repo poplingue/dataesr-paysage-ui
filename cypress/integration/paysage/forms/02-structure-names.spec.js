@@ -12,7 +12,7 @@ context('Structure new form', () => {
     });
 
     it('should delete Othername field', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
@@ -36,7 +36,7 @@ context('Structure new form', () => {
     });
 
     it('should save Article Select field', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_article"]')
             .find('select')
@@ -55,7 +55,7 @@ context('Structure new form', () => {
     });
 
     it('should save empty ShortName field', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
