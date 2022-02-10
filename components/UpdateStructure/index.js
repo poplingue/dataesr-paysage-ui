@@ -46,6 +46,12 @@ export default function UpdateStructure({ data, id }) {
         };
     });
 
+    // const filterByUnSaved = (fields) => {
+    //     return fields.filter((field) => {
+    //         return !field.unSaved === true;
+    //     });
+    // };
+
     const initDataStructureForm = useCallback(async () => {
         dataFormService
             .initFormSections(object, id, formName, storeObjects)
@@ -58,14 +64,13 @@ export default function UpdateStructure({ data, id }) {
                         fields,
                     },
                 });
-
-                setInitData(true);
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
     useEffect(() => {
         async function init() {
             await initDataStructureForm();
+            setInitData(true);
         }
 
         if (!initData) {

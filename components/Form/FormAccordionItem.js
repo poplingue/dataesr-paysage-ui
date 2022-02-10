@@ -95,10 +95,6 @@ export default function FormAccordionItem({
         if (validSections && currentSection) {
             const valid = Object.values(currentSection).indexOf('error') < 0;
 
-            if (valid) {
-                setDisabled(true);
-            }
-
             const payload = {
                 section: {
                     [title]: {
@@ -131,41 +127,38 @@ export default function FormAccordionItem({
             dataFormService
                 .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
-                    for (let i = 0; i < filteredForm.length; i = i + 1) {
-                        const uid = filteredForm[i].uid;
-                        const section = getSection(uid);
-
-                        dispatch({
-                            type: 'UPDATE_FORM_FIELD',
-                            payload: {
-                                value: filteredForm[i].value,
-                                uid,
-                                formName,
-                                unSaved: false,
-                            },
-                        });
-
-                        dispatch({
-                            type: 'DELETE_SAVING_SECTION',
-                            payload: { section },
-                        });
-
-                        setDisabled(true);
-
-                        DBService.set(
-                            {
-                                ...filteredForm[i],
-                                unSaved: false,
-                            },
-                            formName
-                        ).then(() => {
-                            NotifService.info('Données sauvegardées', 'valid');
-                        });
-                    }
+                    fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
                     NotifService.info(err, 'error');
                 });
+        }
+    };
+
+    const fieldsToSaved = (form) => {
+        for (let i = 0; i < form.length; i = i + 1) {
+            const { uid, value } = form[i];
+
+            dispatch({
+                type: 'UPDATE_FORM_FIELD',
+                payload: {
+                    value,
+                    uid,
+                    formName,
+                    unSaved: false,
+                },
+            });
+
+            DBService.set(
+                {
+                    ...form[i],
+                    unSaved: false,
+                },
+                formName
+            ).then(() => {
+                resetDisabled(uid);
+                NotifService.info('Données sauvegardées', 'valid');
+            });
         }
     };
 
@@ -222,6 +215,19 @@ export default function FormAccordionItem({
                     },
                 });
             });
+
+        resetDisabled(uids[0]);
+    };
+
+    const resetDisabled = (uid) => {
+        const section = getSection(uid);
+
+        dispatch({
+            type: 'DELETE_SAVING_SECTION',
+            payload: { section },
+        });
+
+        setDisabled(true);
     };
 
     return (
@@ -278,7 +284,7 @@ export default function FormAccordionItem({
                         {/* TODO remove data-testId */}
                         <Col n="2" className="txt-right">
                             <FieldButton
-                                onClick={resetSection}
+                                onClick={() => resetSection(subObject)}
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, orange]}
                                 title="Annuler"

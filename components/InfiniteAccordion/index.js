@@ -146,7 +146,7 @@ export default function InfiniteAccordion({
 
             if (checkStoreObject) {
                 // indexDB
-                await DBService.setList(fieldsToUpdate, formName);
+                await DBService.setList(fieldsToUpdate, formName, false);
             }
         }
 

@@ -46,7 +46,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
                 });
 
                 if (objectStoreChecked) {
-                    await DBService.set(payload, formName);
+                    await DBService.set(payload, formName, false);
                 }
             }
         },
@@ -57,7 +57,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
     }, [dispatch, objectFormType]);
 
-    const retrieveData = useCallback(
+    const retrieveIndexDBData = useCallback(
         async (objectStoreChecked) => {
             const indexDBData = await NotifService.promise(
                 DBService.getAllObjects(formName, objectStoreChecked),
@@ -82,20 +82,20 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     );
 
     useEffect(() => {
-        const getIndexDBData = async () => {
+        const initIndexDBData = async () => {
             if (formName) {
-                await retrieveData(storeObjects.indexOf(formName) > -1);
+                await retrieveIndexDBData(storeObjects.indexOf(formName) > -1);
             }
         };
 
-        getIndexDBData();
+        initIndexDBData();
     }, [
         updateField,
         storeObjects,
         formName,
         updateObjectId,
         dispatch,
-        retrieveData,
+        retrieveIndexDBData,
     ]);
 
     return (
