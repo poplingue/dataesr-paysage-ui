@@ -2,7 +2,8 @@
 
 > Frontend application of new Paysage project.
 
-[![Build & Test](https://github.com/dataesr/dataesr-paysage/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/poplingue/dataesr-paysage-ui/actions/workflows/tests.yml) ![GitHub last commit](https://img.shields.io/github/last-commit/poplingue/dataesr-paysage-ui?color=purple)
+![Build & Test](https://github.com/dataesr/dataesr-paysage/actions/workflows/tests.yml/badge.svg?branch=main)
+![GitHub last commit](https://img.shields.io/github/last-commit/poplingue/dataesr-paysage-ui?color=purple)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
