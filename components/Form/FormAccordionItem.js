@@ -52,40 +52,54 @@ export default function FormAccordionItem({
     const updateValidSection = useCallback(
         (id, validType) => {
             const title = cleanString(newTitle);
-            const section = validSections[title];
-            let payload = null;
+            const validSection = validSections[title];
+            let section = null;
+            const currentSection = getSection(id);
 
-            if (savingSections.indexOf(subObject) > -1) {
+            // TODO refacto
+            if (savingSections.indexOf(currentSection) > -1 && disabled) {
                 setDisabled(false);
-            }
 
-            if (!id && !validType && disabled) {
-                setDisabled(false);
-                payload = {
+                section = {
                     [title]: {
-                        ...section,
+                        ...validSection,
                         ...{ saved: false },
                     },
                 };
             }
 
-            if (id && (!section || (section && section[id] !== validType))) {
-                payload = {
+            if (!id && !validType && disabled) {
+                setDisabled(false);
+
+                section = {
                     [title]: {
-                        ...section,
-                        ...{ [id]: validType },
+                        ...validSection,
+                        ...{ saved: false },
                     },
                 };
             }
 
-            if (payload) {
+            if (
+                id &&
+                (!validSection ||
+                    (validSection && validSection[id] !== validType))
+            ) {
+                section = {
+                    [title]: {
+                        ...validSection,
+                        ...{ [id]: validType, saved: disabled },
+                    },
+                };
+            }
+
+            if (section) {
                 dispatch({
                     type: 'UPDATE_VALID_SECTION',
-                    payload: { section: payload },
+                    payload: { section },
                 });
             }
         },
-        [newTitle, validSections, savingSections, subObject, disabled, dispatch]
+        [newTitle, validSections, savingSections, disabled, dispatch]
     );
 
     const save = async () => {
@@ -124,10 +138,10 @@ export default function FormAccordionItem({
                 .filter(dataFormService.checkDateField)
                 .map(dataFormService.cleanDateFormat);
 
-            dataFormService
+            return dataFormService
                 .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
-                    fieldsToSaved(filteredForm);
+                    return fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
                     NotifService.info(err, 'error');
@@ -157,14 +171,16 @@ export default function FormAccordionItem({
                 formName
             ).then(() => {
                 resetDisabled(uid);
-                NotifService.info('Données sauvegardées', 'valid');
             });
         }
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        save();
+
+        save().then(() => {
+            NotifService.info('Données sauvegardées', 'valid');
+        });
     };
 
     /**
@@ -180,14 +196,22 @@ export default function FormAccordionItem({
      * @returns {Promise<void>}
      */
     const resetSection = async () => {
+        const title = cleanString(newTitle);
+        const validSection = validSections[title];
+        const section = {
+            [title]: {
+                ...validSection,
+                ...{ saved: true },
+            },
+        };
         const form = await DBService.getAllObjects(formName, true);
-
         const uids = form.flatMap((f) => {
             const { uid, unSaved } = f;
 
             return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
         });
 
+        // TODO refacto
         dispatch({
             type: 'DELETE_FORM_FIELD_LIST',
             payload: {
@@ -217,6 +241,11 @@ export default function FormAccordionItem({
             });
 
         resetDisabled(uids[0]);
+
+        dispatch({
+            type: 'UPDATE_VALID_SECTION',
+            payload: { section },
+        });
     };
 
     const resetDisabled = (uid) => {
