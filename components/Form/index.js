@@ -15,7 +15,7 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     const { Col, Row } = grid();
 
     const {
-        stateForm: { storeObjects, updateObjectId, savingSections },
+        stateForm: { storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -25,66 +25,78 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
     } = useRouter();
     const formName = getFormName(pathname, object);
 
-    const retrieveField = useCallback(
-        async (field) => {
+    /**
+     * Update field retrieved
+     * @type {(function(*): Promise<void>)|*}
+     */
+    const updateField = useCallback(
+        async (field, objectStoreChecked) => {
             const { value, uid, unSaved } = field;
-            const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+            const payload = {
+                value,
+                uid,
+                unSaved,
+            };
 
             if (value) {
                 dispatch({
                     type: 'UPDATE_FORM_FIELD',
-                    payload: { value, uid, formName, unSaved },
+                    payload: { ...payload, formName },
                 });
 
-                if (checkStoreObject) {
-                    await DBService.set(
-                        {
-                            value,
-                            uid,
-                            unSaved,
-                        },
-                        formName
-                    );
+                if (objectStoreChecked) {
+                    await DBService.set(payload, formName);
                 }
             }
         },
-        [dispatch, formName, storeObjects]
+        [dispatch, formName]
     );
 
     useEffect(() => {
         dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
     }, [dispatch, objectFormType]);
 
+    const retrieveData = useCallback(
+        async (objectStoreChecked) => {
+            const indexDBData = await NotifService.promise(
+                DBService.getAllObjects(formName, objectStoreChecked),
+                'Data from IndexDB fetched'
+            );
+            indexDBData
+                .filter((data) => data.unSaved === true)
+                .forEach((elm) => {
+                    const section = getSection(elm.uid);
+
+                    if (section) {
+                        dispatch({
+                            type: 'ADD_SAVING_SECTION',
+                            payload: { section },
+                        });
+                    }
+
+                    updateField(elm, objectStoreChecked);
+                });
+        },
+        [dispatch, formName, updateField]
+    );
+
     useEffect(() => {
         const getIndexDBData = async () => {
-            // TODO refacto
-            if (storeObjects.indexOf(formName) > -1 && formName) {
-                const indexDBData = await NotifService.promise(
-                    DBService.getAllObjects(
-                        formName,
-                        storeObjects.indexOf(formName) > -1
-                    ),
-                    'Data from IndexDB fetched'
-                );
-                indexDBData
-                    .filter((data) => data.unSaved === true)
-                    .forEach((elm) => {
-                        const section = getSection(elm.uid);
-
-                        if (section) {
-                            dispatch({
-                                type: 'ADD_SAVING_SECTION',
-                                payload: { section },
-                            });
-                        }
-
-                        retrieveField(elm);
-                    });
+            if (formName) {
+                await retrieveData(storeObjects.indexOf(formName) > -1);
             }
         };
 
         getIndexDBData();
-    }, [retrieveField, storeObjects, formName, updateObjectId]);
+    }, [
+        updateField,
+        storeObjects,
+        formName,
+        updateObjectId,
+        dispatch,
+        retrieveData,
+    ]);
 
     return (
         <PageTheme color={color}>

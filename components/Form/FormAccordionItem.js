@@ -30,7 +30,12 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId, savingSections },
+        stateForm: {
+            validSections,
+            updateObjectId,
+            savingSections,
+            storeObjects,
+        },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -80,7 +85,7 @@ export default function FormAccordionItem({
                 });
             }
         },
-        [newTitle, dispatch, validSections, disabled]
+        [newTitle, validSections, savingSections, subObject, disabled, dispatch]
     );
 
     const save = async () => {
@@ -169,8 +174,21 @@ export default function FormAccordionItem({
         save();
     };
 
+    /**
+     * Filter fields by subObject (names, identifiers...)
+     * @param fields
+     * @returns {*}
+     */
+    const filterSection = (fields) =>
+        fields.filter((field) => field.uid.indexOf(subObject) > -1);
+
+    /**
+     * Delete all fields unSaved in indexDB and state and rollback to init Section fields
+     * @returns {Promise<void>}
+     */
     const resetSection = async () => {
         const form = await DBService.getAllObjects(formName, true);
+
         const uids = form.flatMap((f) => {
             const { uid, unSaved } = f;
 
@@ -186,6 +204,24 @@ export default function FormAccordionItem({
         });
 
         await DBService.deleteList(uids, formName);
+
+        dataFormService
+            .initFormSections(
+                object,
+                updateObjectId,
+                formName,
+                storeObjects,
+                filterSection
+            )
+            .then((fields) => {
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD_LIST',
+                    payload: {
+                        formName,
+                        fields,
+                    },
+                });
+            });
     };
 
     return (
