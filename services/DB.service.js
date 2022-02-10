@@ -94,9 +94,13 @@ const DBService = {
 
         const tx = db.transaction(objectStoreName, 'readwrite');
 
-        const x = await tx.store.get(objValue.uid);
+        const currentObject = await tx.store.get(objValue.uid);
 
-        if (!x || (x && !x.unSaved) || force) {
+        if (
+            !currentObject ||
+            (currentObject && !currentObject.unSaved) ||
+            force
+        ) {
             // set the value
             tx.store.put(objValue);
         }

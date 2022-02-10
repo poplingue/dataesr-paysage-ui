@@ -284,7 +284,7 @@ export default function FormAccordionItem({
                         {/* TODO remove data-testId */}
                         <Col n="2" className="txt-right">
                             <FieldButton
-                                onClick={() => resetSection(subObject)}
+                                onClick={resetSection}
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, orange]}
                                 title="Annuler"
