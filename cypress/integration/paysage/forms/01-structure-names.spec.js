@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Structure new form', () => {
+context('Structure new form infinite otherName and article', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
@@ -11,7 +11,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure infinite otherName data', () => {
-        cy.get('[data-cy="update/structure"]').click();
+        cy.newStructure();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
@@ -31,6 +31,8 @@ context('Structure new form', () => {
 
         cy.reload();
 
+        cy.sectionsNoSticky();
+
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
             .should('have.value', 'OtherName#0');
@@ -41,18 +43,18 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure article data', () => {
-        cy.intercept('PATCH', '/api/structure/**').as('patch');
-
-        cy.get('[data-cy="update/structure"]').click();
+        cy.newStructure();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .type('OtherName#0', { force: true });
+            .type('OtherName#0');
 
-        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
+        cy.get('[data-testid="noms#1-save-button"]').click();
         cy.wait('@patch');
 
         cy.reload();
+
+        cy.sectionsNoSticky();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')

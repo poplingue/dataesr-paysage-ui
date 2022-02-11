@@ -10,6 +10,30 @@
 //
 //
 // -- This is a parent command --
+
+Cypress.Commands.add('newStructure', () => {
+    cy.get('[data-cy="update/structure"]').click();
+
+    cy.intercept('PATCH', '/api/structure/**').as('patch');
+
+    cy.sectionsNoSticky();
+});
+
+Cypress.Commands.add('sectionsNoSticky', () => {
+    cy.wait(2000);
+
+    cy.document().then((document) => {
+        const accordions = document.querySelectorAll('.fr-accordion');
+        console.log('==== accordions ==== ', accordions);
+
+        Array.from(accordions).map((node) => {
+            node.children[0].style.position = 'relative';
+
+            return node;
+        });
+    });
+});
+
 Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
 
@@ -24,8 +48,6 @@ Cypress.Commands.add('signIn', () => {
 
     cy.wait('@sign-in');
     cy.wait('@me');
-
-    // cy.wait(500);
 });
 
 Cypress.Commands.add('signOut', () => {
@@ -62,7 +84,7 @@ Cypress.Commands.add('signup', () => {
 
     cy.wait('@signup');
 
-    cy.wait(500);
+    // cy.wait(500);
 });
 
 Cypress.Commands.add('deleteIndexDB', () => {
