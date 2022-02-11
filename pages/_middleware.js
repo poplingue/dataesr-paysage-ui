@@ -19,7 +19,7 @@ export async function middleware(request) {
         securedPaths.indexOf(matchPath[0]) > -1 &&
         !Object.keys(cookies).includes('tokens')
     ) {
-        return NextResponse.redirect('/account//sign-in');
+        return NextResponse.redirect('/account/sign-in');
     }
 
     return NextResponse.next();
