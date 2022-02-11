@@ -102,10 +102,10 @@ const DBService = {
             force
         ) {
             // set the value
-            tx.store.put(objValue);
-        }
+            await tx.store.put(objValue);
 
-        await tx.done;
+            await tx.done;
+        }
     },
 
     async get(uid, objectStoreName) {
@@ -128,6 +128,7 @@ const DBService = {
             getVal('IDB_DATABASE_VERSION')
         );
         const tx = db.transaction(objectStoreName, 'readwrite');
+        const promises = [];
 
         for (let i = 0; i < list.length; i = i + 1) {
             const currentObject = await tx.store.get(list[i].uid);
@@ -137,14 +138,18 @@ const DBService = {
                 (currentObject && !currentObject.unSaved) ||
                 force
             ) {
-                await tx.store.put({ ...list[i] });
+                promises.push(tx.store.put({ ...list[i] }));
             }
         }
 
-        await tx.done;
+        promises.push(tx.done);
+
+        return await Promise.all(promises);
     },
 
     async deleteList(uids, objectStoreName) {
+        const promises = [];
+
         const db = await this.asyncOpenDB(
             getVal('IDB_DATABASE_NAME'),
             getVal('IDB_DATABASE_VERSION')
@@ -157,9 +162,13 @@ const DBService = {
                 const uid = await db.getKey(objectStoreName, uids[i]);
 
                 if (uid) {
-                    await db.delete(objectStoreName, uid);
+                    promises.push(db.delete(objectStoreName, uid));
                 }
             }
+
+            promises.push(tx.done);
+
+            return await Promise.all(promises);
         }
     },
 

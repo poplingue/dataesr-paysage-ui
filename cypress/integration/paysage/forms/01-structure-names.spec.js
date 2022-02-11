@@ -15,17 +15,17 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .type('OtherName#1');
+            .type('OtherName#0', { force: true });
 
-        cy.get('[data-testid="btn-add"]').click();
+        cy.get('[data-testid="btn-add"]').click({ force: true });
 
         cy.get('[data-field="update/structure@names#1_otherName#1"]')
             .find('input')
-            .type('OtherName#2');
+            .type('OtherName#1', { force: true });
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
 
         cy.wait('@patch');
 
@@ -33,11 +33,11 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .should('have.value', 'OtherName#1');
+            .should('have.value', 'OtherName#0');
 
         cy.get('[data-field="update/structure@names#1_otherName#1"]')
             .find('input')
-            .should('have.value', 'OtherName#2');
+            .should('have.value', 'OtherName#1');
     });
 
     it('should save new Structure article data', () => {
@@ -47,14 +47,15 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .type('OtherName#1');
+            .type('OtherName#0', { force: true });
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
         cy.wait('@patch');
+
         cy.reload();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .should('have.value', 'OtherName#1');
+            .should('have.value', 'OtherName#0');
     });
 });

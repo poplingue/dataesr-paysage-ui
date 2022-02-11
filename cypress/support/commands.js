@@ -25,12 +25,10 @@ Cypress.Commands.add('signIn', () => {
     cy.wait('@sign-in');
     cy.wait('@me');
 
-    cy.wait(500);
+    // cy.wait(500);
 });
 
 Cypress.Commands.add('signOut', () => {
-    cy.scrollTo(0, 0);
-
     cy.intercept('POST', '/api/auth/sign-out').as('sign-out');
     cy.intercept('POST', '/api/user/me').as('me');
 

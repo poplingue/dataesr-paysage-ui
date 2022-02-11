@@ -46,12 +46,6 @@ export default function UpdateStructure({ data, id }) {
         };
     });
 
-    // const filterByUnSaved = (fields) => {
-    //     return fields.filter((field) => {
-    //         return !field.unSaved === true;
-    //     });
-    // };
-
     const initDataStructureForm = useCallback(async () => {
         dataFormService
             .initFormSections(object, id, formName, storeObjects)

@@ -218,14 +218,16 @@ export const dataFormService = {
         };
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        const l = listFields[!!filter](fields);
-
         if (checkStoreObject) {
             // indexDB
-            await DBService.setList(l, formName, false);
+            await DBService.setList(
+                listFields[!!filter](fields),
+                formName,
+                false
+            );
         }
 
-        return l;
+        return listFields[!!filter](fields);
     },
 
     getObjectData: async (object, id, subObjects) => {

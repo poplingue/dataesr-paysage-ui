@@ -15,7 +15,9 @@ context('Structure new form', () => {
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
+        cy.get('[data-testid="officialName"]')
+            .find('input')
+            .type('Offiffi', { force: true });
 
         cy.get('[data-testid="noms#1-save-button"]').click();
         cy.wait('@patch');

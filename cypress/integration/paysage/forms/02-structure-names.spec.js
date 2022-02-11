@@ -4,35 +4,11 @@ context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
-        cy.wait(300);
+        // cy.wait(300);
     });
 
     afterEach(() => {
         cy.signOut();
-    });
-
-    it('should delete Othername field', () => {
-        cy.get('[data-cy="update/structure"]').click();
-
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .type('OtherName#0');
-
-        cy.get('[data-testid="btn-add"]').click();
-
-        cy.get('[data-field="update/structure@names#1_otherName#1"]')
-            .find('input')
-            .type('OtherName#1');
-
-        cy.intercept('DELETE', '/api/structure/**').as('delete');
-
-        cy.get('[data-testid="btn-delete-autrenom#1"]').click();
-
-        cy.wait('@delete');
-
-        cy.get('[data-field="update/structure@names#1_otherName#1"]').should(
-            'not.exist'
-        );
     });
 
     it('should save Article Select field', () => {
@@ -40,11 +16,11 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_article"]')
             .find('select')
-            .select('aux');
+            .select('aux', { force: true });
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
 
         cy.wait('@patch');
         cy.reload();
@@ -54,16 +30,40 @@ context('Structure new form', () => {
             .should('have.value', 'aux');
     });
 
+    it('should delete Othername field', () => {
+        cy.get('[data-cy="update/structure"]').click();
+
+        cy.get('[data-field="update/structure@names#1_otherName#0"]')
+            .find('input')
+            .type('OtherName#0', { force: true });
+
+        cy.get('[data-testid="btn-add"]').click({ force: true });
+
+        cy.get('[data-field="update/structure@names#1_otherName#1"]')
+            .find('input')
+            .type('OtherName#1', { force: true });
+
+        cy.intercept('DELETE', '/api/structure/**').as('delete');
+
+        cy.get('[data-testid="btn-delete-autrenom#1"]').click({ force: true });
+
+        cy.wait('@delete');
+
+        cy.get('[data-field="update/structure@names#1_otherName#1"]').should(
+            'not.exist'
+        );
+    });
+
     it('should save empty ShortName field', () => {
         cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
-            .type('ShortName');
+            .type('ShortName', { force: true });
 
         cy.intercept('PATCH', '/api/structure/**').as('ShortName');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
 
         cy.wait('@ShortName');
 
@@ -71,12 +71,12 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_shortName"]')
             .find('input')
-            .type('toutouyoutou')
+            .type('toutouyoutou', { force: true })
             .clear();
 
         cy.intercept('PATCH', '/api/structure/**').as('NoShortName');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
 
         cy.wait('@NoShortName');
 

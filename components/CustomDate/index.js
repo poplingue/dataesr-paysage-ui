@@ -76,11 +76,13 @@ export default function CustomDate({
         async (payload) => {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-            const checkStoreObject = storeObjects.indexOf(formName) > -1;
+            setTimeout(async () => {
+                const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-            if (checkStoreObject) {
-                await DBService.set(payload, formName);
-            }
+                if (checkStoreObject) {
+                    await DBService.set(payload, formName);
+                }
+            }, 0);
         },
         [dispatch, formName, storeObjects]
     );
@@ -92,10 +94,12 @@ export default function CustomDate({
                 getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
             const reg = new RegExp(regex);
             const newValue = dateValue.replace(reg, value);
-            const currentValue = dateValue.match(reg);
+            const currentDateValue = dateValue.match(reg);
+            const fieldUid = getUniqueId(formName, subObject, fieldId);
+            const currentFieldValue = getFieldValue(forms, formName, fieldUid);
 
             // Save full date xxxx-xx-xx
-            if (currentValue && currentValue[0] !== value) {
+            if (currentDateValue && currentDateValue[0] !== value) {
                 await updateDate({
                     value: newValue,
                     uid,
@@ -105,12 +109,14 @@ export default function CustomDate({
             }
 
             // Save field (day, month or year)
-            await updateDate({
-                value,
-                uid: getUniqueId(formName, subObject, fieldId),
-                formName,
-                unSaved: true,
-            });
+            if (currentFieldValue !== value) {
+                await updateDate({
+                    value,
+                    uid: fieldUid,
+                    formName,
+                    unSaved: true,
+                });
+            }
 
             if (updateCheck !== undefined) {
                 setNewValueCheck(updateCheck);
@@ -127,8 +133,24 @@ export default function CustomDate({
         const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
         const currentDay = now.getDate().toString().padStart(2, '0');
 
-        setNewValueCheck(!newValueCheck);
         updateValidSection(null, null);
+        setNewValueCheck(!newValueCheck);
+
+        if (when === 'today') {
+            newDate = [
+                { ...daysObj, selectedValue: currentDay },
+                { ...monthsObj, selectedValue: currentMonth },
+                { ...yearsObj, selectedValue: currentYear },
+            ];
+        } else {
+            newDate = [
+                { ...daysObj, selectedValue: '01' },
+                { ...monthsObj, selectedValue: '01' },
+                { ...yearsObj, selectedValue: currentYear },
+            ];
+        }
+
+        setDateData(newDate);
 
         // Save xxxx-xx-xx
         const payload = {
@@ -138,28 +160,9 @@ export default function CustomDate({
             unSaved: true,
         };
 
-        if (when === 'today') {
-            await updateDate(payload);
-            newDate = [
-                { ...daysObj, selectedValue: currentDay },
-                { ...monthsObj, selectedValue: currentMonth },
-                { ...yearsObj, selectedValue: currentYear },
-            ];
-        } else {
-            await updateDate({
-                ...payload,
-                value: `${currentYear}-01-01`,
-                unSaved: true,
-            });
-
-            newDate = [
-                { ...daysObj, selectedValue: '01' },
-                { ...monthsObj, selectedValue: '01' },
-                { ...yearsObj, selectedValue: currentYear },
-            ];
-        }
-
-        setDateData(newDate);
+        await updateDate(payload).then(() => {
+            console.log('==== updated ==== ');
+        });
     };
 
     const reset = async () => {
@@ -239,7 +242,7 @@ export default function CustomDate({
                                 <Col n="4 xl-12">
                                     <DeleteButton
                                         background={
-                                            useCSSProperty('--grey-925-125')
+                                            useCSSProperty('--grey-950-100')
                                                 .style
                                         }
                                         display
