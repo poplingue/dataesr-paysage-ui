@@ -1,7 +1,7 @@
 import { TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import {
     getFieldValue,
@@ -31,7 +31,6 @@ function Input({
     const { checkField, message, type } = useValidator(validatorConfig);
     const [textValue, setTextValue] = useState(initValue || '');
 
-    const inputRef = useRef(initValue || '');
     const {
         pathname,
         query: { object },
@@ -108,13 +107,12 @@ function Input({
     }, [type, uid, updateValidSection]);
 
     return (
-        <WrapperField unSaved={unSaved && textValue}>
+        <WrapperField unSaved={unSaved}>
             <TextInput
                 message={message}
                 messageType={type}
                 data-field={uid}
                 data-testid={validatorId}
-                ref={inputRef}
                 onChange={onChange}
                 value={textValue}
                 hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}

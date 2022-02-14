@@ -11,7 +11,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure infinite otherName data', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
@@ -43,7 +43,7 @@ context('Structure new form', () => {
     it('should save new Structure article data', () => {
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')

@@ -11,7 +11,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure full date data', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
@@ -42,7 +42,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure partial date data', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
@@ -73,7 +73,7 @@ context('Structure new form', () => {
         const now = new Date();
         const currentYear = now.getFullYear().toString();
 
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
@@ -101,7 +101,7 @@ context('Structure new form', () => {
         const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
         const currentDay = now.getDate().toString().padStart(2, '0');
 
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
@@ -124,7 +124,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure automatic today data', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 

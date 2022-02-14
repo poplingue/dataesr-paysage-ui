@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DB.service';
 import reducersForm from './ReducersForm';
@@ -13,7 +14,7 @@ export const DataProvider = ({ user, error, children }) => {
         objectFormType: '',
         validSections: [],
         departments: [],
-        updateObjectId: '',
+        updateObjectId: Cookies.get('updateObjectId') || '',
         forms: [{ 'update/person': [] }, { 'update/structure': [] }],
         savingSections: [],
     };

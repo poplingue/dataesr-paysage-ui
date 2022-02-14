@@ -245,7 +245,7 @@ export default function FormAccordionItem({
                                 onClick={resetSection}
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, orange]}
-                                title="Reset"
+                                title="Annuler"
                                 dataTestId={`${cleanString(
                                     newTitle
                                 )}-resetSection-button`}

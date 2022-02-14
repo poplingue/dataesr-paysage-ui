@@ -11,7 +11,7 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure officialName data', () => {
-        cy.get('a[href="/update/structure"]').click();
+        cy.get('[data-cy="update/structure"]').click();
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
