@@ -460,7 +460,6 @@ export const dataFormService = {
         const r = await response.json();
 
         if (response.status >= 400) {
-            console.error('==== Err ==== ', r);
             throw r.error;
         }
 

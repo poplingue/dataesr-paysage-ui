@@ -18,7 +18,6 @@ async function handler(req, res) {
 
         res.status(request.status).json(response);
     } catch (err) {
-        console.log('==== ERR API ==== ', err);
         res.status(500).send(err);
     }
 }

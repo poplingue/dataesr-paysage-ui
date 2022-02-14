@@ -12,6 +12,7 @@ WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 RUN yarn build
+RUN rm -r node_modules/@next/swc-linux-x64-gnu
 
 # Production image, copy all the files and run next
 FROM node:14-alpine AS runner
@@ -31,9 +32,9 @@ COPY --from=builder /app/package.json ./package.json
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 3002
 
-ENV PORT 3000
+ENV PORT 3002
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

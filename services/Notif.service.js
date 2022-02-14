@@ -61,7 +61,6 @@ const NotifService = {
         };
 
         if (stringMessage.startsWith('TypeError')) {
-            console.error('==== stringMessage ==== ', message);
             stringMessage = genericErrorMsg;
         }
 

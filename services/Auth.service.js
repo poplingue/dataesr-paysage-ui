@@ -22,8 +22,6 @@ const authService = {
                 return response;
             })
             .catch((err) => {
-                console.error('==== Err ==== ', err);
-
                 return Promise.reject(err);
             });
     },

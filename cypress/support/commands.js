@@ -24,7 +24,6 @@ Cypress.Commands.add('newStructure', () => {
 Cypress.Commands.add('sectionsNoSticky', () => {
     cy.document().then((document) => {
         const accordions = document.querySelectorAll('.fr-accordion');
-        console.log('==== accordions ==== ', accordions);
 
         Array.from(accordions).map((node) => {
             node.children[0].style.position = 'relative';
