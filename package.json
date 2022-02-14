@@ -32,6 +32,8 @@
     "@zeit/next-sass": "^1.0.1",
     "babel-jest": "^27.4.2",
     "cookie": "^0.4.1",
+    "cookie-cutter": "^0.2.0",
+    "cookies": "^0.8.0",
     "fs-extra": "^10.0.0",
     "idb": "^6.1.2",
     "js-cookie": "^3.0.1",

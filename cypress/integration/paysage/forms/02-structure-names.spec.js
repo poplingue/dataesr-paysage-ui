@@ -4,7 +4,6 @@ context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
-        // cy.wait(300);
     });
 
     afterEach(() => {

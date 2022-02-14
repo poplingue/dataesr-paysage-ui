@@ -15,17 +15,17 @@ context('Structure new form infinite otherName and article', () => {
 
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
-            .type('OtherName#0', { force: true });
+            .type('OtherName#0');
 
-        cy.get('[data-testid="btn-add"]').click({ force: true });
+        cy.get('[data-testid="btn-add"]').click();
 
         cy.get('[data-field="update/structure@names#1_otherName#1"]')
             .find('input')
-            .type('OtherName#1', { force: true });
+            .type('OtherName#1');
 
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
+        cy.get('[data-testid="noms#1-save-button"]').click();
 
         cy.wait('@patch');
 

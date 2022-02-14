@@ -17,6 +17,7 @@ const okPaths = [
     '/api/auth/refresh-access-token',
     '/api/auth/send-password-renewal-code',
     '/account/sign-in',
+    '/account/signup',
 ];
 
 export async function middleware(request) {
@@ -26,7 +27,15 @@ export async function middleware(request) {
     const pattern = okPaths.join('|');
     let re = new RegExp(pattern, 'i');
 
-    // tokens | okPaths | home
+    console.log('==== middleware cookies ==== ', cookies);
+
+    console.log(
+        '==== middleware ==== ',
+        currentPathName,
+        re.test(currentPathName)
+    );
+
+    // // tokens | okPaths | home
     if (
         Object.keys(cookies).includes('tokens') ||
         re.test(currentPathName) ||

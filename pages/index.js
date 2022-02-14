@@ -10,6 +10,7 @@ import {
     connectedMsg,
     inactiveUserError,
 } from '../helpers/internalMessages';
+import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
 
 const Tile = dynamic(() =>
@@ -21,14 +22,41 @@ const TileBody = dynamic(() =>
 const HeaderLayout = dynamic(() => import('../components/HeaderLayout'));
 const Layout = dynamic(() => import('../components/Layout'));
 
-function Home({ tokens }) {
+function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
 
     const {
         statePage: { user, error },
+        dispatchPage: dispatch,
     } = useContext(AppContext);
+
+    useEffect(() => {
+        if (!Object.keys(user).length) {
+            accountService
+                .me()
+                .then((response) => {
+                    if (response) {
+                        dispatch({
+                            type: 'UPDATE_USER',
+                            payload: response,
+                        });
+
+                        dispatch({
+                            type: 'UPDATE_ERROR',
+                            payload: '',
+                        });
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: error,
+                    });
+                });
+        }
+    }, [dispatch, tokens, user]);
 
     useEffect(() => {
         if (!error && tokens) {
@@ -96,7 +124,7 @@ function Home({ tokens }) {
 }
 
 export async function getServerSideProps({ req }) {
-    const tokens = fetchHelper.headerTokens(req, true);
+    const tokens = fetchHelper.headerTokens(req);
 
     return { props: { tokens: tokens || '' } };
 }

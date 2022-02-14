@@ -16,12 +16,12 @@ Cypress.Commands.add('newStructure', () => {
 
     cy.intercept('PATCH', '/api/structure/**').as('patch');
 
+    cy.wait(3000);
+
     cy.sectionsNoSticky();
 });
 
 Cypress.Commands.add('sectionsNoSticky', () => {
-    cy.wait(2000);
-
     cy.document().then((document) => {
         const accordions = document.querySelectorAll('.fr-accordion');
         console.log('==== accordions ==== ', accordions);

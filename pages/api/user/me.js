@@ -1,7 +1,6 @@
 import getConfig from 'next/config';
 import { fetchHelper } from '../../../helpers/fetch';
 import { noTokensError } from '../../../helpers/internalMessages';
-
 const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {

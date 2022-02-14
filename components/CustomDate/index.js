@@ -7,7 +7,6 @@ import grid from '../../helpers/imports';
 import {
     camelCase,
     cleanString,
-    getFieldValue,
     getFormName,
     getUniqueId,
     lastChar,
@@ -17,10 +16,10 @@ import {
 import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import CustomSelect from '../CustomSelect';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './CustomDate.module.scss';
+import DateBlock from './DateBlock';
 
 export default function CustomDate({
     title,
@@ -32,13 +31,15 @@ export default function CustomDate({
 }) {
     const { Col, Row, Container } = grid();
 
-    const d = new Date();
+    const validator = cleanString(validatorId);
     const days = range(1, 31, true);
     const months = range(1, 12, true);
     const years = range(1930, 2030, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
+    const { style: grey } = useCSSProperty('--grey-1000-50');
+
     const {
-        stateForm: { storeObjects, forms, updateObjectId },
+        stateForm: { storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -87,43 +88,6 @@ export default function CustomDate({
         [dispatch, formName, storeObjects]
     );
 
-    const onChange = useCallback(
-        async (regex, fieldId, params) => {
-            const [value, updateCheck] = params;
-            const dateValue =
-                getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
-            const reg = new RegExp(regex);
-            const newValue = dateValue.replace(reg, value);
-            const currentDateValue = dateValue.match(reg);
-            const fieldUid = getUniqueId(formName, subObject, fieldId);
-            const currentFieldValue = getFieldValue(forms, formName, fieldUid);
-
-            // Save full date xxxx-xx-xx
-            if (currentDateValue && currentDateValue[0] !== value) {
-                await updateDate({
-                    value: newValue,
-                    uid,
-                    formName,
-                    unSaved: true,
-                });
-            }
-
-            // Save field (day, month or year)
-            if (currentFieldValue !== value) {
-                await updateDate({
-                    value,
-                    uid: fieldUid,
-                    formName,
-                    unSaved: true,
-                });
-            }
-
-            if (updateCheck !== undefined) {
-                setNewValueCheck(updateCheck);
-            }
-        },
-        [formName, forms, subObject, uid, updateDate]
-    );
     const [dateData, setDateData] = useState(initDateData);
 
     const automaticDate = async (when) => {
@@ -132,9 +96,6 @@ export default function CustomDate({
         const currentYear = now.getFullYear().toString();
         const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
         const currentDay = now.getDate().toString().padStart(2, '0');
-
-        updateValidSection(null, null);
-        setNewValueCheck(!newValueCheck);
 
         if (when === 'today') {
             newDate = [
@@ -152,6 +113,9 @@ export default function CustomDate({
 
         setDateData(newDate);
 
+        updateValidSection(null, null);
+        setNewValueCheck(!newValueCheck);
+
         // Save xxxx-xx-xx
         const payload = {
             value: `${currentYear}-${currentMonth}-${currentDay}`,
@@ -160,9 +124,7 @@ export default function CustomDate({
             unSaved: true,
         };
 
-        await updateDate(payload).then(() => {
-            console.log('==== updated ==== ');
-        });
+        await updateDate(payload);
     };
 
     const reset = async () => {
@@ -183,8 +145,6 @@ export default function CustomDate({
 
         await DBService.deleteList(uids, formName);
 
-        setDateData(initDateData);
-
         // TODO move to ServiceForm
         const requestOptions = fetchHelper.requestOptions('PATCH', {
             [validatorId]: '',
@@ -198,6 +158,8 @@ export default function CustomDate({
         );
 
         await response.json();
+
+        setDateData(initDateData);
 
         NotifService.info('Date supprimée', 'valid');
     };
@@ -221,18 +183,14 @@ export default function CustomDate({
                             <Row gutters>
                                 <Col n="4 xl-12">
                                     <FieldButton
-                                        dataTestId={`today-${cleanString(
-                                            validatorId
-                                        )}`}
+                                        dataTestId={`today-${validator}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
                                 <Col n="4 xl-12">
                                     <FieldButton
-                                        dataTestId={`firstJanuary-${cleanString(
-                                            validatorId
-                                        )}`}
+                                        dataTestId={`firstJanuary-${validator}`}
                                         title="1er janvier"
                                         onClick={() =>
                                             automaticDate('firstJanuary')
@@ -241,10 +199,7 @@ export default function CustomDate({
                                 </Col>
                                 <Col n="4 xl-12">
                                     <DeleteButton
-                                        background={
-                                            useCSSProperty('--grey-950-100')
-                                                .style
-                                        }
+                                        background={grey}
                                         display
                                         onClick={reset}
                                         title={validatorId}
@@ -255,40 +210,17 @@ export default function CustomDate({
                     </Col>
                     <Col n="12 xl-9">
                         <Row gutters>
-                            {dateData.map((select) => {
-                                const {
-                                    selectedValue,
-                                    options,
-                                    regex,
-                                    fieldId,
-                                    title,
-                                } = select;
-
-                                return (
-                                    <Col
-                                        n="12 xl-4"
-                                        key={title}
-                                        spacing="py-1w"
-                                    >
-                                        <CustomSelect
-                                            customOnChange={(...params) =>
-                                                onChange(regex, fieldId, params)
-                                            }
-                                            updateValidSection={
-                                                updateValidSection
-                                            }
-                                            validatorConfig={validatorConfig}
-                                            section={section}
-                                            title={title}
-                                            validatorId={fieldId}
-                                            staticValues={options}
-                                            newValue={selectedValue}
-                                            newValueCheck={newValueCheck}
-                                            subObject={subObject}
-                                        />
-                                    </Col>
-                                );
-                            })}
+                            <DateBlock
+                                updateValidSection={updateValidSection}
+                                setNewValueCheck={setNewValueCheck}
+                                newValueCheck={newValueCheck}
+                                validatorConfig={validatorConfig}
+                                validatorId={validatorId}
+                                updateDate={updateDate}
+                                data={dateData}
+                                subObject={subObject}
+                                section={section}
+                            />
                         </Row>
                     </Col>
                 </Row>

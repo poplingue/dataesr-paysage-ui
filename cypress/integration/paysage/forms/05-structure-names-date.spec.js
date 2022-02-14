@@ -14,18 +14,19 @@ context('Structure new form', () => {
     it('should save new Structure full date data', () => {
         cy.get('[data-field="update/structure@names#1_startDateDay"]')
             .find('select')
-            .select('04', { force: true });
+            .select('04');
         cy.get('[data-field="update/structure@names#1_startDateMonth"]')
             .find('select')
-            .select('08', { force: true });
+            .select('08');
         cy.get('[data-field="update/structure@names#1_startDateYear"]')
             .find('select')
-            .select('2000', { force: true });
+            .select('2000');
 
         cy.get('[data-testid="noms#1-save-button"]').click();
         cy.wait('@patch');
 
         cy.reload();
+        cy.sectionsNoSticky();
 
         cy.get('[data-field="update/structure@names#1_startDateDay"]')
             .find('select')
