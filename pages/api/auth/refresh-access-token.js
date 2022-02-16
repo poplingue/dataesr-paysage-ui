@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/refresh-access-token`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/refresh-access-token`;
         const tokens = req.cookies.tokens
             ? JSON.parse(req.cookies.tokens)
             : null;

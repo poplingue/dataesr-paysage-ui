@@ -4,6 +4,7 @@ context('Structure new form', () => {
     before(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
+        cy.newStructure();
     });
 
     after(() => {
@@ -11,10 +12,6 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure officialName data', () => {
-        cy.get('[data-cy="update/structure"]').click();
-
-        cy.intercept('PATCH', '/api/structure/**').as('patch');
-
         cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
 
         cy.get('[data-testid="noms#1-save-button"]').click();

@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/send-password-renewal-code`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/send-password-renewal-code`;
         const requestOptions = fetchHelper.requestOptions('POST', {
             account: req.body,
         });

@@ -2,7 +2,7 @@ import { Radio, RadioGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getUrl } from '../../helpers/constants';
+import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
@@ -11,9 +11,8 @@ import DBService from '../../services/DB.service';
 function CustomRadio({
     title,
     staticValues = [],
-    section,
     subObject,
-    validatorConfig,
+    validatorId,
     updateValidSection,
 }) {
     const { Col, Row, Container } = grid();
@@ -27,6 +26,9 @@ function CustomRadio({
         pathname,
         query: { object },
     } = useRouter();
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
+        : null;
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, title);
     const { checkField, message, type } = useValidator(validatorConfig);

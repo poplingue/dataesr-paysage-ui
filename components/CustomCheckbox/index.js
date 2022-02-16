@@ -2,7 +2,7 @@ import { Checkbox, CheckboxGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { getUrl } from '../../helpers/constants';
+import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
 import {
     cleanString,
@@ -17,10 +17,9 @@ import NotifService from '../../services/Notif.service';
 function CustomCheckbox({
     title,
     staticValues = [],
-    section,
     subObject,
-    validatorConfig,
     updateValidSection,
+    validatorId,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -33,6 +32,9 @@ function CustomCheckbox({
         pathname,
         query: { object },
     } = useRouter();
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
+        : null;
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, title);
     const [checkboxValues, setCheckboxValues] = useState(() =>

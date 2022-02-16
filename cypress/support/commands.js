@@ -10,36 +10,50 @@
 //
 //
 // -- This is a parent command --
+const baseUrl = Cypress.env('baseUrl');
+
+Cypress.Commands.add('newStructure', () => {
+    cy.get('[data-cy="update/structure"]').click();
+
+    cy.intercept('PATCH', '/api/structure/**').as('patch');
+
+    cy.wait(3000);
+
+    cy.sectionsNoSticky();
+});
+
+Cypress.Commands.add('sectionsNoSticky', () => {
+    cy.document().then((document) => {
+        const accordions = document.querySelectorAll('.fr-accordion');
+
+        Array.from(accordions).map((node) => {
+            node.children[0].style.position = 'relative';
+
+            return node;
+        });
+    });
+});
+
 Cypress.Commands.add('signIn', () => {
-    const baseUrl = Cypress.env('baseUrl');
+    const password = Cypress.env('password');
+    const account = Cypress.env('account');
 
-    cy.intercept('POST', '/api/auth/sign-in').as('sign-in');
-    cy.intercept('POST', '/api/user/me').as('me');
-
-    cy.visit(`${baseUrl}/account/sign-in`);
-    cy.get('[name="account"]').type('martha@mailinator.com');
-    cy.get('[name="password"]').type('Polk000!', { force: true });
-
-    cy.get('form').submit();
-
-    cy.wait('@sign-in');
-    cy.wait('@me');
-
-    cy.wait(500);
+    cy.request({
+        method: 'POST',
+        url: `${baseUrl}/api/auth/sign-in`,
+        failOnStatusCode: false,
+        headers: { 'Content-Type': 'application/json' },
+        body: {
+            password: password,
+            account: account,
+        },
+    }).then((response) => {
+        cy.setCookie('tokens', JSON.stringify(response.body));
+    });
 });
 
 Cypress.Commands.add('signOut', () => {
-    cy.scrollTo(0, 0);
-
-    cy.intercept('POST', '/api/auth/sign-out').as('sign-out');
-    cy.intercept('POST', '/api/user/me').as('me');
-
-    cy.get('.fr-header__tools-links')
-        .find('.ds-fr--flex.fr-link')
-        .click({ force: true });
-
-    cy.wait('@sign-out');
-    cy.wait('@me');
+    cy.clearCookie('tokens');
 });
 
 Cypress.Commands.add('signup', () => {
@@ -63,8 +77,6 @@ Cypress.Commands.add('signup', () => {
     cy.get('form').submit();
 
     cy.wait('@signup');
-
-    cy.wait(500);
 });
 
 Cypress.Commands.add('deleteIndexDB', () => {

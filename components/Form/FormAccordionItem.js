@@ -30,7 +30,12 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId, savingSections },
+        stateForm: {
+            validSections,
+            updateObjectId,
+            savingSections,
+            storeObjects,
+        },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -47,40 +52,45 @@ export default function FormAccordionItem({
     const updateValidSection = useCallback(
         (id, validType) => {
             const title = cleanString(newTitle);
-            const section = validSections[title];
-            let payload = null;
+            const validSection = validSections[title];
+            let section = null;
+            const currentSection = getSection(id);
 
-            if (savingSections.indexOf(subObject) > -1) {
+            if (
+                (!id && !validType && disabled) ||
+                (savingSections.indexOf(currentSection) > -1 && disabled)
+            ) {
                 setDisabled(false);
-            }
 
-            if (!id && !validType && disabled) {
-                setDisabled(false);
-                payload = {
+                section = {
                     [title]: {
-                        ...section,
+                        ...validSection,
                         ...{ saved: false },
                     },
                 };
             }
 
-            if (id && (!section || (section && section[id] !== validType))) {
-                payload = {
+            if (
+                id &&
+                (!validSection ||
+                    (validSection && validSection[id] !== validType))
+            ) {
+                section = {
                     [title]: {
-                        ...section,
-                        ...{ [id]: validType },
+                        ...validSection,
+                        ...{ [id]: validType, saved: disabled },
                     },
                 };
             }
 
-            if (payload) {
+            if (section) {
                 dispatch({
                     type: 'UPDATE_VALID_SECTION',
-                    payload: { section: payload },
+                    payload: { section },
                 });
             }
         },
-        [newTitle, dispatch, validSections, disabled]
+        [newTitle, validSections, savingSections, disabled, dispatch]
     );
 
     const save = async () => {
@@ -89,10 +99,6 @@ export default function FormAccordionItem({
 
         if (validSections && currentSection) {
             const valid = Object.values(currentSection).indexOf('error') < 0;
-
-            if (valid) {
-                setDisabled(true);
-            }
 
             const payload = {
                 section: {
@@ -123,40 +129,10 @@ export default function FormAccordionItem({
                 .filter(dataFormService.checkDateField)
                 .map(dataFormService.cleanDateFormat);
 
-            dataFormService
+            return dataFormService
                 .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
-                    for (let i = 0; i < filteredForm.length; i = i + 1) {
-                        const uid = filteredForm[i].uid;
-                        const section = getSection(uid);
-
-                        dispatch({
-                            type: 'UPDATE_FORM_FIELD',
-                            payload: {
-                                value: filteredForm[i].value,
-                                uid,
-                                formName,
-                                unSaved: false,
-                            },
-                        });
-
-                        dispatch({
-                            type: 'DELETE_SAVING_SECTION',
-                            payload: { section },
-                        });
-
-                        setDisabled(true);
-
-                        DBService.set(
-                            {
-                                ...filteredForm[i],
-                                unSaved: false,
-                            },
-                            formName
-                        ).then(() => {
-                            NotifService.info('Données sauvegardées', 'valid');
-                        });
-                    }
+                    return fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
                     NotifService.info(err, 'error');
@@ -164,12 +140,61 @@ export default function FormAccordionItem({
         }
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        save();
+    const fieldsToSaved = (form) => {
+        for (let i = 0; i < form.length; i = i + 1) {
+            const { uid, value } = form[i];
+
+            dispatch({
+                type: 'UPDATE_FORM_FIELD',
+                payload: {
+                    value,
+                    uid,
+                    formName,
+                    unSaved: false,
+                },
+            });
+
+            DBService.set(
+                {
+                    ...form[i],
+                    unSaved: false,
+                },
+                formName
+            ).then(() => {
+                resetDisabled(uid);
+            });
+        }
     };
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        save().then(() => {
+            NotifService.info('Données sauvegardées', 'valid');
+        });
+    };
+
+    /**
+     * Filter fields by subObject (names, identifiers...)
+     * @param fields
+     * @returns {*}
+     */
+    const filterSection = (fields) =>
+        fields.filter((field) => field.uid.indexOf(subObject) > -1);
+
+    /**
+     * Delete all fields unSaved in indexDB and state and rollback to init Section fields
+     * @returns {Promise<void>}
+     */
     const resetSection = async () => {
+        const title = cleanString(newTitle);
+        const validSection = validSections[title];
+        const section = {
+            [title]: {
+                ...validSection,
+                ...{ saved: true },
+            },
+        };
         const form = await DBService.getAllObjects(formName, true);
         const uids = form.flatMap((f) => {
             const { uid, unSaved } = f;
@@ -177,6 +202,7 @@ export default function FormAccordionItem({
             return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
         });
 
+        // TODO refacto
         dispatch({
             type: 'DELETE_FORM_FIELD_LIST',
             payload: {
@@ -186,6 +212,42 @@ export default function FormAccordionItem({
         });
 
         await DBService.deleteList(uids, formName);
+
+        dataFormService
+            .initFormSections(
+                object,
+                updateObjectId,
+                formName,
+                storeObjects,
+                filterSection
+            )
+            .then((fields) => {
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD_LIST',
+                    payload: {
+                        formName,
+                        fields,
+                    },
+                });
+            });
+
+        resetDisabled(uids[0]);
+
+        dispatch({
+            type: 'UPDATE_VALID_SECTION',
+            payload: { section },
+        });
+    };
+
+    const resetDisabled = (uid) => {
+        const section = getSection(uid);
+
+        dispatch({
+            type: 'DELETE_SAVING_SECTION',
+            payload: { section },
+        });
+
+        setDisabled(true);
     };
 
     return (

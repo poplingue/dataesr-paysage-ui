@@ -26,20 +26,16 @@ export default function AccordionForm({
     const { expanded } = useAccordions(true);
 
     const {
-        stateForm: { validSections },
+        stateForm: { validSections, savingSections },
     } = useContext(AppContext);
 
     useEffect(() => {
         const section = validSections[cleanString(newTitle)];
 
         if (section) {
-            if (Object.keys(section).indexOf('saved') < 0) {
-                setSectionStatus('neutral');
-            } else {
-                setSectionStatus(section.saved ? 'valid' : 'warning');
-            }
+            setSectionStatus(section.saved ? 'valid' : 'warning');
         }
-    }, [newTitle, validSections]);
+    }, [newTitle, savingSections, validSections]);
 
     const renderTitle = () => {
         const colorIcon = {

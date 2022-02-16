@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/renew-activation-code`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/renew-activation-code`;
         const tokens = fetchHelper.headerTokens(req);
         const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
 

@@ -77,13 +77,7 @@ export default function Activate() {
                         type: 'UPDATE_ERROR',
                         payload: '',
                     });
-
-                    router.push('/account/sign-in').then(() => {
-                        NotifService.info(
-                            'Compte activé, connectez-vous',
-                            'valid'
-                        );
-                    });
+                    window.location = '/account/sign-in';
                 });
             })
             .catch((err) => {
