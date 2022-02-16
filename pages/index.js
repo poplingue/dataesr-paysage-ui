@@ -10,7 +10,6 @@ import {
     connectedMsg,
     inactiveUserError,
 } from '../helpers/internalMessages';
-import accountService from '../services/Account.service';
 import NotifService from '../services/Notif.service';
 
 const Tile = dynamic(() =>
@@ -29,34 +28,7 @@ function Home({ tokens = {} }) {
 
     const {
         statePage: { user, error },
-        dispatchPage: dispatch,
     } = useContext(AppContext);
-
-    useEffect(() => {
-        if (!Object.keys(user).length) {
-            accountService
-                .me()
-                .then((response) => {
-                    if (response) {
-                        dispatch({
-                            type: 'UPDATE_USER',
-                            payload: response,
-                        });
-
-                        dispatch({
-                            type: 'UPDATE_ERROR',
-                            payload: '',
-                        });
-                    }
-                })
-                .catch((error) => {
-                    dispatch({
-                        type: 'UPDATE_ERROR',
-                        payload: error,
-                    });
-                });
-        }
-    }, [dispatch, tokens, user]);
 
     useEffect(() => {
         if (!error && tokens) {

@@ -18,7 +18,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -26,6 +26,7 @@ import {
     inactiveUserError,
 } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
+import accountService from '../../services/Account.service';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
@@ -68,6 +69,32 @@ export default function Layout({ children, headTitle }) {
     } = useContext(AppContext);
 
     const router = useRouter();
+
+    useEffect(() => {
+        if (!Object.keys(user).length) {
+            accountService
+                .me()
+                .then((response) => {
+                    if (response) {
+                        dispatch({
+                            type: 'UPDATE_USER',
+                            payload: response,
+                        });
+
+                        dispatch({
+                            type: 'UPDATE_ERROR',
+                            payload: '',
+                        });
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: 'UPDATE_ERROR',
+                        payload: error,
+                    });
+                });
+        }
+    }, [dispatch, user]);
 
     const signOut = () => {
         authService
