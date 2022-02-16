@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
@@ -21,7 +22,6 @@ export default function CustomSelect({
     staticValues = [],
     newValue,
     newValueCheck,
-    validatorConfig,
     updateValidSection,
     validatorId,
     subObject,
@@ -30,11 +30,17 @@ export default function CustomSelect({
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
     } = useContext(AppContext);
+
     const [options, setOptions] = useState([]);
     const {
         pathname,
         query: { object },
     } = useRouter();
+
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
+        : null;
+
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
     const fieldValue = getFieldValue(forms, formName, uid);
@@ -145,7 +151,11 @@ export default function CustomSelect({
                     data-field={uid}
                     onChange={onChange}
                     selected={fieldValue}
-                    hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
+                    hint={`${
+                        validatorConfig && !validatorConfig.required
+                            ? '(optionnel)'
+                            : ''
+                    }`}
                     label={title}
                     options={options}
                 />
@@ -166,10 +176,6 @@ CustomSelect.propTypes = {
     subObject: PropTypes.string.isRequired,
     newValue: PropTypes.string,
     newValueCheck: PropTypes.bool,
-    validatorConfig: PropTypes.shape({
-        required: PropTypes.bool,
-        validators: PropTypes.arrayOf(PropTypes.func),
-    }).isRequired,
     updateValidSection: PropTypes.func.isRequired,
     customOnChange: PropTypes.func,
 };

@@ -4,6 +4,7 @@ context('Structure new form infinite otherName and article', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
+        cy.newStructure();
     });
 
     afterEach(() => {
@@ -11,8 +12,6 @@ context('Structure new form infinite otherName and article', () => {
     });
 
     it('should save new Structure infinite otherName data', () => {
-        cy.newStructure();
-
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
             .type('OtherName#0');
@@ -43,8 +42,6 @@ context('Structure new form infinite otherName and article', () => {
     });
 
     it('should save new Structure article data', () => {
-        cy.newStructure();
-
         cy.get('[data-field="update/structure@names#1_otherName#0"]')
             .find('input')
             .type('OtherName#0');

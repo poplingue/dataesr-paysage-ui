@@ -35,30 +35,19 @@ Cypress.Commands.add('sectionsNoSticky', () => {
 
 Cypress.Commands.add('signIn', () => {
     const baseUrl = Cypress.env('baseUrl');
-
     cy.intercept('POST', '/api/auth/sign-in').as('sign-in');
-    cy.intercept('POST', '/api/user/me').as('me');
 
     cy.visit(`${baseUrl}/account/sign-in`);
     cy.get('[name="account"]').type('martha@mailinator.com');
-    cy.get('[name="password"]').type('Polk000!', { force: true });
+    cy.get('[name="password"]').type('Polk000!');
 
     cy.get('form').submit();
 
     cy.wait('@sign-in');
-    cy.wait('@me');
 });
 
 Cypress.Commands.add('signOut', () => {
-    cy.intercept('POST', '/api/auth/sign-out').as('sign-out');
-    cy.intercept('POST', '/api/user/me').as('me');
-
-    cy.get('.fr-header__tools-links')
-        .find('.ds-fr--flex.fr-link')
-        .click({ force: true });
-
-    cy.wait('@sign-out');
-    cy.wait('@me');
+    cy.get('.fr-header__tools-links').find('.ds-fr--flex.fr-link').click();
 });
 
 Cypress.Commands.add('signup', () => {
@@ -82,8 +71,6 @@ Cypress.Commands.add('signup', () => {
     cy.get('form').submit();
 
     cy.wait('@signup');
-
-    // cy.wait(500);
 });
 
 Cypress.Commands.add('deleteIndexDB', () => {

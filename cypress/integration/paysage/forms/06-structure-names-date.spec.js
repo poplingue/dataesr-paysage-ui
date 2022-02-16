@@ -4,7 +4,7 @@ context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
-        cy.sectionsNoSticky();
+        cy.newStructure();
     });
 
     afterEach(() => {
@@ -16,8 +16,6 @@ context('Structure new form', () => {
         const currentYear = now.getFullYear().toString();
         const currentMonth = (now.getMonth() + 1).toString().padStart(2, '0');
         const currentDay = now.getDate().toString().padStart(2, '0');
-
-        cy.newStructure();
 
         cy.get('[data-testId="today-enddate"]').click();
 
@@ -38,8 +36,6 @@ context('Structure new form', () => {
     });
 
     it('should save new Structure automatic today data', () => {
-        cy.newStructure();
-
         cy.get('[data-testId="today-enddate"]').click();
 
         cy.get('[data-testId="btn-delete-enddate"]').click();

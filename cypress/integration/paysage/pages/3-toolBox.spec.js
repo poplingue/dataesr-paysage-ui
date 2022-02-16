@@ -6,10 +6,6 @@ context('Person page', () => {
         cy.visit(`${baseUrl}/object/person/1`);
     });
 
-    afterEach(() => {
-        cy.signOut();
-    });
-
     it('should open/close Tools', () => {
         cy.get('[data-cy="toolbox-header"]')
             .find('.ri-tools-fill ')

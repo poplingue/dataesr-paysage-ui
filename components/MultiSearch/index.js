@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { AppContext } from '../../context/GlobalState';
+import { configValidators } from '../../helpers/constants';
 import {
     cleanString,
     getFieldValue,
@@ -14,13 +15,7 @@ import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import styles from './MultiSearch.module.scss';
 
-function MultiSearch({
-    title,
-    section,
-    subObject,
-    validatorConfig,
-    updateValidSection,
-}) {
+function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
     const {
         stateForm: { departments, forms, storeObjects },
         dispatchForm: dispatch,
@@ -29,6 +24,9 @@ function MultiSearch({
         pathname,
         query: { object },
     } = useRouter();
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
+        : null;
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, title);
     const [textValue, setTextValue] = useState('');

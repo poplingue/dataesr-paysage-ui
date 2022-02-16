@@ -23,8 +23,6 @@ import DateBlock from './DateBlock';
 
 export default function CustomDate({
     title,
-    section,
-    validatorConfig,
     updateValidSection,
     subObject,
     validatorId,
@@ -37,11 +35,11 @@ export default function CustomDate({
     const years = range(1930, 2030, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
-
     const {
         stateForm: { storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
+
     const {
         pathname,
         query: { object },
@@ -214,12 +212,10 @@ export default function CustomDate({
                                 updateValidSection={updateValidSection}
                                 setNewValueCheck={setNewValueCheck}
                                 newValueCheck={newValueCheck}
-                                validatorConfig={validatorConfig}
                                 validatorId={validatorId}
                                 updateDate={updateDate}
                                 data={dateData}
                                 subObject={subObject}
-                                section={section}
                             />
                         </Row>
                     </Col>

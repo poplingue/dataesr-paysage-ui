@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import grid from '../../helpers/imports';
 import InfiniteField from '../InfiniteField';
 import Input from './Input';
@@ -7,7 +8,6 @@ function CustomInput({
     value,
     infinite,
     section,
-    validatorConfig,
     updateValidSection,
     validatorId,
     subObject,
@@ -27,7 +27,6 @@ function CustomInput({
                         >
                             <Input
                                 updateValidSection={updateValidSection}
-                                validatorConfig={validatorConfig}
                                 validatorId={validatorId}
                                 subObject={subObject}
                                 label={title}
@@ -39,7 +38,6 @@ function CustomInput({
                             <Input
                                 value={value}
                                 updateValidSection={updateValidSection}
-                                validatorConfig={validatorConfig}
                                 validatorId={validatorId}
                                 label={title}
                                 index={0}
@@ -52,5 +50,20 @@ function CustomInput({
         </Container>
     );
 }
+
+CustomInput.defaultProps = {
+    infinite: false,
+    value: '',
+};
+
+CustomInput.propTypes = {
+    title: PropTypes.string.isRequired,
+    value: PropTypes.string,
+    infinite: PropTypes.bool,
+    section: PropTypes.string.isRequired,
+    updateValidSection: PropTypes.func.isRequired,
+    validatorId: PropTypes.string.isRequired,
+    subObject: PropTypes.string.isRequired,
+};
 
 export default CustomInput;

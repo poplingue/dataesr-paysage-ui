@@ -21,9 +21,13 @@ import PropTypes from 'prop-types';
 import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { inactiveUserError } from '../../helpers/internalMessages';
+import {
+    connectedMsg,
+    inactiveUserError,
+} from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
 import authService from '../../services/Auth.service';
+import NotifService from '../../services/Notif.service';
 import ModalDetail from '../ModalDetail';
 
 const NavLink = dynamic(() => import('./../NavLink'));
@@ -79,7 +83,9 @@ export default function Layout({ children, headTitle }) {
                     payload: '',
                 });
 
-                window.location = '/account/sign-in';
+                router.push('/account/sign-in').then(() => {
+                    NotifService.info(connectedMsg, 'valid');
+                });
             })
             .catch(() => {
                 router.push('/');

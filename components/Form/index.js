@@ -11,7 +11,7 @@ import PageTheme from '../PageTheme';
 import AccordionForm from './AccordionForm';
 import FormAccordionItem from './FormAccordionItem';
 
-const CreateForm = ({ jsonForm, color, objectFormType }) => {
+const CreateForm = ({ jsonForm, color }) => {
     const { Col, Row } = grid();
 
     const {
@@ -52,10 +52,6 @@ const CreateForm = ({ jsonForm, color, objectFormType }) => {
         },
         [dispatch, formName]
     );
-
-    useEffect(() => {
-        dispatch({ type: 'UPDATE_OBJECT_FORM_TYPE', payload: objectFormType });
-    }, [dispatch, objectFormType]);
 
     const retrieveIndexDBData = useCallback(
         async (objectStoreChecked) => {

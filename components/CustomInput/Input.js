@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
@@ -19,7 +20,6 @@ function Input({
     subObject,
     infinite = false,
     value: initValue,
-    validatorConfig,
     updateValidSection,
     validatorId,
 }) {
@@ -28,13 +28,17 @@ function Input({
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
-    const { checkField, message, type } = useValidator(validatorConfig);
-    const [textValue, setTextValue] = useState(initValue || '');
-
     const {
         pathname,
         query: { object },
     } = useRouter();
+
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
+        : null;
+
+    const { checkField, message, type } = useValidator(validatorConfig);
+    const [textValue, setTextValue] = useState(initValue || '');
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(
         formName,
@@ -134,10 +138,6 @@ Input.propTypes = {
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     value: PropTypes.string,
-    validatorConfig: PropTypes.shape({
-        required: PropTypes.bool,
-        validators: PropTypes.arrayOf(PropTypes.func),
-    }).isRequired,
     updateValidSection: PropTypes.func,
 };
 

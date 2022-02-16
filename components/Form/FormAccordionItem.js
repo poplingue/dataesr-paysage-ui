@@ -56,19 +56,10 @@ export default function FormAccordionItem({
             let section = null;
             const currentSection = getSection(id);
 
-            // TODO refacto
-            if (savingSections.indexOf(currentSection) > -1 && disabled) {
-                setDisabled(false);
-
-                section = {
-                    [title]: {
-                        ...validSection,
-                        ...{ saved: false },
-                    },
-                };
-            }
-
-            if (!id && !validType && disabled) {
+            if (
+                (!id && !validType && disabled) ||
+                (savingSections.indexOf(currentSection) > -1 && disabled)
+            ) {
                 setDisabled(false);
 
                 section = {

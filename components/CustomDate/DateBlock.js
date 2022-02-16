@@ -7,13 +7,11 @@ import CustomSelect from '../CustomSelect';
 
 export default function DateBlock({
     data,
-    section,
     subObject,
     updateDate,
     newValueCheck,
     validatorId,
     updateValidSection,
-    validatorConfig,
     setNewValueCheck,
 }) {
     const {
@@ -74,8 +72,6 @@ export default function DateBlock({
                         onChange(regex, fieldId, params)
                     }
                     updateValidSection={updateValidSection}
-                    validatorConfig={validatorConfig}
-                    section={section}
                     title={title}
                     validatorId={fieldId}
                     staticValues={options}
