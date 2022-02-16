@@ -119,7 +119,11 @@ function Input({
                 data-testid={validatorId}
                 onChange={onChange}
                 value={textValue}
-                hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
+                hint={`${
+                    validatorConfig && !validatorConfig.required
+                        ? '(optionnel)'
+                        : ''
+                }`}
                 label={label}
             />
         </WrapperField>
