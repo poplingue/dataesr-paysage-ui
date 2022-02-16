@@ -47,8 +47,6 @@ export default function DateBlock({
                 });
             }
 
-            console.log('==== ONCHANGE ==== ', value);
-
             // Save field (day, month or year)
             if (currentFieldValue !== value) {
                 await updateDate({

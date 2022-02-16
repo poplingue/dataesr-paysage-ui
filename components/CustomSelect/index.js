@@ -5,7 +5,6 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import {
     getFieldValue,
-    getForm,
     getFormName,
     getUniqueId,
     isFieldUnSaved,
@@ -28,7 +27,7 @@ export default function CustomSelect({
     subObject,
 }) {
     const {
-        stateForm: { forms, storeObjects, updateObjectId },
+        stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const [options, setOptions] = useState([]);
@@ -39,9 +38,6 @@ export default function CustomSelect({
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
     const fieldValue = getFieldValue(forms, formName, uid);
-    const [selectValue, setSelectValue] = useState(
-        newValue || fieldValue || ''
-    );
     const unSaved = isFieldUnSaved(forms, formName, uid);
     const { checkField, message, type } = useValidator(validatorConfig);
 
@@ -102,7 +98,6 @@ export default function CustomSelect({
     const handleValue = useCallback(
         (value) => {
             checkField({ value, mode: 'silent' });
-            setSelectValue(value);
         },
         [checkField]
     );
@@ -112,32 +107,6 @@ export default function CustomSelect({
             onChangeObj[!!customOnChange](newValue, false);
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
-
-    useEffect(() => {
-        const mustBeUpdated = selectValue !== fieldValue;
-
-        const handleValueObj = {
-            true: (value) => handleValue(value),
-            false: () => '',
-        };
-        const check =
-            (!updateObjectId &&
-                formName &&
-                getForm(forms, formName) &&
-                !selectValue) ||
-            mustBeUpdated;
-
-        handleValueObj[check](fieldValue);
-    }, [
-        fieldValue,
-        formName,
-        forms,
-        handleValue,
-        newValue,
-        selectValue,
-        uid,
-        updateObjectId,
-    ]);
 
     useEffect(() => {
         if (!options.length) {
@@ -175,10 +144,7 @@ export default function CustomSelect({
                     messageType={type || undefined}
                     data-field={uid}
                     onChange={onChange}
-                    selected={
-                        fieldValue ||
-                        (newValue !== undefined ? newValue : selectValue)
-                    }
+                    selected={fieldValue}
                     hint={`${!validatorConfig.required ? '(optionnel)' : ''}`}
                     label={title}
                     options={options}

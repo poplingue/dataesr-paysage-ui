@@ -127,7 +127,7 @@ export default function CustomDate({
         await updateDate(payload);
     };
 
-    const reset = async () => {
+    const deleteDate = async () => {
         const uids = [
             uid,
             getUniqueId(formName, subObject, `${camelValidator}Day`),
@@ -201,7 +201,7 @@ export default function CustomDate({
                                     <DeleteButton
                                         background={grey}
                                         display
-                                        onClick={reset}
+                                        onClick={deleteDate}
                                         title={validatorId}
                                     />
                                 </Col>
