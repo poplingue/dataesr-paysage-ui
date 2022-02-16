@@ -1,0 +1,7 @@
+services:
+  paysage-ui:
+    build: .
+    privileged: true
+    ports:
+      - 3002:3002
+    command: yarn start
