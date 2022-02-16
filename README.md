@@ -100,6 +100,14 @@ from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## Run with Docker
+
+This command will build and run the Docker image "paysage-ui" :
+
+```sh
+docker-compose up --build
+```
+
 ## TODO
 
 * button to reset data from current form
