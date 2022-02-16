@@ -8,11 +8,8 @@ module.exports = {
     serverRuntimeConfig: {
         // Will only be available on the server side
         secondSecret: process.env.SECOND_SECRET, // Pass through env variables
-        dataesrApiAuthUrl:
-            process.env.API_AUTH_URL ||
-            'https://api.paysage.staging.dataesr.ovh',
-        dataesrApiUrl:
-            process.env.API_URL || 'https://api.paysage.staging.dataesr.ovh',
+        dataesrApiAuthUrl: process.env.API_AUTH_URL,
+        dataesrApiUrl: process.env.API_URL,
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
