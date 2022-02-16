@@ -39,6 +39,8 @@ context('Structure new form infinite otherName and article', () => {
         cy.get('[data-field="update/structure@names#1_otherName#1"]')
             .find('input')
             .should('have.value', 'OtherName#1');
+
+        cy.signOut();
     });
 
     it('should save new Structure article data', () => {

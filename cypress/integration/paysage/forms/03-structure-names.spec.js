@@ -4,7 +4,6 @@ context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
-
         cy.newStructure();
     });
 
@@ -12,29 +11,31 @@ context('Structure new form', () => {
         cy.signOut();
     });
 
-    it('should add Name section', () => {
-        cy.get('[data-testid="btn-add-names"]').click();
-
-        cy.get('[data-field="update/structure@names#2_officialName"]')
-            .find('input')
-            .should('be.visible');
-    });
+    // it('should add Name section', () => {
+    //     cy.get('[data-testid="btn-add-names"]').click();
+    //
+    //     cy.get('[data-field="update/structure@names#2_officialName"]')
+    //         .find('input')
+    //         .should('be.visible');
+    // });
 
     it('should save in new section', () => {
         cy.get('[data-field="update/structure@names#1_officialName"]')
             .find('input')
-            .type('Officiel1', { force: true });
+            .type('Officiel1');
 
-        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
+        cy.get('[data-testid="noms#1-save-button"]').click();
         cy.wait('@patch');
 
         cy.get('[data-testid="btn-add-names"]').click();
 
+        cy.sectionsNoSticky();
+
         cy.get('[data-field="update/structure@names#2_officialName"]')
             .find('input')
-            .type('Officiel2', { force: true });
+            .type('Officiel2');
 
-        cy.get('[data-testid="noms#2-save-button"]').click({ force: true });
+        cy.get('[data-testid="noms#2-save-button"]').click();
         cy.wait('@patch');
 
         cy.reload();
@@ -51,18 +52,19 @@ context('Structure new form', () => {
 
         cy.get('[data-field="update/structure@names#1_brandName"]')
             .find('input')
-            .type('Brand1', { force: true });
+            .type('Brand1');
 
-        cy.get('[data-testid="noms#1-save-button"]').click({ force: true });
+        cy.get('[data-testid="noms#1-save-button"]').click();
         cy.wait('@patch');
 
         cy.get('[data-testid="btn-add-names"]').click();
+        cy.sectionsNoSticky();
 
         cy.get('[data-field="update/structure@names#2_brandName"]')
             .find('input')
-            .type('Brand2', { force: true });
+            .type('Brand2');
 
-        cy.get('[data-testid="btn-delete-noms#2"]').click({ force: true });
+        cy.get('[data-testid="btn-delete-noms#2"]').click();
         cy.wait('@delete');
 
         cy.get('[data-field="update/structure@names#2_officialName"]').should(

@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/signin`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/signin`;
         const requestOptions = fetchHelper.requestOptions('POST', req.body);
 
         const request = await fetch(url, requestOptions);

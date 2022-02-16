@@ -8,12 +8,16 @@ module.exports = {
     serverRuntimeConfig: {
         // Will only be available on the server side
         secondSecret: process.env.SECOND_SECRET, // Pass through env variables
-        dataesrApiUrl: 'https://api.paysage.staging.dataesr.ovh',
+        dataesrApiAuthUrl:
+            process.env.API_AUTH_URL ||
+            'https://api.paysage.staging.dataesr.ovh',
+        dataesrApiUrl:
+            process.env.API_URL || 'https://api.paysage.staging.dataesr.ovh',
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
         basePath: process.env.BASE_PATH,
-        baseApiUrl: process.env.API_URL,
+        baseApiUrl: process.env.NEXT_API_URL,
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,

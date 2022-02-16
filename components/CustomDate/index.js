@@ -75,13 +75,11 @@ export default function CustomDate({
         async (payload) => {
             dispatch({ type: 'UPDATE_FORM_FIELD', payload });
 
-            setTimeout(async () => {
-                const checkStoreObject = storeObjects.indexOf(formName) > -1;
+            const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-                if (checkStoreObject) {
-                    await DBService.set(payload, formName);
-                }
-            }, 0);
+            if (checkStoreObject) {
+                await DBService.set(payload, formName);
+            }
         },
         [dispatch, formName, storeObjects]
     );

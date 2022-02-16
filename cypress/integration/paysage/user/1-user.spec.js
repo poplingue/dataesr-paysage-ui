@@ -25,7 +25,6 @@ context('Account manager', () => {
         cy.get('[name="account"]').type('mollie-active.dickinson@email.com');
         cy.get('[name="password"]').type('Polk000!');
         cy.get('form').submit();
-
         cy.wait('@auth');
 
         cy.get('[data-cy=user]').should(

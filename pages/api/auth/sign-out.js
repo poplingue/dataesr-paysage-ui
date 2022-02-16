@@ -6,7 +6,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/signout`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/signout`;
         const tokens = req.cookies.tokens
             ? JSON.parse(req.cookies.tokens)
             : null;

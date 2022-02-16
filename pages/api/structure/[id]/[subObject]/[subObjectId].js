@@ -90,9 +90,7 @@ const handler = nc()
 
             fetchHelper.checkAuthorized(tokens, request, res);
 
-            const response = await request.json();
-
-            res.status(request.status).send(response);
+            res.status(request.status).send();
         } catch (err) {
             res.status(500).send(err);
         }

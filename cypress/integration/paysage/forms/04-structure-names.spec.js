@@ -4,7 +4,6 @@ context('Structure new form', () => {
     before(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);
-
         cy.newStructure();
     });
 

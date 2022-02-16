@@ -22,8 +22,8 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
-    connectedMsg,
     inactiveUserError,
+    notConnectedMsg,
 } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
 import accountService from '../../services/Account.service';
@@ -94,7 +94,7 @@ export default function Layout({ children, headTitle }) {
                     });
                 });
         }
-    }, [dispatch, user]);
+    }, [dispatch, router, user]);
 
     const signOut = () => {
         authService
@@ -111,7 +111,7 @@ export default function Layout({ children, headTitle }) {
                 });
 
                 router.push('/account/sign-in').then(() => {
-                    NotifService.info(connectedMsg, 'valid');
+                    NotifService.info(notConnectedMsg, 'valid');
                 });
             })
             .catch(() => {

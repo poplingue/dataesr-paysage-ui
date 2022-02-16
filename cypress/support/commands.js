@@ -10,6 +10,7 @@
 //
 //
 // -- This is a parent command --
+const baseUrl = Cypress.env('baseUrl');
 
 Cypress.Commands.add('newStructure', () => {
     cy.get('[data-cy="update/structure"]').click();
@@ -34,20 +35,25 @@ Cypress.Commands.add('sectionsNoSticky', () => {
 });
 
 Cypress.Commands.add('signIn', () => {
-    const baseUrl = Cypress.env('baseUrl');
-    cy.intercept('POST', '/api/auth/sign-in').as('sign-in');
+    const password = Cypress.env('password');
+    const account = Cypress.env('account');
 
-    cy.visit(`${baseUrl}/account/sign-in`);
-    cy.get('[name="account"]').type('martha@mailinator.com');
-    cy.get('[name="password"]').type('Polk000!');
-
-    cy.get('form').submit();
-
-    cy.wait('@sign-in');
+    cy.request({
+        method: 'POST',
+        url: `${baseUrl}/api/auth/sign-in`,
+        failOnStatusCode: false,
+        headers: { 'Content-Type': 'application/json' },
+        body: {
+            password: password,
+            account: account,
+        },
+    }).then((response) => {
+        cy.setCookie('tokens', JSON.stringify(response.body));
+    });
 });
 
 Cypress.Commands.add('signOut', () => {
-    cy.get('.fr-header__tools-links').find('.ds-fr--flex.fr-link').click();
+    cy.clearCookie('tokens');
 });
 
 Cypress.Commands.add('signup', () => {
