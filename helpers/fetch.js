@@ -99,7 +99,7 @@ export const fetchHelper = {
 
         return options;
     },
-    headerTokens: (req, noError = false) => {
+    headerTokens: (req, noError = true) => {
         let cookiesHeader = '';
         let tokens = null;
 
