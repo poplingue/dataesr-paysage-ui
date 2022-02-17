@@ -9,6 +9,7 @@ import {
 } from '@dataesr/react-dsfr';
 import CardInfo from '../../CardInfo';
 import Map from '../../Map';
+import styles from './Presentation.module.scss';
 
 export default function History({ section }) {
     return (
@@ -24,6 +25,7 @@ export default function History({ section }) {
                         <Row spacing="px-2w">
                             <Col spacing="pb-8w pr-1w">
                                 <Callout
+                                    className={styles.Callout}
                                     hasInfoIcon={false}
                                     colorFamily="green-tilleul-verveine"
                                 >
@@ -35,6 +37,7 @@ export default function History({ section }) {
                             </Col>
                             <Col spacing="pb-8w pl-1w">
                                 <Callout
+                                    className={styles.Callout}
                                     hasInfoIcon={false}
                                     colorFamily="green-tilleul-verveine"
                                 >
@@ -48,9 +51,10 @@ export default function History({ section }) {
                             </Col>
                         </Row>
                         <Row spacing="px-2w" gutters>
-                            <Col n="4">
+                            <Col n="4" styles={{ heigh: '100%' }}>
                                 <CardInfo
                                     // onClick={}
+                                    className={styles.CardInfo}
                                     supInfo="date de création"
                                     title="6 avril 2012"
                                     actionLabel="Accéder au text officiel"
@@ -59,6 +63,7 @@ export default function History({ section }) {
                             <Col n="4">
                                 <CardInfo
                                     // onClick={}
+                                    className={styles.CardInfo}
                                     supInfo="Tutelle"
                                     title="Ministre chargé de l'enseignement supérieur"
                                     actionLabel="Modifier"
@@ -67,6 +72,7 @@ export default function History({ section }) {
                             <Col n="4">
                                 <CardInfo
                                     // onClick={}
+                                    className={styles.CardInfo}
                                     supInfo="Vague contractuelle"
                                     title="Vague E"
                                     actionLabel="Modifier"
