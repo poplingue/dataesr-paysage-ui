@@ -121,6 +121,7 @@ function Signup() {
                 })
                 .catch((err) => {
                     const field = err.indexOf('email') >= 0 ? email : username;
+                    debugger; // eslint-disable-line
                     const errorFr = errorsIntl[err](field);
 
                     NotifService.info(errorFr, 'error');

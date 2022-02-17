@@ -14,8 +14,10 @@ UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@
 
 Add .env file
 ```
-API_URL=''
+NEXT_API_URL=''
 BASE_PATH=''
+API_URL=''
+API_AUTH_URL=''
 ```
 
 Run the development server:
@@ -100,9 +102,16 @@ from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
+## Run with Docker
+
+This command will build and run the Docker image "paysage-ui" :
+
+```sh
+docker-compose up --build
+```
+
 ## TODO
 
-* button to reset data from current form
 * add unit tests for complex components
 * add possibility of comments to section/field
 * adding link to section/field 
@@ -112,6 +121,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   * check validation field
   * check validation section
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
-* add spinner
 * manage dark mode
 * Navigation focus accessibility

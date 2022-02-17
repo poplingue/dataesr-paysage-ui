@@ -5,7 +5,7 @@ const { serverRuntimeConfig } = getConfig();
 
 async function handler(req, res) {
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/auth/signup`;
+        const url = `${serverRuntimeConfig.dataesrApiAuthUrl}/auth/signup`;
         const requestOptions = fetchHelper.requestOptions('POST', req.body);
 
         const request = await fetch(url, requestOptions);
@@ -14,9 +14,7 @@ async function handler(req, res) {
 
         const tokens = JSON.parse(response);
 
-        if (tokens && tokens.accessToken && tokens.refreshToken) {
-            fetchHelper.setCookieTokens(res, tokens);
-        }
+        fetchHelper.setCookieTokens(res, tokens);
 
         res.status(request.status).json(response);
     } catch (err) {

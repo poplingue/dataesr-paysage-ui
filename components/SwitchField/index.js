@@ -1,6 +1,5 @@
-import { useContext } from 'react';
-import { AppContext } from '../../context/GlobalState';
-
+import { useRouter } from 'next/router';
+import { configValidators } from '../../helpers/constants';
 import CustomCheckbox from '../CustomCheckbox';
 import CustomDate from '../CustomDate';
 import CustomInput from '../CustomInput';
@@ -8,13 +7,6 @@ import CustomRadio from '../CustomRadio';
 import CustomSelect from '../CustomSelect';
 import CustomToggle from '../CustomToggle';
 import MultiSearch from '../MultiSearch';
-import { configValidator as configValidatorPerson } from '../UpdatePerson/configValidator';
-import { configValidator as configValidatorStructure } from '../UpdateStructure/configValidator';
-
-const config = {
-    structure: configValidatorStructure,
-    person: configValidatorPerson,
-};
 
 export default function SwitchField({
     type,
@@ -29,12 +21,11 @@ export default function SwitchField({
     subObject,
 }) {
     const {
-        stateForm: { objectFormType },
-    } = useContext(AppContext);
-    const validatorConfig = objectFormType
-        ? config[objectFormType][validatorId]
+        query: { object },
+    } = useRouter();
+    const validatorConfig = object
+        ? configValidators[object][validatorId]
         : null;
-    // TODO move updateValidSection to Global action?
 
     const renderSwitch = (type) => {
         switch (type) {
@@ -42,12 +33,10 @@ export default function SwitchField({
                 return (
                     <CustomInput
                         updateValidSection={updateValidSection}
-                        validatorConfig={validatorConfig}
                         title={title}
                         validatorId={validatorId}
                         value={value}
                         infinite={infinite}
-                        index={index}
                         section={section}
                         subObject={subObject}
                     />
@@ -57,11 +46,9 @@ export default function SwitchField({
                     <CustomSelect
                         newValue={value}
                         updateValidSection={updateValidSection}
-                        validatorConfig={validatorConfig}
                         title={title}
                         validatorId={validatorId}
                         staticValues={staticValues}
-                        section={section}
                         subObject={subObject}
                     />
                 );
@@ -71,9 +58,6 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
-                        index={index}
-                        section={section}
-                        validatorConfig={validatorConfig}
                         subObject={subObject}
                     />
                 );
@@ -81,12 +65,10 @@ export default function SwitchField({
                 return (
                     <CustomRadio
                         updateValidSection={updateValidSection}
-                        validatorConfig={validatorConfig}
                         title={title}
                         validatorId={validatorId}
                         staticValues={staticValues}
                         index={index}
-                        section={section}
                         subObject={subObject}
                     />
                 );
@@ -95,9 +77,7 @@ export default function SwitchField({
                     <CustomDate
                         validatorId={validatorId}
                         updateValidSection={updateValidSection}
-                        validatorConfig={validatorConfig}
                         title={title}
-                        section={section}
                         subObject={subObject}
                     />
                 );
@@ -108,7 +88,6 @@ export default function SwitchField({
                         title={title}
                         validatorId={validatorId}
                         index={index}
-                        section={section}
                         subObject={subObject}
                     />
                 );
@@ -116,17 +95,15 @@ export default function SwitchField({
                 return (
                     <CustomCheckbox
                         updateValidSection={updateValidSection}
-                        validatorConfig={validatorConfig}
                         staticValues={staticValues}
                         title={title}
                         validatorId={validatorId}
                         index={index}
-                        section={section}
                         subObject={subObject}
                     />
                 );
             default:
-                return 'Validator config is missing';
+                return `Validator ${validatorId} config is missing`;
         }
     };
 

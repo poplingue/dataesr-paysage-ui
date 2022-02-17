@@ -146,7 +146,7 @@ export default function InfiniteAccordion({
 
             if (checkStoreObject) {
                 // indexDB
-                await DBService.setList(fieldsToUpdate, formName);
+                await DBService.setList(fieldsToUpdate, formName, false);
             }
         }
 
@@ -187,38 +187,35 @@ export default function InfiniteAccordion({
                                 const deletable = i !== 0;
 
                                 return (
-                                    <div key={`${dataAttSection}-${i}`}>
-                                        <WrapperAccordion
-                                            sectionRef={sectionRefs[i]}
-                                            colSize="12"
+                                    <WrapperAccordion
+                                        key={`${dataAttSection}-${i}`}
+                                        sectionRef={sectionRefs[i]}
+                                        colSize="12"
+                                    >
+                                        <AccordionForm
+                                            spacing={
+                                                i ===
+                                                sections[subObjectType] - 1
+                                                    ? 'mb-1w'
+                                                    : 'mb-3w'
+                                            }
+                                            color={yellow}
+                                            keepOpen
+                                            newTitle={newTitle}
                                         >
-                                            <AccordionForm
-                                                spacing={
-                                                    i ===
-                                                    sections[subObjectType] - 1
-                                                        ? 'mb-1w'
-                                                        : 'mb-3w'
-                                                }
-                                                color={yellow}
-                                                keepOpen
+                                            <FormAccordionItem
+                                                subObject={`${subObjectType}#${
+                                                    i + 1
+                                                }`}
+                                                content={content}
                                                 newTitle={newTitle}
-                                            >
-                                                <FormAccordionItem
-                                                    subObject={`${subObjectType}#${
-                                                        i + 1
-                                                    }`}
-                                                    content={content}
-                                                    newTitle={newTitle}
-                                                    deleteSection={
-                                                        deleteSection
-                                                    }
-                                                    index={i + 1}
-                                                    title={title}
-                                                    deletable={deletable}
-                                                />
-                                            </AccordionForm>
-                                        </WrapperAccordion>
-                                    </div>
+                                                deleteSection={deleteSection}
+                                                index={i + 1}
+                                                title={title}
+                                                deletable={deletable}
+                                            />
+                                        </AccordionForm>
+                                    </WrapperAccordion>
                                 );
                             })}
                         </ul>

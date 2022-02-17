@@ -54,13 +54,13 @@ const DBService = {
                     // Called if there are older versions of the database open on the origin, so this version cannot open
                     // TODO manage with link in popup alert to reload manually
                     console.debug('==== blocked ==== ', e);
-                    window.location.reload();
+                    // window.location.reload();
                 },
                 blocking(e) {
                     // Called if connection is blocking a future version of the database from opening.
                     // TODO manage with link in popup alert to reload manually
                     console.debug('==== blocking ==== ', e);
-                    window.location.reload();
+                    // window.location.reload();
                 },
                 terminated(e) {
                     console.debug('==== terminated ==== ', e);
@@ -86,60 +86,70 @@ const DBService = {
         NotifService.techInfo(`IndexDB version ${db.version} connected`);
     },
 
-    async set(objValue, objectStoreName) {
-        // TODO async
-        let DBOpenRequest = await this.getDB(),
-            db;
+    async set(objValue, objectStoreName, force = true) {
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
 
-        DBOpenRequest.onsuccess = (event) => {
-            db = DBOpenRequest.result;
+        const tx = db.transaction(objectStoreName, 'readwrite');
 
-            // create a new transaction
-            const txn = event.target.result.transaction(
-                objectStoreName,
-                'readwrite'
-            );
+        const currentObject = await tx.store.get(objValue.uid);
 
-            // get the object store
-            const store = txn.objectStore(objectStoreName);
-
+        if (
+            !currentObject ||
+            (currentObject && !currentObject.unSaved) ||
+            force
+        ) {
             // set the value
-            let query = store.put({ ...objValue });
+            await tx.store.put(objValue);
 
-            query.onsuccess = function (event) {
-                // TODO handle popup success
-                // event.target.result.close();
-                return event;
-            };
-
-            query.onerror = function (event) {
-                // TODO handle popup error
-                console.log(event.target.errorCode);
-            };
-
-            // close the database once the
-            // transaction completes
-            txn.oncomplete = function () {
-                db.close();
-            };
-        };
+            await tx.done;
+        }
     },
 
-    async setList(list, objectStoreName) {
+    async get(uid, objectStoreName) {
+        const db = await this.asyncOpenDB(
+            getVal('IDB_DATABASE_NAME'),
+            getVal('IDB_DATABASE_VERSION')
+        );
+
+        const tx = db.transaction(objectStoreName, 'readwrite');
+        const resultObj = await tx.store.get(uid);
+
+        await tx.done;
+
+        return resultObj;
+    },
+
+    async setList(list, objectStoreName, force = true) {
         const db = await this.asyncOpenDB(
             getVal('IDB_DATABASE_NAME'),
             getVal('IDB_DATABASE_VERSION')
         );
         const tx = db.transaction(objectStoreName, 'readwrite');
+        const promises = [];
 
         for (let i = 0; i < list.length; i = i + 1) {
-            await tx.store.put({ ...list[i] });
+            const currentObject = await tx.store.get(list[i].uid);
+
+            if (
+                !currentObject ||
+                (currentObject && !currentObject.unSaved) ||
+                force
+            ) {
+                promises.push(tx.store.put({ ...list[i] }));
+            }
         }
 
-        await tx.done;
+        promises.push(tx.done);
+
+        return await Promise.all(promises);
     },
 
     async deleteList(uids, objectStoreName) {
+        const promises = [];
+
         const db = await this.asyncOpenDB(
             getVal('IDB_DATABASE_NAME'),
             getVal('IDB_DATABASE_VERSION')
@@ -152,9 +162,13 @@ const DBService = {
                 const uid = await db.getKey(objectStoreName, uids[i]);
 
                 if (uid) {
-                    await db.delete(objectStoreName, uid);
+                    promises.push(db.delete(objectStoreName, uid));
                 }
             }
+
+            promises.push(tx.done);
+
+            return await Promise.all(promises);
         }
     },
 

@@ -2,10 +2,8 @@ import '../styles/styles.scss';
 import { memo, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { DataProvider } from '../context/GlobalState';
-import { fetchHelper } from '../helpers/fetch';
-import accountService from '../services/Account.service';
 
-function MyApp({ Component, pageProps, error, user = {} }) {
+function MyApp({ Component, pageProps = {} }) {
     const MemoizedComponent = memo(Component);
 
     useEffect(() => {
@@ -30,24 +28,11 @@ function MyApp({ Component, pageProps, error, user = {} }) {
     }, []);
 
     return (
-        <DataProvider user={user} error={error}>
+        <DataProvider>
             <MemoizedComponent {...pageProps} />
             <Toaster />
         </DataProvider>
     );
 }
-
-MyApp.getInitialProps = async ({ ctx }) => {
-    const tokens = fetchHelper.headerTokens(ctx.req, true);
-
-    return await accountService
-        .me()
-        .then((data) => {
-            return { user: data, tokens };
-        })
-        .catch((error) => {
-            return { error };
-        });
-};
 
 export default MyApp;

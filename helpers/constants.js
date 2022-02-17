@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { cleanString } from './utils';
 
 export function getUrl(key) {
     const urls = {
@@ -203,3 +202,12 @@ export const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
     { subObject: 'identifiers', initBody: {} },
 ];
+
+import { configValidator as configValidatorPerson } from './../components/UpdatePerson/configValidator';
+import { configValidator as configValidatorStructure } from './../components/UpdateStructure/configValidator';
+import { cleanString } from './utils';
+
+export const configValidators = {
+    structure: configValidatorStructure,
+    person: configValidatorPerson,
+};

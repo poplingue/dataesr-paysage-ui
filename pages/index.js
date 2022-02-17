@@ -21,7 +21,7 @@ const TileBody = dynamic(() =>
 const HeaderLayout = dynamic(() => import('../components/HeaderLayout'));
 const Layout = dynamic(() => import('../components/Layout'));
 
-function Home({ tokens }) {
+function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
@@ -96,7 +96,7 @@ function Home({ tokens }) {
 }
 
 export async function getServerSideProps({ req }) {
-    const tokens = fetchHelper.headerTokens(req, true);
+    const tokens = fetchHelper.headerTokens(req);
 
     return { props: { tokens: tokens || '' } };
 }

@@ -65,9 +65,7 @@ export default function Index() {
             .resetPassword({ code, account, password })
             .then(() => {
                 authService.signIn({ account, password }).then(() => {
-                    router.push('/', null, { shallow: true }).then(() => {
-                        NotifService.info('Mot de passe mis à jour', 'valid');
-                    });
+                    window.location = '/';
                 });
             })
             .catch((err) => {

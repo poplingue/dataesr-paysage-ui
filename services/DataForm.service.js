@@ -1,3 +1,4 @@
+import { structureSubObjects } from '../helpers/constants';
 import { fetchHelper } from '../helpers/fetch';
 import {
     getUniqueId,
@@ -6,6 +7,7 @@ import {
     matchRegex,
     sliceEnd,
 } from '../helpers/utils';
+import DBService from './DB.service';
 
 const mapFields = {
     officialName: 'officialName',
@@ -198,7 +200,37 @@ export const dataFormService = {
         return subObjectsFields;
     },
 
-    getStructureData: async (object, id, subObjects) => {
+    initFormSections: async (object, id, formName, storeObjects, filter) => {
+        const structureData = await dataFormService.getObjectData(
+            object,
+            id,
+            structureSubObjects
+        );
+
+        const fields = dataFormService.subObjectsFields(
+            structureData,
+            formName
+        );
+
+        const listFields = {
+            true: (fields) => filter(fields),
+            false: () => fields,
+        };
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+
+        if (checkStoreObject) {
+            // indexDB
+            await DBService.setList(
+                listFields[!!filter](fields),
+                formName,
+                false
+            );
+        }
+
+        return listFields[!!filter](fields);
+    },
+
+    getObjectData: async (object, id, subObjects) => {
         const promises = [];
 
         for (let i = 0; i < subObjects.length; i++) {
@@ -208,6 +240,7 @@ export const dataFormService = {
             promises.push({ url, requestOptions });
         }
 
+        // GET all subObjects of an Object
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
@@ -427,7 +460,6 @@ export const dataFormService = {
         const r = await response.json();
 
         if (response.status >= 400) {
-            console.error('==== Err ==== ', r);
             throw r.error;
         }
 

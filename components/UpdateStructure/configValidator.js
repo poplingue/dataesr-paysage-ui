@@ -15,6 +15,12 @@ export const configValidator = {
         required: false,
     },
     officialName: {
+        validators: [
+            (value) => ({
+                valid: value.length > 2,
+                errorMsg: 'Au moins 2 caractères',
+            }),
+        ],
         required: true,
     },
     usualName: {
@@ -54,6 +60,24 @@ export const configValidator = {
         required: false,
     },
     endDate: {
+        required: false,
+    },
+    startDateDay: {
+        required: false,
+    },
+    startDateMonth: {
+        required: false,
+    },
+    startDateYear: {
+        required: false,
+    },
+    endDateDay: {
+        required: false,
+    },
+    endDateMonth: {
+        required: false,
+    },
+    endDateYear: {
         required: false,
     },
     title: {

@@ -3,6 +3,8 @@
 }
 
 .Item h3 {
+    position: sticky;
+    top: 0;
     background: var(--grey-925-125);
     color: var(--grey-50-1000);
 }

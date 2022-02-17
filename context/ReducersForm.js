@@ -145,10 +145,6 @@ const reducersForm = (state, action) => {
             return { ...state, departments: action.payload };
         }
 
-        case ACTIONS.UPDATE_OBJECT_FORM_TYPE: {
-            return { ...state, objectFormType: action.payload };
-        }
-
         case ACTIONS.UPDATE_VALID_SECTION: {
             return {
                 ...state,
