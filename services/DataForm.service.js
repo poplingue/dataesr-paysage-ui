@@ -1,11 +1,6 @@
 import { structureSubObjects } from '../helpers/constants';
 import { fetchHelper } from '../helpers/fetch';
-import {
-    getUniqueId,
-    isArray,
-    matchRegex,
-    sliceEnd,
-} from '../helpers/utils';
+import { getUniqueId, isArray, matchRegex, sliceEnd } from '../helpers/utils';
 import DBService from './DB.service';
 
 const mapFields = {
@@ -79,8 +74,6 @@ export const dataFormService = {
     checkDateField: (field) => !matchRegex(`Day|Year|Month$`, field.uid),
 
     bySubObject: (field, subObject) => {
-        console.log('==== LOG ==== ', field, subObject);
-
         return field.uid.indexOf(subObject) > -1;
     },
 
@@ -123,6 +116,14 @@ export const dataFormService = {
         return await fetch(url, requestOptions);
     },
 
+    /**
+     *
+     * @param object
+     * @param objectId
+     * @param subObjectType
+     * @param subObjectId
+     * @returns {Promise<Response>}
+     */
     deleteSubObject: async (object, objectId, subObjectType, subObjectId) => {
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE');
@@ -254,12 +255,13 @@ export const dataFormService = {
     initSubObject: async (type, subObject, id) => {
         const requestOptions = fetchHelper.requestOptions('POST', {});
 
-        return await fetch(
-            `/api/${type}/${id}/${subObject}`,
-            requestOptions
-        ).then(async (resp) => {
-            return await resp.clone().json();
-        });
+        return await fetch(`/api/${type}/${id}/${subObject}`, requestOptions)
+            .then(async (resp) => {
+                return await resp.clone().json();
+            })
+            .catch((err) => {
+                Promise.reject(err);
+            });
     },
     infiniteFields: (data, formName, subObject) => {
         const fields = [];

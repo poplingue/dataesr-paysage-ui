@@ -10,7 +10,7 @@ const handler = nc()
         const { subObject, id } = req.query;
         const tokens = fetchHelper.headerTokens(req);
 
-        const subObjectInitBody = structureSubObjects.find((elm) => {
+        const subObjectInit = structureSubObjects.find((elm) => {
             return elm.subObject === subObject;
         });
 
@@ -19,7 +19,7 @@ const handler = nc()
 
             const requestOptions = fetchHelper.requestOptions(
                 'POST',
-                subObjectInitBody.initBody,
+                subObjectInit.initBody,
                 tokens
             );
 

@@ -43,7 +43,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             dataFormService.deleteField(
                 object,
                 updateObjectId,
-                subObject.slice(0, -2),
+                subObject.slice(0, -9),
                 subObject.slice(-1),
                 {
                     [validatorId]: getFieldValue(forms, formName, uid),

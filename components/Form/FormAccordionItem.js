@@ -290,11 +290,7 @@ export default function FormAccordionItem({
                             title={title}
                             index={index}
                             onClick={async () =>
-                                await deleteSection(
-                                    cleanString(subObject.slice(0, -2)),
-                                    index,
-                                    newTitle
-                                )
+                                await deleteSection(subObject, index, newTitle)
                             }
                         />
                         {/* TODO remove data-testId */}
