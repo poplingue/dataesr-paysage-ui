@@ -75,7 +75,7 @@
       },
       {
         "title": "Localisation",
-        "subObject": "localisation",
+        "subObject": "localisations",
         "content": [
           {
             "title": "Lier à un ou plusieurs départements",

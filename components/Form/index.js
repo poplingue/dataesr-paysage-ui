@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { getFormName, getSection, sectionUniqueId } from '../../helpers/utils';
@@ -24,6 +24,7 @@ const CreateForm = ({ jsonForm, color }) => {
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
+    const [counter, setCounter] = useState({});
 
     /**
      * Update field retrieved
@@ -123,7 +124,6 @@ const CreateForm = ({ jsonForm, color }) => {
                                     title={sectionTitle}
                                     subObjectType={subObject}
                                     content={content}
-                                    index={`${sectionTitle}-${i}`}
                                 />
                             </Col>
                         ) : (

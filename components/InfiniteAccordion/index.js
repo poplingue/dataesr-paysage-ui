@@ -14,6 +14,7 @@ import {
     getForm,
     getFormName,
     getUniqueId,
+    matchRegex,
     uniqueOnlyFilter,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
@@ -43,7 +44,10 @@ export default function InfiniteAccordion({
         pathname,
         query: { object },
     } = useRouter();
-    const [sections, setSections] = useState({});
+    const [init, setInit] = useState(true);
+    const [sections, setSections] = useState(() => {
+        return { [subObjectType]: [] };
+    });
     const formName = getFormName(pathname, object);
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -68,14 +72,17 @@ export default function InfiniteAccordion({
     const formSections = useCallback(
         () =>
             currentForm().map((c) => {
-                return c.uid.split('_')[0];
+                return c.uid;
             }),
         [currentForm]
     );
 
-    const updateSection = useCallback((type, nb) => {
-        setSections((prev) => ({ ...prev, [type]: nb }));
-    }, []);
+    const updateSection = useCallback(
+        (ids) => {
+            setSections((prev) => ({ ...prev, [subObjectType]: ids }));
+        },
+        [subObjectType]
+    );
 
     const deleteSection = async (sectionType, index) => {
         let fieldsToDelete = [];
@@ -151,21 +158,60 @@ export default function InfiniteAccordion({
         }
 
         // local state retrieve one section
-        updateSection(sectionType, sections[subObjectType] - 1);
+        updateSection(sections[subObjectType] - 1);
     };
 
     const addSection = () => {
-        updateSection(subObjectType, sections[subObjectType] + 1);
-        // TODO dynamic
-        dataFormService.initSubObject(object, subObjectType, updateObjectId);
+        dataFormService
+            .initSubObject(object, subObjectType, updateObjectId)
+            .then((data) => {
+                debugger; // eslint-disable-line
+
+                updateSection([...sections[subObjectType], data.data.id]);
+            });
     };
+
+    const check = useCallback(() => {
+        return dataFormService
+            .getSubObjectData(object, updateObjectId, subObjectType)
+            .then(({ data }) => {
+                const total = data.totalCount;
+
+                return {
+                    ids: data.data.map((subObject) => subObject.id),
+                    total,
+                };
+            });
+    }, [object, subObjectType, updateObjectId]);
+
+    useEffect(() => {
+        async function initSubObjects() {
+            const { ids, total } = await check();
+
+            updateSection(ids);
+
+            if (sections[subObjectType].length === total) {
+                setInit(false);
+            }
+        }
+
+        if (init) {
+            initSubObjects();
+        }
+    }, [check, init, sections, subObjectType, updateSection]);
 
     useEffect(() => {
         const sectionFields = formSections()
             .filter(uniqueOnlyFilter)
             .filter((k) => k.startsWith(sectionName));
 
-        updateSection(subObjectType, sectionFields.length);
+        sectionFields.map((fieldId) => {
+            const sectionId = matchRegex(`(?<=#).*(?=_)`, fieldId);
+            // if(sections[subObjectType].length !== ){
+
+            // updateSection(subObjectType, sectionId);
+            // }
+        });
     }, [formSections, sectionName, subObjectType, updateSection]);
 
     return (
@@ -174,50 +220,51 @@ export default function InfiniteAccordion({
                 <Row>
                     <Col n="12">
                         <ul className="p-0">
-                            {Array.apply(null, {
-                                length: sections[subObjectType] || 1,
-                            }).map((v, i) => {
-                                if (!sections[subObjectType]) {
-                                    updateSection(subObjectType, 1);
-                                }
+                            {sections[subObjectType] &&
+                                sections[subObjectType].map((v, i) => {
+                                    if (!!sections[subObjectType].length) {
+                                        // updateSection(subObjectType, 1);
+                                    }
 
-                                const newTitle = `${title}#${i + 1}`;
+                                    const newTitle = `${title}#${v}`;
 
-                                // TODO make it work with i !== 0 only
-                                const deletable = i !== 0;
+                                    // TODO make it work with i !== 0 only
+                                    const deletable = i !== 0;
 
-                                return (
-                                    <WrapperAccordion
-                                        key={`${dataAttSection}-${i}`}
-                                        sectionRef={sectionRefs[i]}
-                                        colSize="12"
-                                    >
-                                        <AccordionForm
-                                            spacing={
-                                                i ===
-                                                sections[subObjectType] - 1
-                                                    ? 'mb-1w'
-                                                    : 'mb-3w'
-                                            }
-                                            color={yellow}
-                                            keepOpen
-                                            newTitle={newTitle}
+                                    return (
+                                        <WrapperAccordion
+                                            key={`${dataAttSection}-${v}`}
+                                            sectionRef={sectionRefs[i]}
+                                            colSize="12"
                                         >
-                                            <FormAccordionItem
-                                                subObject={`${subObjectType}#${
-                                                    i + 1
-                                                }`}
-                                                content={content}
+                                            <AccordionForm
+                                                spacing={
+                                                    i ===
+                                                    sections[subObjectType]
+                                                        .length -
+                                                        1
+                                                        ? 'mb-1w'
+                                                        : 'mb-3w'
+                                                }
+                                                color={yellow}
+                                                keepOpen
                                                 newTitle={newTitle}
-                                                deleteSection={deleteSection}
-                                                index={i + 1}
-                                                title={title}
-                                                deletable={deletable}
-                                            />
-                                        </AccordionForm>
-                                    </WrapperAccordion>
-                                );
-                            })}
+                                            >
+                                                <FormAccordionItem
+                                                    subObject={`${subObjectType}#${v}`}
+                                                    content={content}
+                                                    newTitle={newTitle}
+                                                    deleteSection={
+                                                        deleteSection
+                                                    }
+                                                    index={i + 1}
+                                                    title={title}
+                                                    deletable={deletable}
+                                                />
+                                            </AccordionForm>
+                                        </WrapperAccordion>
+                                    );
+                                })}
                         </ul>
                     </Col>
                     <Col spacing="pb-4w">

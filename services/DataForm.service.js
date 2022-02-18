@@ -3,7 +3,6 @@ import { fetchHelper } from '../helpers/fetch';
 import {
     getUniqueId,
     isArray,
-    lastChar,
     matchRegex,
     sliceEnd,
 } from '../helpers/utils';
@@ -79,7 +78,11 @@ export const dataFormService = {
 
     checkDateField: (field) => !matchRegex(`Day|Year|Month$`, field.uid),
 
-    bySubObject: (field, subObject) => field.uid.indexOf(subObject) > -1,
+    bySubObject: (field, subObject) => {
+        console.log('==== LOG ==== ', field, subObject);
+
+        return field.uid.indexOf(subObject) > -1;
+    },
 
     byInfiniteFamily: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
@@ -128,13 +131,9 @@ export const dataFormService = {
     },
 
     uniqueField: (params) => {
-        const [value, subObject, dataIndex, field, formName] = params;
+        const [value, subObject, sectionId, field, formName] = params;
 
-        const uid = getUniqueId(
-            formName,
-            `${subObject}#${dataIndex + 1}`,
-            field
-        );
+        const uid = getUniqueId(formName, `${subObject}#${sectionId}`, field);
 
         const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
 
@@ -149,12 +148,12 @@ export const dataFormService = {
     },
 
     infiniteField: (params) => {
-        const [values, subObject, dataIndex, field, formName] = params;
+        const [values, subObject, sectionId, field, formName] = params;
 
         return values.map((value, vIndex) => {
             const uid = getUniqueId(
                 formName,
-                `${subObject}#${dataIndex + 1}`,
+                `${subObject}#${sectionId}`,
                 field,
                 vIndex
             );
@@ -173,7 +172,7 @@ export const dataFormService = {
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
 
-            data.map((section, dataIndex) => {
+            data.map((section, sectionId) => {
                 const sections = Object.keys(section);
 
                 for (let j = 0; j < sections.length; j++) {
@@ -187,7 +186,7 @@ export const dataFormService = {
                             ...fields[infinite](
                                 value,
                                 subObject,
-                                dataIndex,
+                                section.id || sectionId + 1,
                                 field,
                                 formName
                             )
@@ -416,11 +415,24 @@ export const dataFormService = {
             }
         }
     },
-    save: async (form, objectId, subObject) => {
-        const sectionInfinite = !!subObject.match(/\d+$/)[0];
 
-        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
-        const subObjectId = sectionInfinite ? lastChar(subObject) : '';
+    getSubObjectData: async (object, id, subObject) => {
+        const url = `/api/${object}/${id}/${subObject}`;
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper.handleResponse(response);
+    },
+
+    save: async (form, objectId, subObject) => {
+        const sectionInfinite = subObject.match(/[^#]*$/)
+            ? !!subObject.match(/[^#]*$/)[0]
+            : false;
+        const subObjectType = sectionInfinite
+            ? sliceEnd(subObject, -9)
+            : subObject;
+        const subObjectId = sectionInfinite ? subObject.match(/[^#]*$/)[0] : '';
 
         let bodyObject = {};
         let infiniteArray = [];
@@ -457,14 +469,13 @@ export const dataFormService = {
             requestOptions
         );
 
-        const r = await response.json();
-
-        if (response.status >= 400) {
-            throw r.error;
-        }
-
-        if (response.status >= 200 && response.status < 400) {
-            return r;
-        }
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ response }) => {
+                return response;
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
     },
 };

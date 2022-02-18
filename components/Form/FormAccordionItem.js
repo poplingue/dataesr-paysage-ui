@@ -11,14 +11,6 @@ import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import SwitchField from '../SwitchField';
 
-const notif = {
-    valid: { msg: 'Données sauvegardées' },
-    error: {
-        msg: 'Erreur : tous les champs ne sont pas valides',
-        type: 'error',
-    },
-};
-
 export default function FormAccordionItem({
     content,
     newTitle,
@@ -135,7 +127,7 @@ export default function FormAccordionItem({
                     return fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
-                    NotifService.info(err, 'error');
+                    return Promise.reject(err);
                 });
         }
     };
@@ -169,9 +161,13 @@ export default function FormAccordionItem({
     const onSubmit = (e) => {
         e.preventDefault();
 
-        save().then(() => {
-            NotifService.info('Données sauvegardées', 'valid');
-        });
+        save()
+            .then(() => {
+                NotifService.info('Données sauvegardées', 'valid');
+            })
+            .catch((err) => {
+                NotifService.info(err, 'error');
+            });
     };
 
     /**

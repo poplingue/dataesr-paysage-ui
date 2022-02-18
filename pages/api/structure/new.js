@@ -33,16 +33,29 @@ async function handler(req, res) {
                 tokens
             );
 
-            promises.push(fetch(url, requestOptions));
+            let request = new Request(url, requestOptions);
+
+            promises.push(request);
         }
 
-        return Promise.all(promises)
-            .then((resp) => {
-                //TODO return also structureSubObjects response
-                res.status(request.status).json(response);
+        return Promise.all(
+            promises.map((request) => {
+                return fetch(request)
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        return data;
+                    });
+            })
+        )
+            .then((values) => {
+                res.status(request.status).json({
+                    object: JSON.parse(response),
+                    subObjects: values,
+                });
             })
             .catch((error) => {
-                console.log('Error' + error);
                 res.status(500).send(error);
             });
     } catch (err) {
