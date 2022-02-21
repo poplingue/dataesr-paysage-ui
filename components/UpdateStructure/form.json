@@ -59,7 +59,7 @@
             "title": "Autre nom",
             "type": "text",
             "infinite": true,
-            "validatorId": "otherName"
+            "validatorId": "otherNames"
           },
           {
             "title": "Date de début",

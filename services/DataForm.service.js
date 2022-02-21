@@ -14,7 +14,7 @@ const mapFields = {
     nameEn: 'nameEn',
     acronymFr: 'acronymFr',
     acronymEn: 'acronymEn',
-    otherName: 'currentName.otherName',
+    otherNames: 'currentName.otherNames',
     wikidata: 'identifiers',
     idref: 'identifiers',
     uai: 'identifiers',
@@ -86,7 +86,8 @@ export const dataFormService = {
             true: (o) => o.uid,
         };
 
-        const id = sliceEnd(obj[!!checkFamily](checkFamily));
+        const id = sliceEnd(obj[!!checkFamily](checkFamily), -2);
+
         const family = checkFamily ? id : '';
         const isUnsaved = field.unSaved;
 
@@ -108,10 +109,13 @@ export const dataFormService = {
         objectId,
         subObjectType,
         subObjectId,
-        toDelete
+        key,
+        value
     ) => {
-        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
-        const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}/${key}`;
+        const requestOptions = fetchHelper.requestOptions('DELETE', {
+            [key]: [value],
+        });
 
         return await fetch(url, requestOptions);
     },
@@ -428,13 +432,11 @@ export const dataFormService = {
     },
 
     save: async (form, objectId, subObject) => {
-        const sectionInfinite = subObject.match(/[^#]*$/)
-            ? !!subObject.match(/[^#]*$/)[0]
-            : false;
-        const subObjectType = sectionInfinite
-            ? sliceEnd(subObject, -9)
-            : subObject;
-        const subObjectId = sectionInfinite ? subObject.match(/[^#]*$/)[0] : '';
+        const sectionInfinite = matchRegex(`[^#]*$`, subObject) || false;
+        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
+        const subObjectId = sectionInfinite
+            ? matchRegex(`[^#]*$`, subObject)
+            : '';
 
         let bodyObject = {};
         let infiniteArray = [];

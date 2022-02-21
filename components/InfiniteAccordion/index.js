@@ -86,12 +86,10 @@ export default function InfiniteAccordion({
         [subObjectType]
     );
 
-    const deleteSection = async (sectionType, index) => {
+    const deleteSection = async (section) => {
         let fieldsToDelete = [];
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
-        const subObjectId = !!sectionType.match(/[^#]*$/)
-            ? sectionType.match(/[^#]*$/)[0]
-            : sectionType;
+        const subObjectId = matchRegex(`[^#]*$`, section);
 
         // TODO in sw.js
         await dataFormService.deleteSubObject(
@@ -104,7 +102,7 @@ export default function InfiniteAccordion({
         for (let i = 1; i < currentForm().length; i = i + 1) {
             const { uid } = currentForm()[i];
 
-            if (uid.indexOf(sectionType) > -1) {
+            if (uid.indexOf(section) > -1) {
                 fieldsToDelete.push(uid);
             }
         }
@@ -127,7 +125,7 @@ export default function InfiniteAccordion({
         }
 
         const idsRemaining = sections[subObjectType].filter(
-            (id) => sectionType.indexOf(id) < 0
+            (id) => section.indexOf(id) < 0
         );
         updateSection(idsRemaining);
     };

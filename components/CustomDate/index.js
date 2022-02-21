@@ -9,7 +9,7 @@ import {
     cleanString,
     getFormName,
     getUniqueId,
-    lastChar,
+    matchRegex,
     range,
     sliceEnd,
 } from '../../helpers/utils';
@@ -146,7 +146,7 @@ export default function CustomDate({
             [validatorId]: '',
         });
         const subObjectType = sliceEnd(subObject);
-        const subObjectId = lastChar(subObject);
+        const subObjectId = matchRegex(`[^#]*$`, subObject);
 
         const response = await fetch(
             `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,

@@ -5,7 +5,7 @@
  * @returns {*}
  */
 export function sliceEnd(str, nb) {
-    return str.slice(0, nb || -2);
+    return str.slice(0, nb || -9);
 }
 
 /**

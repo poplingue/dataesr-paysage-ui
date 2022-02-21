@@ -7,6 +7,8 @@ import {
     getForm,
     getFormName,
     getUniqueId,
+    matchRegex,
+    sliceEnd,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
@@ -40,15 +42,18 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
 
             // TODO in sw.js
             // TODO fn to get subObjectType, subObjectId, object etc. from uid
-            dataFormService.deleteField(
-                object,
-                updateObjectId,
-                subObject.slice(0, -9),
-                subObject.slice(-1),
-                {
-                    [validatorId]: getFieldValue(forms, formName, uid),
-                }
-            );
+            dataFormService
+                .deleteField(
+                    object,
+                    updateObjectId,
+                    sliceEnd(subObject),
+                    matchRegex(`[^#]*$`, subObject),
+                    validatorId,
+                    getFieldValue(forms, formName, uid)
+                )
+                .then(() => {
+                    NotifService.info(`${validatorId} supprimé`, 'valid');
+                });
 
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;

@@ -41,7 +41,7 @@ export const configValidator = {
     acronymEn: {
         required: false,
     },
-    otherName: {
+    otherNames: {
         required: false,
     },
     wikidata: {

@@ -72,7 +72,7 @@
             "title": "Autre dénomination",
             "type": "text",
             "infinite": true,
-            "validatorId": "otherName"
+            "validatorId": "otherNames"
           },
           {
             "title": "Genre",

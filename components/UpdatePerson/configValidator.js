@@ -56,7 +56,7 @@ export const configValidator = {
             }),
         ],
     },
-    otherName: {
+    otherNames: {
         required: false,
         validators: [
             (value) => ({

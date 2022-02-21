@@ -96,7 +96,7 @@ export default function UpdatePerson({ data, id }) {
                 ],
                 firstName: 'Toutou',
                 lastName: 'Youtou',
-                otherName: ['string'],
+                otherNames: ['string'],
                 gender: {
                     type: 'f',
                 },
