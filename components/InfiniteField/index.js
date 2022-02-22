@@ -6,16 +6,17 @@ import {
     getFieldValue,
     getForm,
     getFormName,
+    getSubObjectId,
+    getSubObjectType,
     getUniqueId,
-    matchRegex,
-    sliceEnd,
 } from '../../helpers/utils';
+
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import Field from '../Field';
 import FieldButton from '../FieldButton';
+import Field from './Field';
 
 // TODO add propTypes
 function InfiniteField({ children, title, section, validatorId, subObject }) {
@@ -46,8 +47,8 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                 .deleteField(
                     object,
                     updateObjectId,
-                    sliceEnd(subObject),
-                    matchRegex(`[^#]*$`, subObject),
+                    getSubObjectType(subObject),
+                    getSubObjectId(subObject),
                     validatorId,
                     getFieldValue(forms, formName, uid)
                 )
@@ -149,6 +150,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                                         i
                                     )
                                 ) || '';
+
                             const newTitle = `${title}#${i}`;
 
                             return (

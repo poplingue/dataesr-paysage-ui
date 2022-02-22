@@ -14,7 +14,6 @@ import SwitchField from '../SwitchField';
 export default function FormAccordionItem({
     content,
     newTitle,
-    title,
     deletable = false,
     index,
     subObject,

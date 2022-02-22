@@ -1,6 +1,12 @@
 import { structureSubObjects } from '../helpers/constants';
 import { fetchHelper } from '../helpers/fetch';
-import { getUniqueId, isArray, matchRegex, sliceEnd } from '../helpers/utils';
+import {
+    getSubObjectId,
+    getSubObjectType,
+    getUniqueId,
+    isArray,
+    matchRegex,
+} from '../helpers/utils';
 import DBService from './DB.service';
 
 const mapFields = {
@@ -86,7 +92,7 @@ export const dataFormService = {
             true: (o) => o.uid,
         };
 
-        const id = sliceEnd(obj[!!checkFamily](checkFamily), -2);
+        const id = obj[!!checkFamily](checkFamily).slice(0, -2);
 
         const family = checkFamily ? id : '';
         const isUnsaved = field.unSaved;
@@ -432,11 +438,11 @@ export const dataFormService = {
     },
 
     save: async (form, objectId, subObject) => {
-        const sectionInfinite = matchRegex(`[^#]*$`, subObject) || false;
-        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
-        const subObjectId = sectionInfinite
-            ? matchRegex(`[^#]*$`, subObject)
-            : '';
+        const sectionInfinite = !!getSubObjectId(subObject) || false;
+        const subObjectType = sectionInfinite
+            ? getSubObjectType(subObject)
+            : subObject;
+        const subObjectId = sectionInfinite ? getSubObjectId(subObject) : '';
 
         let bodyObject = {};
         let infiniteArray = [];

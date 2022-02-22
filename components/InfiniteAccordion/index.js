@@ -14,8 +14,7 @@ import {
     cleanString,
     getForm,
     getFormName,
-    getUniqueId,
-    matchRegex,
+    getSubObjectId,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
@@ -62,20 +61,10 @@ export default function InfiniteAccordion({
                 .map(() => createRef()),
         [sections, subObjectType]
     );
-    const sectionName = useMemo(
-        () => getUniqueId(formName, subObjectType),
-        [formName, subObjectType]
-    );
+
     const currentForm = useCallback(
         () => getForm(forms, formName) || [],
         [formName, forms]
-    );
-    const formSections = useCallback(
-        () =>
-            currentForm().map((c) => {
-                return c.uid;
-            }),
-        [currentForm]
     );
 
     const updateSection = useCallback(
@@ -88,7 +77,7 @@ export default function InfiniteAccordion({
     const deleteSection = async (section) => {
         let fieldsToDelete = [];
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
-        const subObjectId = matchRegex(`[^#]*$`, section);
+        const subObjectId = getSubObjectId(section);
 
         // TODO in sw.js
         await dataFormService.deleteSubObject(
@@ -145,28 +134,25 @@ export default function InfiniteAccordion({
         return dataFormService
             .getSubObjectData(object, updateObjectId, subObjectType)
             .then(({ data }) => {
-                const total = data.totalCount;
-
-                return {
-                    ids: data.data.map((subObject) => subObject.id),
-                    total,
-                };
+                return { ids: data.data.map((subObject) => subObject.id) };
             });
     }, [object, subObjectType, updateObjectId]);
 
     useEffect(() => {
         async function initSubObjects() {
-            const { ids, total } = await check();
-
-            updateSection(ids);
-
-            if (sections[subObjectType].length === total) {
-                setInit(false);
-            }
+            return await check();
         }
 
-        if (init) {
-            initSubObjects();
+        const sectionsLength = sections[subObjectType].length;
+
+        if (init && !sectionsLength) {
+            initSubObjects().then(({ ids }) => {
+                updateSection(ids);
+
+                if (sectionsLength === ids.length) {
+                    setInit(false);
+                }
+            });
         }
     }, [check, init, sections, subObjectType, updateSection]);
 
@@ -176,7 +162,7 @@ export default function InfiniteAccordion({
                 <Row>
                     <Col n="12">
                         <ul className="p-0">
-                            {sections[subObjectType] &&
+                            {!!sections[subObjectType].length &&
                                 sections[subObjectType].map((id, i) => {
                                     const newTitle = `${title}#${id}`;
                                     const deletable = i !== 0;

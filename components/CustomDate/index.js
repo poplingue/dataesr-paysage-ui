@@ -8,10 +8,10 @@ import {
     camelCase,
     cleanString,
     getFormName,
+    getSubObjectId,
+    getSubObjectType,
     getUniqueId,
-    matchRegex,
     range,
-    sliceEnd,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import DBService from '../../services/DB.service';
@@ -145,8 +145,8 @@ export default function CustomDate({
         const requestOptions = fetchHelper.requestOptions('PATCH', {
             [validatorId]: '',
         });
-        const subObjectType = sliceEnd(subObject);
-        const subObjectId = matchRegex(`[^#]*$`, subObject);
+        const subObjectType = getSubObjectType(subObject);
+        const subObjectId = getSubObjectId(subObject);
 
         const response = await fetch(
             `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,

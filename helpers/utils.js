@@ -1,11 +1,19 @@
 /**
  *
  * @param str
- * @param nb
  * @returns {*}
  */
-export function sliceEnd(str, nb) {
-    return str.slice(0, nb || -9);
+export function getSubObjectType(str) {
+    return str.slice(0, -9);
+}
+
+/**
+ *
+ * @param section
+ * @returns {*|string}
+ */
+export function getSubObjectId(section) {
+    return matchRegex(`[^#]*$`, section);
 }
 
 /**
