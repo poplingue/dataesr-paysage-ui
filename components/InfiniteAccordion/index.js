@@ -148,10 +148,7 @@ export default function InfiniteAccordion({
         if (init && !sectionsLength) {
             initSubObjects().then(({ ids }) => {
                 updateSection(ids);
-
-                if (sectionsLength === ids.length) {
-                    setInit(false);
-                }
+                setInit(false);
             });
         }
     }, [check, init, sections, subObjectType, updateSection]);
