@@ -15,6 +15,7 @@ const reducersPage = (state, action) => {
         }
 
         case ACTIONS.UPDATE_USER: {
+            // TODO test proxy object
             return {
                 ...state,
                 user: action.payload,

@@ -144,6 +144,7 @@ const DBService = {
 
         promises.push(tx.done);
 
+        // TODO add Promise.allSettled()
         return await Promise.all(promises);
     },
 
@@ -168,6 +169,7 @@ const DBService = {
 
             promises.push(tx.done);
 
+            // TODO add Promise.allSettled()
             return await Promise.all(promises);
         }
     },

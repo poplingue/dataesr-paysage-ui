@@ -1,9 +1,9 @@
 import preloadAll from 'jest-next-dynamic';
 import * as nextRouter from 'next/router';
 import React from 'react';
-import Field from '../../components/Field';
-import '@testing-library/jest-dom/extend-expect';
 import DeleteButton from '../../components/InfiniteAccordion/DeleteButton';
+import Field from '../../components/InfiniteField/Field';
+import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();

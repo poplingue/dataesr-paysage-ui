@@ -247,10 +247,12 @@ export const dataFormService = {
         }
 
         // GET all subObjects of an Object
+        // TODO add Promise.allSettled()
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
 
+        // TODO add Promise.allSettled()
         const jsons = await Promise.all(
             res.map((r) => fetchHelper.handleResponse(r))
         );

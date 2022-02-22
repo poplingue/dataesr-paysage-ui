@@ -38,6 +38,7 @@ async function handler(req, res) {
             promises.push(request);
         }
 
+        // TODO add Promise.allSettled()
         return Promise.all(
             promises.map((request) => {
                 return fetch(request)
