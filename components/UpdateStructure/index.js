@@ -6,8 +6,10 @@ import { AppContext } from '../../context/GlobalState';
 import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
+import DBService from '../../services/DB.service';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
+import ToolBox from '../ToolBox';
 import UpdateStructureForm from './form.json';
 
 export default function UpdateStructure({ data, id }) {
@@ -49,7 +51,7 @@ export default function UpdateStructure({ data, id }) {
     const initDataStructureForm = useCallback(async () => {
         dataFormService
             .initFormSections(object, id, formName, storeObjects)
-            .then((fields) => {
+            .then(async (fields) => {
                 // Update fields in state
                 dispatch({
                     type: 'UPDATE_FORM_FIELD_LIST',
@@ -58,6 +60,9 @@ export default function UpdateStructure({ data, id }) {
                         fields,
                     },
                 });
+
+                // indexDB
+                await DBService.setList(fields, formName);
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
@@ -100,6 +105,7 @@ export default function UpdateStructure({ data, id }) {
                 pageTitle={id ? `Modifier ${id}` : 'Ajouter une structure'}
             />
             <SideNavigation items={UpdateStructureForm[0].form}>
+                <ToolBox accordions />
                 <CreateForm
                     jsonForm={UpdateStructureForm[0]}
                     color={yellow}

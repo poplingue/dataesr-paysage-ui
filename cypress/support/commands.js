@@ -15,14 +15,20 @@ const baseUrl = Cypress.env('baseUrl');
 Cypress.Commands.add('newStructure', () => {
     cy.get('[data-cy="update/structure"]').click();
 
-    cy.intercept('PATCH', '/api/structure/**').as('patch');
+    cy.intercept('POST', '/api/structure/**').as('post');
 
-    cy.wait(3000);
+    cy.wait('@post').then((interception) => {
+        if (interception.response.body.subObjects[0].id) {
+            cy.setCookie('nameId', interception.response.body.subObjects[0].id);
+        }
+    });
 
-    cy.sectionsNoSticky();
+    cy.sectionsNoSticky(2000);
 });
 
-Cypress.Commands.add('sectionsNoSticky', () => {
+Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1500) => {
+    cy.wait(timeToWait);
+
     cy.document().then((document) => {
         const accordions = document.querySelectorAll('.fr-accordion');
 
@@ -48,7 +54,9 @@ Cypress.Commands.add('signIn', () => {
             account: account,
         },
     }).then((response) => {
-        cy.setCookie('tokens', JSON.stringify(response.body));
+        if (Object.keys(response.body).length) {
+            cy.setCookie('tokens', JSON.stringify(response.body));
+        }
     });
 });
 

@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
-import { fetchHelper } from '../../../../../helpers/fetch';
+import { fetchHelper } from '../../../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
@@ -41,10 +41,10 @@ const handler = nc()
             );
 
             const request = await fetch(url, requestOptions);
-
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();
+
             res.status(request.status).json(response);
         } catch (err) {
             res.status(500).send(err);

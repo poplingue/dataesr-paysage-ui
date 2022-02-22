@@ -3,8 +3,17 @@
  * @param str
  * @returns {*}
  */
-export function sliceEnd(str) {
-    return str.slice(0, -2);
+export function getSubObjectType(str) {
+    return str.slice(0, -9);
+}
+
+/**
+ *
+ * @param section
+ * @returns {*|string}
+ */
+export function getSubObjectId(section) {
+    return matchRegex(`[^#]*$`, section);
 }
 
 /**
@@ -75,18 +84,18 @@ export function containsObject(obj, array) {
  * @param nameId
  * @param eq
  * @param section
- * @returns {string} format pathname@[section#i]_[nameId]#[eq]
+ * @returns {string} format pathname@[section#id]_[nameId]#[eq]
  */
 export function getUniqueId(formName, section = '', nameId = '', eq = null) {
     const checkedEq = eq !== null && eq >= 0 ? `#${eq}` : '';
-    let uniqueId = `${formName}@${cleanString(section)}_${nameId}${checkedEq}`;
+    let uniqueId = `${formName}@${section}_${nameId}${checkedEq}`;
 
     if (!nameId && nameId !== 0) {
-        uniqueId = `${formName}@${cleanString(section)}_${nameId}`;
+        uniqueId = `${formName}@${section}_${nameId}`;
     }
 
     if (!nameId) {
-        uniqueId = `${formName}@${cleanString(section)}`;
+        uniqueId = `${formName}@${section}`;
     }
 
     return uniqueId;

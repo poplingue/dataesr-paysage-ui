@@ -8,12 +8,13 @@ import {
     getFormName,
     getUniqueId,
 } from '../../helpers/utils';
+
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import Field from '../Field';
 import FieldButton from '../FieldButton';
+import Field from './Field';
 
 // TODO add propTypes
 function InfiniteField({ children, title, section, validatorId, subObject }) {
@@ -39,16 +40,24 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             const uid = element[0].getAttribute('data-field');
 
             // TODO in sw.js
-            // TODO fn to get subObjectType, subObjectId, object etc. from uid
-            dataFormService.deleteField(
-                object,
-                updateObjectId,
-                subObject.slice(0, -2),
-                subObject.slice(-1),
-                {
-                    [validatorId]: getFieldValue(forms, formName, uid),
-                }
+            const newValues = getForm(forms, formName).flatMap(
+                ({ uid: fieldId, value }) =>
+                    fieldId.indexOf(validatorId) > -1 && fieldId !== uid
+                        ? value
+                        : []
             );
+
+            dataFormService
+                .deleteField(
+                    object,
+                    updateObjectId,
+                    subObject,
+                    validatorId,
+                    newValues
+                )
+                .then(() => {
+                    NotifService.info(`Champs supprimé`, 'valid');
+                });
 
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
@@ -144,6 +153,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                                         i
                                     )
                                 ) || '';
+
                             const newTitle = `${title}#${i}`;
 
                             return (

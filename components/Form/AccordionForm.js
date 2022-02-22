@@ -64,7 +64,6 @@ export default function AccordionForm({
                         className={styles.Accordion}
                         color={dark}
                         keepOpen
-                        data-cy="accordion"
                         size={size}
                         data-section={dataSection}
                     >

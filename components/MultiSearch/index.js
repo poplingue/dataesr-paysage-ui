@@ -111,7 +111,7 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
                                         data-cy={`${cleanString(
                                             option.value
                                         )}-${i}`}
-                                        key={uuidv4()}
+                                        key={i}
                                         className={styles.listElement}
                                     >
                                         <Checkbox

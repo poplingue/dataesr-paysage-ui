@@ -37,7 +37,11 @@ export default function Field({
                         });
 
                         return (
-                            <div key={i} ref={ref} className={styles.Field}>
+                            <div
+                                key={`${title}-${index}`}
+                                ref={ref}
+                                className={styles.Field}
+                            >
                                 <Container fluid>
                                     <Row alignItems="bottom" gutters>
                                         <Col n={index > 0 ? '8' : '12'}>

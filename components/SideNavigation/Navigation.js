@@ -146,7 +146,7 @@ export default function Navigation({ items, color }) {
                                                             )
                                                         )
                                                     }
-                                                    href=""
+                                                    href={`#${subSectionTitle}`}
                                                     key={subSectionTitle}
                                                 >
                                                     {subSectionTitle}
@@ -169,7 +169,7 @@ export default function Navigation({ items, color }) {
                                             )
                                         )
                                     }
-                                    href=""
+                                    href={`#${title}`}
                                     key={`${title}-${content.length}-${i}`}
                                 >
                                     {title}

@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FieldButton from '../components/FieldButton';
-import { AppContext } from '../context/GlobalState';
 import useCSSProperty from './useCSSProperty';
 
 const useAccordions = (init = false) => {
@@ -9,8 +8,6 @@ const useAccordions = (init = false) => {
 
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
     const { style: white } = useCSSProperty('--grey-1000');
-
-    const { dispatchPage: dispatch } = useContext(AppContext);
 
     const actionAll = (expand) => {
         const btnAccordions = document.querySelectorAll(
@@ -62,7 +59,6 @@ const useAccordions = (init = false) => {
 
             if (currentList.section === section) {
                 currentList.expanded = !currentList.expanded;
-                setList(newList);
 
                 return;
             }
@@ -77,13 +73,6 @@ const useAccordions = (init = false) => {
             onClick={expandCloseAll}
         />
     );
-
-    useEffect(() => {
-        dispatch({
-            type: 'UPDATE_ACCORDION_ITEMS',
-            payload: list,
-        });
-    }, [dispatch, list]);
 
     useEffect(() => {
         const l = [];

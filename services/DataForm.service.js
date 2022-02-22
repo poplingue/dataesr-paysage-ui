@@ -1,11 +1,11 @@
 import { structureSubObjects } from '../helpers/constants';
 import { fetchHelper } from '../helpers/fetch';
 import {
+    getSubObjectId,
+    getSubObjectType,
     getUniqueId,
     isArray,
-    lastChar,
     matchRegex,
-    sliceEnd,
 } from '../helpers/utils';
 import DBService from './DB.service';
 
@@ -20,7 +20,7 @@ const mapFields = {
     nameEn: 'nameEn',
     acronymFr: 'acronymFr',
     acronymEn: 'acronymEn',
-    otherName: 'currentName.otherName',
+    otherNames: 'currentName.otherNames',
     wikidata: 'identifiers',
     idref: 'identifiers',
     uai: 'identifiers',
@@ -79,7 +79,9 @@ export const dataFormService = {
 
     checkDateField: (field) => !matchRegex(`Day|Year|Month$`, field.uid),
 
-    bySubObject: (field, subObject) => field.uid.indexOf(subObject) > -1,
+    bySubObject: (field, subObject) => {
+        return field.uid.indexOf(subObject) > -1;
+    },
 
     byInfiniteFamily: (field, index, form) => {
         // TODO refacto: work only with 1 infinite field in section
@@ -90,7 +92,8 @@ export const dataFormService = {
             true: (o) => o.uid,
         };
 
-        const id = sliceEnd(obj[!!checkFamily](checkFamily));
+        const id = obj[!!checkFamily](checkFamily).slice(0, -2);
+
         const family = checkFamily ? id : '';
         const isUnsaved = field.unSaved;
 
@@ -107,19 +110,26 @@ export const dataFormService = {
         return false;
     },
 
-    deleteField: async (
-        object,
-        objectId,
-        subObjectType,
-        subObjectId,
-        toDelete
-    ) => {
+    deleteField: async (object, objectId, subObject, key, values) => {
+        const subObjectType = getSubObjectType(subObject);
+        const subObjectId = getSubObjectId(subObject);
+
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
-        const requestOptions = fetchHelper.requestOptions('DELETE', toDelete);
+        const requestOptions = fetchHelper.requestOptions('PATCH', {
+            [key]: values,
+        });
 
         return await fetch(url, requestOptions);
     },
 
+    /**
+     *
+     * @param object
+     * @param objectId
+     * @param subObjectType
+     * @param subObjectId
+     * @returns {Promise<Response>}
+     */
     deleteSubObject: async (object, objectId, subObjectType, subObjectId) => {
         const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
         const requestOptions = fetchHelper.requestOptions('DELETE');
@@ -128,13 +138,9 @@ export const dataFormService = {
     },
 
     uniqueField: (params) => {
-        const [value, subObject, dataIndex, field, formName] = params;
+        const [value, subObject, sectionId, field, formName] = params;
 
-        const uid = getUniqueId(
-            formName,
-            `${subObject}#${dataIndex + 1}`,
-            field
-        );
+        const uid = getUniqueId(formName, `${subObject}#${sectionId}`, field);
 
         const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
 
@@ -149,12 +155,12 @@ export const dataFormService = {
     },
 
     infiniteField: (params) => {
-        const [values, subObject, dataIndex, field, formName] = params;
+        const [values, subObject, sectionId, field, formName] = params;
 
         return values.map((value, vIndex) => {
             const uid = getUniqueId(
                 formName,
-                `${subObject}#${dataIndex + 1}`,
+                `${subObject}#${sectionId}`,
                 field,
                 vIndex
             );
@@ -173,7 +179,7 @@ export const dataFormService = {
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
 
-            data.map((section, dataIndex) => {
+            data.map((section, sectionId) => {
                 const sections = Object.keys(section);
 
                 for (let j = 0; j < sections.length; j++) {
@@ -187,7 +193,7 @@ export const dataFormService = {
                             ...fields[infinite](
                                 value,
                                 subObject,
-                                dataIndex,
+                                section.id || sectionId + 1,
                                 field,
                                 formName
                             )
@@ -255,12 +261,13 @@ export const dataFormService = {
     initSubObject: async (type, subObject, id) => {
         const requestOptions = fetchHelper.requestOptions('POST', {});
 
-        return await fetch(
-            `/api/${type}/${id}/${subObject}`,
-            requestOptions
-        ).then(async (resp) => {
-            return await resp.clone().json();
-        });
+        return await fetch(`/api/${type}/${id}/${subObject}`, requestOptions)
+            .then(async (resp) => {
+                return await resp.clone().json();
+            })
+            .catch((err) => {
+                Promise.reject(err);
+            });
     },
     infiniteFields: (data, formName, subObject) => {
         const fields = [];
@@ -416,11 +423,22 @@ export const dataFormService = {
             }
         }
     },
-    save: async (form, objectId, subObject) => {
-        const sectionInfinite = !!subObject.match(/\d+$/)[0];
 
-        const subObjectType = sectionInfinite ? sliceEnd(subObject) : subObject;
-        const subObjectId = sectionInfinite ? lastChar(subObject) : '';
+    getSubObjectData: async (object, id, subObject) => {
+        const url = `/api/${object}/${id}/${subObject}`;
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper.handleResponse(response);
+    },
+
+    save: async (form, objectId, subObject) => {
+        const sectionInfinite = !!getSubObjectId(subObject) || false;
+        const subObjectType = sectionInfinite
+            ? getSubObjectType(subObject)
+            : subObject;
+        const subObjectId = sectionInfinite ? getSubObjectId(subObject) : '';
 
         let bodyObject = {};
         let infiniteArray = [];
@@ -457,14 +475,13 @@ export const dataFormService = {
             requestOptions
         );
 
-        const r = await response.json();
-
-        if (response.status >= 400) {
-            throw r.error;
-        }
-
-        if (response.status >= 200 && response.status < 400) {
-            return r;
-        }
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ response }) => {
+                return response;
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
     },
 };

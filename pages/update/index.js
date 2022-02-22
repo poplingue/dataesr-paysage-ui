@@ -25,6 +25,7 @@ export default function Update() {
     } = useContext(AppContext);
 
     useEffect(() => {
+        // New Service Worker
         workerRef.current = new Worker('sw.js', {
             name: 'New_object',
             type: 'module',
@@ -32,6 +33,7 @@ export default function Update() {
     }, []);
 
     useEffect(() => {
+        // SW LISTEN event: Init new Object
         workerRef.current.onmessage = ({ data }) => {
             ObjectService.newId(data).then((id) => {
                 dispatch({
@@ -51,9 +53,11 @@ export default function Update() {
 
         setSpinner(true);
 
+        // Clear current object
         await DBService.clear(`update/${object}`).then(() => {
             setCurrentObject(object);
 
+            // SW POST event: Init new Object
             workerRef.current.postMessage({
                 object,
             });

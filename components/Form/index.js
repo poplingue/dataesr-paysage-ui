@@ -123,7 +123,6 @@ const CreateForm = ({ jsonForm, color }) => {
                                     title={sectionTitle}
                                     subObjectType={subObject}
                                     content={content}
-                                    index={`${sectionTitle}-${i}`}
                                 />
                             </Col>
                         ) : (

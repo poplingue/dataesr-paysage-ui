@@ -11,18 +11,9 @@ import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import SwitchField from '../SwitchField';
 
-const notif = {
-    valid: { msg: 'Données sauvegardées' },
-    error: {
-        msg: 'Erreur : tous les champs ne sont pas valides',
-        type: 'error',
-    },
-};
-
 export default function FormAccordionItem({
     content,
     newTitle,
-    title,
     deletable = false,
     index,
     subObject,
@@ -135,7 +126,7 @@ export default function FormAccordionItem({
                     return fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
-                    NotifService.info(err, 'error');
+                    return Promise.reject(err);
                 });
         }
     };
@@ -169,9 +160,13 @@ export default function FormAccordionItem({
     const onSubmit = (e) => {
         e.preventDefault();
 
-        save().then(() => {
-            NotifService.info('Données sauvegardées', 'valid');
-        });
+        save()
+            .then(() => {
+                NotifService.info('Données sauvegardées', 'valid');
+            })
+            .catch((err) => {
+                NotifService.info(err, 'error');
+            });
     };
 
     /**
@@ -291,14 +286,9 @@ export default function FormAccordionItem({
                     <Row gutters justifyContent="right" spacing="pt-2w">
                         <DeleteButton
                             display={deletable}
-                            title={title}
-                            index={index}
+                            title={newTitle}
                             onClick={async () =>
-                                await deleteSection(
-                                    cleanString(subObject.slice(0, -2)),
-                                    index,
-                                    newTitle
-                                )
+                                await deleteSection(subObject, index, newTitle)
                             }
                         />
                         {/* TODO remove data-testId */}
@@ -319,9 +309,7 @@ export default function FormAccordionItem({
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, green]}
                                 title="Sauvegarder"
-                                dataTestId={`${cleanString(
-                                    newTitle
-                                )}-save-button`}
+                                dataTestId={`${newTitle}-save-button`}
                             />
                         </Col>
                     </Row>

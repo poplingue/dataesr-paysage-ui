@@ -38,9 +38,12 @@ self.addEventListener('message', async (event) => {
             body: JSON.stringify({ [`${data.object}Status`]: 'active' }),
         };
 
+        // Request to API: Init new Object
         await fetch(`/api/${data.object}/new`, requestOptions).then(
             async (resp) => {
                 const data = await resp.clone().json();
+                // TODO check data
+                // SW POST event: Init new Object
                 self.postMessage(JSON.stringify({ status: resp.status, data }));
             }
         );

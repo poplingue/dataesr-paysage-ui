@@ -59,7 +59,7 @@
             "title": "Autre nom",
             "type": "text",
             "infinite": true,
-            "validatorId": "otherName"
+            "validatorId": "otherNames"
           },
           {
             "title": "Date de début",
@@ -75,7 +75,7 @@
       },
       {
         "title": "Localisation",
-        "subObject": "localisation",
+        "subObject": "localisations",
         "content": [
           {
             "title": "Lier à un ou plusieurs départements",
