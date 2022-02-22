@@ -48,11 +48,11 @@ context('Structure new form', () => {
                 .find('input')
                 .type('OtherName#1');
 
-            cy.intercept('DELETE', '/api/structure/**').as('delete');
+            cy.intercept('PATCH', '/api/structure/**').as('path');
 
             cy.get('[data-testid="btn-delete-autrenom#1"]').click();
 
-            cy.wait('@delete');
+            cy.wait('@path');
 
             cy.get(
                 `[data-field="update/structure@names#${id}_otherNames#1"]`

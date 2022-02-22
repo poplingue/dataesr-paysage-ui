@@ -23,10 +23,10 @@ Cypress.Commands.add('newStructure', () => {
         }
     });
 
-    cy.sectionsNoSticky(1000);
+    cy.sectionsNoSticky(2000);
 });
 
-Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1000) => {
+Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1500) => {
     cy.wait(timeToWait);
 
     cy.document().then((document) => {

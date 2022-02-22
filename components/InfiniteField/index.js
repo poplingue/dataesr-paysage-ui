@@ -6,8 +6,6 @@ import {
     getFieldValue,
     getForm,
     getFormName,
-    getSubObjectId,
-    getSubObjectType,
     getUniqueId,
 } from '../../helpers/utils';
 
@@ -42,18 +40,23 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             const uid = element[0].getAttribute('data-field');
 
             // TODO in sw.js
-            // TODO fn to get subObjectType, subObjectId, object etc. from uid
+            const newValues = getForm(forms, formName).flatMap(
+                ({ uid: fieldId, value }) =>
+                    fieldId.indexOf(validatorId) > -1 && fieldId !== uid
+                        ? value
+                        : []
+            );
+
             dataFormService
                 .deleteField(
                     object,
                     updateObjectId,
-                    getSubObjectType(subObject),
-                    getSubObjectId(subObject),
+                    subObject,
                     validatorId,
-                    getFieldValue(forms, formName, uid)
+                    newValues
                 )
                 .then(() => {
-                    NotifService.info(`${validatorId} supprimé`, 'valid');
+                    NotifService.info(`Champs supprimé`, 'valid');
                 });
 
             const indexRef = parseFloat(uid.charAt(uid.length - 1));

@@ -110,17 +110,13 @@ export const dataFormService = {
         return false;
     },
 
-    deleteField: async (
-        object,
-        objectId,
-        subObjectType,
-        subObjectId,
-        key,
-        value
-    ) => {
-        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}/${key}`;
-        const requestOptions = fetchHelper.requestOptions('DELETE', {
-            [key]: [value],
+    deleteField: async (object, objectId, subObject, key, values) => {
+        const subObjectType = getSubObjectType(subObject);
+        const subObjectId = getSubObjectId(subObject);
+
+        const url = `/api/${object}/${objectId}/${subObjectType}/${subObjectId}`;
+        const requestOptions = fetchHelper.requestOptions('PATCH', {
+            [key]: values,
         });
 
         return await fetch(url, requestOptions);
