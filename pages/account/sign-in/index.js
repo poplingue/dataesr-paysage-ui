@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import grid from '../../../helpers/imports';
 import {
+    connectedMsg,
     emailErrorMsg,
     emailMandatoryMsg,
     emailPattern,
@@ -51,7 +52,9 @@ function SignIn() {
         authService
             .signIn(formData)
             .then(() => {
-                window.location = '/';
+                router.push('/').then(() => {
+                    NotifService.info(connectedMsg, 'valid');
+                });
             })
             .catch((err) => {
                 console.error('==== authService.signIn ==== ', err);

@@ -287,8 +287,7 @@ export default function FormAccordionItem({
                     <Row gutters justifyContent="right" spacing="pt-2w">
                         <DeleteButton
                             display={deletable}
-                            title={title}
-                            index={index}
+                            title={newTitle}
                             onClick={async () =>
                                 await deleteSection(subObject, index, newTitle)
                             }
@@ -311,9 +310,7 @@ export default function FormAccordionItem({
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, green]}
                                 title="Sauvegarder"
-                                dataTestId={`${cleanString(
-                                    newTitle
-                                )}-save-button`}
+                                dataTestId={`${newTitle}-save-button`}
                             />
                         </Col>
                     </Row>

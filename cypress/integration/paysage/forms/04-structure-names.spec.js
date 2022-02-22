@@ -7,20 +7,24 @@ context('Structure new form', () => {
         cy.newStructure();
     });
 
-    after(() => {
-        cy.signOut();
-    });
-
     it('should save new Structure officialName data', () => {
-        cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
+        cy.getCookie('nameId').then((cookie) => {
+            const id = cookie.value;
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait('@patch');
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.reload();
+            cy.get('[data-testid="officialName"]')
+                .find('input')
+                .type('Offiffi');
 
-        cy.get('[data-testid="officialName"]')
-            .find('input')
-            .should('have.value', 'Offiffi');
+            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.wait('@patch');
+
+            cy.reload();
+
+            cy.get('[data-testid="officialName"]')
+                .find('input')
+                .should('have.value', 'Offiffi');
+        });
     });
 });

@@ -12,51 +12,58 @@ context('Structure new form infinite otherName and article', () => {
     });
 
     it('should save new Structure infinite otherName data', () => {
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .type('OtherName#0');
+        cy.getCookie('nameId').then((cookie) => {
+            const id = cookie.value;
 
-        cy.get('[data-testid="btn-add"]').click();
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+                .find('input')
+                .type('OtherName#0');
 
-        cy.get('[data-field="update/structure@names#1_otherName#1"]')
-            .find('input')
-            .type('OtherName#1');
+            cy.get('[data-testid="btn-add"]').click();
 
-        cy.intercept('PATCH', '/api/structure/**').as('patch');
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
+                .find('input')
+                .type('OtherName#1');
 
-        cy.wait('@patch');
+            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.wait('@patch');
 
-        cy.reload();
+            cy.reload();
 
-        cy.sectionsNoSticky();
+            cy.sectionsNoSticky();
 
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .should('have.value', 'OtherName#0');
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+                .find('input')
+                .should('have.value', 'OtherName#0');
 
-        cy.get('[data-field="update/structure@names#1_otherName#1"]')
-            .find('input')
-            .should('have.value', 'OtherName#1');
-
-        cy.signOut();
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
+                .find('input')
+                .should('have.value', 'OtherName#1');
+        });
     });
 
     it('should save new Structure article data', () => {
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .type('OtherName#0');
+        cy.getCookie('nameId').then((cookie) => {
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait('@patch');
+            const id = cookie.value;
 
-        cy.reload();
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+                .find('input')
+                .type('OtherName#0');
 
-        cy.sectionsNoSticky();
+            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.wait('@patch');
 
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .should('have.value', 'OtherName#0');
+            cy.reload();
+
+            cy.sectionsNoSticky();
+
+            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+                .find('input')
+                .should('have.value', 'OtherName#0');
+        });
     });
 });

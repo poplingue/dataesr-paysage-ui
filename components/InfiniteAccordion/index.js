@@ -16,7 +16,6 @@ import {
     getFormName,
     getUniqueId,
     matchRegex,
-    uniqueOnlyFilter,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
@@ -171,20 +170,6 @@ export default function InfiniteAccordion({
         }
     }, [check, init, sections, subObjectType, updateSection]);
 
-    useEffect(() => {
-        const sectionFields = formSections()
-            .filter(uniqueOnlyFilter)
-            .filter((k) => k.startsWith(sectionName));
-
-        sectionFields.map((fieldId) => {
-            const sectionId = matchRegex(`(?<=#).*(?=_)`, fieldId);
-            // if(sections[subObjectType].length !== ){
-
-            // updateSection(subObjectType, sectionId);
-            // }
-        });
-    }, [formSections, sectionName, subObjectType, updateSection]);
-
     return (
         <div data-section={dataAttSection}>
             <Container fluid>
@@ -192,19 +177,13 @@ export default function InfiniteAccordion({
                     <Col n="12">
                         <ul className="p-0">
                             {sections[subObjectType] &&
-                                sections[subObjectType].map((v, i) => {
-                                    if (!!sections[subObjectType].length) {
-                                        // updateSection(subObjectType, 1);
-                                    }
-
-                                    const newTitle = `${title}#${v}`;
-
-                                    // TODO make it work with i !== 0 only
+                                sections[subObjectType].map((id, i) => {
+                                    const newTitle = `${title}#${id}`;
                                     const deletable = i !== 0;
 
                                     return (
                                         <WrapperAccordion
-                                            key={`${dataAttSection}-${v}`}
+                                            key={`${dataAttSection}-${id}`}
                                             sectionRef={sectionRefs[i]}
                                             colSize="12"
                                         >
@@ -222,7 +201,7 @@ export default function InfiniteAccordion({
                                                 newTitle={newTitle}
                                             >
                                                 <FormAccordionItem
-                                                    subObject={`${subObjectType}#${v}`}
+                                                    subObject={`${subObjectType}#${id}`}
                                                     content={content}
                                                     newTitle={newTitle}
                                                     deleteSection={
