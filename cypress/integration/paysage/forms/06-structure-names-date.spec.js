@@ -7,10 +7,6 @@ context('Structure new form', () => {
         cy.newStructure();
     });
 
-    afterEach(() => {
-        // cy.signOut();
-    });
-
     it('should save new Structure automatic today data', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;

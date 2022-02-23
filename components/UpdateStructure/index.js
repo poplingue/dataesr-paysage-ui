@@ -128,6 +128,7 @@ export default function UpdateStructure({ data, id }) {
             <SideNavigation items={UpdateStructureForm[0].form}>
                 <ToolBox accordions>
                     <FieldButton
+                        dataTestId="validate-structure"
                         disabled={currentObject.status === 'published'}
                         title="Valider la structure"
                         onClick={publish}
