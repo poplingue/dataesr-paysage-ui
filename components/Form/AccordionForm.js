@@ -20,7 +20,7 @@ export default function AccordionForm({
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: grey } = useCSSProperty('--grey-850');
     const { style: dark } = useCSSProperty('--grey-50-1000');
-    const { style: orange } = useCSSProperty('--pink-tuile-425');
+    const { style: orange } = useCSSProperty('--text-default-warning');
 
     const [sectionStatus, setSectionStatus] = useState('neutral');
     const { expanded } = useAccordions(true);

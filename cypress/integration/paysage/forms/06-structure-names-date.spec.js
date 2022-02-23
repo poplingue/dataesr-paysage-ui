@@ -40,7 +40,7 @@ context('Structure new form', () => {
         });
     });
 
-    it('should save new Structure automatic today data', () => {
+    it('should delete new Structure automatic today data', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
