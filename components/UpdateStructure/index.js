@@ -113,7 +113,7 @@ export default function UpdateStructure({ data, id }) {
         if (!!currentDate && !dateInfo) {
             setDateInfo(`Dernière modification le ${currentDate}`);
         }
-    }, [currentObject.updatedAt, dateInfo, objCheck]);
+    }, [currentObject, currentObject.updatedAt, dateInfo, objCheck]);
 
     return (
         <Layout>

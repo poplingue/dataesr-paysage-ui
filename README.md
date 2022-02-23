@@ -57,7 +57,7 @@ yarn dev
 yarn cy:run-rec
 ```
 
-`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
+Tests in `cypress/integration/paysage/user/**.spec.js` need Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
 
 ```
 {
@@ -76,7 +76,9 @@ yarn cy:run-rec
 ```
 ## IndexDB
 
-IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.
+IndexDB is used to store data from forms. On each change of value is updated in SERVICE_FORMS database the unique key with the following pattern:
+
+`pathname@[section#id]_[nameId]#[eq]`
 
 :warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
 
@@ -121,5 +123,4 @@ docker-compose up --build
   * check validation field
   * check validation section
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
-* manage dark mode
 * Navigation focus accessibility
