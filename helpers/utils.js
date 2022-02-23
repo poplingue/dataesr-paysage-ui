@@ -1,3 +1,14 @@
+export function niceDate(dirtyDate) {
+    let niceDate = '';
+
+    if (dirtyDate) {
+        const date = new Date(dirtyDate);
+        niceDate = new Intl.DateTimeFormat('fr-FR').format(date);
+    }
+
+    return niceDate;
+}
+
 /**
  *
  * @param str

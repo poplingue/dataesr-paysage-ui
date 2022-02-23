@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { getFormName, getSection, sectionUniqueId } from '../../helpers/utils';
@@ -13,6 +13,8 @@ import FormAccordionItem from './FormAccordionItem';
 
 const CreateForm = ({ jsonForm, color }) => {
     const { Col, Row } = grid();
+
+    const workerRef = useRef();
 
     const {
         stateForm: { storeObjects, updateObjectId },
@@ -93,6 +95,36 @@ const CreateForm = ({ jsonForm, color }) => {
         dispatch,
         retrieveIndexDBData,
     ]);
+    useEffect(() => {
+        workerRef.current = new Worker('/sw.js', {
+            name: 'Get_object',
+            type: 'module',
+        });
+    }, []);
+
+    useEffect(() => {
+        workerRef.current.onmessage = async ({ data }) => {
+            console.log('==== UPDATE_CURRENT_OBJECT ==== ');
+
+            dispatch({
+                type: 'UPDATE_CURRENT_OBJECT',
+                payload: JSON.parse(data).data,
+            });
+        };
+    });
+
+    useEffect(() => {
+        async function fetchStructure() {
+            workerRef.current.postMessage({
+                object,
+                id: updateObjectId,
+            });
+        }
+
+        if (updateObjectId) {
+            fetchStructure();
+        }
+    }, [updateObjectId, object]);
 
     return (
         <PageTheme color={color}>

@@ -4,6 +4,7 @@
 
 .Item h3 {
     position: sticky;
+    z-index: 1;
     top: 0;
     background: var(--grey-925-125);
     color: var(--grey-50-1000);

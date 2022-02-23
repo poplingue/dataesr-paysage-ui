@@ -486,4 +486,21 @@ export const dataFormService = {
                 return Promise.reject(err);
             });
     },
+
+    publish: async (id, type) => {
+        const requestOptions = fetchHelper.requestOptions('PUT', {
+            status: 'published',
+        });
+
+        const response = await fetch(`/api/${type}/${id}`, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return data;
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    },
 };

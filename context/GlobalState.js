@@ -17,6 +17,7 @@ export const DataProvider = ({ user, error, children }) => {
         updateObjectId: Cookies.get('updateObjectId') || '',
         forms: [{ 'update/person': [] }, { 'update/structure': [] }],
         savingSections: [],
+        currentObject: {},
     };
 
     const initialStateList = {
