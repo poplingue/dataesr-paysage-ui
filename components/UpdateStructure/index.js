@@ -29,7 +29,7 @@ export default function UpdateStructure({ data, id }) {
         query: { object },
     } = useRouter();
 
-    const objTest = useCallback(
+    const objCheck = useCallback(
         (keyA, keyB) => {
             return {
                 false: () => currentObject[keyA] || '',
@@ -96,24 +96,24 @@ export default function UpdateStructure({ data, id }) {
     ]);
 
     useEffect(() => {
-        const currentEditor = objTest('createdBy', 'updatedBy')[
+        const currentEditor = objCheck('createdBy', 'updatedBy')[
             !currentObject.updatedBy
         ]();
 
         if (!editor && !!currentEditor) {
             setEditor(`par ${currentEditor.username}`);
         }
-    }, [currentObject.updatedBy, editor, objTest]);
+    }, [currentObject.updatedBy, editor, objCheck]);
 
     useEffect(() => {
-        const currentDate = objTest('createdAt', 'updatedAt')[
+        const currentDate = objCheck('createdAt', 'updatedAt')[
             !!currentObject.updatedAt
         ]();
 
         if (!!currentDate && !dateInfo) {
             setDateInfo(`Dernière modification le ${currentDate}`);
         }
-    }, [currentObject.updatedAt, dateInfo, objTest]);
+    }, [currentObject.updatedAt, dateInfo, objCheck]);
 
     return (
         <Layout>

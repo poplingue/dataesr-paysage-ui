@@ -496,9 +496,7 @@ export const dataFormService = {
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ data }) => {
-                return data;
-            })
+            .then(({ data }) => data)
             .catch((err) => {
                 return Promise.reject(err);
             });

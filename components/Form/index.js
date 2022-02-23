@@ -96,6 +96,7 @@ const CreateForm = ({ jsonForm, color }) => {
         retrieveIndexDBData,
     ]);
     useEffect(() => {
+        // TODO make a hook
         workerRef.current = new Worker('/sw.js', {
             name: 'Get_object',
             type: 'module',
