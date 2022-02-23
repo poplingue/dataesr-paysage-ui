@@ -105,8 +105,6 @@ const CreateForm = ({ jsonForm, color }) => {
 
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
-            console.log('==== UPDATE_CURRENT_OBJECT ==== ');
-
             dispatch({
                 type: 'UPDATE_CURRENT_OBJECT',
                 payload: JSON.parse(data).data,

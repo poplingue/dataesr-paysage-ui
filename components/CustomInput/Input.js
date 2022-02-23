@@ -12,7 +12,7 @@ import {
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
-import WrapperField from '../WrapperField';
+import SavingWrapper from '../SavingWrapper';
 
 function Input({
     label,
@@ -111,7 +111,7 @@ function Input({
     }, [type, uid, updateValidSection]);
 
     return (
-        <WrapperField unSaved={unSaved}>
+        <SavingWrapper unSaved={unSaved}>
             <TextInput
                 message={message}
                 messageType={type}
@@ -126,7 +126,7 @@ function Input({
                 }`}
                 label={label}
             />
-        </WrapperField>
+        </SavingWrapper>
     );
 }
 

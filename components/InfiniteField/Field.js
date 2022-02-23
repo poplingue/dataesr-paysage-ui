@@ -8,11 +8,12 @@ import styles from './Field.module.scss';
 export default function Field({
     title,
     label,
+    value,
+    unSaved,
     index,
     section,
     deleteField,
     children,
-    value,
 }) {
     const { Col, Row, Container } = grid();
     const ref = useRef(null);
@@ -28,7 +29,7 @@ export default function Field({
             <Row alignItems="middle" gutters>
                 <Col>
                     {Children.toArray(children).map((child, i) => {
-                        const field = cloneElement(child, {
+                        const clonedField = cloneElement(child, {
                             title,
                             label,
                             value,
@@ -44,10 +45,16 @@ export default function Field({
                             >
                                 <Container fluid>
                                     <Row alignItems="bottom" gutters>
-                                        <Col n={index > 0 ? '8' : '12'}>
-                                            {field}
+                                        <Col
+                                            n={
+                                                index > 0 && !unSaved && value
+                                                    ? '8'
+                                                    : '12'
+                                            }
+                                        >
+                                            {clonedField}
                                         </Col>
-                                        {index > 0 && (
+                                        {index > 0 && !unSaved && value && (
                                             <Col n="4">
                                                 <DeleteButton
                                                     background={grey}
@@ -84,5 +91,6 @@ Field.propTypes = {
         PropTypes.node,
         PropTypes.string,
     ]).isRequired,
+    unSaved: PropTypes.bool,
     value: PropTypes.string,
 };

@@ -16,6 +16,12 @@ export default function DeleteButton({
     const { style: red } = useCSSProperty('--error-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
 
+    const confirmBeforeClick = (e) => {
+        if (confirm(`❗ Êtes-vous sûr·e ?`)) {
+            onClick(e);
+        }
+    };
+
     return (
         display && (
             <Col n="2" className="txt-right">
@@ -24,7 +30,7 @@ export default function DeleteButton({
                     dataTestId={`btn-delete-${cleanString(title)}${
                         index ? `#${index}` : ''
                     }`}
-                    onClick={onClick}
+                    onClick={confirmBeforeClick}
                     title="Supprimer"
                 />
             </Col>

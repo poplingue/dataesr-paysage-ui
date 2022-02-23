@@ -448,7 +448,7 @@ export const dataFormService = {
         for (let i = 0; i < form.length; i++) {
             const { uid, value, infinite } = form[i];
 
-            if (infinite) {
+            if (infinite && value) {
                 const field = matchRegex(`(?<=_).*(?=#)`, uid);
                 const o = { [field]: [value] };
                 const alreadyExists = infiniteArray.filter(

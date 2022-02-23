@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
+    getField,
     getFieldValue,
     getForm,
     getFormName,
@@ -24,11 +25,11 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
         stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-    const [number, setNumber] = useState(0);
     const {
         pathname,
         query: { object },
     } = useRouter();
+    const [numberOfFields, setNumberOfFields] = useState(0);
     const formName = getFormName(pathname, object);
     const { style: dark } = useCSSProperty('--grey-425');
     const { style: white } = useCSSProperty('--grey-1000');
@@ -59,11 +60,12 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                     NotifService.info(`Champs supprimé`, 'valid');
                 });
 
+            // TODO refacto
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             // Reassign fields values
-            for (let i = 1; i < number; i = i + 1) {
+            for (let i = 1; i < numberOfFields; i = i + 1) {
                 // all field after the delete one
                 if (i > indexRef) {
                     const update = {
@@ -96,10 +98,13 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             }
 
             // delete field
-            let key = number - indexRef;
+            let key = numberOfFields - indexRef;
 
-            if (indexRef === number - 1 || indexRef === number) {
-                key = number - 1;
+            if (
+                indexRef === numberOfFields - 1 ||
+                indexRef === numberOfFields
+            ) {
+                key = numberOfFields - 1;
             }
 
             const uidToDelete = getUniqueId(
@@ -115,7 +120,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             };
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
 
-            setNumber(number - 1);
+            setNumberOfFields(numberOfFields - 1);
 
             await DBService.delete(uidToDelete, formName);
             NotifService.techInfo('Field deleted');
@@ -132,7 +137,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                 )
             );
 
-            setNumber(initInfinite.length || 1);
+            setNumberOfFields(initInfinite.length || 1);
         }
     }, [forms, section, formName, pathname, validatorId, subObject]);
 
@@ -141,42 +146,53 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             <Container fluid>
                 <Row>
                     <Col n="12">
-                        {Array.apply(null, { length: number }).map((v, i) => {
-                            const value =
-                                getFieldValue(
-                                    forms,
+                        {Array.apply(null, { length: numberOfFields }).map(
+                            (v, i) => {
+                                const newTitle = `${title}#${i}`;
+                                const uid = getUniqueId(
                                     formName,
-                                    getUniqueId(
-                                        formName,
-                                        subObject,
-                                        validatorId,
-                                        i
-                                    )
-                                ) || '';
+                                    subObject,
+                                    validatorId,
+                                    i
+                                );
+                                const unSaved =
+                                    getField(forms, formName, uid)?.unSaved ||
+                                    false;
 
-                            const newTitle = `${title}#${i}`;
-
-                            return (
-                                <Field
-                                    key={getUniqueId(formName, '', title, i)}
-                                    value={value}
-                                    index={i}
-                                    title={title}
-                                    label={newTitle}
-                                    deleteField={deleteField}
-                                    section={section}
-                                >
-                                    {children}
-                                </Field>
-                            );
-                        })}
+                                return (
+                                    <Field
+                                        key={getUniqueId(
+                                            formName,
+                                            '',
+                                            title,
+                                            i
+                                        )}
+                                        value={getFieldValue(
+                                            forms,
+                                            formName,
+                                            uid
+                                        )}
+                                        unSaved={unSaved}
+                                        index={i}
+                                        title={title}
+                                        label={newTitle}
+                                        deleteField={deleteField}
+                                        section={section}
+                                    >
+                                        {children}
+                                    </Field>
+                                );
+                            }
+                        )}
                     </Col>
                     <Col>
                         <FieldButton
                             colors={[dark, white]}
                             icon="ri-add-line"
                             dataTestId="btn-add"
-                            onClick={() => setNumber(number + 1)}
+                            onClick={() =>
+                                setNumberOfFields(numberOfFields + 1)
+                            }
                             title={title}
                         />
                     </Col>

@@ -223,6 +223,25 @@ export function getFieldValue(forms, name, id) {
  * @param forms
  * @param name
  * @param id
+ * @returns {{}}
+ */
+export function getField(forms, name, id) {
+    let field = {};
+
+    if (getForm(forms, name) && id) {
+        field = getForm(forms, name).find((field) => {
+            return field.uid === id;
+        });
+    }
+
+    return field;
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
  * @returns {*}
  */
 export function isFieldUnSaved(forms, name, id) {

@@ -37,7 +37,7 @@ export default function FormAccordionItem({
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
-    const { style: orange } = useCSSProperty('--warning-main-525');
+    const { style: orange } = useCSSProperty('--pink-tuile-425');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
