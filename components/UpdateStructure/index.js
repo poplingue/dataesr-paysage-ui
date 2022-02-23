@@ -68,7 +68,7 @@ export default function UpdateStructure({ data, id }) {
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
-    const publish = () => {
+    const publishObject = () => {
         dataFormService.publish(currentObject.id, object).then((structure) => {
             NotifService.info(`Structure validée et publiée`, 'valid');
 
@@ -131,7 +131,7 @@ export default function UpdateStructure({ data, id }) {
                         dataTestId="validate-structure"
                         disabled={currentObject.status === 'published'}
                         title="Valider la structure"
-                        onClick={publish}
+                        onClick={publishObject}
                         colors={
                             currentObject.status === 'published'
                                 ? []
