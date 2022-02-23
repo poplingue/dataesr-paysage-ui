@@ -7,10 +7,6 @@ context('Structure new form', () => {
         cy.newStructure();
     });
 
-    afterEach(() => {
-        // cy.signOut();
-    });
-
     it('should save Article Select field', () => {
         cy.getCookie('nameId').then((cookie) => {
             cy.intercept('PATCH', '/api/structure/**').as('patch');
@@ -47,6 +43,8 @@ context('Structure new form', () => {
             cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
                 .find('input')
                 .type('OtherName#1');
+
+            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
 
             cy.intercept('PATCH', '/api/structure/**').as('path');
 

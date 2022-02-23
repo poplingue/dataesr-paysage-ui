@@ -1,3 +1,14 @@
+export function niceDate(dirtyDate) {
+    let niceDate = '';
+
+    if (dirtyDate) {
+        const date = new Date(dirtyDate);
+        niceDate = new Intl.DateTimeFormat('fr-FR').format(date);
+    }
+
+    return niceDate;
+}
+
 /**
  *
  * @param str
@@ -205,6 +216,25 @@ export function getFieldValue(forms, name, id) {
     }
 
     return fieldValue ? fieldValue.value : '';
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {{}}
+ */
+export function getField(forms, name, id) {
+    let field = {};
+
+    if (getForm(forms, name) && id) {
+        field = getForm(forms, name).find((field) => {
+            return field.uid === id;
+        });
+    }
+
+    return field;
 }
 
 /**

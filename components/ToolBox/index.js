@@ -125,8 +125,8 @@ export default function ToolBox({
                                 />
                             </Col>
                         )}
-                        {accordions && <Col n="12">{Button}</Col>}
                         <Col>{children}</Col>
+                        {accordions && <Col n="12">{Button}</Col>}
                     </Row>
                 </Container>
             </div>

@@ -7,6 +7,7 @@ import grid from '../../helpers/imports';
 import {
     camelCase,
     cleanString,
+    getField,
     getFormName,
     getSubObjectId,
     getSubObjectType,
@@ -36,7 +37,7 @@ export default function CustomDate({
     const [newValueCheck, setNewValueCheck] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -46,6 +47,7 @@ export default function CustomDate({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
+    const currenField = getField(forms, formName, uid);
     const camelValidator = camelCase(validatorId);
     const daysObj = {
         options: days,
@@ -193,14 +195,16 @@ export default function CustomDate({
                                         }
                                     />
                                 </Col>
-                                <Col n="4 xl-12">
-                                    <DeleteButton
-                                        background={grey}
-                                        display
-                                        onClick={deleteDate}
-                                        title={validatorId}
-                                    />
-                                </Col>
+                                {currenField && (
+                                    <Col n="4 xl-12">
+                                        <DeleteButton
+                                            background={grey}
+                                            display
+                                            onClick={deleteDate}
+                                            title={validatorId}
+                                        />
+                                    </Col>
+                                )}
                             </Row>
                         </Container>
                     </Col>

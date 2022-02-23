@@ -448,7 +448,7 @@ export const dataFormService = {
         for (let i = 0; i < form.length; i++) {
             const { uid, value, infinite } = form[i];
 
-            if (infinite) {
+            if (infinite && value) {
                 const field = matchRegex(`(?<=_).*(?=#)`, uid);
                 const o = { [field]: [value] };
                 const alreadyExists = infiniteArray.filter(
@@ -482,6 +482,21 @@ export const dataFormService = {
             .then(({ response }) => {
                 return response;
             })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    },
+
+    publish: async (id, type) => {
+        const requestOptions = fetchHelper.requestOptions('PUT', {
+            status: 'published',
+        });
+
+        const response = await fetch(`/api/${type}/${id}`, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => data)
             .catch((err) => {
                 return Promise.reject(err);
             });

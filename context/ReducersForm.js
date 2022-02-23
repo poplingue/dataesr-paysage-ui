@@ -1,4 +1,4 @@
-import { getFieldValue, getForm } from '../helpers/utils';
+import { getFieldValue, getForm, niceDate } from '../helpers/utils';
 import ACTIONS from './Actions';
 
 const reducersForm = (state, action) => {
@@ -197,6 +197,17 @@ const reducersForm = (state, action) => {
                             : form;
                     }),
                 ],
+            };
+        }
+
+        case ACTIONS.UPDATE_CURRENT_OBJECT: {
+            return {
+                ...state,
+                currentObject: {
+                    ...action.payload,
+                    updatedAt: niceDate(action.payload.updatedAt),
+                    createdAt: niceDate(action.payload.createdAt),
+                },
             };
         }
 

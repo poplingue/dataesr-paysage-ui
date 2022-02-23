@@ -45,9 +45,7 @@ async function handler(req, res) {
                     .then((response) => {
                         return response.json();
                     })
-                    .then((data) => {
-                        return data;
-                    });
+                    .then((data) => data);
             })
         )
             .then((values) => {
