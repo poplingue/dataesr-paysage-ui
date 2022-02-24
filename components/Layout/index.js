@@ -69,9 +69,10 @@ export default function Layout({ children, headTitle }) {
     } = useContext(AppContext);
 
     const router = useRouter();
+    const noUser = !Object.keys(user).length;
 
     useEffect(() => {
-        if (!Object.keys(user).length) {
+        if (noUser) {
             accountService
                 .me()
                 .then((response) => {
@@ -94,7 +95,7 @@ export default function Layout({ children, headTitle }) {
                     });
                 });
         }
-    }, [dispatch, router, user]);
+    }, [dispatch, noUser, router, user]);
 
     const signOut = () => {
         authService
@@ -189,8 +190,7 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            {(user && user.username) ||
-                            error === inactiveUserError ? (
+                            {!noUser || error === inactiveUserError ? (
                                 <ToolItem
                                     onClick={signOut}
                                     icon="ri-user-3-line"
@@ -224,7 +224,7 @@ export default function Layout({ children, headTitle }) {
                         asLink={<NavLink href="/">Accueil</NavLink>}
                         current={pathname === '/'}
                     />
-                    {user && user.username && (
+                    {!noUser && (
                         <NavItem
                             title="Je contribue"
                             current={asPath.startsWith('/update')}

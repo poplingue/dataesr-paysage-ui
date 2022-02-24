@@ -41,7 +41,3 @@ yarn-error.log*
 
 # Perf
 .unimportedrc.json
-
-
-#  pwa
- /public/sw.js
