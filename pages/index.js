@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../context/GlobalState';
+import { fetchHelper } from '../helpers/fetch';
 import grid from '../helpers/imports';
 import {
     activateAdviceMsg,
@@ -92,6 +93,12 @@ function Home({ tokens = {} }) {
             </Container>
         </Layout>
     );
+}
+
+export async function getServerSideProps({ req }) {
+    const tokens = fetchHelper.headerTokens(req);
+
+    return { props: { tokens: tokens || '' } };
 }
 
 export default Home;
