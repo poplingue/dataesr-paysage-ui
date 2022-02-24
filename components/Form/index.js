@@ -97,7 +97,7 @@ const CreateForm = ({ jsonForm, color }) => {
     ]);
     useEffect(() => {
         // TODO make a hook
-        workerRef.current = new Worker('/sw.js', {
+        workerRef.current = new Worker('/service-worker.js', {
             name: 'Get_object',
             type: 'module',
         });

@@ -24,21 +24,21 @@ const okPaths = [
 export async function middleware(request) {
     const headersCookies = request.headers.get('cookie');
     const cookies = cookie.parse(headersCookies ? headersCookies : '');
-    const currentPathName = request.nextUrl.pathname;
+    const nextPathname = request.nextUrl.pathname;
     const pattern = okPaths.join('|');
     let re = new RegExp(pattern, 'i');
 
     // // tokens | okPaths | home
     if (
         Object.keys(cookies).includes('tokens') ||
-        re.test(currentPathName) ||
-        currentPathName === '/'
+        re.test(nextPathname) ||
+        nextPathname === '/'
     ) {
         return NextResponse.next();
     }
 
-    if (!Object.keys(cookies).includes('tokens') && !re.test(currentPathName)) {
-        return NextResponse.redirect('/account/sign-in');
+    if (!Object.keys(cookies).includes('tokens') && !re.test(nextPathname)) {
+        return NextResponse.redirect(new URL('/account/sign-in', request.url));
     }
 
     return NextResponse.next();

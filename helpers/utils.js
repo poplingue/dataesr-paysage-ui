@@ -318,6 +318,7 @@ export function isArray(value) {
 
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
+// TODO add cookieOptions
 export const cookieOptions = {
     maxAge: 30 * 24 * 60 * 60,
     path: '/',
