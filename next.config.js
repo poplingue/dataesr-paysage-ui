@@ -4,6 +4,7 @@ const withSass = require('@zeit/next-sass');
 
 module.exports = withSass();
 module.exports = withTM();
+
 module.exports = {
     serverRuntimeConfig: {
         // Will only be available on the server side
@@ -18,4 +19,20 @@ module.exports = {
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },
     reactStrictMode: true,
+
+    async redirects() {
+        return [
+            {
+                source: '/account/sign-in',
+                has: [
+                    {
+                        type: 'cookie',
+                        key: 'tokens',
+                    },
+                ],
+                permanent: true,
+                destination: '/',
+            },
+        ];
+    },
 };

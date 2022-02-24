@@ -26,7 +26,7 @@ export default function Update() {
 
     useEffect(() => {
         // New Service Worker
-        workerRef.current = new Worker('sw.js', {
+        workerRef.current = new Worker('/service-worker.js', {
             name: 'New_object',
             type: 'module',
         });

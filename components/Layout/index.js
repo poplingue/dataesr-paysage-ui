@@ -126,10 +126,6 @@ export default function Layout({ children, headTitle }) {
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
                 <link
-                    rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-                />
-                <link
                     rel="icon"
                     href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
                 />
@@ -228,15 +224,17 @@ export default function Layout({ children, headTitle }) {
                         asLink={<NavLink href="/">Accueil</NavLink>}
                         current={pathname === '/'}
                     />
-                    <NavItem
-                        title="Je contribue"
-                        current={asPath.startsWith('/update')}
-                    >
-                        <NavSubItem
-                            title="Ajouter un nouvel object"
-                            asLink={<NavLink href="/update" />}
-                        />
-                    </NavItem>
+                    {user && user.username && (
+                        <NavItem
+                            title="Je contribue"
+                            current={asPath.startsWith('/update')}
+                        >
+                            <NavSubItem
+                                title="Ajouter un nouvel object"
+                                asLink={<NavLink href="/update" />}
+                            />
+                        </NavItem>
+                    )}
                     <NavItem title="Annuaire">
                         <NavSubItem
                             current={pathname.startsWith('/search/1')}
