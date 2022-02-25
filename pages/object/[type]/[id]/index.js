@@ -48,6 +48,7 @@ export default function PaysageObject({ data }) {
 
     useEffect(() => {
         if (!skeleton.length) {
+            // TODO generic
             updateSkeleton(StructurePageSkeleton);
         }
     }, [skeleton, updateSkeleton]);
@@ -86,9 +87,8 @@ export default function PaysageObject({ data }) {
     );
 }
 
-export async function getServerSideProps(ctx) {
-    // TODO generic
-    const data = (await ObjectService.getOne('structure', ctx.query.id)) || {};
+export async function getServerSideProps({ query }) {
+    const data = (await ObjectService.getOne(query.type, query.id)) || {};
 
     return { props: { data } };
 }

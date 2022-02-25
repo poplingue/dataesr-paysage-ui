@@ -27,7 +27,7 @@ export const objectService = {
             })
             .catch((err) => {});
     },
-    get: async (objectCode) => {
+    getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/${
             getObjectType(objectCode).name

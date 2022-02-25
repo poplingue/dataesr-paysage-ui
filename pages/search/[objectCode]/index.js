@@ -13,7 +13,6 @@ export default function SearchObject({ data }) {
 
     const router = useRouter();
     const { objectCode } = router.query;
-    console.log('==== SearchObject ==== ', data);
 
     return (
         <Layout>
@@ -45,7 +44,7 @@ export default function SearchObject({ data }) {
 }
 
 export async function getServerSideProps({ query }) {
-    const { data } = await ObjectService.get(query.objectCode);
+    const { data } = await ObjectService.getAll(query.objectCode);
 
     return { props: { data } };
 }
