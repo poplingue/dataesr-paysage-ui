@@ -1,12 +1,14 @@
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 
 import 'react-tabulator/css/tabulator_materialize.min.css';
 import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
+import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
+import NavLink from '../../../../components/NavLink';
 import { AppContext } from '../../../../context/GlobalState';
 import { StructurePageSkeleton } from '../../../../helpers/constants';
+import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
 const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
@@ -18,9 +20,10 @@ const HeaderLayout = dynamic(() =>
 );
 const Layout = dynamic(() => import('../../../../components/Layout'));
 
-export default function Object(props) {
-    const router = useRouter();
-    const { id } = router.query;
+export default function PaysageObject({ data }) {
+    const {
+        query: { id },
+    } = useRouter();
 
     const {
         statePage: { accordionSkeleton: skeleton },
@@ -51,33 +54,41 @@ export default function Object(props) {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle={props.name} status={props.status} />
+            <HeaderLayout
+                pageTitle={
+                    !!Object.keys(data).length ? data.currentName.usualName : ''
+                }
+                status={data.status}
+            />
             <SideNavigation items={skeleton} color="Yellow">
                 <Structure
                     id={id}
-                    fame={props.fame}
-                    name={props.name}
+                    fame={data.fame}
+                    name={
+                        !!Object.keys(data).length
+                            ? data.currentName.usualName
+                            : ''
+                    }
                     skeleton={skeleton}
                 >
                     <ToolBox
                         printer
                         accordions
                         initialSkeleton={StructurePageSkeleton}
-                    />
+                    >
+                        <NavLink href={`/update/structure/${id}`}>
+                            modifier
+                        </NavLink>
+                    </ToolBox>
                 </Structure>
             </SideNavigation>
         </Layout>
     );
 }
 
-export async function getServerSideProps() {
-    // fetch data Structure by id
-    return {
-        props: {
-            id: 0,
-            name: "IEA de Nantes Institut d'études avancées de Nantes ",
-            fame: true,
-            status: 'open',
-        },
-    };
+export async function getServerSideProps(ctx) {
+    // TODO generic
+    const data = (await ObjectService.getOne('structure', ctx.query.id)) || {};
+
+    return { props: { data } };
 }

@@ -21,6 +21,7 @@ const handler = nc()
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();
+
             res.status(request.status).json(response);
         } catch (err) {
             res.status(500).send(err);

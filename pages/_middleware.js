@@ -13,6 +13,7 @@ const okPaths = [
     '/favicon/favicon.ico',
     '/api/auth/sign-in',
     '/api/auth/signup',
+    '/api/structure',
     '/api/user/me',
     '/api/auth/refresh-access-token',
     '/api/auth/send-password-renewal-code',

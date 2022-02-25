@@ -15,6 +15,7 @@ const Layout = dynamic(() => import('./../../components/Layout'));
 export default function Update() {
     const { Col, Row, Container } = grid();
     const [spinner, setSpinner] = useState(false);
+    // TODO remove
     const [currentObject, setCurrentObject] = useState('');
     const workerRef = useRef();
 
