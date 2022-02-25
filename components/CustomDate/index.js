@@ -179,14 +179,14 @@ export default function CustomDate({
                     <Col n="10 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
-                                <Col n="4 xl-12">
+                                <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
                                         dataTestId={`today-${validator}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="4 xl-12">
+                                <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
                                         dataTestId={`firstJanuary-${validator}`}
                                         title="1er janvier"
@@ -196,7 +196,7 @@ export default function CustomDate({
                                     />
                                 </Col>
                                 {currenField && (
-                                    <Col n="4 xl-12">
+                                    <Col n="xs-12 md-4 xl-12">
                                         <DeleteButton
                                             background={grey}
                                             display

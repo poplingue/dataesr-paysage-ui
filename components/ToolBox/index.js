@@ -1,4 +1,5 @@
 import {
+    ButtonGroup,
     Icon,
     Modal,
     ModalContent,
@@ -153,10 +154,14 @@ export default function ToolBox({
                     >
                         <PrintContextConsumer>
                             {({ handlePrint }) => (
-                                <FieldButton
-                                    title="Valider"
-                                    onClick={() => printThisOut(handlePrint)}
-                                />
+                                <ButtonGroup>
+                                    <FieldButton
+                                        title="Valider"
+                                        onClick={() =>
+                                            printThisOut(handlePrint)
+                                        }
+                                    />
+                                </ButtonGroup>
                             )}
                         </PrintContextConsumer>
                     </ReactToPrint>

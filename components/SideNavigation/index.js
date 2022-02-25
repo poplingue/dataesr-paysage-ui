@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import Navigation from './Navigation';
+import styles from './SideNavigation.module.scss';
 
 export default function SideNavigation({ children, items, color }) {
     const { Col, Row, Container } = grid();
@@ -13,9 +14,12 @@ export default function SideNavigation({ children, items, color }) {
     const sideOpened = sideMode === 'on';
 
     return (
-        <Container className="p-relative" fluid>
+        <Container fluid>
             <Row>
-                <Col n={`12 ${sideOpened ? 'md-3' : 'md-1'}`}>
+                <Col
+                    n={`12 ${sideOpened ? 'md-3' : 'md-1'}`}
+                    className={styles.StickyMobile}
+                >
                     <Navigation items={items} color={color} />
                 </Col>
                 <Col n={`12 ${sideOpened ? 'md-9' : 'md-11'}`}>

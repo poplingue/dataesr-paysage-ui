@@ -6,10 +6,9 @@ import {
     Text,
 } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { goToSection, sectionUniqueId } from '../../helpers/utils';
-import useScroll from '../../hooks/useScroll';
 import useViewport from '../../hooks/useViewport';
 import styles from './SideNavigation.module.scss';
 
@@ -19,11 +18,8 @@ export default function Navigation({ items, color }) {
         dispatchPage: dispatch,
     } = useContext(AppContext);
     const { mobile } = useViewport();
-    // TODO fix mobile sticky position too early
-    const [sticky, setSticky] = useState(false);
     const [offsetTop, setOffsetTop] = useState(null);
     const [initOffsetTop, setInitOffsetTop] = useState(null);
-    const { scrollTop, scrollingDown } = useScroll();
 
     useEffect(() => {
         if (!initOffsetTop) {
@@ -32,30 +28,16 @@ export default function Navigation({ items, color }) {
         }
     }, [initOffsetTop, offsetTop]);
 
-    const handleScroll = useCallback(() => {
-        if (scrollTop > offsetTop && scrollingDown) {
-            setSticky(true);
-        } else if (scrollTop < initOffsetTop && !scrollingDown) {
-            setSticky(false);
-        }
-    }, [initOffsetTop, offsetTop, scrollTop, scrollingDown]);
-
     useEffect(() => {
         if (ref.current.offsetTop !== offsetTop) {
             setOffsetTop(ref.current.offsetTop);
         }
-
-        handleScroll();
-    }, [handleScroll, offsetTop]);
+    }, [offsetTop]);
     const ref = useRef(null);
     const sideOpened = sideMode === 'on';
 
     return (
-        <SideMenu
-            ref={ref}
-            buttonLabel="Navigation"
-            id={mobile && sticky ? styles.Sticky : ''}
-        >
+        <SideMenu ref={ref} buttonLabel="Navigation">
             <li>
                 <input
                     type="checkbox"

@@ -24,7 +24,7 @@ export default function DeleteButton({
 
     return (
         display && (
-            <Col n="2" className="txt-right">
+            <Col>
                 <FieldButton
                     colors={[red, background || white]}
                     dataTestId={`btn-delete-${cleanString(title)}${

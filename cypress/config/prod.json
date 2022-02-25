@@ -1,8 +1,6 @@
 {
   "baseUrl": "https://dataesr-paysage-poplingue.vercel.app",
   "env": {
-    "baseUrl": "https://dataesr-paysage-poplingue.vercel.app",
-    "account": "martha@mailinator.com",
-    "password": "Polk000!"
+    "baseUrl": "https://dataesr-paysage-poplingue.vercel.app"
   }
 }
