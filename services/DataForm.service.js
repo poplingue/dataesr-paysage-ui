@@ -9,6 +9,7 @@ import {
 } from '../helpers/utils';
 import DBService from './DB.service';
 
+// TODO refacto with form.json
 const mapFields = {
     address: 'address',
     postalCode: 'postalCode',
