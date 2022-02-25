@@ -9,7 +9,13 @@ import {
 } from '../helpers/utils';
 import DBService from './DB.service';
 
+// TODO refacto with form.json
 const mapFields = {
+    address: 'address',
+    postalCode: 'postalCode',
+    country: 'country',
+    locality: 'locality',
+    telephone: 'telephone',
     officialName: 'officialName',
     usualName: 'usualName',
     startDate: 'startDate',
@@ -437,6 +443,7 @@ export const dataFormService = {
 
     save: async (form, objectId, subObject) => {
         const sectionInfinite = !!getSubObjectId(subObject) || false;
+
         const subObjectType = sectionInfinite
             ? getSubObjectType(subObject)
             : subObject;

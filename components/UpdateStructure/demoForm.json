@@ -19,6 +19,11 @@
         ]
       },
       {
+        "title": "Lier à un ou plusieurs départements",
+        "type": "multiSearch",
+        "validatorId": "departments"
+      },
+      {
         "title": "Informations",
         "subObject": "information",
         "content": [

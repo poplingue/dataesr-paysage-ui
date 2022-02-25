@@ -1,4 +1,7 @@
 import PropTypes from 'prop-types';
+import { configValidator as configValidatorPerson } from './../components/UpdatePerson/configValidator';
+import { configValidator as configValidatorStructure } from './../components/UpdateStructure/configValidator';
+import { cleanString } from './utils';
 
 export function getUrl(key) {
     const urls = {
@@ -200,11 +203,8 @@ export const StructurePageSkeleton = [
 
 export const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
+    { subObject: 'localisations', initBody: { country: '' } },
 ];
-
-import { configValidator as configValidatorPerson } from './../components/UpdatePerson/configValidator';
-import { configValidator as configValidatorStructure } from './../components/UpdateStructure/configValidator';
-import { cleanString } from './utils';
 
 export const configValidators = {
     structure: configValidatorStructure,
