@@ -292,7 +292,7 @@ export default function FormAccordionItem({
                             }
                         />
                         {/* TODO remove data-testId */}
-                        <Col n="2" className="txt-right">
+                        <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 onClick={resetSection}
                                 disabled={disabled}
@@ -303,7 +303,7 @@ export default function FormAccordionItem({
                                 )}-resetSection-button`}
                             />
                         </Col>
-                        <Col n="2" className="txt-right">
+                        <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 submit
                                 disabled={disabled}

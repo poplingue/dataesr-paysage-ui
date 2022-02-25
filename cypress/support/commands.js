@@ -41,8 +41,8 @@ Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1500) => {
 });
 
 Cypress.Commands.add('signIn', () => {
-    const password = Cypress.env('password');
-    const account = Cypress.env('account');
+    const password = Cypress.env('PASSWORD');
+    const account = Cypress.env('ACCOUNT');
 
     cy.request({
         method: 'POST',

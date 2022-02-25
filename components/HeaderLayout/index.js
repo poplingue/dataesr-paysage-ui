@@ -43,7 +43,7 @@ export default function HeaderLayout({ highlight, pageTitle, status }) {
                                             </Highlight>
                                         )}
                                         <Row gutters>
-                                            <Col n="6">
+                                            <Col n="12 md-6">
                                                 <Title as="h2" look="h3">
                                                     {pageTitle}
                                                 </Title>

@@ -38,6 +38,14 @@ yarn test
 
 ### Cypress
 
+To run tests locally you must export variables
+
+```bash
+export CYPRESS_ACCOUNT=my_account
+
+export CYPRESS_PASSWORD=my_password
+```
+
 ### With browser
 
 ```bash

@@ -48,14 +48,14 @@ export default function Field({
                                         <Col
                                             n={
                                                 index > 0 && !unSaved && value
-                                                    ? '8'
+                                                    ? '8 md-10'
                                                     : '12'
                                             }
                                         >
                                             {clonedField}
                                         </Col>
                                         {index > 0 && !unSaved && value && (
-                                            <Col n="4">
+                                            <Col n="4 md-2">
                                                 <DeleteButton
                                                     background={grey}
                                                     index={index}

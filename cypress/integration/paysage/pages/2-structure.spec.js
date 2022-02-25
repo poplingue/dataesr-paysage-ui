@@ -7,10 +7,6 @@ context('Structure form page', () => {
         cy.visit(`${baseUrl}/update`);
     });
 
-    after(() => {
-        cy.signOut();
-    });
-
     it('should display current page BreadCrumbs', () => {
         cy.get('[data-cy="update/structure"]').click();
 
