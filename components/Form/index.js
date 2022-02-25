@@ -105,6 +105,7 @@ const CreateForm = ({ jsonForm, color }) => {
 
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
+            // TODO add check data
             dispatch({
                 type: 'UPDATE_CURRENT_OBJECT',
                 payload: JSON.parse(data).data,

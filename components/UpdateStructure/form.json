@@ -2,48 +2,6 @@
   {
     "form": [
       {
-        "title": "Localisations",
-        "subObject": "localisations",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Adresse",
-            "type": "text",
-            "validatorId": "address"
-          },
-          {
-            "title": "Code postal",
-            "type": "text",
-            "validatorId": "postalCode"
-          },
-          {
-            "title": "Ville",
-            "type": "text",
-            "validatorId": "locality"
-          },
-          {
-            "title": "Pays",
-            "type": "text",
-            "validatorId": "country"
-          },
-          {
-            "title": "Téléphone",
-            "type": "text",
-            "validatorId": "telephone"
-          },
-          {
-            "title": "Date de début",
-            "type": "date",
-            "validatorId": "startDate"
-          },
-          {
-            "title": "Date de fin",
-            "type": "date",
-            "validatorId": "endDate"
-          }
-        ]
-      },
-      {
         "title": "Noms",
         "subObject": "names",
         "infinite": true,
@@ -102,6 +60,48 @@
             "type": "text",
             "infinite": true,
             "validatorId": "otherNames"
+          },
+          {
+            "title": "Date de début",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          }
+        ]
+      },
+      {
+        "title": "Localisations",
+        "subObject": "localisations",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Adresse",
+            "type": "text",
+            "validatorId": "address"
+          },
+          {
+            "title": "Code postal",
+            "type": "text",
+            "validatorId": "postalCode"
+          },
+          {
+            "title": "Ville",
+            "type": "text",
+            "validatorId": "locality"
+          },
+          {
+            "title": "Pays",
+            "type": "text",
+            "validatorId": "country"
+          },
+          {
+            "title": "Téléphone",
+            "type": "text",
+            "validatorId": "telephone"
           },
           {
             "title": "Date de début",

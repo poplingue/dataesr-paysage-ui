@@ -1,3 +1,6 @@
+import getConfig from 'next/config';
+import { getObjectType } from '../helpers/constants';
+import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
 
 export const objectService = {
@@ -9,6 +12,37 @@ export const objectService = {
         } else {
             throw genericErrorMsg;
         }
+    },
+    getOne: async (objectType, objectId) => {
+        const { publicRuntimeConfig } = getConfig();
+        const url = `${publicRuntimeConfig.baseApiUrl}/${objectType}/${objectId}`;
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return Promise.resolve(data);
+            })
+            .catch((err) => {});
+    },
+    getAll: async (objectCode) => {
+        const { publicRuntimeConfig } = getConfig();
+        const url = `${publicRuntimeConfig.baseApiUrl}/${
+            getObjectType(objectCode).name
+        }`;
+
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return Promise.resolve(data);
+            })
+            .catch((err) => {});
     },
 };
 

@@ -5,16 +5,16 @@ import { AppContext } from '../../../../context/GlobalState';
 import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
 
-const Layout = dynamic(() => import('./../../../../components/Layout'));
+const Layout = dynamic(() => import('../../../../components/Layout'));
 const HeaderLayout = dynamic(() =>
-    import('./../../../../components/HeaderLayout')
+    import('../../../../components/HeaderLayout')
 );
-const ToolBox = dynamic(() => import('./../../../../components/ToolBox'));
+const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
 const SideNavigation = dynamic(() =>
-    import('./../../../../components/SideNavigation')
+    import('../../../../components/SideNavigation')
 );
-const NavLink = dynamic(() => import('./../../../../components/NavLink'));
-const Person = dynamic(() => import('./../../../../components/Person'));
+const NavLink = dynamic(() => import('../../../../components/NavLink'));
+const Person = dynamic(() => import('../../../../components/Person'));
 const Icon = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.Icon)
 );
