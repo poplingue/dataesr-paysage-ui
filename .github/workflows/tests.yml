@@ -18,9 +18,6 @@ jobs:
           node-version: '14'
       - name: Install modules
         run: yarn
-        env:
-          CYPRESS_ACCOUNT: ${{secrets.CYPRESS_ACCOUNT}}
-          CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
       - name: Run unit tests
         run: yarn run test
       - name: Run Cypress tests
