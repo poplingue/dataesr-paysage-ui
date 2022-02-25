@@ -28,6 +28,7 @@ const handler = nc()
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();
+            console.log('==== POST ==== ', response);
 
             res.status(request.status).json(response);
         } catch (err) {
@@ -50,6 +51,7 @@ const handler = nc()
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.json();
+            console.log('==== LOG ==== ', response);
 
             res.status(request.status).send(response);
         } catch (err) {

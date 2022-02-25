@@ -8,7 +8,25 @@ export const configValidator = {
             }),
         ],
     },
-    test: {
+    country: {
+        required: true,
+    },
+    locality: {
+        required: false,
+    },
+    telephone: {
+        required: false,
+    },
+    postalCode: {
+        required: true,
+        validators: [
+            (value) => ({
+                valid: value.length === 5 && !!value.match(/^[0-9]{5}$/),
+                errorMsg: '5 caractères, uniquement des chiffres',
+            }),
+        ],
+    },
+    address: {
         required: true,
     },
     article: {
