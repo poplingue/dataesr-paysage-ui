@@ -15,7 +15,7 @@ UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@
 Add .env file
 ```
 NEXT_API_URL=''
-BASE_PATH=''
+NEXT_BASE_PATH=''
 API_URL=''
 API_AUTH_URL=''
 ```
