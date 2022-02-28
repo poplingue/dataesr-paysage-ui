@@ -58,7 +58,6 @@ export default function PaysageObject({ data }) {
 
     useEffect(() => {
         if (!skeleton.length) {
-            // TODO generic
             updateSkeleton(initSkeleton);
         }
     }, [initSkeleton, skeleton, updateSkeleton]);
