@@ -20,10 +20,20 @@ const HeaderLayout = dynamic(() =>
 );
 const Layout = dynamic(() => import('../../../../components/Layout'));
 
+const templateObj = {
+    structure: {
+        component: Structure,
+        skeleton: StructurePageSkeleton,
+    },
+};
+
 export default function PaysageObject({ data }) {
     const {
-        query: { id },
+        query: { id, type },
     } = useRouter();
+
+    const Component = templateObj[type].component;
+    const initSkeleton = templateObj[type].skeleton;
 
     const {
         statePage: { accordionSkeleton: skeleton },
@@ -49,9 +59,9 @@ export default function PaysageObject({ data }) {
     useEffect(() => {
         if (!skeleton.length) {
             // TODO generic
-            updateSkeleton(StructurePageSkeleton);
+            updateSkeleton(initSkeleton);
         }
-    }, [skeleton, updateSkeleton]);
+    }, [initSkeleton, skeleton, updateSkeleton]);
 
     return (
         <Layout>
@@ -62,7 +72,7 @@ export default function PaysageObject({ data }) {
                 status={data.status}
             />
             <SideNavigation items={skeleton} color="Yellow">
-                <Structure
+                <Component
                     id={id}
                     fame={data.fame}
                     name={
@@ -72,16 +82,12 @@ export default function PaysageObject({ data }) {
                     }
                     skeleton={skeleton}
                 >
-                    <ToolBox
-                        printer
-                        accordions
-                        initialSkeleton={StructurePageSkeleton}
-                    >
+                    <ToolBox printer accordions initialSkeleton={initSkeleton}>
                         <NavLink href={`/update/structure/${id}`}>
                             modifier
                         </NavLink>
                     </ToolBox>
-                </Structure>
+                </Component>
             </SideNavigation>
         </Layout>
     );

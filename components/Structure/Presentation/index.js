@@ -14,22 +14,24 @@ export default function Presentation({ content, section }) {
 
     return (
         <>
-            {content.map((subSection, index) => {
+            {content.map((subSection) => {
                 const { title, component } = subSection;
                 const dataSubSection = sectionUniqueId(title);
                 const Component = components[component];
 
                 return (
                     <div key={title} data-section={dataSubSection}>
-                        <Container>
+                        <Container fluid>
                             <Row spacing="px-2w">
-                                <Col>
-                                    <Title as="h3" look="h6">
-                                        {title}
-                                    </Title>
-                                </Col>
+                                {title && (
+                                    <Col>
+                                        <Title as="h3" look="h6">
+                                            {title}
+                                        </Title>
+                                    </Col>
+                                )}
                             </Row>
-                            <Row spacing="px-2w">
+                            <Row>
                                 <Col spacing="pb-8w">
                                     {Component && (
                                         <Component section={section} />
