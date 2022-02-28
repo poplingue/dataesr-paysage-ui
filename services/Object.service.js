@@ -42,7 +42,37 @@ export const objectService = {
             .then(({ data }) => {
                 return Promise.resolve(data);
             })
-            .catch((err) => {});
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    },
+    getSubObject: async (type, id, subObject) => {
+        const { publicRuntimeConfig } = getConfig();
+
+        const url = `${publicRuntimeConfig.baseApiUrl}/${type}/${id}/${subObject}`;
+
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return Promise.resolve(data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    },
+
+    handlerMainLocalisation: () => {
+        return {
+            get(target, property) {
+                return property === 'fullAddress'
+                    ? `${target.address} ${target.postalCode} ${target.locality} ${target.country}`
+                    : target[property];
+            },
+        };
     },
 };
 

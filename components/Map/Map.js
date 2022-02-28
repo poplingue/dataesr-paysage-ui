@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 
 const { MapContainer, TileLayer, Marker, Popup } = ReactLeaflet;
 
-const Map = ({ markers, height, width }) => {
+const Map = ({ markers, height, width, lat, lng }) => {
     useEffect(() => {
         delete L.Icon.Default.prototype._getIconUrl;
         L.Icon.Default.mergeOptions({
@@ -17,7 +17,7 @@ const Map = ({ markers, height, width }) => {
         });
     }, []);
 
-    const DEFAULT_CENTER = [48.866667, 2.333333];
+    const DEFAULT_CENTER = [lng, lat];
 
     return (
         <MapContainer

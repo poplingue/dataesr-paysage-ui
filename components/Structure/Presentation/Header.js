@@ -1,101 +1,156 @@
 import {
-    Col,
-    Row,
-    Container,
     Button,
     Callout,
     CalloutText,
     CalloutTitle,
+    Col,
+    Container,
+    Row,
 } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { niceFullDate } from '../../../helpers/utils';
+import ObjectService from '../../../services/Object.service';
 import CardInfo from '../../CardInfo';
 import Map from '../../Map';
 
-export default function History({ section }) {
+export default function Header() {
+    const [mainLocation, setMainLocation] = useState([]);
+    const [identifiers, setIdentifiers] = useState([]);
+
+    const {
+        query: { id, type },
+    } = useRouter();
+
+    const router = useRouter();
+
+    useEffect(() => {
+        // TODO use Promise.all
+        async function getData() {
+            return (
+                (await ObjectService.getSubObject(type, id, 'identifiers')) ||
+                []
+            );
+        }
+
+        if (!Object.keys(identifiers).length) {
+            getData().then(({ data }) => {
+                setIdentifiers(data);
+            });
+        }
+    }, [id, identifiers, mainLocation, mainLocation.length, type]);
+
+    useEffect(() => {
+        async function getData() {
+            return (
+                (await ObjectService.getSubObject(type, id, 'localisations')) ||
+                []
+            );
+        }
+
+        if (!Object.keys(mainLocation).length) {
+            getData().then(({ data }) => {
+                const proxy = new Proxy(
+                    data[0],
+                    ObjectService.handlerMainLocalisation()
+                );
+                setMainLocation(proxy);
+            });
+        }
+    }, [id, mainLocation, mainLocation.length, type]);
+
     return (
         <Container>
             <Row gutters>
                 <Col n="12">
-                    <Container>
-                        <Row spacing="px-2w">
-                            <Col spacing="pb-2w">
-                                <Map />
-                            </Col>
+                    <Container fluid>
+                        <Row>
+                            {mainLocation && mainLocation.geometry && (
+                                <Col spacing="pb-2w">
+                                    <Map
+                                        lat={
+                                            mainLocation.geometry.coordinates[0]
+                                        }
+                                        lng={
+                                            mainLocation.geometry.coordinates[1]
+                                        }
+                                        markers={[
+                                            {
+                                                address:
+                                                    mainLocation.fullAddress,
+                                                latLng: [
+                                                    mainLocation.geometry
+                                                        .coordinates[1],
+                                                    mainLocation.geometry
+                                                        .coordinates[0],
+                                                ],
+                                            },
+                                        ]}
+                                    />
+                                </Col>
+                            )}
                         </Row>
-                        <Row spacing="px-2w">
-                            <Col spacing="pb-8w pr-1w">
-                                <Callout
-                                    hasInfoIcon={false}
-                                    colorFamily="green-tilleul-verveine"
-                                >
-                                    <CalloutTitle>Téléphone</CalloutTitle>
-                                    <CalloutText size="md">
-                                        +33 15 78 54 34 99
-                                    </CalloutText>
-                                </Callout>
-                            </Col>
-                            <Col spacing="pb-8w pl-1w">
+                        <Row>
+                            {mainLocation.telephone && (
+                                <Col spacing="pb-8w pr-1w">
+                                    <Callout
+                                        hasInfoIcon={false}
+                                        colorFamily="green-tilleul-verveine"
+                                    >
+                                        <CalloutTitle>Téléphone</CalloutTitle>
+                                        <CalloutText size="md">
+                                            {mainLocation.telephone}
+                                        </CalloutText>
+                                    </Callout>
+                                </Col>
+                            )}
+                            <Col spacing="pb-8w">
                                 <Callout
                                     hasInfoIcon={false}
                                     colorFamily="green-tilleul-verveine"
                                 >
                                     <CalloutTitle>Adresse</CalloutTitle>
                                     <CalloutText size="md">
-                                        5 allée Jacques Berque
-                                        <br />
-                                        44000 Nantes
+                                        {mainLocation.fullAddress}
                                     </CalloutText>
                                 </Callout>
                             </Col>
                         </Row>
-                        <Row spacing="px-2w" gutters>
+                        <Row gutters>
                             <Col n="4">
                                 <CardInfo
-                                    // onClick={}
+                                    onClick={() => {
+                                        router.push(`/update/structure/${id}`);
+                                    }}
                                     supInfo="date de création"
-                                    title="6 avril 2012"
-                                    actionLabel="Accéder au text officiel"
-                                />
-                            </Col>
-                            <Col n="4">
-                                <CardInfo
-                                    // onClick={}
-                                    supInfo="Tutelle"
-                                    title="Ministre chargé de l'enseignement supérieur"
+                                    title={niceFullDate(mainLocation.startDate)}
                                     actionLabel="Modifier"
                                 />
                             </Col>
-                            <Col n="4">
-                                <CardInfo
-                                    // onClick={}
-                                    supInfo="Vague contractuelle"
-                                    title="Vague E"
-                                    actionLabel="Modifier"
-                                />
-                            </Col>
-                            <Col n="4">
-                                <CardInfo
-                                    // onClick={}
-                                    supInfo="Devise"
-                                    title="Vade retro satanas"
-                                    actionLabel="Modifier"
-                                />
-                            </Col>
-                            <Col n="4">
-                                <CardInfo
-                                    // onClick={}
-                                    supInfo="Statut juridique"
-                                    title="Association déclarée, reconnue d'utilité publique depuis 2008"
-                                    actionLabel="Modifier"
-                                />
-                            </Col>
-                            <Col n="4">
-                                <CardInfo
-                                    // onClick={}
-                                    supInfo="Logo"
-                                    image="https://upload.wikimedia.org/wikipedia/fr/c/cd/Logo_Sorbonne_Universit%C3%A9.png"
-                                    actionLabel="Modifier"
-                                />
-                            </Col>
+                            {identifiers.map((identifier, i) => {
+                                return (
+                                    <Col
+                                        key={identifier.id}
+                                        n="4"
+                                        spacing={
+                                            i === identifiers.length - 1
+                                                ? 'pb-8w'
+                                                : ''
+                                        }
+                                    >
+                                        <CardInfo
+                                            onClick={() => {
+                                                router.push(
+                                                    `/update/structure/${id}`
+                                                );
+                                            }}
+                                            supInfo={identifier.type}
+                                            title={identifier.value}
+                                            actionLabel="Modifier"
+                                        />
+                                    </Col>
+                                );
+                            })}
                         </Row>
 
                         <Row>

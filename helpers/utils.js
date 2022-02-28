@@ -11,6 +11,23 @@ export function niceDate(dirtyDate) {
 
 /**
  *
+ * @param dirtyDate
+ * @returns {string}
+ */
+export function niceFullDate(dirtyDate) {
+    let niceDate = '';
+
+    if (dirtyDate) {
+        const date = new Date(dirtyDate);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        niceDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+    }
+
+    return niceDate;
+}
+
+/**
+ *
  * @param str
  * @returns {*}
  */
