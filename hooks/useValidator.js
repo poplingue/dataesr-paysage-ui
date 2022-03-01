@@ -32,12 +32,12 @@ const useValidator = (validatorConfig = init) => {
                 type = 'error';
             }
 
-            if (required && !value) {
+            if (required && !value && typeof value !== 'boolean') {
                 type = 'error';
                 message = 'Ce champs est obligatoire';
             }
 
-            if (!required && !value) {
+            if ((!required && !value) || typeof value === 'boolean') {
                 type = 'valid';
                 message = '';
             }

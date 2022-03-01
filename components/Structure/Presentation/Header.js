@@ -50,11 +50,13 @@ export default function Header() {
 
         if (!Object.keys(mainLocation).length) {
             getData().then(({ data }) => {
-                const proxy = new Proxy(
-                    data[0],
-                    ObjectService.handlerMainLocalisation()
-                );
-                setMainLocation(proxy);
+                if (!!data.length) {
+                    const proxy = new Proxy(
+                        data[0],
+                        ObjectService.handlerMainLocalisation()
+                    );
+                    setMainLocation(proxy);
+                }
             });
         }
     }, [id, mainLocation, mainLocation.length, type]);

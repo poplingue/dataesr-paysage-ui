@@ -7,6 +7,7 @@ import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
     matchRegex,
@@ -38,7 +39,7 @@ export default function CustomSelect({
     } = useRouter();
 
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const formName = getFormName(pathname, object);

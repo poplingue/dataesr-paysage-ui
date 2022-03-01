@@ -2,6 +2,40 @@
   {
     "form": [
       {
+        "title": "Identifiants",
+        "subObject": "identifiers",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type"
+          },
+          {
+            "title": "Valeur",
+            "type": "text",
+            "validatorId": "value"
+          },
+          {
+            "title": "Actif",
+            "hint": "L'identifiant est actif",
+            "type": "radio",
+            "defaultValue": "Non",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Oui"
+              },
+              {
+                "value": false,
+                "labelValue": "Non"
+              }
+            ],
+            "validatorId": "active"
+          }
+        ]
+      },
+      {
         "title": "Noms",
         "subObject": "names",
         "infinite": true,

@@ -46,7 +46,8 @@ const reducersForm = (state, action) => {
 
                 // case create new entry
                 if (
-                    currentField.value &&
+                    (currentField.value ||
+                        typeof currentField.value === 'boolean') &&
                     !getFieldValue(state.forms, formName, currentField.uid)
                 ) {
                     newForm.push(currentField);

@@ -55,6 +55,7 @@ export default function UpdateStructure({ data, id }) {
             .initFormSections(object, id, formName, storeObjects)
             .then(async (fields) => {
                 // Update fields in state
+
                 dispatch({
                     type: 'UPDATE_FORM_FIELD_LIST',
                     payload: {

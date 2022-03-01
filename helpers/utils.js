@@ -330,6 +330,10 @@ export function cleanedPrintPage(pageId) {
  * @param value
  */
 export function isArray(value) {
+    if (typeof value === 'boolean') {
+        return false;
+    }
+
     return value && value.indexOf('') < 0;
 }
 

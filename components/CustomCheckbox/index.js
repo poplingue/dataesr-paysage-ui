@@ -8,6 +8,7 @@ import {
     cleanString,
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
@@ -33,10 +34,10 @@ function CustomCheckbox({
         query: { object },
     } = useRouter();
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title);
+    const uid = getUniqueId(formName, subObject, validatorId);
     const [checkboxValues, setCheckboxValues] = useState(() =>
         staticValues.map((elm) => {
             return { label: elm, checked: false, value: cleanString(elm) };

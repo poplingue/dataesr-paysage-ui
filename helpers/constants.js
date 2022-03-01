@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
+import { configValidatorLocalisations } from '../components/UpdateStructure/configValidatorLocalisations';
 import { configValidator as configValidatorPerson } from './../components/UpdatePerson/configValidator';
-import { configValidator as configValidatorStructure } from './../components/UpdateStructure/configValidator';
+import { configValidator as configValidatorIdentifiers } from './../components/UpdateStructure/configValidatorIdentifiers';
+import { configValidator as configValidatorNames } from './../components/UpdateStructure/configValidatorNames';
 import { cleanString } from './utils';
 
 export function getUrl(key) {
@@ -204,9 +206,21 @@ export const StructurePageSkeleton = [
 export const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
     { subObject: 'localisations', initBody: { country: '' } },
+    {
+        subObject: 'identifiers',
+        initBody: {
+            type: '',
+            value: '',
+            active: false,
+        },
+    },
 ];
 
 export const configValidators = {
-    structure: configValidatorStructure,
+    structure: {
+        identifiers: configValidatorIdentifiers,
+        names: configValidatorNames,
+        localisations: configValidatorLocalisations,
+    },
     person: configValidatorPerson,
 };

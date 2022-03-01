@@ -12,6 +12,11 @@ import DBService from './DB.service';
 // TODO refacto with form.json
 const mapFields = {
     address: 'address',
+    value: 'value',
+    type: 'type',
+    active: 'active',
+    identifierType: 'identifier.type',
+    identifierValue: 'identifier.value',
     postalCode: 'postalCode',
     country: 'country',
     locality: 'locality',
@@ -185,22 +190,26 @@ export const dataFormService = {
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
 
-            data.map((section, sectionId) => {
-                const sections = Object.keys(section);
+            data.map((field, id) => {
+                const sections = Object.keys(field);
 
                 for (let j = 0; j < sections.length; j++) {
-                    const field = sections[j];
+                    const currentField = sections[j];
 
-                    const value = section[field];
+                    const value = field[currentField];
 
-                    if (mapFields[field] && value) {
+                    if (
+                        mapFields[currentField] &&
+                        (value || typeof value === 'boolean')
+                    ) {
                         const infinite = isArray(value);
+
                         subObjectsFields.push(
                             ...fields[infinite](
                                 value,
                                 subObject,
-                                section.id || sectionId + 1,
-                                field,
+                                field.id || id + 1,
+                                currentField,
                                 formName
                             )
                         );
@@ -213,12 +222,12 @@ export const dataFormService = {
     },
 
     initFormSections: async (object, id, formName, storeObjects, filter) => {
+        // TODO generic
         const structureData = await dataFormService.getObjectData(
             object,
             id,
             structureSubObjects
         );
-
         const fields = dataFormService.subObjectsFields(
             structureData,
             formName
@@ -228,6 +237,7 @@ export const dataFormService = {
             true: (fields) => filter(fields),
             false: () => fields,
         };
+
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
         if (checkStoreObject) {

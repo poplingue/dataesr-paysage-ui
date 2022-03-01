@@ -7,6 +7,7 @@ import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
 } from '../../helpers/utils';
@@ -34,7 +35,7 @@ function Input({
     } = useRouter();
 
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const { checkField, message, type } = useValidator(validatorConfig);

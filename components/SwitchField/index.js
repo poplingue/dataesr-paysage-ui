@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { configValidators } from '../../helpers/constants';
+import { getSubObjectType } from '../../helpers/utils';
 import CustomCheckbox from '../CustomCheckbox';
 import CustomDate from '../CustomDate';
 import CustomInput from '../CustomInput';
@@ -19,12 +20,14 @@ export default function SwitchField({
     section,
     updateValidSection,
     subObject,
+    hint,
 }) {
     const {
         query: { object },
     } = useRouter();
+
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const renderSwitch = (type) => {
@@ -66,6 +69,7 @@ export default function SwitchField({
                     <CustomRadio
                         updateValidSection={updateValidSection}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
                         staticValues={staticValues}
                         index={index}

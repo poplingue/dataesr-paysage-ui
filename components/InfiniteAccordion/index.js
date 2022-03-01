@@ -125,7 +125,6 @@ export default function InfiniteAccordion({
                 updateSection([...sections[subObjectType], data.id]);
             })
             .catch((err) => {
-                console.error('==== initSubObject Error ==== ', err);
                 NotifService.info(genericErrorMsg, 'error');
             });
     };
