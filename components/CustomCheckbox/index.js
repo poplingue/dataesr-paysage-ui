@@ -1,8 +1,9 @@
 import { Checkbox, CheckboxGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { configValidators } from '../../config/objects';
+import { getUrl } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
 import {
     cleanString,
@@ -21,6 +22,7 @@ function CustomCheckbox({
     subObject,
     updateValidSection,
     validatorId,
+    hint,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -104,11 +106,16 @@ function CustomCheckbox({
 
     useEffect(() => {
         let update = false;
-
         const newCheckboxes = checkboxValues.map((checkbox) => {
             const { checked, value } = checkbox;
-            const isChecked =
-                getFieldValue(forms, formName, uid).indexOf(value) >= 0;
+            let isChecked;
+
+            if (typeof getFieldValue(forms, formName, uid) !== 'boolean') {
+                isChecked =
+                    getFieldValue(forms, formName, uid).indexOf(value) >= 0;
+            } else {
+                isChecked = getFieldValue(forms, formName, uid);
+            }
 
             if (!update && checked !== isChecked) {
                 update = true;
@@ -152,6 +159,7 @@ function CustomCheckbox({
                             ariaLabel={title}
                             legend={title}
                             data-field={uid}
+                            hint={hint}
                             message={message}
                             messageType={type}
                         >
@@ -160,6 +168,7 @@ function CustomCheckbox({
 
                                 return (
                                     <Checkbox
+                                        size="sm"
                                         data-cy={value}
                                         key={value}
                                         label={label}

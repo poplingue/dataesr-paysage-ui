@@ -1,4 +1,5 @@
-import { structureSubObjects } from '../helpers/constants';
+import { structureSubObjects } from '../config/objects';
+import { mapFields } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import {
     getSubObjectId,
@@ -8,39 +9,6 @@ import {
     matchRegex,
 } from '../helpers/utils';
 import DBService from './DB.service';
-
-// TODO refacto with form.json
-const mapFields = {
-    address: 'address',
-    value: 'value',
-    type: 'type',
-    active: 'active',
-    identifierType: 'identifier.type',
-    identifierValue: 'identifier.value',
-    postalCode: 'postalCode',
-    country: 'country',
-    locality: 'locality',
-    telephone: 'telephone',
-    officialName: 'officialName',
-    usualName: 'usualName',
-    startDate: 'startDate',
-    endDate: 'endDate',
-    article: 'article',
-    shortName: 'shortName',
-    brandName: 'brandName',
-    nameEn: 'nameEn',
-    acronymFr: 'acronymFr',
-    acronymEn: 'acronymEn',
-    otherNames: 'currentName.otherNames',
-    wikidata: 'identifiers',
-    idref: 'identifiers',
-    uai: 'identifiers',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    gender: 'gender.type',
-    media: 'socialMedia.type',
-    socialAccount: 'socialMedia.account',
-};
 
 const fieldMapping = {
     endDate: (uid, value) => dataFormService.mapDate(uid, value),
@@ -199,7 +167,7 @@ export const dataFormService = {
                     const value = field[currentField];
 
                     if (
-                        mapFields[currentField] &&
+                        mapFields(formName).indexOf(currentField) > -1 &&
                         (value || typeof value === 'boolean')
                     ) {
                         const infinite = isArray(value);
@@ -228,6 +196,7 @@ export const dataFormService = {
             id,
             structureSubObjects
         );
+
         const fields = dataFormService.subObjectsFields(
             structureData,
             formName
@@ -286,131 +255,6 @@ export const dataFormService = {
             .catch((err) => {
                 Promise.reject(err);
             });
-    },
-    infiniteFields: (data, formName, subObject) => {
-        const fields = [];
-
-        for (let i = 0; i < Object.keys(mapFields).length; i++) {
-            const path = mapFields[Object.keys(mapFields)[i]];
-            const validatorId = Object.keys(mapFields)[i];
-
-            if (path) {
-                let dataValue =
-                    dataFormService.getProp(data, path.split('.')) || [];
-
-                for (let j = 0; j < dataValue.length; j++) {
-                    const uid = getUniqueId(
-                        formName,
-                        subObject,
-                        validatorId,
-                        j
-                    );
-                    fields.push({ uid, value: dataValue[j] });
-                }
-            }
-        }
-
-        return fields;
-    },
-
-    mapping: ({ form }, data) => {
-        let copy = [...form];
-        let newForm = [];
-
-        for (let i = 0; i < copy.length; i++) {
-            let newContent = [];
-            let section = { ...copy[i] };
-            let contentSection = copy[i].content;
-            let infiniteSection = copy[i].infinite;
-
-            if (infiniteSection) {
-                if (Object.keys(data).indexOf('socialMedia') > -1) {
-                    const frontSections = dataFormService.socialMediaSection(
-                        data.socialMedia,
-                        contentSection,
-                        copy[i]
-                    );
-                    newForm = [...frontSections];
-                }
-
-                // TODO make it generic
-                if (Object.keys(data).indexOf('currentName') > -1) {
-                    newContent = dataFormService.infiniteSection(
-                        contentSection,
-                        'currentName',
-                        data
-                    );
-                }
-            } else {
-                let fieldWithValue;
-
-                for (let k = 0; k < contentSection.length; k++) {
-                    const currentSection = contentSection[k];
-                    const path = mapFields[currentSection.validatorId];
-                    let newField = null;
-
-                    if (path) {
-                        let dataValue = dataFormService.getProp(
-                            data,
-                            path.split('.')
-                        );
-
-                        if (isArray(dataValue)) {
-                            const dataField = dataValue.find((elm) => {
-                                return elm.type === currentSection.validatorId;
-                            });
-
-                            dataValue = dataField ? dataField.value : '';
-                        }
-
-                        fieldWithValue = {
-                            ...currentSection,
-                            value: dataValue,
-                        };
-
-                        // TODO check necessary loop in loop
-                        contentSection.map((field, j) => {
-                            if (
-                                field.validatorId === fieldWithValue.validatorId
-                            ) {
-                                newField = fieldWithValue;
-                            } else if (
-                                j === contentSection[j].length &&
-                                field.validatorId !== fieldWithValue.validatorId
-                            ) {
-                                newField = field;
-                            }
-                        });
-
-                        newContent.push(newField);
-                    }
-                }
-            }
-
-            if (!!newContent.length) {
-                section.content = newContent;
-                newForm.push(section);
-            }
-        }
-
-        return { form: newForm };
-    },
-    socialMediaSection: (data, contentSection, copy) => {
-        return data.map((m) => {
-            const z = contentSection.map((c) => {
-                const path = mapFields[c.validatorId];
-
-                if (path === 'socialMedia.account') {
-                    return { ...c, value: m.account };
-                }
-
-                if (path === 'socialMedia.type') {
-                    return { ...c, value: m.type };
-                }
-            });
-
-            return { ...copy, content: z };
-        });
     },
 
     infiniteSection: (sections, key, data) => {

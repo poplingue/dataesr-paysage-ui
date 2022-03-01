@@ -35,6 +35,9 @@ export const configValidator = {
     acronymFr: {
         required: false,
     },
+    acronymLocal: {
+        required: false,
+    },
     acronymEn: {
         required: false,
     },

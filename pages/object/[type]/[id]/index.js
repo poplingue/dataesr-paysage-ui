@@ -6,8 +6,8 @@ import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
 import NavLink from '../../../../components/NavLink';
+import { StructurePageSkeleton } from '../../../../config/objects';
 import { AppContext } from '../../../../context/GlobalState';
-import { StructurePageSkeleton } from '../../../../helpers/constants';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
@@ -32,8 +32,8 @@ export default function PaysageObject({ data }) {
         query: { id, type },
     } = useRouter();
 
-    const Component = templateObj[type].component;
-    const initSkeleton = templateObj[type].skeleton;
+    const Component = templateObj[type] ? templateObj[type].component : null;
+    const initSkeleton = templateObj[type] ? templateObj[type].skeleton : null;
 
     const {
         statePage: { accordionSkeleton: skeleton },
@@ -70,24 +70,30 @@ export default function PaysageObject({ data }) {
                 }
                 status={data.status}
             />
-            <SideNavigation items={skeleton} color="Yellow">
-                <Component
-                    id={id}
-                    fame={data.fame}
-                    name={
-                        !!Object.keys(data).length
-                            ? data.currentName.usualName
-                            : ''
-                    }
-                    skeleton={skeleton}
-                >
-                    <ToolBox printer accordions initialSkeleton={initSkeleton}>
-                        <NavLink href={`/update/structure/${id}`}>
-                            modifier
-                        </NavLink>
-                    </ToolBox>
-                </Component>
-            </SideNavigation>
+            {Component && (
+                <SideNavigation items={skeleton} color="Yellow">
+                    <Component
+                        id={id}
+                        fame={data.fame}
+                        name={
+                            !!Object.keys(data).length
+                                ? data.currentName.usualName
+                                : ''
+                        }
+                        skeleton={skeleton}
+                    >
+                        <ToolBox
+                            printer
+                            accordions
+                            initialSkeleton={initSkeleton}
+                        >
+                            <NavLink href={`/update/structure/${id}`}>
+                                modifier
+                            </NavLink>
+                        </ToolBox>
+                    </Component>
+                </SideNavigation>
+            )}
         </Layout>
     );
 }

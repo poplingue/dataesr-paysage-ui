@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
+import { getObjectType } from '../../../config/utils';
 import { AppContext } from '../../../context/GlobalState';
-import { getObjectType } from '../../../helpers/constants';
 import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 

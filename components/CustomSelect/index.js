@@ -2,8 +2,8 @@ import { Select } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,

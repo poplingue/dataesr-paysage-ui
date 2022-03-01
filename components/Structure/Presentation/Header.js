@@ -15,7 +15,7 @@ import CardInfo from '../../CardInfo';
 import Map from '../../Map';
 
 export default function Header() {
-    const [mainLocation, setMainLocation] = useState([]);
+    const [mainLocation, setMainLocation] = useState({});
     const [identifiers, setIdentifiers] = useState([]);
 
     const {
@@ -59,7 +59,7 @@ export default function Header() {
                 }
             });
         }
-    }, [id, mainLocation, mainLocation.length, type]);
+    }, [id, mainLocation, type]);
 
     return (
         <Container>
@@ -106,17 +106,19 @@ export default function Header() {
                                     </Callout>
                                 </Col>
                             )}
-                            <Col spacing="pb-8w">
-                                <Callout
-                                    hasInfoIcon={false}
-                                    colorFamily="green-tilleul-verveine"
-                                >
-                                    <CalloutTitle>Adresse</CalloutTitle>
-                                    <CalloutText size="md">
-                                        {mainLocation.fullAddress}
-                                    </CalloutText>
-                                </Callout>
-                            </Col>
+                            {mainLocation.fullAddress && (
+                                <Col spacing="pb-8w">
+                                    <Callout
+                                        hasInfoIcon={false}
+                                        colorFamily="green-tilleul-verveine"
+                                    >
+                                        <CalloutTitle>Adresse</CalloutTitle>
+                                        <CalloutText size="md">
+                                            {mainLocation.fullAddress}
+                                        </CalloutText>
+                                    </Callout>
+                                </Col>
+                            )}
                         </Row>
                         <Row gutters>
                             <Col n="4">
@@ -157,19 +159,14 @@ export default function Header() {
 
                         <Row>
                             <Col>
-                                <Callout
-                                    hasInfoIcon={false}
-                                    colorFamily="blue-france"
-                                >
+                                <Callout hasInfoIcon={false}>
                                     <CalloutTitle>
                                         Contacts génériques
                                     </CalloutTitle>
-                                    <CalloutText size="md">
-                                        <ul>
-                                            <li>Contact 1</li>
-                                            <li>Contact 2</li>
-                                            <li>Contact 3</li>
-                                        </ul>
+                                    <CalloutText size="md" as="ul">
+                                        <li>Contact 1</li>
+                                        <li>Contact 2</li>
+                                        <li>Contact 3</li>
                                     </CalloutText>
                                     <div>
                                         <Button

@@ -1,5 +1,5 @@
 import getConfig from 'next/config';
-import { getObjectType } from '../helpers/constants';
+import { getObjectType } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
 
@@ -68,9 +68,19 @@ export const objectService = {
     handlerMainLocalisation: () => {
         return {
             get(target, property) {
-                return property === 'fullAddress'
-                    ? `${target.address} ${target.postalCode} ${target.locality} ${target.country}`
-                    : target[property];
+                if (property === 'fullAddress') {
+                    return `${target.address || ''} ${
+                        target.postalCode || ''
+                    } ${target.locality || ''} ${target.country || ''}`;
+                }
+
+                if (property === 'geometry') {
+                    return Object.keys(target.geometry).length > 0
+                        ? target[property]
+                        : null;
+                }
+
+                return target[property];
             },
         };
     },

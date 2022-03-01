@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
+import { PersonPageSkeleton } from '../../../../config/objects';
 import { AppContext } from '../../../../context/GlobalState';
-import { PersonPageSkeleton } from '../../../../helpers/constants';
 import useCSSProperty from '../../../../hooks/useCSSProperty';
 
 const Layout = dynamic(() => import('../../../../components/Layout'));

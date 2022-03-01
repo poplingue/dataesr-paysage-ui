@@ -17,21 +17,23 @@
             "validatorId": "value"
           },
           {
-            "title": "Actif",
-            "hint": "L'identifiant est actif",
+            "title": "État",
             "type": "radio",
-            "defaultValue": "Non",
+            "validatorId": "active",
             "staticValues": [
               {
                 "value": true,
-                "labelValue": "Oui"
+                "labelValue": "Actif"
+
+
               },
               {
                 "value": false,
-                "labelValue": "Non"
+                "labelValue": "Inactif"
+
+
               }
-            ],
-            "validatorId": "active"
+            ]
           }
         ]
       },
@@ -49,6 +51,11 @@
             "title": "Nom usuel",
             "type": "text",
             "validatorId": "usualName"
+          },
+          {
+            "title": "Acronyme",
+            "type": "text",
+            "validatorId": "acronymLocal"
           },
           {
             "title": "Article du nom usuel",
@@ -83,6 +90,11 @@
             "title": "Acronyme français",
             "type": "text",
             "validatorId": "acronymFr"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
           },
           {
             "title": "Acronyme anglais",

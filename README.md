@@ -88,7 +88,7 @@ IndexDB is used to store data from forms. On each change of value is updated in 
 
 `pathname@[section#id]_[nameId]#[eq]`
 
-:warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
+:warning: If objectStore names change, version of the database must be updated in `helpers/utils-contants.js`
 
 ## Errors handler
 

@@ -1,8 +1,8 @@
 import { Radio, RadioGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
 import {
     getFieldValue,
@@ -63,18 +63,7 @@ function CustomRadio({
     };
 
     useEffect(() => {
-        if (!staticValues.length && !radioValues.length) {
-            // case no static values
-            fetch(getUrl(title))
-                .then((res) => res.json())
-                .then(() => {
-                    // fake data
-                    const fakeData = ['1', '2', '3'].map((s) => {
-                        return { value: s, label: s };
-                    });
-                    setRadioValues(fakeData);
-                });
-        } else if (!radioValues.length) {
+        if (!radioValues.length) {
             setRadioValues(
                 staticValues.map(({ value, labelValue }) => {
                     return { value, label: labelValue };

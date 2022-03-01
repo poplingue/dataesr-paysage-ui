@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { configValidators } from '../../helpers/constants';
+import { configValidators } from '../../config/objects';
 import { getSubObjectType } from '../../helpers/utils';
 import CustomCheckbox from '../CustomCheckbox';
 import CustomDate from '../CustomDate';
@@ -101,6 +101,7 @@ export default function SwitchField({
                         updateValidSection={updateValidSection}
                         staticValues={staticValues}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
                         index={index}
                         subObject={subObject}
