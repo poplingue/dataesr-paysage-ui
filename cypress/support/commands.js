@@ -20,6 +20,10 @@ Cypress.Commands.add('newStructure', () => {
     cy.wait('@post').then((interception) => {
         if (interception.response.body.subObjects[0].id) {
             cy.setCookie('nameId', interception.response.body.subObjects[0].id);
+            cy.setCookie(
+                'identifierId',
+                interception.response.body.subObjects[2].id
+            );
         }
     });
 

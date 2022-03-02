@@ -67,10 +67,10 @@ export const mapFields = (form) => {
             'nameEn',
             'acronymFr',
             'acronymEn',
-            'currentName.otherNames',
             'firstName',
             'lastName',
             'acronymLocal',
+            'otherNames',
             'comment',
         ],
     };

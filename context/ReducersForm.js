@@ -43,12 +43,12 @@ const reducersForm = (state, action) => {
 
             for (let i = 0; i < fields.length; i = i + 1) {
                 const currentField = fields[i];
+                const { value, uid } = currentField;
 
                 // case create new entry
                 if (
-                    (currentField.value ||
-                        typeof currentField.value === 'boolean') &&
-                    !getFieldValue(state.forms, formName, currentField.uid)
+                    (value || typeof value === 'boolean') &&
+                    !getFieldValue(state.forms, formName, uid)
                 ) {
                     newForm.push(currentField);
                 }

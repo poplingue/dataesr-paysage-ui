@@ -59,8 +59,6 @@ export default function Header() {
                 }
             });
         }
-
-        console.log('==== mainLocation ==== ', mainLocation.startDate);
     }, [id, mainLocation, type]);
 
     return (

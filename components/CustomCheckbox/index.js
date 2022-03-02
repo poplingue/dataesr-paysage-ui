@@ -108,14 +108,13 @@ function CustomCheckbox({
         let update = false;
         const newCheckboxes = checkboxValues.map((checkbox) => {
             const { checked, value } = checkbox;
-            let isChecked;
+            const fieldValue = getFieldValue(forms, formName, uid);
+            const booleanCheck = {
+                false: () => fieldValue,
+                true: () => fieldValue.indexOf(value) >= 0,
+            };
 
-            if (typeof getFieldValue(forms, formName, uid) !== 'boolean') {
-                isChecked =
-                    getFieldValue(forms, formName, uid).indexOf(value) >= 0;
-            } else {
-                isChecked = getFieldValue(forms, formName, uid);
-            }
+            let isChecked = booleanCheck[typeof fieldValue !== 'boolean']();
 
             if (!update && checked !== isChecked) {
                 update = true;
@@ -130,7 +129,7 @@ function CustomCheckbox({
         }
 
         checkField({
-            value: getFieldValue(forms, formName, uid),
+            value: fieldValue,
             mode: 'silent',
         });
     }, [checkField, checkboxValues, formName, forms, uid]);

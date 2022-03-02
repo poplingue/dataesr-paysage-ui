@@ -69,11 +69,7 @@ export default function CardInfo({
                 </Col>
                 {externalLink && (
                     <Col n="12">
-                        <Tag
-                            href={externalLink}
-                            icon="ri-external-link-line"
-                            colorFamily="blue-cumulus"
-                        >
+                        <Tag href={externalLink} icon="ri-external-link-line">
                             Voir
                         </Tag>
                     </Col>

@@ -88,21 +88,15 @@ function CustomRadio({
 
     const onChange = (e) => {
         const { value } = e.target;
-        const checkType = {
-            true: (value) => {
-                return value.toLowerCase() === 'true';
-            },
-            false: (value) => {
-                return value;
-            },
+        const lowValue = value.toLowerCase();
+
+        const checkValue = {
+            true: () => lowValue === 'true',
+            false: () => value,
         };
 
-        // TODO refacto
         onRadioChange(
-            checkType[
-                value.toLowerCase() === 'true' ||
-                    value.toLowerCase() === 'false'
-            ](value)
+            checkValue[lowValue === 'true' || lowValue === 'false']()
         );
 
         checkField({ value });

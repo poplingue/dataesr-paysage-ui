@@ -50,7 +50,7 @@ export default function HeaderLayout({ highlight, pageTitle, status }) {
                                             </Col>
                                             {status && (
                                                 <Col n="12">
-                                                    <Tag colorFamily="green-bourgeon">
+                                                    <Tag>
                                                         {status === 'draft'
                                                             ? 'Structure en draft'
                                                             : 'Structure publiée'}

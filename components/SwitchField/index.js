@@ -26,7 +26,9 @@ export default function SwitchField({
         query: { object },
     } = useRouter();
 
-    const validatorConfig = object
+    const validatorConfig = configValidators[object][
+        getSubObjectType(subObject)
+    ]
         ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 

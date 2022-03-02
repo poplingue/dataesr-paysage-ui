@@ -181,14 +181,14 @@ export default function CustomDate({
                             <Row gutters>
                                 <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
-                                        dataTestId={`today-${validator}`}
+                                        dataTestId={`today-${validator}-${subObject}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
                                 <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
-                                        dataTestId={`firstJanuary-${validator}`}
+                                        dataTestId={`firstJanuary-${validator}-${subObject}`}
                                         title="1er janvier"
                                         onClick={() =>
                                             automaticDate('firstJanuary')
@@ -198,6 +198,7 @@ export default function CustomDate({
                                 {currenField && (
                                     <Col n="xs-12 md-4 xl-12">
                                         <DeleteButton
+                                            dataTestId={`btn-delete-${validator}-${subObject}`}
                                             background={grey}
                                             display
                                             onClick={deleteDate}

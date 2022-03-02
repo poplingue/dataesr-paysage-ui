@@ -150,11 +150,6 @@
             "validatorId": "country"
           },
           {
-            "title": "Pays",
-            "type": "text",
-            "validatorId": "place"
-          },
-          {
             "title": "Téléphone",
             "type": "text",
             "validatorId": "telephone"
