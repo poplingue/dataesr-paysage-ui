@@ -7,7 +7,6 @@ import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { getForm, getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
-import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
@@ -235,9 +234,8 @@ export default function UpdatePerson({ data, id }) {
 
         if (id) {
             fetchPerson(id).then((data) => {
-                setPersonForm(
-                    dataFormService.mapping(UpdatePersonForm[0], data)
-                );
+                // TODO map data
+                // setPersonForm(data);
             });
         }
     }, [id]);

@@ -9,6 +9,7 @@ export default function DeleteButton({
     title,
     index,
     background,
+    dataTestId,
     onClick,
 }) {
     const { Col } = grid();
@@ -27,9 +28,12 @@ export default function DeleteButton({
             <Col>
                 <FieldButton
                     colors={[red, background || white]}
-                    dataTestId={`btn-delete-${cleanString(title)}${
-                        index ? `#${index}` : ''
-                    }`}
+                    dataTestId={
+                        dataTestId ||
+                        `btn-delete-${cleanString(title)}${
+                            index ? `#${index}` : ''
+                        }`
+                    }
                     onClick={confirmBeforeClick}
                     title="Supprimer"
                 />

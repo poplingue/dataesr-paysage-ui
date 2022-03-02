@@ -16,7 +16,7 @@ context('Structure publish', () => {
 
         cy.wait('@put');
 
-        cy.get(`[data-testid="validate-structure"]`).should('be.disabled');
+        cy.get(`[data-testid="validate-structure"]`).should('not.exist');
 
         cy.get(`.cy-notif-valid`).should('be.visible');
     });

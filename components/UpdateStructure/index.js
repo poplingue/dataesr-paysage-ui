@@ -11,6 +11,7 @@ import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
+import LinkTo from '../LinkTo';
 import ToolBox from '../ToolBox';
 import UpdateStructureForm from './form.json';
 
@@ -22,6 +23,10 @@ export default function UpdateStructure({ data, id }) {
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
+    const [published, setPublished] = useState(
+        currentObject.status === 'published'
+    );
+
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
     const {
@@ -77,6 +82,10 @@ export default function UpdateStructure({ data, id }) {
     };
 
     useEffect(() => {
+        setPublished(currentObject.status === 'published');
+    }, [currentObject]);
+
+    useEffect(() => {
         async function init() {
             await initDataStructureForm();
             setInitData(true);
@@ -100,7 +109,7 @@ export default function UpdateStructure({ data, id }) {
             !currentObject.updatedBy
         ]();
 
-        if (!editor && !!currentEditor) {
+        if (!editor && !!currentEditor.username) {
             setEditor(`par ${currentEditor.username}`);
         }
     }, [currentObject.updatedBy, editor, objCheck]);
@@ -120,24 +129,27 @@ export default function UpdateStructure({ data, id }) {
             <HeaderLayout
                 highlight={`${dateInfo} ${editor}`}
                 pageTitle={
-                    currentObject.status === 'published'
+                    published
                         ? `Modifier la structure ${id}`
                         : `Initier une structure ${id}`
                 }
             />
             <SideNavigation items={UpdateStructureForm[0].form}>
                 <ToolBox accordions>
-                    <FieldButton
-                        dataTestId="validate-structure"
-                        disabled={currentObject.status === 'published'}
-                        title="Valider la structure"
-                        onClick={publishObject}
-                        colors={
-                            currentObject.status === 'published'
-                                ? []
-                                : [white, green]
-                        }
-                    />
+                    {!published ? (
+                        <FieldButton
+                            dataTestId="validate-structure"
+                            disabled={published}
+                            title="Valider la structure"
+                            onClick={publishObject}
+                            colors={published ? [] : [white, green]}
+                        />
+                    ) : (
+                        <LinkTo
+                            text="voir la fiche"
+                            href={`/object/structure/${id}`}
+                        />
+                    )}
                 </ToolBox>
                 <CreateForm
                     jsonForm={UpdateStructureForm[0]}

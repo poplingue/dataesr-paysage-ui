@@ -2,6 +2,42 @@
   {
     "form": [
       {
+        "title": "Identifiants",
+        "subObject": "identifiers",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type"
+          },
+          {
+            "title": "Valeur",
+            "type": "text",
+            "validatorId": "value"
+          },
+          {
+            "title": "État",
+            "type": "radio",
+            "validatorId": "active",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Actif"
+
+
+              },
+              {
+                "value": false,
+                "labelValue": "Inactif"
+
+
+              }
+            ]
+          }
+        ]
+      },
+      {
         "title": "Noms",
         "subObject": "names",
         "infinite": true,
@@ -15,6 +51,11 @@
             "title": "Nom usuel",
             "type": "text",
             "validatorId": "usualName"
+          },
+          {
+            "title": "Acronyme",
+            "type": "text",
+            "validatorId": "acronymLocal"
           },
           {
             "title": "Article du nom usuel",
@@ -70,6 +111,11 @@
             "title": "Date de fin",
             "type": "date",
             "validatorId": "endDate"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
           }
         ]
       },
@@ -92,6 +138,11 @@
             "title": "Ville",
             "type": "text",
             "validatorId": "locality"
+          },
+          {
+            "title": "Lieu-dit",
+            "type": "text",
+            "validatorId": "place"
           },
           {
             "title": "Pays",

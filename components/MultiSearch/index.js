@@ -2,13 +2,14 @@ import { Checkbox, Col, Container, Row, TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators } from '../../helpers/constants';
 import {
     cleanString,
     getFieldValue,
     getForm,
     getFormName,
+    getSubObjectType,
     getUniqueId,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
@@ -25,10 +26,10 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
         query: { object },
     } = useRouter();
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title);
+    const uid = getUniqueId(formName, subObject, validatorId);
     const [textValue, setTextValue] = useState('');
     const currentForm = useCallback(
         () => (forms && formName ? getForm(forms, formName) : null),

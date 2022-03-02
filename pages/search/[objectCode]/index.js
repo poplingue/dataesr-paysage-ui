@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { getObjectType } from '../../../helpers/constants';
+import { getObjectType } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import ObjectService from '../../../services/Object.service';
 
@@ -32,7 +32,7 @@ export default function SearchObject({ data }) {
                                     }/${obj.id}`}
                                     supInfo={name}
                                     subInfo={obj.id}
-                                    info={obj.currentName.usualName}
+                                    info={obj.currentName.usualName || ''}
                                 />
                             </Col>
                         );

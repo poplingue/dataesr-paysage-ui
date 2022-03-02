@@ -1,5 +1,5 @@
 import getConfig from 'next/config';
-import { structureSubObjects } from '../../../helpers/constants';
+import { structureSubObjects } from '../../../config/objects';
 import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();

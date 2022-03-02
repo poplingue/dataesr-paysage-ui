@@ -20,7 +20,7 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get('[data-testId="today-enddate"]').click();
+            cy.get(`[data-testId="today-enddate-names#${id}"]`).click();
 
             cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
 
@@ -44,9 +44,9 @@ context('Structure new form', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
-            cy.get('[data-testId="today-enddate"]').click();
+            cy.get(`[data-testId="today-enddate-names#${id}"]`).click();
 
-            cy.get('[data-testId="btn-delete-enddate"]').click();
+            cy.get(`[data-testId="btn-delete-enddate-names#${id}"]`).click();
 
             cy.get(`[data-field="update/structure@names#${id}_endDateDay"]`)
                 .find('select')

@@ -2,11 +2,12 @@ import { Select } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
     matchRegex,
@@ -38,7 +39,7 @@ export default function CustomSelect({
     } = useRouter();
 
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const formName = getFormName(pathname, object);
@@ -118,19 +119,19 @@ export default function CustomSelect({
         if (!options.length) {
             setOptions(
                 staticValues.map((value) => {
-                    return { value: value, label: value };
+                    return { value, label: value };
                 })
             );
             setOptions((prev) => [
                 ...prev,
-                { value: '', label: 'Sélectionnez...', disabled: true },
+                { value: '', label: '', disabled: true },
             ]);
         }
     }, [options, setOptions, staticValues, title]);
 
     const onChange = (e) => {
         const { value } = e.target;
-        onChangeObj[!!customOnChange](value);
+        onChangeObj[!!customOnChange](value, false);
         handleValue(value);
         updateValidSection(null, null);
     };

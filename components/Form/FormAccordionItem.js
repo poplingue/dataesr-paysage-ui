@@ -251,6 +251,7 @@ export default function FormAccordionItem({
                 const {
                     type: fieldType,
                     infinite,
+                    hint,
                     staticValues,
                     validatorId,
                     title,
@@ -265,6 +266,7 @@ export default function FormAccordionItem({
                             <Row alignItems="middle" gutters>
                                 <Col spacing="py-2w">
                                     <SwitchField
+                                        hint={hint}
                                         updateValidSection={updateValidSection}
                                         validatorId={validatorId}
                                         subObject={subObject}

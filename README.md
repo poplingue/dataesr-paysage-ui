@@ -28,6 +28,46 @@ yarn dev
 
 Open [http://localhost:3002](http://localhost:3002)
 
+## Use forms
+
+### Example adding a new field in a form
+
+```bash
+# /UpdateStructure/form.json 
+
+{
+   "title": "My new field",
+   "type": "text | checkbox | multisearch | radio",
+   "validatorId": "myValidatorId",
+   "staticValues": [...],
+ }
+```
+
+```bash
+# /UpdateStructure/configValidator.json 
+
+myValidatorId: {
+    validators: [
+        (value) => ({
+            valid: value.length > 2,
+            errorMsg: 'Au moins 2 caractères',
+        }),
+    ],
+    required: true,
+}
+```
+
+```bash
+# /config/utils.js 
+
+const obj = {
+      'update/structure': [
+          ...,
+          'myNewfield'
+      ]
+}
+```
+
 ## Tests
 
 Launch unit tests and watcher
@@ -88,7 +128,7 @@ IndexDB is used to store data from forms. On each change of value is updated in 
 
 `pathname@[section#id]_[nameId]#[eq]`
 
-:warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
+:warning: If objectStore names change, version of the database must be updated in `helpers/utils-contants.js`
 
 ## Errors handler
 

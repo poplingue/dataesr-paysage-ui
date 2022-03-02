@@ -1,13 +1,15 @@
 import { Checkbox, CheckboxGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { configValidators } from '../../config/objects';
+import { getUrl } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
 import {
     cleanString,
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
@@ -20,6 +22,7 @@ function CustomCheckbox({
     subObject,
     updateValidSection,
     validatorId,
+    hint,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -33,10 +36,10 @@ function CustomCheckbox({
         query: { object },
     } = useRouter();
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title);
+    const uid = getUniqueId(formName, subObject, validatorId);
     const [checkboxValues, setCheckboxValues] = useState(() =>
         staticValues.map((elm) => {
             return { label: elm, checked: false, value: cleanString(elm) };
@@ -103,11 +106,15 @@ function CustomCheckbox({
 
     useEffect(() => {
         let update = false;
-
         const newCheckboxes = checkboxValues.map((checkbox) => {
             const { checked, value } = checkbox;
-            const isChecked =
-                getFieldValue(forms, formName, uid).indexOf(value) >= 0;
+            const fieldValue = getFieldValue(forms, formName, uid);
+            const booleanCheck = {
+                false: () => fieldValue,
+                true: () => fieldValue.indexOf(value) >= 0,
+            };
+
+            let isChecked = booleanCheck[typeof fieldValue !== 'boolean']();
 
             if (!update && checked !== isChecked) {
                 update = true;
@@ -122,7 +129,7 @@ function CustomCheckbox({
         }
 
         checkField({
-            value: getFieldValue(forms, formName, uid),
+            value: fieldValue,
             mode: 'silent',
         });
     }, [checkField, checkboxValues, formName, forms, uid]);
@@ -151,6 +158,7 @@ function CustomCheckbox({
                             ariaLabel={title}
                             legend={title}
                             data-field={uid}
+                            hint={hint}
                             message={message}
                             messageType={type}
                         >
@@ -159,6 +167,7 @@ function CustomCheckbox({
 
                                 return (
                                     <Checkbox
+                                        size="sm"
                                         data-cy={value}
                                         key={value}
                                         label={label}

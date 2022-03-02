@@ -49,7 +49,9 @@ context('Structure new form', () => {
             const now = new Date();
             const currentYear = now.getFullYear().toString();
 
-            cy.get('[data-testId="firstJanuary-startdate"]').click();
+            cy.get(
+                `[data-testId="firstJanuary-startdate-names#${id}"]`
+            ).click();
 
             cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
 
