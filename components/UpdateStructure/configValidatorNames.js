@@ -26,6 +26,9 @@ export const configValidator = {
     shortName: {
         required: false,
     },
+    comment: {
+        required: false,
+    },
     brandName: {
         required: false,
     },

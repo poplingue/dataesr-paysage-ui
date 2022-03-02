@@ -141,7 +141,7 @@ function CustomRadio({
                                             data-cy={value}
                                             key={i}
                                             label={label}
-                                            value={value}
+                                            value={value.toString()}
                                             checked={checked}
                                             onChange={onChange}
                                         />

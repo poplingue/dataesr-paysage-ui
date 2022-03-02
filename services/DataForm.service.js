@@ -1,7 +1,9 @@
 import { structureSubObjects } from '../config/objects';
 import { mapFields } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
+import { genericErrorMsg } from '../helpers/internalMessages';
 import {
+    checkDate,
     getSubObjectId,
     getSubObjectType,
     getUniqueId,
@@ -23,19 +25,39 @@ const fields = {
 export const dataFormService = {
     mapDate: (uid, value) => {
         let mapping = [];
-        const splitedDate = value.split('-');
+        const { hasDay, hasMonth, onlyYear, splitDate } = checkDate(value);
+
+        const formatValue = (date) => {
+            // case yyyy-mm-dd
+            let value = date;
+
+            // case yyyy-mm
+            if (hasMonth && !hasDay) {
+                value = `${value}-dd`;
+            }
+
+            // case yyyy
+            if (onlyYear) {
+                value = `${value}-mm-dd`;
+            }
+
+            return value;
+        };
+
         const fieldId = {
             0: 'Year',
             1: 'Month',
             2: 'Day',
         };
 
-        mapping.push({ uid, value });
+        // full date yyyy-mm-dd
+        mapping.push({ uid, value: formatValue(value) });
 
-        for (let i = 0; i < splitedDate.length; i = i + 1) {
+        // Each date values yyyy, mm, dd
+        for (let i = 0; i < splitDate.length; i = i + 1) {
             mapping.push({
                 uid: `${uid}${fieldId[i]}`,
-                value: splitedDate[i],
+                value: splitDate[i],
                 unSaved: false,
             });
         }
@@ -48,6 +70,7 @@ export const dataFormService = {
         const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
 
         if (needClean) {
+            // remove empty date values in date format yyyy-mm-dd
             const value = field.value.replace(/(\-[a-z]).{1}|,/g, '');
 
             return { ...field, value };
@@ -296,6 +319,10 @@ export const dataFormService = {
     },
 
     save: async (form, objectId, subObject) => {
+        if (!form.length) {
+            return Promise.reject(genericErrorMsg);
+        }
+
         const sectionInfinite = !!getSubObjectId(subObject) || false;
 
         const subObjectType = sectionInfinite

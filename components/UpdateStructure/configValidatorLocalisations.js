@@ -3,7 +3,7 @@ export const configValidatorLocalisations = {
         required: true,
     },
     locality: {
-        required: false,
+        required: true,
     },
     telephone: {
         required: false,
@@ -19,6 +19,9 @@ export const configValidatorLocalisations = {
     },
     address: {
         required: true,
+    },
+    place: {
+        required: false,
     },
     startDate: {
         required: false,

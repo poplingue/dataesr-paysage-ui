@@ -92,11 +92,6 @@
             "validatorId": "acronymFr"
           },
           {
-            "title": "Commentaire",
-            "type": "text",
-            "validatorId": "comment"
-          },
-          {
             "title": "Acronyme anglais",
             "type": "text",
             "validatorId": "acronymEn"
@@ -116,6 +111,11 @@
             "title": "Date de fin",
             "type": "date",
             "validatorId": "endDate"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
           }
         ]
       },
@@ -140,9 +140,19 @@
             "validatorId": "locality"
           },
           {
+            "title": "Lieu-dit",
+            "type": "text",
+            "validatorId": "place"
+          },
+          {
             "title": "Pays",
             "type": "text",
             "validatorId": "country"
+          },
+          {
+            "title": "Pays",
+            "type": "text",
+            "validatorId": "place"
           },
           {
             "title": "Téléphone",

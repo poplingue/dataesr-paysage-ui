@@ -119,19 +119,19 @@ export default function CustomSelect({
         if (!options.length) {
             setOptions(
                 staticValues.map((value) => {
-                    return { value: value, label: value };
+                    return { value, label: value };
                 })
             );
             setOptions((prev) => [
                 ...prev,
-                { value: '', label: 'Sélectionnez...', disabled: true },
+                { value: '', label: '', disabled: true },
             ]);
         }
     }, [options, setOptions, staticValues, title]);
 
     const onChange = (e) => {
         const { value } = e.target;
-        onChangeObj[!!customOnChange](value);
+        onChangeObj[!!customOnChange](value, false);
         handleValue(value);
         updateValidSection(null, null);
     };

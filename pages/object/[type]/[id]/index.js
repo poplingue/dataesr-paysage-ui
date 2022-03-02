@@ -5,7 +5,7 @@ import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
 
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
-import NavLink from '../../../../components/NavLink';
+import LinkTo from '../../../../components/LinkTo';
 import { StructurePageSkeleton } from '../../../../config/objects';
 import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
@@ -87,9 +87,10 @@ export default function PaysageObject({ data }) {
                             accordions
                             initialSkeleton={initSkeleton}
                         >
-                            <NavLink href={`/update/structure/${id}`}>
-                                modifier
-                            </NavLink>
+                            <LinkTo
+                                text="modifier"
+                                href={`/update/structure/${id}`}
+                            />
                         </ToolBox>
                     </Component>
                 </SideNavigation>
