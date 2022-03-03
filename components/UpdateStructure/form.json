@@ -53,11 +53,6 @@
             "validatorId": "usualName"
           },
           {
-            "title": "Acronyme",
-            "type": "text",
-            "validatorId": "acronymLocal"
-          },
-          {
             "title": "Article du nom usuel",
             "type": "select",
             "staticValues": [
@@ -72,6 +67,11 @@
             "validatorId": "article"
           },
           {
+            "title": "Acronyme",
+            "type": "text",
+            "validatorId": "acronymLocal"
+          },
+          {
             "title": "ShortName",
             "type": "text",
             "validatorId": "shortName"
@@ -82,14 +82,18 @@
             "validatorId": "brandName"
           },
           {
-            "title": "Nom anglais",
-            "type": "text",
-            "validatorId": "nameEn"
-          },
-          {
             "title": "Acronyme français",
             "type": "text",
             "validatorId": "acronymFr"
+          },
+          {
+            "title": "Nom anglais",
+            "type": "text",
+            "validatorId": "nameEn",
+            "dependency": {
+              "validatorId": "acronymEn",
+              "action": "disabled"
+            }
           },
           {
             "title": "Acronyme anglais",
@@ -157,7 +161,7 @@
           {
             "title": "Géolocalisation",
             "type": "group",
-                "validatorId": "geometry",
+            "validatorId": "geometry",
             "content": [
               {
                 "title": "Longitude",

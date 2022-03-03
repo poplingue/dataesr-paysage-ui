@@ -21,7 +21,7 @@ export const configValidator = {
         required: true,
     },
     usualName: {
-        required: false,
+        required: true,
     },
     shortName: {
         required: false,

@@ -12,6 +12,7 @@ export function FieldDependency({ children, subObject, validatorId }) {
     const objClass = {
         hidden: styles.IsHidden,
         disabled: styles.IsDisable,
+        '': 'test',
     };
 
     const {
