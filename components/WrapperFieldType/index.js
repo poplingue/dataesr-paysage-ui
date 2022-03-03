@@ -1,3 +1,7 @@
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getFormName, getUniqueId } from '../../helpers/utils';
 import GroupField from '../GroupField';
 import SwitchField from '../SwitchField';
 
@@ -8,6 +12,10 @@ export default function WrapperFieldType({
     newTitle,
 }) {
     const {
+        stateForm: { dependencies },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+    const {
         type: fieldType,
         infinite,
         hint,
@@ -16,7 +24,53 @@ export default function WrapperFieldType({
         value,
         title,
         content,
+        dependency,
     } = field;
+
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
+
+    useEffect(() => {
+        const check = !!dependencies[field.validatorId];
+
+        // Handle dependencies of the current field
+        if (dependency) {
+            if (
+                !dependencies[
+                    getUniqueId(formName, subObject, dependency.validatorId)
+                ] &&
+                !check
+            ) {
+                dispatch({
+                    type: 'UPDATE_FORM_DEPENDENCES',
+                    payload: {
+                        [getUniqueId(
+                            formName,
+                            subObject,
+                            dependency.validatorId
+                        )]: {
+                            action: dependency.action,
+                            major: getUniqueId(
+                                formName,
+                                subObject,
+                                field.validatorId
+                            ),
+                        },
+                    },
+                });
+            }
+        }
+    }, [
+        dependencies,
+        dispatch,
+        field.dependency,
+        field.validatorId,
+        formName,
+        subObject,
+    ]);
 
     if (fieldType === 'group') {
         return (
@@ -28,7 +82,7 @@ export default function WrapperFieldType({
                 subObject={subObject}
                 section={newTitle}
                 title={title}
-            ></GroupField>
+            />
         );
     }
 

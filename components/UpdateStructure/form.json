@@ -9,7 +9,11 @@
           {
             "title": "Type",
             "type": "text",
-            "validatorId": "type"
+            "validatorId": "type",
+            "dependency": {
+              "validatorId": "value",
+              "action": "hidden"
+            }
           },
           {
             "title": "Valeur",

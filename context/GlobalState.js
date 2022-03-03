@@ -8,7 +8,7 @@ import reducersPage from './ReducersPage';
 export const AppContext = createContext();
 
 export const DataProvider = ({ user, error, children }) => {
-    const initialState = {
+    const initialStateForm = {
         darkTheme: false,
         storeObjects: [],
         objectFormType: '',
@@ -18,6 +18,7 @@ export const DataProvider = ({ user, error, children }) => {
         forms: [{ 'update/person': [] }, { 'update/structure': [] }],
         savingSections: [],
         currentObject: {},
+        dependencies: {},
     };
 
     const initialStateList = {
@@ -43,7 +44,10 @@ export const DataProvider = ({ user, error, children }) => {
         userConnected: user && Object.keys(user).length > 0,
     };
 
-    const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
+    const [stateForm, dispatchForm] = useReducer(
+        reducersForm,
+        initialStateForm
+    );
     const [stateList, dispatchList] = useReducer(
         reducersList,
         initialStateList

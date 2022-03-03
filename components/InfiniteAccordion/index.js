@@ -33,7 +33,6 @@ export default function InfiniteAccordion({
     subObjectType,
 }) {
     const { Col, Row, Container } = grid();
-
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
