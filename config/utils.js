@@ -50,6 +50,8 @@ export const mapFields = (form) => {
     const obj = {
         'update/structure': [
             'address',
+            'geometry.latitude',
+            'geometry.longitude',
             'value',
             'type',
             'active',

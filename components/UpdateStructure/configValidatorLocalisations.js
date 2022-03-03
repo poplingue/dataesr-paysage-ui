@@ -17,6 +17,24 @@ export const configValidatorLocalisations = {
             }),
         ],
     },
+    latitude: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/\d/g),
+                errorMsg: 'Uniquement des chiffres',
+            }),
+        ],
+        required: false,
+    },
+    longitude: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/\d/g),
+                errorMsg: 'Uniquement des chiffres',
+            }),
+        ],
+        required: false,
+    },
     address: {
         required: true,
     },

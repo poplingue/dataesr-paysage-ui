@@ -34,7 +34,8 @@ function CustomRadio({
         pathname,
         query: { object },
     } = useRouter();
-    const validatorConfig = object
+
+    const validatorConfig = configValidators[object]
         ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
     const formName = getFormName(pathname, object);

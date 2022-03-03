@@ -8,9 +8,9 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/update/person',
+    route: '/update/structure',
     pathname: '/update/[object]',
-    query: { object: 'person' },
+    query: { object: 'structure' },
 }));
 
 describe('Custom Radio', () => {
@@ -21,10 +21,15 @@ describe('Custom Radio', () => {
     it('should render the title', () => {
         render(
             <CustomRadio
+                subObject="identifiers#K7L3c9M5"
+                validatorId="active"
                 updateValidSection={() => {}}
                 title="Radio Star"
                 section="Section"
-                staticValues={['1', '2']}
+                staticValues={[
+                    { labelValue: '1', value: '1' },
+                    { labelValue: '2', value: '2' },
+                ]}
             />
         );
 
