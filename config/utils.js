@@ -46,7 +46,7 @@ export function getObjectType(id) {
 }
 
 export const mapFields = (form) => {
-    // TODO handle nested object
+    // TODO handle nested object like geometry
     const obj = {
         'update/structure': [
             'address',

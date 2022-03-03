@@ -189,6 +189,7 @@ export const dataFormService = {
 
                     const value = field[currentField];
 
+                    // TODO handle nested data
                     if (
                         mapFields(formName).indexOf(currentField) > -1 &&
                         (value || typeof value === 'boolean')

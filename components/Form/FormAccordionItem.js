@@ -119,9 +119,8 @@ export default function FormAccordionItem({
             const cleanedForm = filteredForm
                 .filter(dataFormService.checkDateField)
                 .map(dataFormService.cleanDateFormat);
-            debugger; // eslint-disable-line
-            
-return dataFormService
+
+            return dataFormService
                 .save(cleanedForm, updateObjectId, subObject)
                 .then(async () => {
                     return fieldsToSaved(filteredForm);

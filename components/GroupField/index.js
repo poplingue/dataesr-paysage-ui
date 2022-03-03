@@ -41,7 +41,7 @@ export default function GroupField({
         const payload = {
             value: newValue,
             uid,
-            unSaved: false,
+            unSaved: true,
         };
 
         dispatch({
@@ -53,17 +53,18 @@ export default function GroupField({
             await DBService.set(payload, formName);
         }
 
+        // TODO make generic
         // group field
         const groupUid = getUniqueId(formName, subObject, validatorId);
 
         const groupValues = uidsGroup.flatMap((uidg) => {
             const fieldValue = getFieldValue(forms, formName, uidg);
 
-            return uid !== uidg && fieldValue ? fieldValue : [];
+            return uid !== uidg && fieldValue ? parseFloat(fieldValue) : [];
         });
 
         const groupPayload = {
-            value: [...groupValues, newValue],
+            value: { coordinates: [...groupValues, parseFloat(newValue)] },
             uid: groupUid,
             unSaved: true,
         };
