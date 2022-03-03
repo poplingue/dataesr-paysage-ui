@@ -14,9 +14,9 @@ export default function SwitchField({
     value,
     validatorId,
     title,
+    onGroupChange,
     infinite,
     staticValues,
-    index,
     section,
     updateValidSection,
     subObject,
@@ -37,6 +37,7 @@ export default function SwitchField({
             case 'text':
                 return (
                     <CustomInput
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
@@ -49,6 +50,7 @@ export default function SwitchField({
             case 'select':
                 return (
                     <CustomSelect
+                        onGroupChange={onGroupChange}
                         newValue={value}
                         updateValidSection={updateValidSection}
                         title={title}
@@ -60,6 +62,7 @@ export default function SwitchField({
             case 'multiSearch':
                 return (
                     <MultiSearch
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
@@ -69,12 +72,12 @@ export default function SwitchField({
             case 'radio':
                 return (
                     <CustomRadio
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         hint={hint}
                         validatorId={validatorId}
                         staticValues={staticValues}
-                        index={index}
                         subObject={subObject}
                     />
                 );
@@ -90,22 +93,22 @@ export default function SwitchField({
             case 'toggle':
                 return (
                     <CustomToggle
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
-                        index={index}
                         subObject={subObject}
                     />
                 );
             case 'checkbox':
                 return (
                     <CustomCheckbox
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         staticValues={staticValues}
                         title={title}
                         hint={hint}
                         validatorId={validatorId}
-                        index={index}
                         subObject={subObject}
                     />
                 );

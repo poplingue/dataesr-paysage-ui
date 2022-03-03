@@ -6,6 +6,7 @@ import Input from './Input';
 function CustomInput({
     title,
     value,
+    onGroupChange,
     infinite,
     section,
     updateValidSection,
@@ -30,12 +31,14 @@ function CustomInput({
                                 validatorId={validatorId}
                                 subObject={subObject}
                                 label={title}
+                                onGroupChange={onGroupChange}
                                 infinite
                             />
                         </InfiniteField>
                     ) : (
                         <Col spacing="py-1w">
                             <Input
+                                onGroupChange={onGroupChange}
                                 value={value}
                                 updateValidSection={updateValidSection}
                                 validatorId={validatorId}

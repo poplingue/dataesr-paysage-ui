@@ -21,6 +21,7 @@ function Input({
     subObject,
     infinite = false,
     value: initValue,
+    onGroupChange,
     updateValidSection,
     validatorId,
 }) {
@@ -81,7 +82,11 @@ function Input({
         setTextValue(value);
         updateValidSection(null, null);
 
-        await saveValue(value);
+        if (onGroupChange) {
+            onGroupChange(e, uid);
+        } else {
+            await saveValue(value);
+        }
     };
 
     useEffect(() => {

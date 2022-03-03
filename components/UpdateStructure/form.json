@@ -24,14 +24,10 @@
               {
                 "value": true,
                 "labelValue": "Actif"
-
-
               },
               {
                 "value": false,
                 "labelValue": "Inactif"
-
-
               }
             ]
           }
@@ -153,6 +149,23 @@
             "title": "Téléphone",
             "type": "text",
             "validatorId": "telephone"
+          },
+          {
+            "title": "Géolocalisation",
+            "type": "group",
+                "validatorId": "geometry",
+            "content": [
+              {
+                "title": "Longitude",
+                "type": "text",
+                "validatorId": "longitude"
+              },
+              {
+                "title": "Latitude",
+                "type": "text",
+                "validatorId": "latitude"
+              }
+            ]
           },
           {
             "title": "Date de début",

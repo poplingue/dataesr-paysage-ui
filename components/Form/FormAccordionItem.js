@@ -9,7 +9,7 @@ import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
-import SwitchField from '../SwitchField';
+import WrapperFieldType from '../WrapperFieldType';
 
 export default function FormAccordionItem({
     content,
@@ -248,34 +248,16 @@ export default function FormAccordionItem({
     return (
         <form onSubmit={onSubmit}>
             {content.map((field) => {
-                const {
-                    type: fieldType,
-                    infinite,
-                    hint,
-                    staticValues,
-                    validatorId,
-                    title,
-                    value,
-                } = field;
-
-                const fieldTitle = title;
-
                 return (
-                    <div key={fieldTitle}>
+                    <div key={field.title}>
                         <Container>
                             <Row alignItems="middle" gutters>
                                 <Col spacing="py-2w">
-                                    <SwitchField
-                                        hint={hint}
-                                        updateValidSection={updateValidSection}
-                                        validatorId={validatorId}
+                                    <WrapperFieldType
+                                        field={field}
                                         subObject={subObject}
-                                        value={value}
-                                        section={newTitle}
-                                        type={fieldType}
-                                        title={fieldTitle}
-                                        infinite={infinite}
-                                        staticValues={staticValues}
+                                        updateValidSection={updateValidSection}
+                                        newTitle={newTitle}
                                     />
                                 </Col>
                             </Row>
