@@ -7,15 +7,18 @@ import {
     Container,
     Row,
 } from '@dataesr/react-dsfr';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { niceFullDate } from '../../../helpers/utils';
+import { useEffect, useRef, useState } from 'react';
 import ObjectService from '../../../services/Object.service';
-import CardInfo from '../../CardInfo';
 import Map from '../../Map';
+import ShowMoreList from '../../ShowMoreList';
+
+const CardInfo = dynamic(() => import('./../../../components/CardInfo'));
 
 export default function Header() {
     const [mainLocation, setMainLocation] = useState({});
+    const [mainName, setMainName] = useState({});
     const [identifiers, setIdentifiers] = useState([]);
 
     const {
@@ -23,6 +26,7 @@ export default function Header() {
     } = useRouter();
 
     const router = useRouter();
+    const workerRef = useRef();
 
     useEffect(() => {
         // TODO use Promise.all
@@ -61,7 +65,69 @@ export default function Header() {
         }
     }, [id, mainLocation, type]);
 
-    return (
+    // TODO refacto - make a hook
+    useEffect(() => {
+        // TODO make a hook
+        workerRef.current = new Worker('/service-worker.js', {
+            name: 'Get_object',
+            type: 'module',
+        });
+    }, []);
+
+    useEffect(() => {
+        workerRef.current.onmessage = async ({ data }) => {
+            // TODO add check data
+            if (data && JSON.parse(data).data) {
+                if (!!Object.keys(JSON.parse(data).data.currentName).length) {
+                    const proxy = new Proxy(
+                        JSON.parse(data).data.currentName,
+                        ObjectService.handlerMainName()
+                    );
+                    setMainName(proxy);
+                }
+            }
+        };
+    });
+
+    useEffect(() => {
+        async function fetchStructure() {
+            workerRef.current.postMessage({
+                object: type,
+                id,
+            });
+        }
+
+        if (id) {
+            fetchStructure();
+        }
+    }, [id, type]);
+
+    const renderIdentifiers = () => {
+        return identifiers.map((identifier, i) => {
+            const { length } = identifiers;
+            const { type, value, id } = identifier;
+
+            return (
+                <Col
+                    key={id}
+                    n={length > 3 ? '4' : '6'}
+                    spacing={i === length - 1 ? 'pb-8w' : ''}
+                >
+                    <CardInfo
+                        onClick={() => {
+                            router.push(`/update/structure/${id}`);
+                        }}
+                        supInfo={type}
+                        title={value}
+                        actionLabel="Modifier"
+                    />
+                </Col>
+            );
+        });
+    };
+
+    
+return (
         <Container>
             <Row gutters>
                 <Col n="12">
@@ -126,39 +192,25 @@ export default function Header() {
                                     onClick={() => {
                                         router.push(`/update/structure/${id}`);
                                     }}
-                                    supInfo="date de création"
-                                    title={niceFullDate(mainLocation.startDate)}
+                                    supInfo={`date de création sous le nom ${mainName.usualName}`}
+                                    title={mainName.startDate}
                                     actionLabel="Modifier"
                                 />
                             </Col>
-                            {identifiers.map((identifier, i) => {
-                                return (
-                                    <Col
-                                        key={identifier.id}
-                                        n="4"
-                                        spacing={
-                                            i === identifiers.length - 1
-                                                ? 'pb-8w'
-                                                : ''
-                                        }
-                                    >
-                                        <CardInfo
-                                            onClick={() => {
-                                                router.push(
-                                                    `/update/structure/${id}`
-                                                );
-                                            }}
-                                            supInfo={identifier.type}
-                                            title={identifier.value}
-                                            actionLabel="Modifier"
-                                        />
+                            <Col n="12">
+                                <Row gutters>
+                                    <Col>
+                                        <ShowMoreList
+                                            display={identifiers.length}
+                                        >
+                                            {renderIdentifiers()}
+                                        </ShowMoreList>
                                     </Col>
-                                );
-                            })}
+                                </Row>
+                            </Col>
                         </Row>
-
                         <Row>
-                            <Col>
+                            <Col n="12">
                                 <Callout hasInfoIcon={false}>
                                     <CalloutTitle>
                                         Contacts génériques

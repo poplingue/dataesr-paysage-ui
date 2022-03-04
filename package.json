@@ -12,7 +12,7 @@
     "cy:run-rec": "yarn cy:run-only --record --key 27e5d3f3-7cbb-4ff6-8ffd-8851e432d76a",
     "cy:open-only": "cypress open --config-file cypress/config/base.json",
     "cy:run-only": "cypress run --config-file cypress/config/base.json",
-    "cy:run-only:prod": "cypress run --env ACCOUNT=$CYPRESS_ACCOUNT PASSWORD=$CYPRESS_PASSWORD configFile=prod --config-file cypress/config/base.json",
+    "cy:run-only:prod": "cypress run --env ACCOUNT=$CYPRESS_ACCOUNT PASSWORD=$CYPRESS_PASSWORD --config-file cypress/config/base.json --env configFile=prod",
     "cy:open": "start-server-and-test dev 3002 cy:open-only",
     "cy:run": "start-server-and-test dev 3002 cy:run-only",
     "cy:run:prod": "start-server-and-test dev 3002 cy:run-only",
