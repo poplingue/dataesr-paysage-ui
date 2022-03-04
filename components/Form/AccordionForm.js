@@ -2,15 +2,15 @@ import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './Form.module.scss';
 
 // TODO add proptypes
 export default function AccordionForm({
-    size = 'lg',
-    newTitle,
+    size = 'md',
+    sectionTitle,
+    sectionId,
     children,
     dataSection,
     spacing,
@@ -30,12 +30,12 @@ export default function AccordionForm({
     } = useContext(AppContext);
 
     useEffect(() => {
-        const section = validSections[cleanString(newTitle)];
+        const section = validSections[sectionId];
 
         if (section) {
             setSectionStatus(section.saved ? 'valid' : 'warning');
         }
-    }, [newTitle, savingSections, validSections]);
+    }, [savingSections, sectionId, validSections]);
 
     const renderTitle = () => {
         const colorIcon = {
@@ -51,7 +51,7 @@ export default function AccordionForm({
                 size="1x"
                 name="ri-shield-check-line"
             >
-                {newTitle}
+                {sectionTitle}
             </Icon>
         );
     };

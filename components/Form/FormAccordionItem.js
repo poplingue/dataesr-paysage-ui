@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString, getFormName, getSection } from '../../helpers/utils';
+import { getFormName, getSection } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -13,7 +13,7 @@ import WrapperFieldType from '../WrapperFieldType';
 
 export default function FormAccordionItem({
     content,
-    newTitle,
+    sectionTitle,
     deletable = false,
     index,
     subObject,
@@ -254,7 +254,7 @@ export default function FormAccordionItem({
                                         field={field}
                                         subObject={subObject}
                                         updateValidSection={updateValidSection}
-                                        newTitle={newTitle}
+                                        sectionTitle={sectionTitle}
                                     />
                                 </Col>
                             </Row>
@@ -267,9 +267,13 @@ export default function FormAccordionItem({
                     <Row gutters justifyContent="right" spacing="pt-2w">
                         <DeleteButton
                             display={deletable}
-                            title={newTitle}
+                            title={sectionTitle}
                             onClick={async () =>
-                                await deleteSection(subObject, index, newTitle)
+                                await deleteSection(
+                                    subObject,
+                                    index,
+                                    sectionTitle
+                                )
                             }
                         />
                         {/* TODO remove data-testId */}
@@ -279,9 +283,7 @@ export default function FormAccordionItem({
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, orange]}
                                 title="Annuler"
-                                dataTestId={`${cleanString(
-                                    newTitle
-                                )}-resetSection-button`}
+                                dataTestId={`${subObject}-resetSection-button`}
                             />
                         </Col>
                         <Col n="6 lg-2" className="txt-right">
@@ -290,7 +292,7 @@ export default function FormAccordionItem({
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, green]}
                                 title="Sauvegarder"
-                                dataTestId={`${newTitle}-save-button`}
+                                dataTestId={`${subObject}-save-button`}
                             />
                         </Col>
                     </Row>

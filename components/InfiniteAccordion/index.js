@@ -159,7 +159,7 @@ export default function InfiniteAccordion({
                         <ul className="p-0">
                             {!!sections[subObjectType].length &&
                                 sections[subObjectType].map((id, i) => {
-                                    const newTitle = `${title}#${id}`;
+                                    const sectionTitle = `${title} ${id}`;
                                     const deletable = i !== 0;
 
                                     return (
@@ -169,6 +169,7 @@ export default function InfiniteAccordion({
                                             colSize="12"
                                         >
                                             <AccordionForm
+                                                sectionId={`${subObjectType}#${id}`}
                                                 spacing={
                                                     i ===
                                                     sections[subObjectType]
@@ -179,12 +180,12 @@ export default function InfiniteAccordion({
                                                 }
                                                 color={yellow}
                                                 keepOpen
-                                                newTitle={newTitle}
+                                                sectionTitle={sectionTitle}
                                             >
                                                 <FormAccordionItem
                                                     subObject={`${subObjectType}#${id}`}
                                                     content={content}
-                                                    newTitle={newTitle}
+                                                    sectionTitle={sectionTitle}
                                                     deleteSection={
                                                         deleteSection
                                                     }

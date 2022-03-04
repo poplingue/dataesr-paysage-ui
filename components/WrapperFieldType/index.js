@@ -9,7 +9,7 @@ export default function WrapperFieldType({
     field,
     subObject,
     updateValidSection,
-    newTitle,
+    sectionTitle,
 }) {
     const {
         stateForm: { dependencies },
@@ -40,7 +40,7 @@ export default function WrapperFieldType({
             content={content}
             updateValidSection={updateValidSection}
             subObject={subObject}
-            section={newTitle}
+            section={sectionTitle}
             title={title}
         />
     );
@@ -51,7 +51,7 @@ export default function WrapperFieldType({
             validatorId={validatorId}
             subObject={subObject}
             value={value}
-            section={newTitle}
+            section={sectionTitle}
             type={fieldType}
             title={title}
             infinite={infinite}

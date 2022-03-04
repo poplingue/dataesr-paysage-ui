@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { getObjectType } from '../../../config/utils';
+import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import ObjectService from '../../../services/Object.service';
 
@@ -20,15 +20,15 @@ export default function SearchObject({ data }) {
             <Container>
                 <Row gutters>
                     {data.map((obj) => {
-                        const name = getObjectType(objectCode)
-                            ? getObjectType(objectCode).name
+                        const name = getObjectTypeDetails(objectCode)
+                            ? getObjectTypeDetails(objectCode).name
                             : objectCode;
 
                         return (
                             <Col n="3" key={obj.id}>
                                 <CardLink
                                     link={`/object/${
-                                        getObjectType(objectCode).name
+                                        getObjectTypeDetails(objectCode).name
                                     }/${obj.id}`}
                                     supInfo={name}
                                     subInfo={obj.id}

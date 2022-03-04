@@ -28,7 +28,7 @@ context('Structure publish', () => {
 
             cy.get('[data-cy="true"]').find('input').check({ force: true });
 
-            cy.get(`[data-testid="Identifiants#${id}-save-button"]`).click();
+            cy.get(`[data-testid="identifiers#${id}-save-button"]`).click();
 
             cy.wait('@patch');
 

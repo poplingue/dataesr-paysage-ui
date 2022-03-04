@@ -1,12 +1,9 @@
 import dynamic from 'next/dynamic';
-
-import 'react-tabulator/css/tabulator_materialize.min.css';
-import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
-
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
 import LinkTo from '../../../../components/LinkTo';
 import { StructurePageSkeleton } from '../../../../config/objects';
+import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
@@ -88,7 +85,9 @@ export default function PaysageObject({ data }) {
                             initialSkeleton={initSkeleton}
                         >
                             <LinkTo
-                                text="modifier"
+                                text={`modifier ${
+                                    getObjectTypeDetails(null, type).text
+                                }`}
                                 href={`/update/structure/${id}`}
                             />
                         </ToolBox>
