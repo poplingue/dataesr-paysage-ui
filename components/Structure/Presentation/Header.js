@@ -102,7 +102,32 @@ export default function Header() {
         }
     }, [id, type]);
 
-    return (
+    const renderIdentifiers = () => {
+        return identifiers.map((identifier, i) => {
+            const { length } = identifiers;
+            const { type, value, id } = identifier;
+
+            return (
+                <Col
+                    key={id}
+                    n={length > 3 ? '4' : '6'}
+                    spacing={i === length - 1 ? 'pb-8w' : ''}
+                >
+                    <CardInfo
+                        onClick={() => {
+                            router.push(`/update/structure/${id}`);
+                        }}
+                        supInfo={type}
+                        title={value}
+                        actionLabel="Modifier"
+                    />
+                </Col>
+            );
+        });
+    };
+
+    
+return (
         <Container>
             <Row gutters>
                 <Col n="12">
@@ -178,43 +203,7 @@ export default function Header() {
                                         <ShowMoreList
                                             display={identifiers.length}
                                         >
-                                            {identifiers.map(
-                                                (identifier, i) => {
-                                                    return (
-                                                        <Col
-                                                            key={identifier.id}
-                                                            n={
-                                                                identifiers.length >
-                                                                3
-                                                                    ? '4'
-                                                                    : '6'
-                                                            }
-                                                            spacing={
-                                                                i ===
-                                                                identifiers.length -
-                                                                    1
-                                                                    ? 'pb-8w'
-                                                                    : ''
-                                                            }
-                                                        >
-                                                            <CardInfo
-                                                                onClick={() => {
-                                                                    router.push(
-                                                                        `/update/structure/${id}`
-                                                                    );
-                                                                }}
-                                                                supInfo={
-                                                                    identifier.type
-                                                                }
-                                                                title={
-                                                                    identifier.value
-                                                                }
-                                                                actionLabel="Modifier"
-                                                            />
-                                                        </Col>
-                                                    );
-                                                }
-                                            )}
+                                            {renderIdentifiers()}
                                         </ShowMoreList>
                                     </Col>
                                 </Row>
