@@ -40,6 +40,11 @@ Open [http://localhost:3002](http://localhost:3002)
    "type": "text | checkbox | multisearch | radio",
    "validatorId": "myValidatorId",
    "staticValues": [...],
+   "dependency": {
+      "validatorId": "otherValidatorId",
+      "action": "disabled | hidden",
+      "rule": "validator | emptiness"
+    }
  }
 ```
 

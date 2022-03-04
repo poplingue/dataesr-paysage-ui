@@ -92,7 +92,8 @@
             "validatorId": "nameEn",
             "dependency": {
               "validatorId": "acronymEn",
-              "action": "disabled"
+              "action": "disabled",
+              "rule": "validator"
             }
           },
           {
