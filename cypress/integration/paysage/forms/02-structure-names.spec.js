@@ -17,7 +17,7 @@ context('Structure new form', () => {
                 .find('select')
                 .select('aux');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
             cy.reload();
@@ -44,7 +44,7 @@ context('Structure new form', () => {
                 .find('input')
                 .type('OtherName#1');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
 
@@ -70,7 +70,7 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('ShortName');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@ShortName');
 
@@ -84,7 +84,7 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('NoShortName');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@NoShortName');
 

@@ -159,6 +159,7 @@ const CreateForm = ({ jsonForm, color }) => {
                             </Col>
                         ) : (
                             <AccordionForm
+                                sectionId={subObject}
                                 key={i}
                                 color={color}
                                 dataSection={dataSection}
@@ -167,7 +168,7 @@ const CreateForm = ({ jsonForm, color }) => {
                                 <FormAccordionItem
                                     content={content}
                                     subObject={subObject}
-                                    newTitle={sectionTitle}
+                                    sectionTitle={sectionTitle}
                                 />
                             </AccordionForm>
                         );

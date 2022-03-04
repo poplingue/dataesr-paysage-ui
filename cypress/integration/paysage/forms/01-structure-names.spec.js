@@ -27,7 +27,7 @@ context('Structure new form infinite otherName and article', () => {
                 .find('input')
                 .type('OtherName#1');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 
             cy.reload();
@@ -54,7 +54,7 @@ context('Structure new form infinite otherName and article', () => {
                 .find('input')
                 .type('OtherName#0');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 
             cy.reload();

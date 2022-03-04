@@ -22,13 +22,15 @@ export function getVal(key) {
 /**
  *
  * @param id
- * @returns string
+ * @param name
+ * @returns {*}
  */
-export function getObjectType(id) {
+export function getObjectTypeDetails(id, name) {
     const objectTypes = {
         0: {
             name: 'structure',
             title: 'Établissement',
+            text: 'la structure',
             color: '--green-tilleul-verveine-main-707',
             colorClassName: 'Yellow',
         },
@@ -42,9 +44,20 @@ export function getObjectType(id) {
         3: { name: 'category', title: 'Catégorie' },
     };
 
+    if (name) {
+        id = Object.keys(objectTypes).find(
+            (id) => objectTypes[id].name === name
+        );
+    }
+
     return objectTypes[id];
 }
 
+/**
+ *
+ * @param form
+ * @returns {*}
+ */
 export const mapFields = (form) => {
     // TODO handle nested object like geometry
     const obj = {

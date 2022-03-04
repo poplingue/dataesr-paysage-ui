@@ -67,9 +67,8 @@ const useAccordions = (init = false) => {
 
     const Button = (
         <FieldButton
-            colors={[pink, white]}
             dataTestId="btn-expand-close"
-            title="Réduire / Ouvrir"
+            title="Réduire / Ouvrir les sections"
             onClick={expandCloseAll}
         />
     );

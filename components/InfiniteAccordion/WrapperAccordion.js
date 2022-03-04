@@ -1,10 +1,15 @@
 import grid from '../../helpers/imports';
 
-export default function WrapperAccordion({ sectionRef, colSize, children }) {
+export default function WrapperAccordion({
+    sectionRef,
+    colSize,
+    dataId,
+    children,
+}) {
     const { Col, Row, Container } = grid();
 
     return (
-        <li>
+        <li data-id={dataId}>
             <section ref={sectionRef}>
                 <Container fluid>
                     <Row gutters>

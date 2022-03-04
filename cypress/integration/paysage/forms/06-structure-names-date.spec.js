@@ -22,7 +22,7 @@ context('Structure new form', () => {
 
             cy.get(`[data-testId="today-enddate-names#${id}"]`).click();
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
 

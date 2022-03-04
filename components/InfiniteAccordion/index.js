@@ -159,16 +159,20 @@ export default function InfiniteAccordion({
                         <ul className="p-0">
                             {!!sections[subObjectType].length &&
                                 sections[subObjectType].map((id, i) => {
-                                    const newTitle = `${title}#${id}`;
+                                    const sectionTitle = `${title} ${i + 1}/${
+                                        sections[subObjectType].length
+                                    }`;
                                     const deletable = i !== 0;
 
                                     return (
                                         <WrapperAccordion
+                                            dataId={id}
                                             key={`${dataAttSection}-${id}`}
                                             sectionRef={sectionRefs[i]}
                                             colSize="12"
                                         >
                                             <AccordionForm
+                                                sectionId={`${subObjectType}#${id}`}
                                                 spacing={
                                                     i ===
                                                     sections[subObjectType]
@@ -179,12 +183,12 @@ export default function InfiniteAccordion({
                                                 }
                                                 color={yellow}
                                                 keepOpen
-                                                newTitle={newTitle}
+                                                sectionTitle={sectionTitle}
                                             >
                                                 <FormAccordionItem
                                                     subObject={`${subObjectType}#${id}`}
                                                     content={content}
-                                                    newTitle={newTitle}
+                                                    sectionTitle={sectionTitle}
                                                     deleteSection={
                                                         deleteSection
                                                     }

@@ -1,5 +1,5 @@
 import getConfig from 'next/config';
-import { getObjectType } from '../config/utils';
+import { getObjectTypeDetails } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
 
@@ -30,7 +30,7 @@ export const objectService = {
     getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/${
-            getObjectType(objectCode).name
+            getObjectTypeDetails(objectCode).name
         }`;
 
         const requestOptions = fetchHelper.requestOptions('GET');

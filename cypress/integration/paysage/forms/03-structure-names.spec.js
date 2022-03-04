@@ -33,7 +33,7 @@ context('Structure new form', () => {
                 .find('input')
                 .type('Officiel1');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
 
@@ -54,7 +54,7 @@ context('Structure new form', () => {
                     .find('input')
                     .type('Officiel2');
 
-                cy.get(`[data-testid="Noms#${id2}-save-button"]`).click();
+                cy.get(`[data-testid="names#${id2}-save-button"]`).click();
 
                 cy.wait('@patch');
 
@@ -81,7 +81,7 @@ context('Structure new form', () => {
                 .find('input')
                 .type('Brand1');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 
             cy.intercept('POST', '/api/structure/**').as('post');
@@ -100,7 +100,7 @@ context('Structure new form', () => {
                     .type('Brand2');
 
                 cy.get(
-                    `[data-testid="btn-delete-noms#${cleanString(id2)}"]`
+                    `[data-testid="btn-delete-noms${cleanString(id2)}"]`
                 ).click();
 
                 cy.wait('@delete');

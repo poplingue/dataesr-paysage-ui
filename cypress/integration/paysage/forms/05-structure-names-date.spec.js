@@ -23,7 +23,7 @@ context('Structure new form', () => {
                 .find('select')
                 .select('2000');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 
             cy.reload();
@@ -53,7 +53,7 @@ context('Structure new form', () => {
                 `[data-testId="firstJanuary-startdate-names#${id}"]`
             ).click();
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
 
@@ -84,7 +84,7 @@ context('Structure new form', () => {
                 .find('select')
                 .select('2013');
 
-            cy.get(`[data-testid="Noms#${id}-save-button"]`).click();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 
             cy.reload();
