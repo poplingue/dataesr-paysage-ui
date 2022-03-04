@@ -69,7 +69,7 @@ export default function WrapperFieldType({
 
         // Handle dependencies of the current field
         if (dependency) {
-            const { validatorId: minorValidationId, action } = dependency;
+            const { validatorId: minorValidationId, action, rule } = dependency;
             const uidMinor = getUniqueId(
                 formName,
                 subObject,
@@ -83,6 +83,7 @@ export default function WrapperFieldType({
                     payload: {
                         [uidMinor]: {
                             action,
+                            rule: rule || 'validator',
                             major: uidMajor,
                         },
                     },

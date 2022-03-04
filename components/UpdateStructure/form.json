@@ -92,8 +92,8 @@
             "validatorId": "nameEn",
             "dependency": {
               "validatorId": "acronymEn",
-              "action": "disabled",
-              "rule": "validator"
+              "action": "hidden",
+              "rule": "emptiness"
             }
           },
           {

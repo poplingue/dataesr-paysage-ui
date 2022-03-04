@@ -33,6 +33,12 @@ export const configValidator = {
         required: false,
     },
     nameEn: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/^[a-zA-Z\s]*$/g),
+                errorMsg: 'Uniquement des lettres',
+            }),
+        ],
         required: false,
     },
     acronymFr: {

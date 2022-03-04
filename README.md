@@ -32,22 +32,24 @@ Open [http://localhost:3002](http://localhost:3002)
 
 ### Example adding a new field in a form
 
+#### first...
 ```bash
 # /UpdateStructure/form.json 
 
 {
    "title": "My new field",
    "type": "text | checkbox | multisearch | radio",
-   "validatorId": "myValidatorId",
+   "validatorId": "myMajorValidatorId",
    "staticValues": [...],
    "dependency": {
-      "validatorId": "otherValidatorId",
+      "validatorId": "myMinorValidatorId",
       "action": "disabled | hidden",
       "rule": "validator | emptiness"
     }
  }
 ```
 
+#### ...then...
 ```bash
 # /UpdateStructure/configValidator.json 
 
@@ -62,6 +64,7 @@ myValidatorId: {
 }
 ```
 
+#### finally...
 ```bash
 # /config/utils.js 
 
