@@ -2,6 +2,7 @@ import getConfig from 'next/config';
 import { getObjectTypeDetails } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
+import { niceFullDate } from '../helpers/utils';
 
 export const objectService = {
     newId: async (message) => {
@@ -63,6 +64,18 @@ export const objectService = {
             .catch((err) => {
                 return Promise.reject(err);
             });
+    },
+
+    handlerMainName: () => {
+        return {
+            get(target, property) {
+                if (property === 'startDate') {
+                    return niceFullDate(target.startDate);
+                }
+
+                return target[property];
+            },
+        };
     },
 
     handlerMainLocalisation: () => {

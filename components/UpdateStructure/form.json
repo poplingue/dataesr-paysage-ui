@@ -2,42 +2,6 @@
   {
     "form": [
       {
-        "title": "Identifiants",
-        "subObject": "identifiers",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Type",
-            "type": "text",
-            "validatorId": "type",
-            "dependency": {
-              "validatorId": "value",
-              "action": "hidden"
-            }
-          },
-          {
-            "title": "Valeur",
-            "type": "text",
-            "validatorId": "value"
-          },
-          {
-            "title": "État",
-            "type": "radio",
-            "validatorId": "active",
-            "staticValues": [
-              {
-                "value": true,
-                "labelValue": "Actif"
-              },
-              {
-                "value": false,
-                "labelValue": "Inactif"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "title": "Noms",
         "subObject": "names",
         "infinite": true,
@@ -185,6 +149,42 @@
             "title": "Date de fin",
             "type": "date",
             "validatorId": "endDate"
+          }
+        ]
+      },
+      {
+        "title": "Identifiants",
+        "subObject": "identifiers",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type",
+            "dependency": {
+              "validatorId": "value",
+              "action": "hidden"
+            }
+          },
+          {
+            "title": "Valeur",
+            "type": "text",
+            "validatorId": "value"
+          },
+          {
+            "title": "État",
+            "type": "radio",
+            "validatorId": "active",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Actif"
+              },
+              {
+                "value": false,
+                "labelValue": "Inactif"
+              }
+            ]
           }
         ]
       }
