@@ -1,3 +1,7 @@
+import { useRouter } from 'next/router';
+import { useContext, useEffect } from 'react';
+import { AppContext } from '../../context/GlobalState';
+import { getFormName, getUniqueId } from '../../helpers/utils';
 import GroupField from '../GroupField';
 import SwitchField from '../SwitchField';
 
@@ -8,6 +12,10 @@ export default function WrapperFieldType({
     newTitle,
 }) {
     const {
+        stateForm: { dependencies },
+        dispatchForm: dispatch,
+    } = useContext(AppContext);
+    const {
         type: fieldType,
         infinite,
         hint,
@@ -16,23 +24,27 @@ export default function WrapperFieldType({
         value,
         title,
         content,
+        dependency,
     } = field;
 
-    if (fieldType === 'group') {
-        return (
-            <GroupField
-                hint={hint}
-                validatorId={validatorId}
-                content={content}
-                updateValidSection={updateValidSection}
-                subObject={subObject}
-                section={newTitle}
-                title={title}
-            ></GroupField>
-        );
-    }
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const formName = getFormName(pathname, object);
 
-    return (
+    const groupField = (
+        <GroupField
+            hint={hint}
+            validatorId={validatorId}
+            content={content}
+            updateValidSection={updateValidSection}
+            subObject={subObject}
+            section={newTitle}
+            title={title}
+        />
+    );
+    const switchField = (
         <SwitchField
             hint={hint}
             updateValidSection={updateValidSection}
@@ -46,4 +58,38 @@ export default function WrapperFieldType({
             staticValues={staticValues}
         />
     );
+
+    const wrapperFieldType = {
+        true: () => groupField,
+        false: () => switchField,
+    };
+
+    useEffect(() => {
+        const check = !!dependencies[validatorId];
+
+        // Handle dependencies of the current field
+        if (dependency) {
+            const { validatorId: minorValidationId, action } = dependency;
+            const uidMinor = getUniqueId(
+                formName,
+                subObject,
+                minorValidationId
+            );
+            const uidMajor = getUniqueId(formName, subObject, validatorId);
+
+            if (!dependencies[uidMinor] && !check) {
+                dispatch({
+                    type: 'UPDATE_FORM_DEPENDENCIES',
+                    payload: {
+                        [uidMinor]: {
+                            action,
+                            major: uidMajor,
+                        },
+                    },
+                });
+            }
+        }
+    }, [dependencies, dependency, dispatch, formName, subObject, validatorId]);
+
+    return wrapperFieldType[fieldType === 'group']();
 }

@@ -212,6 +212,13 @@ const reducersForm = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_FORM_DEPENDENCIES: {
+            return {
+                ...state,
+                dependencies: { ...state.dependencies, ...action.payload },
+            };
+        }
+
         default:
             break;
     }

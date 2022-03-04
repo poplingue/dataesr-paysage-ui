@@ -13,6 +13,7 @@ import {
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
+import { FieldDependency } from '../FieldDependencie';
 import SavingWrapper from '../SavingWrapper';
 
 function CustomRadio({
@@ -109,45 +110,51 @@ function CustomRadio({
     }, [type, uid, updateValidSection]);
 
     return (
-        <Container fluid>
-            <section className="wrapper-input">
-                <Row>
-                    <Col spacing="py-1w">
-                        <SavingWrapper unSaved={unSaved}>
-                            <RadioGroup
-                                isInline
-                                legend={title}
-                                hint={hint}
-                                data-field={uid}
-                                message={message}
-                                messageType={type}
-                            >
-                                {radioValues.map((radio, i) => {
-                                    const { value, label } = radio;
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <Container fluid>
+                <section className="wrapper-input">
+                    <Row>
+                        <Col spacing="py-1w">
+                            <SavingWrapper unSaved={unSaved}>
+                                <RadioGroup
+                                    isInline
+                                    legend={title}
+                                    hint={hint}
+                                    data-field={uid}
+                                    message={message}
+                                    messageType={type}
+                                >
+                                    {radioValues.map((radio, i) => {
+                                        const { value, label } = radio;
 
-                                    const checked = formName
-                                        ? value ===
-                                          getFieldValue(forms, formName, uid)
-                                        : false;
+                                        const checked = formName
+                                            ? value ===
+                                              getFieldValue(
+                                                  forms,
+                                                  formName,
+                                                  uid
+                                              )
+                                            : false;
 
-                                    return (
-                                        <Radio
-                                            size="sm"
-                                            data-cy={value}
-                                            key={i}
-                                            label={label}
-                                            value={value.toString()}
-                                            checked={checked}
-                                            onChange={onChange}
-                                        />
-                                    );
-                                })}
-                            </RadioGroup>
-                        </SavingWrapper>
-                    </Col>
-                </Row>
-            </section>
-        </Container>
+                                        return (
+                                            <Radio
+                                                size="sm"
+                                                data-cy={value}
+                                                key={i}
+                                                label={label}
+                                                value={value.toString()}
+                                                checked={checked}
+                                                onChange={onChange}
+                                            />
+                                        );
+                                    })}
+                                </RadioGroup>
+                            </SavingWrapper>
+                        </Col>
+                    </Row>
+                </section>
+            </Container>
+        </FieldDependency>
     );
 }
 

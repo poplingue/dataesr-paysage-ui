@@ -15,6 +15,7 @@ import {
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
+import { FieldDependency } from '../FieldDependencie';
 import SavingWrapper from '../SavingWrapper';
 
 export default function CustomSelect({
@@ -141,27 +142,29 @@ export default function CustomSelect({
     }, [type, uid, updateValidSection]);
 
     return (
-        <SavingWrapper
-            unSaved={unSaved}
-            inline={matchRegex(`Day|Year|Month$`, uid)}
-        >
-            <section className="wrapper-select">
-                <Select
-                    message={message}
-                    messageType={type || undefined}
-                    data-field={uid}
-                    onChange={onChange}
-                    selected={fieldValue}
-                    hint={`${
-                        validatorConfig && !validatorConfig.required
-                            ? '(optionnel)'
-                            : ''
-                    }`}
-                    label={title}
-                    options={options}
-                />
-            </section>
-        </SavingWrapper>
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <SavingWrapper
+                unSaved={unSaved}
+                inline={matchRegex(`Day|Year|Month$`, uid)}
+            >
+                <section className="wrapper-select">
+                    <Select
+                        message={message}
+                        messageType={type || undefined}
+                        data-field={uid}
+                        onChange={onChange}
+                        selected={fieldValue}
+                        hint={`${
+                            validatorConfig && !validatorConfig.required
+                                ? '(optionnel)'
+                                : ''
+                        }`}
+                        label={title}
+                        options={options}
+                    />
+                </section>
+            </SavingWrapper>
+        </FieldDependency>
     );
 }
 

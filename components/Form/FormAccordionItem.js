@@ -42,8 +42,7 @@ export default function FormAccordionItem({
 
     const updateValidSection = useCallback(
         (id, validType) => {
-            const title = cleanString(newTitle);
-            const validSection = validSections[title];
+            const validSection = validSections[subObject];
             let section = null;
             const currentSection = getSection(id);
 
@@ -54,7 +53,7 @@ export default function FormAccordionItem({
                 setDisabled(false);
 
                 section = {
-                    [title]: {
+                    [subObject]: {
                         ...validSection,
                         ...{ saved: false },
                     },
@@ -67,7 +66,7 @@ export default function FormAccordionItem({
                     (validSection && validSection[id] !== validType))
             ) {
                 section = {
-                    [title]: {
+                    [subObject]: {
                         ...validSection,
                         ...{ [id]: validType, saved: disabled },
                     },
@@ -81,19 +80,18 @@ export default function FormAccordionItem({
                 });
             }
         },
-        [newTitle, validSections, savingSections, disabled, dispatch]
+        [disabled, dispatch, savingSections, subObject, validSections]
     );
 
     const save = async () => {
-        const title = cleanString(newTitle);
-        const currentSection = validSections[title];
+        const currentSection = validSections[subObject];
 
         if (validSections && currentSection) {
             const valid = Object.values(currentSection).indexOf('error') < 0;
 
             const payload = {
                 section: {
-                    [title]: {
+                    [subObject]: {
                         ...currentSection,
                         ...{ saved: valid },
                     },
@@ -182,10 +180,9 @@ export default function FormAccordionItem({
      * @returns {Promise<void>}
      */
     const resetSection = async () => {
-        const title = cleanString(newTitle);
-        const validSection = validSections[title];
+        const validSection = validSections[subObject];
         const section = {
-            [title]: {
+            [subObject]: {
                 ...validSection,
                 ...{ saved: true },
             },
