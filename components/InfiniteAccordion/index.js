@@ -159,11 +159,14 @@ export default function InfiniteAccordion({
                         <ul className="p-0">
                             {!!sections[subObjectType].length &&
                                 sections[subObjectType].map((id, i) => {
-                                    const sectionTitle = `${title} ${id}`;
+                                    const sectionTitle = `${title} ${i + 1}/${
+                                        sections[subObjectType].length
+                                    }`;
                                     const deletable = i !== 0;
 
                                     return (
                                         <WrapperAccordion
+                                            dataId={id}
                                             key={`${dataAttSection}-${id}`}
                                             sectionRef={sectionRefs[i]}
                                             colSize="12"

@@ -86,7 +86,7 @@ export default function PaysageObject({ data }) {
                         >
                             <LinkTo
                                 text={`modifier ${
-                                    getObjectTypeDetails(null, type).text
+                                    getObjectTypeDetails('', type).text
                                 }`}
                                 href={`/update/structure/${id}`}
                             />
