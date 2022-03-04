@@ -21,9 +21,9 @@ export function FieldDependency({ children, subObject, validatorId }) {
     const formName = getFormName(pathname, object);
 
     useEffect(() => {
+        const uid = getUniqueId(formName, subObject, validatorId);
         const currentValidSection = validSections[subObject];
-        const currentDependency =
-            dependencies[getUniqueId(formName, subObject, validatorId)];
+        const currentDependency = dependencies[uid];
 
         if (currentValidSection && currentDependency) {
             setAction(
