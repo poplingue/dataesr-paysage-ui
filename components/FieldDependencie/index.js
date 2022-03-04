@@ -8,11 +8,10 @@ export function FieldDependency({ children, subObject, validatorId }) {
     const {
         stateForm: { dependencies, validSections },
     } = useContext(AppContext);
-    const [propAction, setPropAction] = useState('');
+    const [action, setAction] = useState('');
     const objClass = {
         hidden: styles.IsHidden,
         disabled: styles.IsDisable,
-        '': 'test',
     };
 
     const {
@@ -27,23 +26,16 @@ export function FieldDependency({ children, subObject, validatorId }) {
             dependencies[getUniqueId(formName, subObject, validatorId)];
 
         if (currentValidSection && currentDependency) {
-            setPropAction(
+            setAction(
                 currentValidSection[currentDependency.major] !== 'valid'
                     ? currentDependency.action
                     : ''
             );
         }
-    }, [
-        dependencies,
-        formName,
-        propAction,
-        subObject,
-        validSections,
-        validatorId,
-    ]);
+    }, [dependencies, formName, action, subObject, validSections, validatorId]);
 
     return cloneElement(children, {
         ...children.props,
-        className: objClass[propAction],
+        className: objClass[action],
     });
 }

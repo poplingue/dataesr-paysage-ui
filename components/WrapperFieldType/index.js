@@ -33,60 +33,18 @@ export default function WrapperFieldType({
     } = useRouter();
     const formName = getFormName(pathname, object);
 
-    useEffect(() => {
-        const check = !!dependencies[field.validatorId];
-
-        // Handle dependencies of the current field
-        if (dependency) {
-            if (
-                !dependencies[
-                    getUniqueId(formName, subObject, dependency.validatorId)
-                ] &&
-                !check
-            ) {
-                dispatch({
-                    type: 'UPDATE_FORM_DEPENDENCES',
-                    payload: {
-                        [getUniqueId(
-                            formName,
-                            subObject,
-                            dependency.validatorId
-                        )]: {
-                            action: dependency.action,
-                            major: getUniqueId(
-                                formName,
-                                subObject,
-                                field.validatorId
-                            ),
-                        },
-                    },
-                });
-            }
-        }
-    }, [
-        dependencies,
-        dispatch,
-        field.dependency,
-        field.validatorId,
-        formName,
-        subObject,
-    ]);
-
-    if (fieldType === 'group') {
-        return (
-            <GroupField
-                hint={hint}
-                validatorId={validatorId}
-                content={content}
-                updateValidSection={updateValidSection}
-                subObject={subObject}
-                section={newTitle}
-                title={title}
-            />
-        );
-    }
-
-    return (
+    const groupField = (
+        <GroupField
+            hint={hint}
+            validatorId={validatorId}
+            content={content}
+            updateValidSection={updateValidSection}
+            subObject={subObject}
+            section={newTitle}
+            title={title}
+        />
+    );
+    const switchField = (
         <SwitchField
             hint={hint}
             updateValidSection={updateValidSection}
@@ -100,4 +58,38 @@ export default function WrapperFieldType({
             staticValues={staticValues}
         />
     );
+
+    const wrapperFieldType = {
+        true: () => groupField,
+        false: () => switchField,
+    };
+
+    useEffect(() => {
+        const check = !!dependencies[validatorId];
+
+        // Handle dependencies of the current field
+        if (dependency) {
+            const { validatorId: minorValidationId, action } = dependency;
+            const uidMinor = getUniqueId(
+                formName,
+                subObject,
+                minorValidationId
+            );
+            const uidMajor = getUniqueId(formName, subObject, validatorId);
+
+            if (!dependencies[uidMinor] && !check) {
+                dispatch({
+                    type: 'UPDATE_FORM_DEPENDENCIES',
+                    payload: {
+                        [uidMinor]: {
+                            action,
+                            major: uidMajor,
+                        },
+                    },
+                });
+            }
+        }
+    }, [dependencies, dependency, dispatch, formName, subObject, validatorId]);
+
+    return wrapperFieldType[fieldType === 'group']();
 }
