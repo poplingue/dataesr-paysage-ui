@@ -2,7 +2,6 @@ import cookie from 'cookie';
 import {
     genericErrorMsg,
     invalidToken,
-    noTokensError,
 } from './internalMessages';
 import { cookieOptions } from './utils';
 
@@ -124,8 +123,6 @@ export const fetchHelper = {
             request.statusText === 'Unauthorized'
         ) {
             res.status(401).send(invalidToken);
-        } else if (!tokens) {
-            res.status(401).send(noTokensError);
         }
     },
 };
