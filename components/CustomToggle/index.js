@@ -1,5 +1,6 @@
 import { Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import {
@@ -10,8 +11,7 @@ import {
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 
-// TODO add propTypes
-export default function CustomToggle({ subObject, title, validatorId }) {
+function CustomToggle({ subObject, title, validatorId }) {
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -100,3 +100,11 @@ export default function CustomToggle({ subObject, title, validatorId }) {
         />
     );
 }
+
+CustomToggle.propTypes = {
+    subObject: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    validatorId: PropTypes.string.isRequired,
+};
+
+export default CustomToggle;

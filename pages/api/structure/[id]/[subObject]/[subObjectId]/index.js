@@ -41,6 +41,7 @@ const handler = nc()
             );
 
             const request = await fetch(url, requestOptions);
+
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();

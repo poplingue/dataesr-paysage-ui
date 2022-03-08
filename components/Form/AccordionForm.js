@@ -1,4 +1,5 @@
 import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
@@ -6,8 +7,7 @@ import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './Form.module.scss';
 
-// TODO add proptypes
-export default function AccordionForm({
+function AccordionForm({
     size = 'md',
     sectionTitle,
     sectionId,
@@ -80,3 +80,22 @@ export default function AccordionForm({
         </Container>
     );
 }
+
+AccordionForm.default = {
+    size: 'md',
+    spacing: '',
+    dataSection: '',
+};
+AccordionForm.propTypes = {
+    size: PropTypes.string,
+    sectionTitle: PropTypes.string.isRequired,
+    sectionId: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+    dataSection: PropTypes.string,
+    spacing: PropTypes.string,
+};
+export default AccordionForm;

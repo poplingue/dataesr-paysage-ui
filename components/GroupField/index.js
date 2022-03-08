@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
+    checkFlatMap,
     getFieldValue,
     getFormName,
     getSubObjectType,
@@ -53,16 +54,16 @@ export default function GroupField({
             await DBService.set(payload, formName);
         }
 
-        // TODO make generic
         // group field
         const groupUid = getUniqueId(formName, subObject, validatorId);
 
         const groupValues = uidsGroup.flatMap((uidg) => {
             const fieldValue = getFieldValue(forms, formName, uidg);
 
-            return uid !== uidg && fieldValue ? parseFloat(fieldValue) : [];
+            return checkFlatMap[uid !== uidg && fieldValue](fieldValue);
         });
 
+        // TODO make generic
         const groupPayload = {
             value: { coordinates: [...groupValues, parseFloat(newValue)] },
             uid: groupUid,

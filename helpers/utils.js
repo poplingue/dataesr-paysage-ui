@@ -365,10 +365,13 @@ export function isArray(value) {
 
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
-// TODO add cookieOptions
+
 export const cookieOptions = {
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 60 * 60,
     path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
 };
 
 /**
@@ -388,3 +391,12 @@ export function matchRegex(pattern, str) {
 
     return obj[!!matchField](matchField);
 }
+
+/**
+ *
+ * @type {{true: (function(): *[]), false: (function(*): *)}}
+ */
+export const checkFlatMap = {
+    false: () => [],
+    true: (value) => value,
+};

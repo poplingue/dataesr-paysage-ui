@@ -30,7 +30,7 @@ context('Account manager', () => {
 
         cy.get('[data-cy=user]').should(
             'have.text',
-            'Salut à toi mollie-active'
+            'Salut à toi Mollie Dickinson'
         );
     });
 });
