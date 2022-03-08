@@ -1,8 +1,10 @@
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
+    checkFlatMap,
     getField,
     getFieldValue,
     getForm,
@@ -17,7 +19,6 @@ import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import Field from './Field';
 
-// TODO add propTypes
 function InfiniteField({ children, title, section, validatorId, subObject }) {
     const { Col, Row, Container } = grid();
 
@@ -43,9 +44,10 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             // TODO in sw.js
             const newValues = getForm(forms, formName).flatMap(
                 ({ uid: fieldId, value }) =>
-                    fieldId.indexOf(validatorId) > -1 && fieldId !== uid
-                        ? value
-                        : []
+                    checkFlatMap[
+                        fieldId.indexOf(`${subObject}_${validatorId}`) > -1 &&
+                            fieldId !== uid
+                    ](value)
             );
 
             dataFormService
@@ -60,44 +62,43 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                     NotifService.info(`Champs supprimé`, 'valid');
                 });
 
-            // TODO refacto
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
             // Reassign fields values
             for (let i = 1; i < numberOfFields; i = i + 1) {
-                // all field after the delete one
+                // all fields after the deleted one
                 if (i > indexRef) {
-                    const update = {
-                        uid: getUniqueId(
-                            formName,
-                            subObject,
-                            validatorId,
-                            i - 1
-                        ),
-                        value: getFieldValue(
-                            forms,
-                            formName,
-                            getUniqueId(formName, subObject, validatorId, i)
-                        ),
-                    };
+                    const retrievedValue = getFieldValue(
+                        forms,
+                        formName,
+                        getUniqueId(formName, subObject, validatorId, i)
+                    );
+                    const newUid = getUniqueId(
+                        formName,
+                        subObject,
+                        validatorId,
+                        i - 1
+                    );
+                    const newField = { uid: newUid, value: retrievedValue };
 
+                    // update global state
                     dispatch({
                         type: 'UPDATE_FORM_FIELD',
                         payload: {
                             formName,
-                            ...update,
+                            ...newField,
                         },
                     });
 
                     if (checkStoreObject) {
-                        // TODO refacto getFieldValue
-                        await DBService.set(update, formName);
+                        // update indexDB
+                        await DBService.set(newField, formName);
                     }
                 }
             }
 
-            // delete field
+            // Delete old field
             let key = numberOfFields - indexRef;
 
             if (
@@ -118,11 +119,16 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                 uid: uidToDelete,
                 formName,
             };
+
+            // update global state
             dispatch({ type: 'DELETE_FORM_FIELD', payload });
 
+            // update local nulber of field
             setNumberOfFields(numberOfFields - 1);
 
+            // update indexDB
             await DBService.delete(uidToDelete, formName);
+
             NotifService.techInfo('Field deleted');
         }
     };
@@ -201,5 +207,17 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
         </Col>
     );
 }
+
+InfiniteField.propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+    title: PropTypes.string.isRequired,
+    section: PropTypes.string.isRequired,
+    validatorId: PropTypes.string.isRequired,
+    subObject: PropTypes.string.isRequired,
+};
 
 export default InfiniteField;

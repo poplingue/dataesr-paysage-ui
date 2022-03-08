@@ -180,3 +180,6 @@ docker-compose up --build
   * check validation section
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
 * Navigation focus accessibility
+* autocomplete Location https://api-adresse.data.gouv.fr
+* fill fields based on autocomplete click
+* Manage telephone pattern with .replaceAll()

@@ -22,6 +22,15 @@ const fields = {
     false: (...params) => dataFormService.uniqueField(params),
 };
 
+const objectValue = {
+    true: (field, value) => {
+        return { [field]: [value] };
+    },
+    false: (field) => {
+        return { [field]: [] };
+    },
+};
+
 export const dataFormService = {
     mapDate: (uid, value) => {
         let mapping = [];
@@ -337,7 +346,7 @@ export const dataFormService = {
         for (let i = 0; i < form.length; i++) {
             const { uid, value, infinite } = form[i];
 
-            if (infinite && value) {
+            if (infinite) {
                 const field = matchRegex(`(?<=_).*(?=#)`, uid);
                 const o = { [field]: [value] };
                 const alreadyExists = infiniteArray.filter(
@@ -349,7 +358,7 @@ export const dataFormService = {
                         obj[field] = [...obj[field], value];
                     });
                 } else {
-                    infiniteArray.push(o);
+                    infiniteArray.push(objectValue[!!value](field, value));
                 }
 
                 const currentObj = infiniteArray.find((elm) => elm[field]);

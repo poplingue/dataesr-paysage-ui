@@ -25,7 +25,6 @@ import AccordionForm from '../Form/AccordionForm';
 import FormAccordionItem from '../Form/FormAccordionItem';
 import WrapperAccordion from './WrapperAccordion';
 
-// TODO refacto
 export default function InfiniteAccordion({
     title,
     content,
@@ -123,7 +122,7 @@ export default function InfiniteAccordion({
             .then((data) => {
                 updateSection([...sections[subObjectType], data.id]);
             })
-            .catch((err) => {
+            .catch(() => {
                 NotifService.info(genericErrorMsg, 'error');
             });
     };

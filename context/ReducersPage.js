@@ -1,3 +1,4 @@
+import ObjectService from '../services/Object.service';
 import ACTIONS from './Actions';
 
 const reducersPage = (state, action) => {
@@ -15,10 +16,14 @@ const reducersPage = (state, action) => {
         }
 
         case ACTIONS.UPDATE_USER: {
-            // TODO test proxy object
+            const proxy = new Proxy(
+                action.payload,
+                ObjectService.handlerUser()
+            );
+
             return {
                 ...state,
-                user: action.payload,
+                user: proxy,
             };
         }
 

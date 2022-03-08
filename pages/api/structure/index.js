@@ -13,7 +13,7 @@ const handler = nc().get(async (req, res) => {
         const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
         const request = await fetch(url, requestOptions);
 
-        fetchHelper.checkAuthorized(tokens, request, res);
+        await fetchHelper.checkAuthorized(tokens, request, res);
 
         const response = await request.text();
 

@@ -66,6 +66,18 @@ export const objectService = {
             });
     },
 
+    handlerUser: () => {
+        return {
+            get(target, property) {
+                if (property === 'fullName') {
+                    return `${target.firstName} ${target.lastName}`;
+                }
+
+                return target[property];
+            },
+        };
+    },
+
     handlerMainName: () => {
         return {
             get(target, property) {

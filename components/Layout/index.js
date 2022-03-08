@@ -57,8 +57,7 @@ const FooterBottom = dynamic(() =>
 
 const { publicRuntimeConfig } = getConfig();
 
-// TODO add propTypes
-export default function Layout({ children, headTitle }) {
+function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
@@ -336,11 +335,9 @@ export default function Layout({ children, headTitle }) {
 }
 
 Layout.defaultProps = {
-    fluid: false,
     headTitle: '',
 };
 Layout.propTypes = {
-    fluid: PropTypes.bool,
     headTitle: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
@@ -348,3 +345,5 @@ Layout.propTypes = {
         PropTypes.string,
     ]).isRequired,
 };
+
+export default Layout;

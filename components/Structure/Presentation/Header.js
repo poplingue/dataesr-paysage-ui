@@ -76,7 +76,6 @@ export default function Header() {
 
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
-            // TODO add check data
             if (data && JSON.parse(data).data) {
                 if (!!Object.keys(JSON.parse(data).data.currentName).length) {
                     const proxy = new Proxy(
@@ -126,8 +125,7 @@ export default function Header() {
         });
     };
 
-    
-return (
+    return (
         <Container>
             <Row gutters>
                 <Col n="12">

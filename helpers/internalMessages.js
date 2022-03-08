@@ -18,6 +18,7 @@ export const codeMandatoryMsg = "Code d'activation obligatoire";
 export const activateAdviceMsg = 'Activez votre compte';
 export const connectToAccessMsg = 'Connectez-vous pour accéder';
 export const noTokensError = 'No Tokens';
+export const connexionNeeded = 'Vous devez être connecté';
 
 // External errors
 export const combinationError = 'Mauvaise combinaison utilisateur/mot de passe';

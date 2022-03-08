@@ -57,7 +57,7 @@ function Home({ tokens = {} }) {
                     <Col n="12" spacing="mb-3w">
                         <h2 data-cy="user">
                             {!!Object.keys(user).length
-                                ? `Salut à toi ${user.username || ''}`
+                                ? `Salut à toi ${user.fullName || ''}`
                                 : 'Salut'}
                         </h2>
                     </Col>

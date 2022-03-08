@@ -2,7 +2,6 @@ import { Button } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
 import { noPrintClass } from '../../helpers/utils';
 
-// TODO refacto data-testid
 export default function FieldButton({
     title,
     onClick,

@@ -2,19 +2,17 @@ import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { fetchHelper } from '../../helpers/fetch';
 import grid from '../../helpers/imports';
 import {
     camelCase,
     cleanString,
     getField,
     getFormName,
-    getSubObjectId,
-    getSubObjectType,
     getUniqueId,
     range,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
@@ -143,23 +141,12 @@ export default function CustomDate({
 
         await DBService.deleteList(uids, formName);
 
-        // TODO move to ServiceForm
-        const requestOptions = fetchHelper.requestOptions('PATCH', {
-            [validatorId]: '',
-        });
-        const subObjectType = getSubObjectType(subObject);
-        const subObjectId = getSubObjectId(subObject);
-
-        const response = await fetch(
-            `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,
-            requestOptions
-        );
-
-        await response.json();
-
-        setDateData(initDateData);
-
-        NotifService.info('Date supprimée', 'valid');
+        dataFormService
+            .deleteField(object, updateObjectId, subObject, validatorId, '')
+            .then(() => {
+                setDateData(initDateData);
+                NotifService.info('Date supprimée', 'valid');
+            });
     };
 
     return (

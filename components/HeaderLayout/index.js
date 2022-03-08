@@ -6,12 +6,12 @@ import {
     Tag,
     Title,
 } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 
-// TODO add proptypes
-export default function HeaderLayout({ highlight, pageTitle, status }) {
+function HeaderLayout({ highlight, pageTitle, status }) {
     const {
         statePage: { hasBreadCrumbs },
     } = useContext(AppContext);
@@ -68,3 +68,16 @@ export default function HeaderLayout({ highlight, pageTitle, status }) {
         </Container>
     );
 }
+
+HeaderLayout.default = {
+    status: 'draft',
+    pageTitle: '',
+    highlight: '',
+};
+
+HeaderLayout.propTypes = {
+    highlight: PropTypes.string,
+    pageTitle: PropTypes.string,
+    status: PropTypes.oneOf(['draft', 'published']),
+};
+export default HeaderLayout;

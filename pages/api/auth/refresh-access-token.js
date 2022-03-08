@@ -9,6 +9,9 @@ async function handler(req, res) {
         const tokens = req.cookies.tokens
             ? JSON.parse(req.cookies.tokens)
             : null;
+
+        await fetchHelper.checkAuthorized(tokens, req, res);
+
         const requestOptions = fetchHelper.requestOptions('POST', {
             refreshToken: tokens.refreshToken,
         });

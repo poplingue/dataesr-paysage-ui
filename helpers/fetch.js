@@ -1,16 +1,18 @@
 import cookie from 'cookie';
-import { genericErrorMsg, invalidToken } from './internalMessages';
+import {
+    genericErrorMsg,
+    invalidToken,
+    noTokensError,
+} from './internalMessages';
+import { cookieOptions } from './utils';
 
 export const fetchHelper = {
-    setCookieTokens: (res, tokens, maxAge = 60 * 60) => {
+    setCookieTokens: (res, tokens, maxAge = cookieOptions.maxAge) => {
         res.setHeader(
             'Set-Cookie',
             cookie.serialize('tokens', JSON.stringify(tokens), {
-                httpOnly: true,
-                secure: process.env.NODE_ENV !== 'development',
+                ...cookieOptions,
                 maxAge,
-                sameSite: 'strict',
-                path: '/',
             })
         );
     },
@@ -122,6 +124,8 @@ export const fetchHelper = {
             request.statusText === 'Unauthorized'
         ) {
             res.status(401).send(invalidToken);
+        } else if (!tokens) {
+            res.status(401).send(noTokensError);
         }
     },
 };

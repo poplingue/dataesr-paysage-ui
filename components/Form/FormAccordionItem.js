@@ -2,7 +2,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { getFormName, getSection } from '../../helpers/utils';
+import { connexionNeeded, invalidToken } from '../../helpers/internalMessages';
+import { checkFlatMap, getFormName, getSection } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -26,6 +27,7 @@ export default function FormAccordionItem({
             updateObjectId,
             savingSections,
             storeObjects,
+            forms,
         },
         dispatchForm: dispatch,
     } = useContext(AppContext);
@@ -104,9 +106,9 @@ export default function FormAccordionItem({
             });
 
             // Save data
-            // TODO add objecStoreCheck
-            // TODO instead DBservice use form props??
-            const form = await DBService.getAllObjects(formName, true);
+            const form = forms.find(
+                (form) => Object.keys(form)[0] === formName
+            )[formName];
 
             const filteredForm = form
                 .filter((field) =>
@@ -163,7 +165,16 @@ export default function FormAccordionItem({
                 NotifService.info('Données sauvegardées', 'valid');
             })
             .catch((err) => {
-                NotifService.info(err, 'error');
+                // TODO add to NotifService
+
+                if (err === connexionNeeded || err === invalidToken) {
+                    NotifService.info(
+                        'Utilisateur inactif, rechargez votre page',
+                        'error'
+                    );
+                } else {
+                    NotifService.info(err, 'error');
+                }
             });
     };
 
@@ -176,7 +187,7 @@ export default function FormAccordionItem({
         fields.filter((field) => field.uid.indexOf(subObject) > -1);
 
     /**
-     * Delete all fields unSaved in indexDB and state and rollback to init Section fields
+     * Rollback to init Section fields and delete all fields unSaved in indexDB and state
      * @returns {Promise<void>}
      */
     const resetSection = async () => {
@@ -187,14 +198,18 @@ export default function FormAccordionItem({
                 ...{ saved: true },
             },
         };
-        const form = await DBService.getAllObjects(formName, true);
-        const uids = form.flatMap((f) => {
-            const { uid, unSaved } = f;
+        const form = forms.find((form) => Object.keys(form)[0] === formName)[
+            formName
+        ];
 
-            return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
+        // get current section uids
+        const uids = form.flatMap((field) => {
+            const { uid, unSaved } = field;
+
+            return checkFlatMap[uid.indexOf(subObject) > -1 && unSaved](uid);
         });
 
-        // TODO refacto
+        // update global state
         dispatch({
             type: 'DELETE_FORM_FIELD_LIST',
             payload: {
@@ -203,8 +218,10 @@ export default function FormAccordionItem({
             },
         });
 
+        // update indexDB
         await DBService.deleteList(uids, formName);
 
+        // rollback to init data
         dataFormService
             .initFormSections(
                 object,
@@ -223,8 +240,10 @@ export default function FormAccordionItem({
                 });
             });
 
+        // rollback disabled status
         resetDisabled(uids[0]);
 
+        // update valid section with { saved: true } values
         dispatch({
             type: 'UPDATE_VALID_SECTION',
             payload: { section },
@@ -266,6 +285,7 @@ export default function FormAccordionItem({
                 <Container>
                     <Row gutters justifyContent="right" spacing="pt-2w">
                         <DeleteButton
+                            dataTestId={`btn-delete-${subObject}`}
                             display={deletable}
                             title={sectionTitle}
                             onClick={async () =>

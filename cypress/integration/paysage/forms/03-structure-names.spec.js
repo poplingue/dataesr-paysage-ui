@@ -1,4 +1,3 @@
-import { cleanString } from '../../../../helpers/utils';
 
 const baseUrl = Cypress.env('baseUrl');
 
@@ -99,9 +98,7 @@ context('Structure new form', () => {
                     .find('input')
                     .type('Brand2');
 
-                cy.get(
-                    `[data-testid="btn-delete-noms${cleanString(id2)}"]`
-                ).click();
+                cy.get(`[data-testid="btn-delete-names#${id2}"]`).click();
 
                 cy.wait('@delete');
 

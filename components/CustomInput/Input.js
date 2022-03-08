@@ -68,7 +68,6 @@ function Input({
                 payload: { ...payload, formName },
             });
 
-            // TODO add unSaved Radio
             if (checkStoreObject) {
                 await DBService.set(payload, formName);
             }
