@@ -65,7 +65,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
             const indexRef = parseFloat(uid.charAt(uid.length - 1));
             const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-            // Reassign fields values
+            // reassign fields values
             for (let i = 1; i < numberOfFields; i = i + 1) {
                 // all fields after the deleted one
                 if (i > indexRef) {
@@ -98,7 +98,7 @@ function InfiniteField({ children, title, section, validatorId, subObject }) {
                 }
             }
 
-            // Delete old field
+            // delete old field
             let key = numberOfFields - indexRef;
 
             if (

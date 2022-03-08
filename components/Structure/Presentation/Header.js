@@ -29,7 +29,7 @@ export default function Header() {
     const workerRef = useRef();
 
     useEffect(() => {
-        // TODO use Promise.all
+        // TODO use Promise.all for subObjects identifiers and localisations
         async function getData() {
             return (
                 (await ObjectService.getSubObject(type, id, 'identifiers')) ||
@@ -46,6 +46,7 @@ export default function Header() {
 
     useEffect(() => {
         async function getData() {
+            // TODO pass await function as parameter??
             return (
                 (await ObjectService.getSubObject(type, id, 'localisations')) ||
                 []
@@ -67,7 +68,6 @@ export default function Header() {
 
     // TODO refacto - make a hook
     useEffect(() => {
-        // TODO make a hook
         workerRef.current = new Worker('/service-worker.js', {
             name: 'Get_object',
             type: 'module',
@@ -77,9 +77,11 @@ export default function Header() {
     useEffect(() => {
         workerRef.current.onmessage = async ({ data }) => {
             if (data && JSON.parse(data).data) {
-                if (!!Object.keys(JSON.parse(data).data.currentName).length) {
+                const { currentName } = JSON.parse(data).data;
+
+                if (!!Object.keys(currentName).length) {
                     const proxy = new Proxy(
-                        JSON.parse(data).data.currentName,
+                        currentName,
                         ObjectService.handlerMainName()
                     );
                     setMainName(proxy);
