@@ -289,14 +289,33 @@ export function getField(forms, name, id) {
  */
 export function isFieldUnSaved(forms, name, id) {
     let fieldUnSaved = { unSaved: false };
+    const form = getForm(forms, name);
 
-    if (getForm(forms, name) && id) {
-        fieldUnSaved = getForm(forms, name).find((field) => {
-            return field.uid === id;
-        });
+    if (!!form.length && id) {
+        fieldUnSaved = form.find((field) => field.uid === id);
     }
 
     return fieldUnSaved && fieldUnSaved.unSaved;
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {boolean}
+ */
+export function isFieldSuggest(forms, name, id) {
+    const form = getForm(forms, name);
+    let fieldSuggest = [];
+
+    if (!!form.length && id) {
+        fieldSuggest = form.find(
+            (field) => field.uid === id && !!field.suggest
+        );
+    }
+
+    return fieldSuggest && fieldSuggest.length > 0;
 }
 
 /**

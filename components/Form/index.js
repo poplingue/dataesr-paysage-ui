@@ -33,13 +33,13 @@ const CreateForm = ({ jsonForm, color }) => {
      */
     const updateField = useCallback(
         async (field, objectStoreChecked) => {
-            const { value, uid, infinite, unSaved } = field;
-
+            const { value, uid, infinite, unSaved, suggest } = field;
             const payload = {
                 value,
                 uid,
                 infinite,
                 unSaved,
+                suggest,
             };
 
             if (value) {
@@ -135,6 +135,7 @@ const CreateForm = ({ jsonForm, color }) => {
                     {jsonForm.form.map((section, i) => {
                         const {
                             title: sectionTitle,
+                            suggest,
                             subObject,
                             content,
                             infinite,
@@ -155,6 +156,7 @@ const CreateForm = ({ jsonForm, color }) => {
                                 <InfiniteAccordion
                                     dataAttSection={dataSection}
                                     title={sectionTitle}
+                                    suggest={suggest}
                                     subObjectType={subObject}
                                     content={content}
                                 />
@@ -165,9 +167,10 @@ const CreateForm = ({ jsonForm, color }) => {
                                 key={i}
                                 color={color}
                                 dataSection={dataSection}
-                                newTitle={sectionTitle}
+                                sectionTitle={sectionTitle}
                             >
                                 <FormAccordionItem
+                                    suggest={suggest}
                                     content={content}
                                     subObject={subObject}
                                     sectionTitle={sectionTitle}

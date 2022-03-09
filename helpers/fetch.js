@@ -1,8 +1,5 @@
 import cookie from 'cookie';
-import {
-    genericErrorMsg,
-    invalidToken,
-} from './internalMessages';
+import { genericErrorMsg, invalidToken } from './internalMessages';
 import { cookieOptions } from './utils';
 
 export const fetchHelper = {
@@ -76,6 +73,7 @@ export const fetchHelper = {
                 return Promise.resolve({ response, data });
             });
     },
+
     requestOptions: (method, body, tokens, opts = {}) => {
         let options = {
             method,

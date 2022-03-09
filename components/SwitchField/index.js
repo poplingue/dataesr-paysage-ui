@@ -14,6 +14,7 @@ export default function SwitchField({
     value,
     validatorId,
     title,
+    suggest,
     onGroupChange,
     infinite,
     staticValues,
@@ -45,6 +46,7 @@ export default function SwitchField({
                         infinite={infinite}
                         section={section}
                         subObject={subObject}
+                        suggest={suggest}
                     />
                 );
             case 'select':

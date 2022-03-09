@@ -10,6 +10,7 @@ const reducersForm = (state, action) => {
                 uid,
                 unSaved = false,
                 infinite = false,
+                suggest = false,
             } = action.payload;
 
             const formIndex = state.forms.findIndex(
@@ -24,9 +25,15 @@ const reducersForm = (state, action) => {
 
                 if (fieldIndex > -1) {
                     // replace object field at fieldIndex
-                    newForm[fieldIndex] = { value, uid, unSaved, infinite };
+                    newForm[fieldIndex] = {
+                        value,
+                        uid,
+                        unSaved,
+                        infinite,
+                        suggest,
+                    };
                 } else {
-                    newForm.push({ value, uid, unSaved, infinite });
+                    newForm.push({ value, uid, unSaved, infinite, suggest });
                 }
             }
 

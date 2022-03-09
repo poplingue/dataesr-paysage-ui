@@ -106,6 +106,7 @@
           {
             "title": "Ville",
             "type": "text",
+            "suggest": true,
             "validatorId": "locality"
           },
           {
@@ -117,6 +118,11 @@
             "title": "Pays",
             "type": "text",
             "validatorId": "country"
+          },
+          {
+            "title": "Boîte postale",
+            "type": "text",
+            "validatorId": "postOfficeBoxNumber"
           },
           {
             "title": "Téléphone",

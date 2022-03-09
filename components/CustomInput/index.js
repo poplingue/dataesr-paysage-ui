@@ -7,6 +7,7 @@ import Input from './Input';
 function CustomInput({
     title,
     value,
+    suggest,
     onGroupChange,
     infinite,
     section,
@@ -30,6 +31,7 @@ function CustomInput({
                 label={title}
                 onGroupChange={onGroupChange}
                 infinite
+                suggest={suggest}
             />
         </InfiniteField>
     );
@@ -37,6 +39,7 @@ function CustomInput({
     const classicalField = (
         <Col spacing="py-1w">
             <Input
+                suggest={suggest}
                 onGroupChange={onGroupChange}
                 value={value}
                 updateValidSection={updateValidSection}

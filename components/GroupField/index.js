@@ -16,6 +16,7 @@ import SwitchField from '../SwitchField';
 export default function GroupField({
     validatorId,
     content,
+    suggest,
     title,
     section,
     updateValidSection,
@@ -98,6 +99,7 @@ export default function GroupField({
                         validatorId={validatorId}
                         updateValidSection={updateValidSection}
                         hint={hint}
+                        suggest={suggest}
                         infinite={infinite}
                         section={section}
                         value={value}

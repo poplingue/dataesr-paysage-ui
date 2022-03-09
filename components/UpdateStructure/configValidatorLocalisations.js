@@ -8,6 +8,9 @@ export const configValidatorLocalisations = {
     telephone: {
         required: false,
     },
+    postOfficeBoxNumber: {
+        required: false,
+    },
     postalCode: {
         required: true,
         validators: [

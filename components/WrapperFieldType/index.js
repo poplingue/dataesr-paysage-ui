@@ -17,6 +17,7 @@ export default function WrapperFieldType({
     } = useContext(AppContext);
     const {
         type: fieldType,
+        suggest,
         infinite,
         hint,
         staticValues,
@@ -36,6 +37,7 @@ export default function WrapperFieldType({
     const groupField = (
         <GroupField
             hint={hint}
+            suggest={suggest}
             validatorId={validatorId}
             content={content}
             updateValidSection={updateValidSection}
@@ -47,6 +49,7 @@ export default function WrapperFieldType({
     const switchField = (
         <SwitchField
             hint={hint}
+            suggest={suggest}
             updateValidSection={updateValidSection}
             validatorId={validatorId}
             subObject={subObject}
