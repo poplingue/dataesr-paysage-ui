@@ -19,7 +19,7 @@ export const externalAPI = {
 
         const url = `${publicRuntimeConfig.baseApiUrl}/public?validatorId=${validatorId}`;
         const body = {
-            where: ` com_name%20like%20%22${cleanQuery}*%22`,
+            where: `com_name%20like%20%22${cleanQuery}*%22`,
             order_by: 'com_name%20ASC',
         };
 
@@ -32,8 +32,8 @@ export const externalAPI = {
             .then(({ response }) =>
                 response
                     .json()
-                    .then((data) =>
-                        externalAPI[`openDataSoft_${validatorId}`](data.records)
+                    .then(({ records }) =>
+                        externalAPI[`openDataSoft_${validatorId}`](records)
                     )
             )
             .catch((err) => {

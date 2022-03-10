@@ -11,7 +11,7 @@ context('Structure localisation', () => {
         cy.getCookie('localisationId').then((cookie) => {
             const id = cookie.value;
 
-            cy.intercept('GET', '/api/public?q=Nantes&validatorId=locality').as(
+            cy.intercept('POST', '/api/public?validatorId=locality').as(
                 'search'
             );
 
@@ -31,7 +31,7 @@ context('Structure localisation', () => {
         cy.getCookie('localisationId').then((cookie) => {
             const id = cookie.value;
 
-            cy.intercept('GET', '/api/public?q=Nantes&validatorId=locality').as(
+            cy.intercept('POST', '/api/public?validatorId=locality').as(
                 'search'
             );
 
@@ -57,10 +57,9 @@ context('Structure localisation', () => {
         cy.getCookie('localisationId').then((cookie) => {
             const id = cookie.value;
 
-            cy.intercept(
-                'GET',
-                '/api/public?q=bordeaux&validatorId=locality'
-            ).as('search');
+            cy.intercept('POST', '/api/public?validatorId=locality').as(
+                'search'
+            );
 
             cy.get(
                 `[data-field="update/structure@localisations#${id}_locality"]`

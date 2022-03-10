@@ -75,16 +75,17 @@ function Suggest({
     useEffect(() => {
         // case onClick on SuggestItem
         if (
+            suggest &&
             !focus &&
             (stateValue !== value ||
                 document.activeElement.className !== styles.SuggestItem)
         ) {
             reset();
         }
-    }, [focus, stateValue, value]);
+    }, [focus, stateValue, suggest, value]);
 
     useEffect(() => {
-        if (focus && stateValue !== value) {
+        if (suggest && focus && stateValue !== value) {
             setSpinner(true);
 
             clearTimeout(timer);
@@ -116,7 +117,15 @@ function Suggest({
                 setStateValue(value);
             }
         }
-    }, [stateValue, spinnerOn, suggests.length, validatorId, value, focus]);
+    }, [
+        stateValue,
+        spinnerOn,
+        suggests.length,
+        validatorId,
+        value,
+        focus,
+        suggest,
+    ]);
 
     const suggestionsList = () => {
         return (

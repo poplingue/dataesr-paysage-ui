@@ -25,7 +25,7 @@ function Input({
     onGroupChange,
     updateValidSection,
     validatorId,
-    suggest,
+    suggest = false,
 }) {
     const {
         stateForm: { forms, storeObjects },
@@ -140,21 +140,17 @@ function Input({
 
     return (
         <SavingWrapper unSaved={unSaved}>
-            {suggest ? (
-                <Suggest
-                    focus={focus}
-                    subObject={subObject}
-                    suggest={suggest}
-                    value={textValue}
-                    validatorId={validatorId}
-                    onChange={onChange}
-                    onGroupChange={onGroupChange}
-                >
-                    {renderTextInput}
-                </Suggest>
-            ) : (
-                renderTextInput
-            )}
+            <Suggest
+                focus={focus}
+                subObject={subObject}
+                suggest={suggest}
+                value={textValue}
+                validatorId={validatorId}
+                onChange={onChange}
+                onGroupChange={onGroupChange}
+            >
+                {renderTextInput}
+            </Suggest>
         </SavingWrapper>
     );
 }
@@ -163,10 +159,12 @@ Input.defaultProps = {
     value: '',
     index: 0,
     infinite: false,
+    suggest: false,
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
+    suggest: PropTypes.bool,
     infinite: PropTypes.bool,
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
