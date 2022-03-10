@@ -15,10 +15,15 @@ export const externalAPI = {
     },
     async openDataSoft(query, validatorId) {
         const { publicRuntimeConfig } = getConfig();
-        const cleanQuery = query.replaceAll(' ', '+');
-        const url = `${publicRuntimeConfig.baseApiUrl}/public?q=${cleanQuery}&validatorId=${validatorId}`;
+        const cleanQuery = query.replaceAll(' ', '%20');
 
-        const requestOptions = fetchHelper.requestOptions('GET');
+        const url = `${publicRuntimeConfig.baseApiUrl}/public?validatorId=${validatorId}`;
+        const body = {
+            where: ` com_name%20like%20%22${cleanQuery}*%22`,
+            order_by: 'com_name%20ASC',
+        };
+
+        const requestOptions = fetchHelper.requestOptions('POST', body);
 
         const response = await fetch(url, requestOptions);
 
@@ -27,8 +32,8 @@ export const externalAPI = {
             .then(({ response }) =>
                 response
                     .json()
-                    .then((r) =>
-                        externalAPI[`openDataSoft_${validatorId}`](r.records)
+                    .then((data) =>
+                        externalAPI[`openDataSoft_${validatorId}`](data.records)
                     )
             )
             .catch((err) => {
@@ -37,24 +42,26 @@ export const externalAPI = {
     },
 
     openDataSoft_locality(records) {
-        return records.map((r) => {
+        return records.map(({ record }) => {
+            const { fields } = record;
+
             return {
                 suggestion: {
-                    label: `${r.fields.com_name} - ${r.fields.com_code}`,
-                    value: r.fields.com_name,
+                    label: `${fields.com_name[0]} - ${fields.com_code[0]}`,
+                    value: fields.com_name[0],
                 },
                 updates: [
                     {
                         validatorId: 'postalCode',
-                        value: r.fields.com_current_code,
+                        value: fields.com_current_code[0],
                     },
                     {
                         validatorId: 'latitude',
-                        value: r.fields.geo_point_2d[0].toString(),
+                        value: fields.geo_point_2d.lat.toString(),
                     },
                     {
                         validatorId: 'longitude',
-                        value: r.fields.geo_point_2d[1].toString(),
+                        value: fields.geo_point_2d.lon.toString(),
                     },
                     {
                         validatorId: 'country',

@@ -6,7 +6,7 @@ export function getUrl(key) {
         etat: 'https://jsonplaceholder.typicode.com/todos',
         tutelle: 'https://jsonplaceholder.typicode.com/todos',
         locality:
-            'https://public.opendatasoft.com/api/records/1.0/search/?dataset=georef-france-commune&facet=arrdep_name&facet=ze2020_name&facet=com_name',
+            'https://public.opendatasoft.com/api/v2/catalog/datasets/georef-france-commune/records?rows=10&select=*&pretty=false&timezone=UTC',
     };
 
     return urls[cleanString(key)];

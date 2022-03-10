@@ -3,9 +3,16 @@ import { fetchHelper } from '../../../helpers/fetch';
 
 async function handler(req, res) {
     try {
-        const { q, validatorId } = req.query;
+        const { validatorId } = req.query;
+        const clauses = Object.keys(req.body);
 
-        const url = `${getUrl(validatorId)}&q=${q}`;
+        let queryString = '';
+
+        for (let i = 0; i < clauses.length; i = i + 1) {
+            queryString += `&${clauses[i]}=${req.body[clauses[i]]}`;
+        }
+
+        const url = `${getUrl(validatorId)}${queryString}`;
 
         const requestOptions = fetchHelper.requestOptions('GET');
 

@@ -71,19 +71,19 @@ context('Structure localisation', () => {
             cy.wait('@search');
 
             cy.get('[data-cy="suggestions"]')
-                .contains('Beautiran - 33037')
+                .contains('Bordeaux-en-Gâtinais - 45041')
                 .click();
 
             cy.get(
                 `[data-field="update/structure@localisations#${id}_locality"]`
             )
                 .find('input')
-                .should('have.value', 'Beautiran');
+                .should('have.value', 'Bordeaux-en-Gâtinais');
             cy.get(
                 `[data-field="update/structure@localisations#${id}_postalCode"]`
             )
                 .find('input')
-                .should('have.value', '33037');
+                .should('have.value', '45041');
         });
     });
 });
