@@ -59,7 +59,6 @@ export default function UpdateStructure({ data, id }) {
         dataFormService
             .initFormSections(object, id, formName, storeObjects)
             .then(async (fields) => {
-                console.log('==== fields ==== ', fields);
                 // Update fields in state
                 dispatch({
                     type: 'UPDATE_FORM_FIELD_LIST',

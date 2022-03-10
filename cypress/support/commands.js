@@ -24,6 +24,10 @@ Cypress.Commands.add('newStructure', () => {
                 'identifierId',
                 interception.response.body.subObjects[2].id
             );
+            cy.setCookie(
+                'localisationId',
+                interception.response.body.subObjects[1].id
+            );
         }
     });
 

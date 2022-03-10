@@ -2,21 +2,21 @@ import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
 export const externalAPI = {
-    getPromiseWithAbort(p) {
+    getPromiseWithAbort(promise) {
         let obj = {};
-        //A new promise is set internally to terminate the execution
-        let p1 = new Promise(function (resolve, reject) {
+        // a new promise is set internally to terminate the execution
+        let newPromise = new Promise(function (resolve, reject) {
             obj.abort = reject;
         });
 
-        obj.promise = Promise.race([p, p1]);
+        obj.promise = Promise.race([promise, newPromise]);
 
         return obj;
     },
-    async ods(query, validatorId) {
+    async openDataSoft(query, validatorId) {
         const { publicRuntimeConfig } = getConfig();
         const cleanQuery = query.replaceAll(' ', '+');
-        const url = `${publicRuntimeConfig.baseApiUrl}/consumer?q=${cleanQuery}&validatorId=${validatorId}`;
+        const url = `${publicRuntimeConfig.baseApiUrl}/public?q=${cleanQuery}&validatorId=${validatorId}`;
 
         const requestOptions = fetchHelper.requestOptions('GET');
 
@@ -27,14 +27,16 @@ export const externalAPI = {
             .then(({ response }) =>
                 response
                     .json()
-                    .then((r) => externalAPI[`ods_${validatorId}`](r.records))
+                    .then((r) =>
+                        externalAPI[`openDataSoft_${validatorId}`](r.records)
+                    )
             )
             .catch((err) => {
                 return Promise.reject(err);
             });
     },
 
-    ods_locality(records) {
+    openDataSoft_locality(records) {
         return records.map((r) => {
             return {
                 suggestion: {

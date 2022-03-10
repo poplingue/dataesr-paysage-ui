@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Structure publish', () => {
+context('Structure identifiers', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/update`);

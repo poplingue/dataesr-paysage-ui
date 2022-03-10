@@ -74,7 +74,10 @@ export function FieldDependency({ children, subObject, validatorId }) {
             }
         }
 
-        updateDOMFields();
+        // wait for DOM to update before a11y udpdate
+        setTimeout(() => {
+            updateDOMFields();
+        }, 0);
     }, [
         dependencies,
         formName,

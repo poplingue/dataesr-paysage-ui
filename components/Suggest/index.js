@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import { getFormName, getUniqueId } from '../../helpers/utils';
@@ -26,7 +26,6 @@ function Suggest({
     const [suggests, setSuggests] = useState([]);
     const [spinnerOn, setSpinner] = useState(false);
     const [stateValue, setStateValue] = useState(value);
-    const listRef = useRef();
     const {
         pathname,
         query: { object },
@@ -74,16 +73,15 @@ function Suggest({
     };
 
     useEffect(() => {
-        if (listRef.current && !!suggests.length) {
-            if (!focus && stateValue !== value) {
-                // close suggestions list
-                setSuggests([]);
-            } else if (focus) {
-                // focus to suggestions list
-                listRef.current.focus();
-            }
+        // case onClick on SuggestItem
+        if (
+            !focus &&
+            (stateValue !== value ||
+                document.activeElement.className !== styles.SuggestItem)
+        ) {
+            reset();
         }
-    }, [focus, stateValue, suggests.length, value]);
+    }, [focus, stateValue, value]);
 
     useEffect(() => {
         if (focus && stateValue !== value) {
@@ -100,7 +98,7 @@ function Suggest({
 
                 timer = setTimeout(async () => {
                     wrapPromise = externalAPI.getPromiseWithAbort(
-                        externalAPI.ods(value, validatorId)
+                        externalAPI.openDataSoft(value, validatorId)
                     );
 
                     wrapPromise.promise
@@ -127,16 +125,13 @@ function Suggest({
                     {children}
                     {!!suggests.length && (
                         <ul
-                            ref={listRef}
+                            data-cy="suggestions"
                             onBlur={() => setSuggests([])}
                             className={styles.SuggestList}
                         >
                             {suggests.map((suggest, i) => {
                                 return (
-                                    <li
-                                        key={suggest.suggestion.value}
-                                        tabIndex={i}
-                                    >
+                                    <li key={suggest.suggestion.value}>
                                         <div
                                             className={styles.SuggestItem}
                                             onClick={() => onClick(suggest)}
