@@ -25,20 +25,40 @@ export const externalAPI = {
         return fetchHelper
             .handleResponse(response)
             .then(({ response }) =>
-                response.json().then((r) => {
-                    return externalAPI[validatorId](r.records);
-                })
+                response
+                    .json()
+                    .then((r) => externalAPI[`ods_${validatorId}`](r.records))
             )
             .catch((err) => {
                 return Promise.reject(err);
             });
     },
 
-    locality(records) {
+    ods_locality(records) {
         return records.map((r) => {
             return {
-                label: `${r.fields.com_name} - ${r.fields.com_code}`,
-                value: r.fields.com_name,
+                suggestion: {
+                    label: `${r.fields.com_name} - ${r.fields.com_code}`,
+                    value: r.fields.com_name,
+                },
+                updates: [
+                    {
+                        validatorId: 'postalCode',
+                        value: r.fields.com_current_code,
+                    },
+                    {
+                        validatorId: 'latitude',
+                        value: r.fields.geo_point_2d[0].toString(),
+                    },
+                    {
+                        validatorId: 'longitude',
+                        value: r.fields.geo_point_2d[1].toString(),
+                    },
+                    {
+                        validatorId: 'country',
+                        value: 'France',
+                    },
+                ],
             };
         });
     },

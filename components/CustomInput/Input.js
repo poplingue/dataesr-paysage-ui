@@ -120,32 +120,41 @@ function Input({
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
+    const renderTextInput = (
+        <TextInput
+            onBlur={() => setFocus(false)}
+            onChange={onChange}
+            message={message}
+            messageType={type}
+            data-field={uid}
+            data-testid={validatorId}
+            value={textValue}
+            hint={`${
+                validatorConfig && !validatorConfig.required
+                    ? '(optionnel)'
+                    : ''
+            }`}
+            label={label}
+        />
+    );
+
     return (
         <SavingWrapper unSaved={unSaved}>
-            <Suggest
-                focus={focus}
-                subObject={subObject}
-                suggest={suggest}
-                value={textValue}
-                validatorId={validatorId}
-                onChange={onChange}
-            >
-                <TextInput
-                    onBlur={() => setFocus(false)}
-                    onChange={onChange}
-                    message={message}
-                    messageType={type}
-                    data-field={uid}
-                    data-testid={validatorId}
+            {suggest ? (
+                <Suggest
+                    focus={focus}
+                    subObject={subObject}
+                    suggest={suggest}
                     value={textValue}
-                    hint={`${
-                        validatorConfig && !validatorConfig.required
-                            ? '(optionnel)'
-                            : ''
-                    }`}
-                    label={label}
-                />
-            </Suggest>
+                    validatorId={validatorId}
+                    onChange={onChange}
+                    onGroupChange={onGroupChange}
+                >
+                    {renderTextInput}
+                </Suggest>
+            ) : (
+                renderTextInput
+            )}
         </SavingWrapper>
     );
 }

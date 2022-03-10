@@ -23,8 +23,10 @@ export const configValidatorLocalisations = {
     latitude: {
         validators: [
             (value) => ({
-                valid: !!value.match(/\d/g),
-                errorMsg: 'Uniquement des chiffres',
+                valid: !!value.match(
+                    /^((\-?|\+?)?\d+(\.\d+)?)[,|.]\s*((\-?|\+?)?\d+(\.\d+)?)/gm
+                ),
+                errorMsg: 'Respectez le format latitude',
             }),
         ],
         required: false,
@@ -32,8 +34,10 @@ export const configValidatorLocalisations = {
     longitude: {
         validators: [
             (value) => ({
-                valid: !!value.match(/\d/g),
-                errorMsg: 'Uniquement des chiffres',
+                valid: !!value.match(
+                    /^((\-?|\+?)?\d+(\.\d+)?)[,|.]\s*((\-?|\+?)?\d+(\.\d+)?)/gm
+                ),
+                errorMsg: 'Respectez le format longitude',
             }),
         ],
         required: false,

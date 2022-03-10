@@ -72,14 +72,14 @@ const reducersForm = (state, action) => {
                     getFieldValue(state.forms, formName, currentField.uid)
                 ) {
                     const index = newForm.findIndex((obj) => {
-                        return Object.entries(obj)[1][1] === currentField.uid;
+                        return obj.uid === currentField.uid;
                     });
 
                     newForm[index] = currentField;
                 }
             }
 
-            return {
+            const x = {
                 ...state,
                 forms: [
                     ...state.forms.slice(0, formIndex), // everything before current field
@@ -87,6 +87,8 @@ const reducersForm = (state, action) => {
                     ...state.forms.slice(formIndex + 1), // everything after current field
                 ],
             };
+
+            return x;
         }
 
         case ACTIONS.DELETE_FORM_FIELD: {

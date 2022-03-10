@@ -419,3 +419,19 @@ export const checkFlatMap = {
     false: () => [],
     true: (value) => value,
 };
+
+/**
+ *
+ * @param arrayA
+ * @param arrayB
+ * @returns {*}
+ */
+export function arraysEqual(arrayA, arrayB) {
+    const arrayASorted = arrayA.slice().sort();
+    const arrayBSorted = arrayB.slice().sort();
+
+    return (
+        arrayA.length === arrayB.length &&
+        arrayBSorted.every((value, index) => value === arrayASorted[index])
+    );
+}

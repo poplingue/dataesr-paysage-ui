@@ -1,12 +1,16 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import { getFormName, getUniqueId } from '../../helpers/utils';
+import DBService from '../../services/DB.service';
 import { externalAPI } from '../../services/ExternalAPI.service';
 import Spinner from '../Spinner';
 import styles from '../Suggest/Suggest.module.scss';
 
 let timer;
-let obj;
+let wrapPromise;
 
 function Suggest({
     children,
@@ -17,22 +21,52 @@ function Suggest({
     subObject,
     focus,
 }) {
+    const { Col, Row } = grid();
+
     const [suggests, setSuggests] = useState([]);
     const [spinnerOn, setSpinner] = useState(false);
     const [stateValue, setStateValue] = useState(value);
-    const { Col, Row } = grid();
+    const listRef = useRef();
+    const {
+        pathname,
+        query: { object },
+    } = useRouter();
+    const { dispatchForm: dispatch } = useContext(AppContext);
+    const formName = getFormName(pathname, object);
 
-    const onClick = (suggestion) => {
+    const onClick = async ({ updates, suggestion }) => {
+        // mock input onChange event
         onChange({ target: { value: suggestion.value } });
+
         setSuggests([]);
         setStateValue(suggestion.value);
+
+        const fields = updates.map((field) => {
+            const { validatorId, value } = field;
+
+            return {
+                uid: getUniqueId(formName, subObject, validatorId),
+                value,
+                unSaved: true,
+            };
+        });
+
+        // update global state
+        dispatch({
+            type: 'UPDATE_FORM_FIELD_LIST',
+            payload: {
+                formName,
+                fields,
+            },
+        });
+
+        // update indexDB
+        await DBService.setList(fields, formName);
     };
 
-    const listRef = useRef();
-
     const reset = () => {
-        if (obj) {
-            obj.abort();
+        if (wrapPromise) {
+            wrapPromise.abort();
         }
 
         setSuggests([]);
@@ -57,7 +91,7 @@ function Suggest({
 
             clearTimeout(timer);
 
-            if (obj || value.length < 3 || !value) {
+            if (wrapPromise || value.length < 3 || !value) {
                 reset();
             }
 
@@ -65,11 +99,11 @@ function Suggest({
                 setSpinner(true);
 
                 timer = setTimeout(async () => {
-                    obj = externalAPI.getPromiseWithAbort(
+                    wrapPromise = externalAPI.getPromiseWithAbort(
                         externalAPI.ods(value, validatorId)
                     );
 
-                    obj.promise
+                    wrapPromise.promise
                         .then((data) => {
                             // check input has focus
                             if (document.activeElement.value === value) {
@@ -99,13 +133,16 @@ function Suggest({
                         >
                             {suggests.map((suggest, i) => {
                                 return (
-                                    <li key={suggest} tabIndex={i}>
+                                    <li
+                                        key={suggest.suggestion.value}
+                                        tabIndex={i}
+                                    >
                                         <div
                                             className={styles.SuggestItem}
                                             onClick={() => onClick(suggest)}
                                             tabIndex={i}
                                         >
-                                            {suggest.label}
+                                            {suggest.suggestion.label}
                                         </div>
                                     </li>
                                 );

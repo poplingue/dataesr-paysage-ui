@@ -99,15 +99,15 @@
             "validatorId": "address"
           },
           {
-            "title": "Code postal",
-            "type": "text",
-            "validatorId": "postalCode"
-          },
-          {
             "title": "Ville",
             "type": "text",
             "suggest": true,
             "validatorId": "locality"
+          },
+          {
+            "title": "Code postal",
+            "type": "text",
+            "validatorId": "postalCode"
           },
           {
             "title": "Lieu-dit",
