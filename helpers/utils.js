@@ -289,7 +289,7 @@ export function getField(forms, name, id) {
  */
 export function isFieldUnSaved(forms, name, id) {
     let fieldUnSaved = { unSaved: false };
-    const form = getForm(forms, name);
+    const form = getForm(forms, name) || [];
 
     if (!!form.length && id) {
         fieldUnSaved = form.find((field) => field.uid === id);

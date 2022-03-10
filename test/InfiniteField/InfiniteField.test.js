@@ -28,7 +28,12 @@ describe('InfiniteField component', () => {
     beforeEach(() => {
         React.useState.mockImplementation((init) => [init, setState]);
         render(
-            <InfiniteField title="Infinite" section="Section">
+            <InfiniteField
+                title="Infinite"
+                section="Section"
+                subObject="names"
+                validatorId="usualName"
+            >
                 <p>Test</p>
             </InfiniteField>
         );
