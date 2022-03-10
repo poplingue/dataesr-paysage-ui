@@ -14,6 +14,7 @@ import {
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import SavingWrapper from '../SavingWrapper';
+import Suggest from '../Suggest';
 
 function Input({
     label,
@@ -24,6 +25,7 @@ function Input({
     onGroupChange,
     updateValidSection,
     validatorId,
+    suggest = false,
 }) {
     const {
         stateForm: { forms, storeObjects },
@@ -41,6 +43,8 @@ function Input({
 
     const { checkField, message, type } = useValidator(validatorConfig);
     const [textValue, setTextValue] = useState(initValue || '');
+    const [focus, setFocus] = useState(false);
+
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(
         formName,
@@ -80,6 +84,7 @@ function Input({
         checkField({ value });
         setTextValue(value);
         updateValidSection(null, null);
+        setFocus(true);
 
         if (onGroupChange) {
             onGroupChange(e, uid);
@@ -115,22 +120,37 @@ function Input({
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
+    const renderTextInput = (
+        <TextInput
+            onBlur={() => setFocus(false)}
+            onChange={onChange}
+            message={message}
+            messageType={type}
+            data-field={uid}
+            data-testid={validatorId}
+            value={textValue}
+            hint={`${
+                validatorConfig && !validatorConfig.required
+                    ? '(optionnel)'
+                    : ''
+            }`}
+            label={label}
+        />
+    );
+
     return (
         <SavingWrapper unSaved={unSaved}>
-            <TextInput
-                message={message}
-                messageType={type}
-                data-field={uid}
-                data-testid={validatorId}
-                onChange={onChange}
+            <Suggest
+                focus={focus}
+                subObject={subObject}
+                suggest={suggest}
                 value={textValue}
-                hint={`${
-                    validatorConfig && !validatorConfig.required
-                        ? '(optionnel)'
-                        : ''
-                }`}
-                label={label}
-            />
+                validatorId={validatorId}
+                onChange={onChange}
+                onGroupChange={onGroupChange}
+            >
+                {renderTextInput}
+            </Suggest>
         </SavingWrapper>
     );
 }
@@ -139,10 +159,12 @@ Input.defaultProps = {
     value: '',
     index: 0,
     infinite: false,
+    suggest: false,
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
+    suggest: PropTypes.bool,
     infinite: PropTypes.bool,
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

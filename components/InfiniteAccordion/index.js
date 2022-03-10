@@ -28,6 +28,7 @@ import WrapperAccordion from './WrapperAccordion';
 export default function InfiniteAccordion({
     title,
     content,
+    suggest,
     dataAttSection,
     subObjectType,
 }) {
@@ -185,6 +186,7 @@ export default function InfiniteAccordion({
                                                 sectionTitle={sectionTitle}
                                             >
                                                 <FormAccordionItem
+                                                    suggest={suggest}
                                                     subObject={`${subObjectType}#${id}`}
                                                     content={content}
                                                     sectionTitle={sectionTitle}

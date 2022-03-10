@@ -17,6 +17,7 @@ export default function FormAccordionItem({
     sectionTitle,
     deletable = false,
     index,
+    suggest,
     subObject,
     deleteSection,
 }) {
@@ -270,6 +271,7 @@ export default function FormAccordionItem({
                             <Row alignItems="middle" gutters>
                                 <Col spacing="py-2w">
                                     <WrapperFieldType
+                                        suggest={suggest}
                                         field={field}
                                         subObject={subObject}
                                         updateValidSection={updateValidSection}

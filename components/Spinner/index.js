@@ -2,7 +2,12 @@ import { useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import styles from './Spinner.module.scss';
 
-export default function Spinner({ small = false, active = false, children }) {
+export default function Spinner({
+    small = false,
+    active = false,
+    children,
+    className,
+}) {
     const {
         statePage: { spinner },
     } = useContext(AppContext);

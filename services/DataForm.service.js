@@ -348,7 +348,6 @@ export const dataFormService = {
 
             if (infinite) {
                 const field = matchRegex(`(?<=_).*(?=#)`, uid);
-                const o = { [field]: [value] };
                 const alreadyExists = infiniteArray.filter(
                     (elm) => Object.keys(elm).indexOf(field) > -1
                 );
