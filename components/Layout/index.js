@@ -125,57 +125,42 @@ function Layout({ children, headTitle }) {
         <>
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
-                <link
-                    rel="icon"
-                    href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
-                />
+                <link rel="icon" href="/favicon/favicon.ico" />
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
+                    href="/fonts/Marianne-Regular.woff"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Regular.woff" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
+                    href="/fonts/Marianne-Regular.woff2"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Regular.woff2" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
+                    href="/fonts/Marianne-Bold.woff"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Bold.woff" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
+                    href="/fonts/Marianne-Bold.woff2"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Bold.woff2" />
                 </noscript>
             </Head>
             <Header>
