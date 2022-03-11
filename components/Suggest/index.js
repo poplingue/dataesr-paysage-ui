@@ -98,15 +98,19 @@ function Suggest({
                 setSpinner(true);
 
                 timer = setTimeout(async () => {
+                    const serviceAPI = (...params) =>
+                        externalAPI.getType(validatorId)(...params);
                     wrapPromise = externalAPI.getPromiseWithAbort(
-                        // TODO make generic
-                        externalAPI.openDataSoft(value, validatorId)
+                        serviceAPI(value, validatorId)
                     );
 
                     wrapPromise.promise
                         .then((data) => {
-                            // check input has focus
-                            if (document.activeElement.value === value) {
+                            // check current input has focus
+                            if (
+                                document.activeElement.value === value &&
+                                !!data.length
+                            ) {
                                 setSuggests(data);
                             }
                         })

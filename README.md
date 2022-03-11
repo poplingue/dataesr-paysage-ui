@@ -13,6 +13,7 @@ UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@
 ## Getting Started
 
 Add .env file
+
 ```
 NEXT_API_URL=''
 NEXT_BASE_PATH=''
@@ -33,6 +34,7 @@ Open [http://localhost:3002](http://localhost:3002)
 ### Example adding a new field in a form
 
 #### first...
+
 ```bash
 # /UpdateStructure/form.json 
 
@@ -50,6 +52,7 @@ Open [http://localhost:3002](http://localhost:3002)
 ```
 
 #### ...then...
+
 ```bash
 # /UpdateStructure/configValidator.json 
 
@@ -65,6 +68,7 @@ myValidatorId: {
 ```
 
 #### finally...
+
 ```bash
 # config/utils.js 
 
@@ -93,43 +97,61 @@ const obj = {
 ```js
 // config/utils.js
 
-// Add to getUrl function
+// Add url to getUrl function
 
 function getUrl(key) {
-  const urls = {
-    address: 'https://api-adresse.data.gouv.fr/search'
-  }
+    const urls = {
+        address: 'https://expernal-api/search?baseConfig=true'
+    }
 }
 ```
 
 ```js
 // ExternalAPI.service.js
 
-// Create new function
+// Create new API function calling function handleResp
 function myNewAPI(query, validatorId) {
-  externalAPI[`myNewAPI_${validatorId}`](data)
+    const myBody = {
+        q: query
+    }
+  
+    externalAPI.handleResp(myBody, validatorId, 'myNewAPI');
 }
 ```
 
 ```js
-// // ExternalAPI.service.js
- function myNewAPI_address(data) {
-        return data.map(({ d }) => {
-            return {
-                suggestion: {
-                    label: d.label,
-                    value: d.value,
-                },
-                updates: [
-                    {
-                        validatorId: 'field_to_update',
-                        value: d.otherValue,
-                    },
-                ]
-            }
-        })
+// ExternalAPI.service.js
+
+// Add type of API
+function getAPI(validatorId) {
+    const typesByValidatorId = {
+        'address': externalAPI.myNewAPI
+    }
 }
 ```
+
+```js
+// ExternalAPI.service.js
+
+// Build response for suggestions field and for updates fields
+function myNewAPI_address(data) {
+    return data.map(({ d }) => {
+        return {
+            suggestion: {
+                label: d.label,
+                value: d.value,
+            },
+            updates: [
+                {
+                    validatorId: 'field_to_update',
+                    value: d.otherValue,
+                },
+            ]
+        }
+    })
+}
+```
+
 ## Tests
 
 Launch unit tests and watcher
@@ -167,7 +189,8 @@ yarn dev
 yarn cy:run-rec
 ```
 
-Tests in `cypress/integration/paysage/user/**.spec.js` need Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
+Tests in `cypress/integration/paysage/user/**.spec.js` need Mollie Dickinson Inactive and Mollie Dickinson Active users.
+Be certain to have it in DB for Cypress account tests.
 
 ```
 {
@@ -184,9 +207,11 @@ Tests in `cypress/integration/paysage/user/**.spec.js` need Mollie Dickinson Ina
   username: 'mollie-inactive',
 }
 ```
+
 ## IndexDB
 
-IndexDB is used to store data from forms. On each change of value is updated in SERVICE_FORMS database the unique key with the following pattern:
+IndexDB is used to store data from forms. On each change of value is updated in SERVICE_FORMS database the unique key
+with the following pattern:
 
 `pathname@[section#id]_[nameId]#[eq]`
 
@@ -194,7 +219,8 @@ IndexDB is used to store data from forms. On each change of value is updated in 
 
 ## Errors handler
 
-ErrorBoundary can be used to catch runtime error. As this feature doesn't work with server side rendering, it must wrapped a NoSSRWrapper component.
+ErrorBoundary can be used to catch runtime error. As this feature doesn't work with server side rendering, it must
+wrapped a NoSSRWrapper component.
 
 ## Learn More
 
@@ -226,12 +252,12 @@ docker-compose up --build
 
 * add unit tests for complex components
 * add possibility of comments to section/field
-* adding link to section/field 
+* adding link to section/field
 * improve DynamicBreadcrumb system
 * add middleware functions for theme
 * Forms: compare data from DB and data from IndexDB
-  * check validation field
-  * check validation section
+    * check validation field
+    * check validation section
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
 * Navigation focus accessibility
 * autocomplete Location https://api-adresse.data.gouv.fr
