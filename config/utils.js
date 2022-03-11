@@ -5,6 +5,7 @@ export function getUrl(key) {
         genre: 'https://jsonplaceholder.typicode.com/todos',
         etat: 'https://jsonplaceholder.typicode.com/todos',
         tutelle: 'https://jsonplaceholder.typicode.com/todos',
+        address: 'https://api-adresse.data.gouv.fr/search',
         locality:
             'https://public.opendatasoft.com/api/v2/catalog/datasets/georef-france-commune/records?rows=10&select=*&pretty=false&timezone=UTC',
     };

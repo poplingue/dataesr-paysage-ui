@@ -99,6 +99,7 @@ function Suggest({
 
                 timer = setTimeout(async () => {
                     wrapPromise = externalAPI.getPromiseWithAbort(
+                        // TODO make generic
                         externalAPI.openDataSoft(value, validatorId)
                     );
 

@@ -96,6 +96,7 @@
           {
             "title": "Adresse",
             "type": "text",
+            "suggest": true,
             "validatorId": "address"
           },
           {

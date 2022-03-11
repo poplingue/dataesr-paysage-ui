@@ -66,7 +66,7 @@ myValidatorId: {
 
 #### finally...
 ```bash
-# /config/utils.js 
+# config/utils.js 
 
 const obj = {
       'update/structure': [
@@ -76,6 +76,60 @@ const obj = {
 }
 ```
 
+### Add suggestions autocomplete to an input field
+
+```bash
+
+# form.json
+
+{
+  "title": "Adresse",
+  "type": "text",
+  "suggest": true,
+  "validatorId": "address"
+}
+```
+
+```js
+// config/utils.js
+
+// Add to getUrl function
+
+function getUrl(key) {
+  const urls = {
+    address: 'https://api-adresse.data.gouv.fr/search'
+  }
+}
+```
+
+```js
+// ExternalAPI.service.js
+
+// Create new function
+function myNewAPI(query, validatorId) {
+  externalAPI[`myNewAPI_${validatorId}`](data)
+}
+```
+
+```js
+// // ExternalAPI.service.js
+ function myNewAPI_address(data) {
+        return data.map(({ d }) => {
+            return {
+                suggestion: {
+                    label: d.label,
+                    value: d.value,
+                },
+                updates: [
+                    {
+                        validatorId: 'field_to_update',
+                        value: d.otherValue,
+                    },
+                ]
+            }
+        })
+}
+```
 ## Tests
 
 Launch unit tests and watcher
