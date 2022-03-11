@@ -20,8 +20,8 @@ jobs:
           node-version: '14'
       - name: Install modules
         run: yarn
-#      - name: Run unit tests
-#        run: yarn run test
+      - name: Run unit tests
+        run: yarn run test
       - name: Run Cypress tests
         run: yarn run cy:run-only:prod
       - name: Notify Slack
