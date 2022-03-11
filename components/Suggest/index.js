@@ -99,7 +99,7 @@ function Suggest({
 
                 timer = setTimeout(async () => {
                     const serviceAPI = (...params) =>
-                        externalAPI.getAPI(validatorId)(...params);
+                        externalAPI.getType(validatorId)(...params);
                     wrapPromise = externalAPI.getPromiseWithAbort(
                         serviceAPI(value, validatorId)
                     );

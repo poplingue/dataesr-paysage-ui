@@ -2,7 +2,7 @@ import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
 export const externalAPI = {
-    getAPI(validatorId) {
+    getType(validatorId) {
         const typesByValidatorId = {
             address: externalAPI.dataGouv,
             locality: externalAPI.openDataSoft,
