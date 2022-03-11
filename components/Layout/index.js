@@ -245,17 +245,19 @@ function Layout({ children, headTitle }) {
                             asLink={<NavLink href="/list" />}
                         />
                     </NavItem>
-                    <NavItem title="Répertoire">
-                        <NavSubItem
-                            current={pathname.startsWith('/search')}
-                            title="Rechercher une structure"
-                            asLink={<NavLink href="/search/0" />}
-                        />
-                        <NavSubItem
-                            title="Listes qualifiées"
-                            asLink={<NavLink href="/list" />}
-                        />
-                    </NavItem>
+                    {!noUser && (
+                        <NavItem title="Répertoire">
+                            <NavSubItem
+                                current={pathname.startsWith('/search')}
+                                title="Rechercher une structure"
+                                asLink={<NavLink href="/search/0" />}
+                            />
+                            <NavSubItem
+                                title="Listes qualifiées"
+                                asLink={<NavLink href="/list" />}
+                            />
+                        </NavItem>
+                    )}
                     <NavItem
                         title="Ressources"
                         asLink={<NavLink href="/resources" />}
