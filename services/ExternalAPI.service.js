@@ -2,6 +2,15 @@ import getConfig from 'next/config';
 import { fetchHelper } from '../helpers/fetch';
 
 export const externalAPI = {
+    getAPI(validatorId) {
+        const typesByValidatorId = {
+            address: externalAPI.dataGouv,
+            locality: externalAPI.openDataSoft,
+        };
+
+        return typesByValidatorId[validatorId];
+    },
+
     getPromiseWithAbort(promise) {
         let obj = {};
         // a new promise is set internally to terminate the execution
@@ -13,15 +22,11 @@ export const externalAPI = {
 
         return obj;
     },
-    async openDataSoft(query, validatorId) {
+
+    async handleResp(body, validatorId, key) {
         const { publicRuntimeConfig } = getConfig();
-        const cleanQuery = query.replaceAll(' ', '%20');
 
         const url = `${publicRuntimeConfig.baseApiUrl}/public?validatorId=${validatorId}`;
-        const body = {
-            where: `com_name%20like%20%22${cleanQuery}*%22`,
-            order_by: 'com_name%20ASC',
-        };
 
         const requestOptions = fetchHelper.requestOptions('POST', body);
 
@@ -32,16 +37,67 @@ export const externalAPI = {
             .then(({ response }) =>
                 response
                     .json()
-                    .then(({ records }) =>
-                        externalAPI[`openDataSoft_${validatorId}`](records)
-                    )
+                    .then((data) => externalAPI[`${key}_${validatorId}`](data))
             )
             .catch((err) => {
                 return Promise.reject(err);
             });
     },
+    async dataGouv(query, validatorId) {
+        const cleanQuery = query.replaceAll(' ', '+');
+        const body = {
+            q: cleanQuery,
+        };
 
-    openDataSoft_locality(records) {
+        return externalAPI.handleResp(body, validatorId, 'dataGouv');
+    },
+
+    async openDataSoft(query, validatorId) {
+        const cleanQuery = query.replaceAll(' ', '%20');
+        const body = {
+            where: `com_name%20like%20%22${cleanQuery}*%22`,
+            order_by: 'com_name%20ASC',
+        };
+
+        return externalAPI.handleResp(body, validatorId, 'openDataSoft');
+    },
+
+    dataGouv_address({ features }) {
+        return features.map((feature) => {
+            const { properties, geometry } = feature;
+
+            return {
+                suggestion: {
+                    label: properties.label,
+                    value: properties.name,
+                },
+                updates: [
+                    {
+                        validatorId: 'locality',
+                        value: properties.city,
+                    },
+                    {
+                        validatorId: 'postalCode',
+                        value: properties.postcode,
+                    },
+                    {
+                        validatorId: 'latitude',
+                        value: geometry.coordinates[1].toString(),
+                    },
+                    {
+                        validatorId: 'longitude',
+                        value: geometry.coordinates[0].toString(),
+                    },
+                    {
+                        validatorId: 'country',
+                        value: 'France',
+                    },
+                ],
+            };
+        });
+    },
+
+    openDataSoft_locality({ records }) {
         return records.map(({ record }) => {
             const { fields } = record;
 

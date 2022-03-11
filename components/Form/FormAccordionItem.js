@@ -207,7 +207,7 @@ export default function FormAccordionItem({
         const uids = form.flatMap((field) => {
             const { uid, unSaved } = field;
 
-            return checkFlatMap[uid.indexOf(subObject) > -1 && unSaved](uid);
+            return checkFlatMap[uid.indexOf(subObject) > -1 && !!unSaved](uid);
         });
 
         // update global state
