@@ -140,7 +140,6 @@ function Suggest({
                     {!!suggests.length && (
                         <ul
                             data-cy="suggestions"
-                            onBlur={() => setSuggests([])}
                             className={styles.SuggestList}
                         >
                             {suggests.map((suggest, i) => {
@@ -149,7 +148,19 @@ function Suggest({
                                         <div
                                             className={styles.SuggestItem}
                                             onClick={() => onClick(suggest)}
-                                            tabIndex={i}
+                                            onBlur={(e) => {
+                                                const check =
+                                                    !e.relatedTarget ||
+                                                    e.relatedTarget
+                                                        .className !==
+                                                        e.target.className;
+
+                                                // case usage tabulation
+                                                if (check) {
+                                                    reset();
+                                                }
+                                            }}
+                                            tabIndex="0"
                                         >
                                             {suggest.suggestion.label}
                                         </div>

@@ -13,8 +13,6 @@ module.exports = {
         dataesrApiUrl: process.env.API_URL,
     },
     publicRuntimeConfig: {
-        // Will be available on both server and client
-        basePath: process.env.NEXT_BASE_PATH,
         baseApiUrl: process.env.NEXT_API_URL,
     },
     sassOptions: { includePaths: [path.join(__dirname, 'styles')] },

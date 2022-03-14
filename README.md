@@ -16,7 +16,6 @@ Add .env file
 
 ```
 NEXT_API_URL=''
-NEXT_BASE_PATH=''
 API_URL=''
 API_AUTH_URL=''
 ```
