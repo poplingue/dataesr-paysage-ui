@@ -80,7 +80,7 @@ function Suggest({
             (stateValue !== value ||
                 document.activeElement.className !== styles.SuggestItem)
         ) {
-            reset();
+            // reset();
         }
     }, [focus, stateValue, suggest, value]);
 

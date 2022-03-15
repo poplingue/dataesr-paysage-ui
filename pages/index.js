@@ -1,10 +1,8 @@
-import { Button, Select, TextInput } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { subObjects } from '../config/objects';
-import { getObjectTypeDetails } from '../config/utils';
+import { useContext, useEffect } from 'react';
+import HomeSearch from '../components/HomeSearch';
 import { AppContext } from '../context/GlobalState';
 import { fetchHelper } from '../helpers/fetch';
 import grid from '../helpers/imports';
@@ -26,8 +24,6 @@ const Layout = dynamic(() => import('../components/Layout'));
 
 function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
-    const [typeObject, setTypeObject] = useState(0);
-    const [searchValue, setSearchValue] = useState('');
 
     const router = useRouter();
 
@@ -49,97 +45,55 @@ function Home({ tokens = {} }) {
         }
     }, [router, tokens, error]);
 
-    const onSearch = () => {
-        if (!searchValue) {
-            router.push(`/search/${typeObject}`).then;
-        }
-    };
-
     return (
         <Layout>
             <HeaderLayout />
-            <Container>
+            <Container fluid>
                 <Row>
                     <Col spacing="mb-5w">
-                        <Row alignItems="bottom" gutters>
-                            <Col n="3">
-                                <Select
-                                    onChange={(e) => {
-                                        setTypeObject(e.target.value);
-                                    }}
-                                    selected={typeObject}
-                                    label="Objet recherché"
-                                    options={[
-                                        ...Array(
-                                            Object.keys(subObjects).length
-                                        ).keys(),
-                                    ].map((object, i) => {
-                                        return {
-                                            label: getObjectTypeDetails(i)
-                                                .title,
-                                            value: i,
-                                        };
-                                    })}
-                                />
-                            </Col>
-                            <Col n="7">
-                                <TextInput
-                                    disabled
-                                    label="Rechercher"
-                                    value={searchValue}
-                                    onChange={(e) =>
-                                        setSearchValue(e.target.value)
-                                    }
-                                />
-                            </Col>
-                            <Col n="2">
-                                <Button
-                                    icon="ri-search-2-line"
-                                    title="Rechercher"
-                                    onClick={onSearch}
-                                >
-                                    Rechercher
-                                </Button>
-                            </Col>
-                        </Row>
+                        <HomeSearch />
                     </Col>
                 </Row>
                 <Row>
-                    <Col n="12" spacing="mb-3w">
-                        <h2 data-cy="user">
-                            {!!Object.keys(user).length
-                                ? `Salut à toi ${user.fullName || ''}`
-                                : 'Salut'}
-                        </h2>
-                    </Col>
-                    <Col n="12">
-                        <Row gutters>
-                            <Col n="4">
-                                <Tile horizontalMedium>
-                                    <TileBody
-                                        title="Temps passé sur le site"
-                                        description="22h50"
-                                    ></TileBody>
-                                </Tile>
+                    <Container>
+                        <Row>
+                            <Col n="12" spacing="mb-3w">
+                                <h2 data-cy="user">
+                                    {!!Object.keys(user).length
+                                        ? `Salut à toi ${user.fullName || ''}`
+                                        : 'Salut'}
+                                </h2>
                             </Col>
-                            <Col n="4">
-                                <Tile horizontalMedium>
-                                    <TileBody
-                                        title="Nombre de modifications"
-                                        description="328"
-                                    ></TileBody>
-                                </Tile>
-                            </Col>
-                            <Col n="4">
-                                <Tile horizontalMedium>
-                                    <TileBody
-                                        title="Nombre d'objets ajoutés"
-                                        description="12"
-                                    ></TileBody>
-                                </Tile>
+                            <Col n="12">
+                                <Row gutters>
+                                    <Col n="4">
+                                        <Tile horizontalMedium>
+                                            <TileBody
+                                                title="Temps passé sur le site"
+                                                description="22h50"
+                                            ></TileBody>
+                                        </Tile>
+                                    </Col>
+                                    <Col n="4">
+                                        <Tile horizontalMedium>
+                                            <TileBody
+                                                title="Nombre de modifications"
+                                                description="328"
+                                            ></TileBody>
+                                        </Tile>
+                                    </Col>
+                                    <Col n="4">
+                                        <Tile horizontalMedium>
+                                            <TileBody
+                                                title="Nombre d'objets ajoutés"
+                                                description="12"
+                                            ></TileBody>
+                                        </Tile>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                    </Col>
+                    </Container>
                 </Row>
             </Container>
         </Layout>
