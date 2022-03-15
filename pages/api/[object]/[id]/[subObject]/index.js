@@ -1,21 +1,24 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
-import { structureSubObjects } from '../../../../../config/objects';
+import { subObjects } from '../../../../../config/objects';
+import { getObjectTypeDetails } from '../../../../../config/utils';
 import { fetchHelper } from '../../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 const handler = nc()
     .post(async (req, res) => {
-        const { subObject, id } = req.query;
+        const { object, subObject, id } = req.query;
         const tokens = fetchHelper.headerTokens(req);
 
-        const subObjectInit = structureSubObjects.find((elm) => {
-            return elm.subObject === subObject;
-        });
+        const subObjectInit = subObjects[object].find(
+            (elm) => elm.subObject === subObject
+        );
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${subObject}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'POST',
@@ -24,10 +27,10 @@ const handler = nc()
             );
 
             const request = await fetch(url, requestOptions);
-
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();
+            console.log('==== LOG ==== ', response);
 
             res.status(request.status).json(response);
         } catch (err) {
@@ -36,9 +39,12 @@ const handler = nc()
     })
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
+        const { object, subObject } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/${req.query.subObject}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${req.query.id}/${subObject}`;
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,

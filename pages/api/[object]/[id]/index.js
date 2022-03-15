@@ -1,5 +1,6 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
+import { getObjectTypeDetails } from '../../../../config/utils';
 import { fetchHelper } from '../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
@@ -7,9 +8,12 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc()
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
+        const { object } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${req.query.id}`;
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,
@@ -29,9 +33,12 @@ const handler = nc()
     })
     .put(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
+        const { object } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${req.query.id}/status`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${req.query.id}/status`;
             const requestOptions = fetchHelper.requestOptions(
                 'PUT',
                 req.body,

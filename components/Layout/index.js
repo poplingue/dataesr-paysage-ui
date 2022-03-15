@@ -211,11 +211,11 @@ function Layout({ children, headTitle }) {
                     {!noUser && (
                         <NavItem
                             title="Je contribue"
-                            current={asPath.startsWith('/update')}
+                            current={asPath.startsWith('/contrib')}
                         >
                             <NavSubItem
                                 title="Ajouter un nouvel object"
-                                asLink={<NavLink href="/update" />}
+                                asLink={<NavLink href="/contrib" />}
                             />
                         </NavItem>
                     )}

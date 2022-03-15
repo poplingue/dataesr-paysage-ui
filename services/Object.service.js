@@ -7,6 +7,7 @@ import { niceFullDate } from '../helpers/utils';
 export const objectService = {
     newId: async (message) => {
         const newObject = JSON.parse(message);
+        console.log('==== newId ==== ', newObject);
 
         if (newObject.status < 400 && newObject.status >= 200) {
             return newObject.data.object.id;

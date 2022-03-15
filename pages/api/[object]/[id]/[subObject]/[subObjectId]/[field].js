@@ -1,15 +1,18 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
+import { getObjectTypeDetails } from '../../../../../../config/utils';
 import { fetchHelper } from '../../../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 const handler = nc().delete(async (req, res) => {
     const tokens = fetchHelper.headerTokens(req);
-    const { id, subObject, subObjectId, field } = req.query;
+    const { id, object, subObject, subObjectId, field } = req.query;
 
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}/${subObjectId}/${field}`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+            getObjectTypeDetails('', object).dataesrApi
+        }/${id}/${subObject}/${subObjectId}/${field}`;
 
         const requestOptions = fetchHelper.requestOptions(
             'DELETE',

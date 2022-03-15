@@ -21,7 +21,7 @@ describe('<LinkTo />', () => {
     it('renders correctly LinkTo', () => {
         const tree = renderer
             .create(
-                <LinkTo text="Ceci est mon texte" href="/update/structure" />
+                <LinkTo text="Ceci est mon texte" href="/contrib/structure" />
             )
             .toJSON();
         expect(tree).toMatchSnapshot();

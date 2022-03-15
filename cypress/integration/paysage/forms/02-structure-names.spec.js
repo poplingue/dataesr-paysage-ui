@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -13,7 +13,7 @@ context('Structure new form', () => {
 
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_article"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_article"]`)
                 .find('select')
                 .select('aux');
 
@@ -22,7 +22,7 @@ context('Structure new form', () => {
             cy.wait('@patch');
             cy.reload();
 
-            cy.get(`[data-field="update/structure@names#${id}_article"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_article"]`)
                 .find('select')
                 .should('have.value', 'aux');
         });
@@ -34,13 +34,13 @@ context('Structure new form', () => {
 
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .type('OtherName#0');
 
             cy.get('[data-testid="btn-add"]').click();
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#1"]`)
                 .find('input')
                 .type('OtherName#1');
 
@@ -53,7 +53,7 @@ context('Structure new form', () => {
             cy.wait('@patch');
 
             cy.get(
-                `[data-field="update/structure@names#${id}_otherNames#1"]`
+                `[data-field="contrib/structure@names#${id}_otherNames#1"]`
             ).should('not.exist');
         });
     });
@@ -64,7 +64,7 @@ context('Structure new form', () => {
 
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_shortName"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
                 .find('input')
                 .type('ShortName');
 
@@ -77,7 +77,7 @@ context('Structure new form', () => {
             cy.reload();
             cy.sectionsNoSticky();
 
-            cy.get(`[data-field="update/structure@names#${id}_shortName"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
                 .find('input')
                 .type('toutouyoutou')
                 .clear();
@@ -90,7 +90,7 @@ context('Structure new form', () => {
 
             cy.reload();
 
-            cy.get(`[data-field="update/structure@names#${id}_shortName"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
                 .find('input')
                 .should('have.value', '');
         });

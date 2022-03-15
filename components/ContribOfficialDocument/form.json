@@ -1,0 +1,18 @@
+[
+  {
+    "form": [
+      {
+        "title": "Document ID",
+        "subObject": "officialDocumentId",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type"
+          }
+        ]
+      }
+    ]
+  }
+]

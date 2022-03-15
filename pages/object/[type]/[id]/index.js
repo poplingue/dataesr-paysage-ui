@@ -88,7 +88,7 @@ export default function PaysageObject({ data }) {
                                 text={`modifier ${
                                     getObjectTypeDetails('', type).text
                                 }`}
-                                href={`/update/structure/${id}`}
+                                href={`/contrib/structure/${id}`}
                             />
                         </ToolBox>
                     </Component>

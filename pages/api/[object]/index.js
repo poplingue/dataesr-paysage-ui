@@ -1,14 +1,18 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
+import { getObjectTypeDetails } from '../../../config/utils';
 import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
 
 const handler = nc().get(async (req, res) => {
     const tokens = fetchHelper.headerTokens(req);
+    const { object } = req.query;
 
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/structures`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+            getObjectTypeDetails('', object).dataesrApi
+        }`;
 
         const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
         const request = await fetch(url, requestOptions);

@@ -15,7 +15,12 @@ export const DataProvider = ({ user, error, children }) => {
         validSections: [],
         departments: [],
         updateObjectId: Cookies.get('updateObjectId') || '',
-        forms: [{ 'update/person': [] }, { 'update/structure': [] }],
+        forms: [
+            { 'contrib/person': [] },
+            { 'contrib/structure': [] },
+            { 'contrib/category': [] },
+            { 'contrib/officialDocument': [] },
+        ],
         savingSections: [],
         currentObject: {},
         dependencies: {},
@@ -65,7 +70,15 @@ export const DataProvider = ({ user, error, children }) => {
     };
 
     useEffect(() => {
-        DBService.init(['update/person', 'update/structure'], cbInit);
+        DBService.init(
+            [
+                'contrib/person',
+                'contrib/structure',
+                'contrib/category',
+                'contrib/officialDocument',
+            ],
+            cbInit
+        );
     }, []);
 
     return (

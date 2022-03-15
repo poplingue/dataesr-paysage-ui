@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure fields dependence', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -11,7 +11,7 @@ context('Structure fields dependence', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_acronymEn"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_acronymEn"]`)
                 .find('input')
                 .should('not.be.visible');
         });
@@ -20,11 +20,11 @@ context('Structure fields dependence', () => {
     it('On change Name En should display Acronyme En', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
-            cy.get(`[data-field="update/structure@names#${id}_nameEn"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_nameEn"]`)
                 .find('input')
                 .type('English');
 
-            cy.get(`[data-field="update/structure@names#${id}_acronymEn"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_acronymEn"]`)
                 .find('input')
                 .should('be.visible');
         });

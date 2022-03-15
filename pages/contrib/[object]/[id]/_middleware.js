@@ -5,11 +5,11 @@ export async function middleware(request) {
         const { object, id } = request.page.params;
 
         // set cookies
-        // redirect to /update/[object]
+        // redirect to /contrib/[object]
         return NextResponse.redirect(
-            new URL(`/update/${object}`, request.url)
+            new URL(`/contrib/${object}`, request.url)
         ).cookie('updateObjectId', id);
     } else {
-        return NextResponse.redirect(new URL(`/update`, request.url));
+        return NextResponse.redirect(new URL(`/contrib`, request.url));
     }
 }

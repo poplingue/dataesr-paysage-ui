@@ -4,17 +4,27 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 
-const UpdatePerson = dynamic(() => import('../../../components/UpdatePerson'));
-const UpdateStructure = dynamic(() =>
-    import('../../../components/UpdateStructure')
+const ContribOfficialDocument = dynamic(() =>
+    import('../../../components/ContribOfficialDocument')
+);
+const ContribPerson = dynamic(() =>
+    import('../../../components/ContribPerson')
+);
+const ContribCategory = dynamic(() =>
+    import('../../../components/ContribCategory')
+);
+const ContribStructure = dynamic(() =>
+    import('../../../components/ContribStructure')
 );
 
-export default function UpdateObject({ data }) {
+export default function ContribObject({ data }) {
     const router = useRouter();
     const { object } = router.query;
     const components = {
-        person: UpdatePerson,
-        structure: UpdateStructure,
+        person: ContribPerson,
+        structure: ContribStructure,
+        category: ContribCategory,
+        officialDocument: ContribOfficialDocument,
     };
 
     const {
@@ -61,7 +71,12 @@ export async function getStaticProps() {
 
 export async function getStaticPaths() {
     return {
-        paths: ['/update/person', '/update/structure'],
+        paths: [
+            '/contrib/person',
+            '/contrib/structure',
+            '/contrib/category',
+            '/contrib/officialDocument',
+        ],
         fallback: true,
     };
 }

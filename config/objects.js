@@ -1,12 +1,39 @@
 import PropTypes from 'prop-types';
-import { configValidator as configValidatorPerson } from '../components/UpdatePerson/configValidator';
-import { configValidator as configValidatorIdentifiers } from '../components/UpdateStructure/configValidatorIdentifiers';
-import { configValidatorLocalisations } from '../components/UpdateStructure/configValidatorLocalisations';
-import { configValidator as configValidatorNames } from '../components/UpdateStructure/configValidatorNames';
+import { configValidator as configValidatorCategoryIdentifiers } from '../components/ContribCategory/configValidatorIdentifiers';
 
-export const structureSubObjects = [
+import { configValidator as configValidatorCategoryWeblinks } from '../components/ContribCategory/configValidatorWeblinks';
+import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorofficialDocumentId';
+import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
+import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
+import { configValidator as configValidatorPersonSocialmedias } from '../components/ContribPerson/configValidatorSocialmedias';
+import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
+
+import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
+
+import { configValidator as configValidatorStructureNames } from '../components/ContribStructure/configValidatorNames';
+import { configValidator as configValidatorStructureRankings } from '../components/ContribStructure/configValidatorRankings';
+import { configValidator as configValidatorStructureSocialmedias } from '../components/ContribStructure/configValidatorSocialmedias';
+
+import { configValidator as configValidatorStructureWeblinks } from '../components/ContribStructure/configValidatorWeblinks';
+
+const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
     { subObject: 'localisations', initBody: { country: '' } },
+    { subObject: 'rankings', initBody: { url: '' } },
+    {
+        subObject: 'weblinks',
+        initBody: {
+            type: '',
+            url: '',
+        },
+    },
+    {
+        subObject: 'socialmedias',
+        initBody: {
+            type: '',
+            account: '',
+        },
+    },
     {
         subObject: 'identifiers',
         initBody: {
@@ -17,13 +44,73 @@ export const structureSubObjects = [
     },
 ];
 
+const personSubObjects = [
+    { subObject: 'names', initBody: { usualName: '' } },
+    {
+        subObject: 'identifiers',
+        initBody: {
+            type: '',
+            value: '',
+            active: false,
+        },
+    },
+];
+
+const officialDocumentSubObjects = [
+    {
+        subObject: 'officialDocumentId',
+        initBody: {
+            type: '',
+        },
+    },
+];
+
+const categorySubObjects = [
+    {
+        subObject: 'identifiers',
+        initBody: {
+            type: '',
+            value: '',
+            active: false,
+        },
+    },
+    {
+        subObject: 'weblinks',
+        initBody: {
+            type: '',
+            url: '',
+        },
+    },
+];
+
+export const subObjects = {
+    person: personSubObjects,
+    structure: structureSubObjects,
+    category: categorySubObjects,
+    officialDocument: officialDocumentSubObjects,
+};
+
 export const configValidators = {
     structure: {
-        identifiers: configValidatorIdentifiers,
-        names: configValidatorNames,
-        localisations: configValidatorLocalisations,
+        identifiers: configValidatorStructureIdentifiers,
+        names: configValidatorStructureNames,
+        localisations: configValidatorStructureLocalisations,
+        weblinks: configValidatorStructureWeblinks,
+        socialmedias: configValidatorStructureSocialmedias,
+        rankings: configValidatorStructureRankings,
     },
-    person: configValidatorPerson,
+    person: {
+        identifiers: configValidatorPersonIdentifiers,
+        names: configValidatorPersonNames,
+        socialmedias: configValidatorPersonSocialmedias,
+    },
+    category: {
+        identifiers: configValidatorCategoryIdentifiers,
+        weblinks: configValidatorCategoryWeblinks,
+    },
+    officialDocument: {
+        officialDocumentId: configValidatorOfficialDocumentId,
+    },
 };
 
 export const PersonPageSkeletonPropType = PropTypes.shape({

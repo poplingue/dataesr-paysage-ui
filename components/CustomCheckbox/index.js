@@ -45,6 +45,7 @@ function CustomCheckbox({
             return { label: elm, checked: false, value: cleanString(elm) };
         })
     );
+
     const [values, setValues] = useState([]);
     const { checkField, message, type } = useValidator(validatorConfig);
 
@@ -106,9 +107,10 @@ function CustomCheckbox({
 
     useEffect(() => {
         let update = false;
+        const fieldValue = getFieldValue(forms, formName, uid);
+
         const newCheckboxes = checkboxValues.map((checkbox) => {
             const { checked, value } = checkbox;
-            const fieldValue = getFieldValue(forms, formName, uid);
             const booleanCheck = {
                 false: () => fieldValue,
                 true: () => fieldValue.indexOf(value) >= 0,

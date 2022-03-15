@@ -44,9 +44,13 @@ export default function InfiniteAccordion({
         query: { object },
     } = useRouter();
     const [init, setInit] = useState(true);
+
     const [sections, setSections] = useState(() => {
-        return { [subObjectType]: [] };
+        return {
+            [subObjectType]: [],
+        };
     });
+
     const formName = getFormName(pathname, object);
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -123,7 +127,8 @@ export default function InfiniteAccordion({
             .then((data) => {
                 updateSection([...sections[subObjectType], data.id]);
             })
-            .catch(() => {
+            .catch((err) => {
+                debugger; // eslint-disable-line
                 NotifService.info(genericErrorMsg, 'error');
             });
     };
@@ -133,6 +138,10 @@ export default function InfiniteAccordion({
             .getSubObjectData(object, updateObjectId, subObjectType)
             .then(({ data }) => {
                 return { ids: data.data.map((subObject) => subObject.id) };
+            })
+            .catch(() => {
+                // use initial form json with a fake id
+                return { ids: ['azertyui'] };
             });
     }, [object, subObjectType, updateObjectId]);
 
@@ -162,6 +171,7 @@ export default function InfiniteAccordion({
                                     const sectionTitle = `${title} ${i + 1}/${
                                         sections[subObjectType].length
                                     }`;
+
                                     const deletable = i !== 0;
 
                                     return (

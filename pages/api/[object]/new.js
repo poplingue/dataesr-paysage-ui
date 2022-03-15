@@ -1,5 +1,6 @@
 import getConfig from 'next/config';
-import { structureSubObjects } from '../../../config/objects';
+import { subObjects } from '../../../config/objects';
+import { getObjectTypeDetails } from '../../../config/utils';
 import { fetchHelper } from '../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
@@ -7,8 +8,12 @@ const { serverRuntimeConfig } = getConfig();
 async function handler(req, res) {
     const tokens = fetchHelper.headerTokens(req);
 
+    const { object } = req.query;
+
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/structures`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+            getObjectTypeDetails('', object).dataesrApi
+        }`;
         const requestOptions = fetchHelper.requestOptions(
             'POST',
             req.body,
@@ -20,32 +25,39 @@ async function handler(req, res) {
         fetchHelper.checkAuthorized(tokens, request, res);
 
         const response = await request.text();
+
         const { id } = JSON.parse(response);
 
         // Create all init objects of the structure
         let promises = [];
+        const currentSubObjects = subObjects[object];
 
-        for (let i = 0; i < structureSubObjects.length; i++) {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${structureSubObjects[i].subObject}`;
+        for (let i = 0; i < currentSubObjects.length; i++) {
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${currentSubObjects[i].subObject}`;
+
             const requestOptions = fetchHelper.requestOptions(
                 'POST',
-                structureSubObjects[i].initBody,
+                currentSubObjects[i].initBody,
                 tokens
             );
 
             let request = new Request(url, requestOptions);
-
             promises.push(request);
         }
 
         // TODO add Promise.allSettled()
-        return Promise.all(
+        return Promise.allSettled(
             promises.map((request) => {
                 return fetch(request)
                     .then((response) => {
                         return response.json();
                     })
-                    .then((data) => data);
+                    .then((data) => data)
+                    .catch((err) => {
+                        console.log('==== ERR ALL ==== ', err);
+                    });
             })
         )
             .then((values) => {
@@ -55,6 +67,7 @@ async function handler(req, res) {
                 });
             })
             .catch((error) => {
+                console.log('==== ERR ==== ', error);
                 res.status(500).send(error);
             });
     } catch (err) {

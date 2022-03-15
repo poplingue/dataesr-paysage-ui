@@ -23,7 +23,7 @@ export default function PersonNews({ news }) {
                                 <Col n="4" key={link}>
                                     <CardInfo
                                         externalLink={link}
-                                        link="/update/person/1"
+                                        link="/contrib/person/1"
                                         supInfo={date}
                                         title={title}
                                         subInfo={source}

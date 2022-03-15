@@ -1,5 +1,6 @@
 import nc from 'next-connect';
 import getConfig from 'next/config';
+import { getObjectTypeDetails } from '../../../../../../config/utils';
 import { fetchHelper } from '../../../../../../helpers/fetch';
 
 const { serverRuntimeConfig } = getConfig();
@@ -7,10 +8,12 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc()
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
-        const { id, subObject } = req.query;
+        const { id, subObject, object } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${subObject}`;
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,
@@ -30,10 +33,12 @@ const handler = nc()
     .patch(async (req, res) => {
         // TODO merge patch & delete
         const tokens = fetchHelper.headerTokens(req);
-        const { id, subObject, subObjectId } = req.query;
+        const { id, object, subObject, subObjectId } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${subObject}/${subObjectId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PATCH',
                 req.body,
@@ -54,10 +59,12 @@ const handler = nc()
     .put(async (req, res) => {
         // TODO merge patch & delete & put
         const tokens = fetchHelper.headerTokens(req);
-        const { id, subObject, subObjectId } = req.query;
+        const { id, object, subObject, subObjectId } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${subObject}/${subObjectId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PUT',
                 req.body,
@@ -76,10 +83,12 @@ const handler = nc()
     })
     .delete(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
-        const { id, subObject, subObjectId } = req.query;
+        const { id, object, subObject, subObjectId } = req.query;
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/structures/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
+                getObjectTypeDetails('', object).dataesrApi
+            }/${id}/${subObject}/${subObjectId}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'DELETE',

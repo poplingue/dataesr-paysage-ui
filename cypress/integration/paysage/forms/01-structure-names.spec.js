@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form infinite otherName and article', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -15,7 +15,7 @@ context('Structure new form infinite otherName and article', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .type('OtherName#0');
 
@@ -23,7 +23,7 @@ context('Structure new form infinite otherName and article', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#1"]`)
                 .find('input')
                 .type('OtherName#1');
 
@@ -34,11 +34,11 @@ context('Structure new form infinite otherName and article', () => {
 
             cy.sectionsNoSticky();
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .should('have.value', 'OtherName#0');
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#1"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#1"]`)
                 .find('input')
                 .should('have.value', 'OtherName#1');
         });
@@ -50,7 +50,7 @@ context('Structure new form infinite otherName and article', () => {
 
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .type('OtherName#0');
 
@@ -61,7 +61,7 @@ context('Structure new form infinite otherName and article', () => {
 
             cy.sectionsNoSticky();
 
-            cy.get(`[data-field="update/structure@names#${id}_otherNames#0"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .should('have.value', 'OtherName#0');
         });

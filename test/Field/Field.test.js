@@ -8,8 +8,8 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    giroute: '/update/person',
-    pathname: '/update/person',
+    giroute: '/contrib/person',
+    pathname: '/contrib/person',
 }));
 
 jest.mock('react', () => ({

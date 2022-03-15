@@ -160,6 +160,78 @@
         ]
       },
       {
+        "title": "Liens web",
+        "subObject": "weblinks",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type"
+          },
+          {
+            "title": "Url",
+            "type": "text",
+            "validatorId": "url"
+          },
+          {
+            "title": "Langage",
+            "type": "text",
+            "validatorId": "language"
+          }
+        ]
+      },
+      {
+        "title": "Réseaux sociaux",
+        "subObject": "socialmedias",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "select",
+            "validatorId": "type",
+            "staticValues": [
+              "Facebook",
+              "Twitter",
+              "Linkedin"
+            ]
+          },
+          {
+            "title": "Compte",
+            "type": "text",
+            "hint": "Identifiant du compte ou url",
+            "validatorId": "socialAccount"
+          }
+        ]
+      },
+      {
+        "title": "Classement",
+        "subObject": "rankings",
+        "infinite": true,
+        "content": [
+          {
+            "title": "rankingId",
+            "type": "text",
+            "validatorId": "rankingId"
+          },
+          {
+            "title": "Url",
+            "type": "text",
+            "validatorId": "url"
+          },
+          {
+            "title": "Rank",
+            "type": "text",
+            "validatorId": "rank"
+          },
+          {
+            "title": "Année",
+            "type": "text",
+            "validatorId": "year"
+          }
+        ]
+      },
+      {
         "title": "Identifiants",
         "subObject": "identifiers",
         "infinite": true,
@@ -182,6 +254,7 @@
             "title": "État",
             "type": "radio",
             "validatorId": "active",
+            "defaultLabel": "Actif",
             "staticValues": [
               {
                 "value": true,

@@ -22,6 +22,7 @@ export default function SwitchField({
     updateValidSection,
     subObject,
     hint,
+    defaultLabel,
 }) {
     const {
         query: { object },
@@ -41,6 +42,7 @@ export default function SwitchField({
                         onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
                         value={value}
                         infinite={infinite}
@@ -81,6 +83,7 @@ export default function SwitchField({
                         validatorId={validatorId}
                         staticValues={staticValues}
                         subObject={subObject}
+                        defaultLabel={defaultLabel}
                     />
                 );
             case 'date':

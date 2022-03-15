@@ -13,16 +13,14 @@ import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import LinkTo from '../LinkTo';
 import ToolBox from '../ToolBox';
-import UpdateStructureForm from './form.json';
+import ContribOfficialDocumentForm from './form.json';
 
-export default function UpdateStructure({ data, id }) {
+export default function ContribOfficialDocument({ data, id }) {
     const {
         stateForm: { departments, storeObjects, currentObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-    const { style: yellow } = useCSSProperty(
-        '--green-tilleul-verveine-main-707'
-    );
+    const { style: greenish } = useCSSProperty('--green-bourgeon-main-640');
     const [published, setPublished] = useState(
         currentObject.status === 'published'
     );
@@ -74,10 +72,10 @@ export default function UpdateStructure({ data, id }) {
     }, [dispatch, formName, id, object, storeObjects]);
 
     const publishObject = () => {
-        dataFormService.publish(currentObject.id, object).then((structure) => {
-            NotifService.info(`Structure validée et publiée`, 'valid');
+        dataFormService.publish(currentObject.id, object).then((category) => {
+            NotifService.info(`Catégorie validée et publiée`, 'valid');
 
-            dispatch({ type: 'UPDATE_CURRENT_OBJECT', payload: structure });
+            dispatch({ type: 'UPDATE_CURRENT_OBJECT', payload: category });
         });
     };
 
@@ -130,31 +128,31 @@ export default function UpdateStructure({ data, id }) {
                 highlight={`${dateInfo} ${editor}`}
                 pageTitle={
                     published
-                        ? `Modifier la structure ${id}`
-                        : `Initier une structure ${id}`
+                        ? `Modifier la catégorie ${id}`
+                        : `Initier une catégorie ${id}`
                 }
             />
-            <SideNavigation items={UpdateStructureForm[0].form}>
+            <SideNavigation items={ContribOfficialDocumentForm[0].form}>
                 <ToolBox accordions>
                     {!published ? (
                         <FieldButton
-                            dataTestId="validate-structure"
+                            dataTestId="validate-category"
                             disabled={published}
-                            title="Valider la structure"
+                            title="Valider la catégorie"
                             onClick={publishObject}
                             colors={published ? [] : [white, green]}
                         />
                     ) : (
                         <LinkTo
                             text="voir la fiche"
-                            href={`/object/structure/${id}`}
+                            href={`/object/category/${id}`}
                         />
                     )}
                 </ToolBox>
                 <CreateForm
-                    jsonForm={UpdateStructureForm[0]}
-                    color={yellow}
-                    objectFormType="structure"
+                    jsonForm={ContribOfficialDocumentForm[0]}
+                    color={greenish}
+                    objectFormType="category"
                 />
             </SideNavigation>
         </Layout>

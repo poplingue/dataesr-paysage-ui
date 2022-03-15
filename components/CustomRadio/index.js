@@ -16,8 +16,10 @@ import DBService from '../../services/DB.service';
 import { FieldDependency } from '../FieldDependencie';
 import SavingWrapper from '../SavingWrapper';
 
+// TODO add proptypes
 function CustomRadio({
     title,
+    defaultLabel,
     hint,
     staticValues = [],
     subObject,
@@ -27,6 +29,8 @@ function CustomRadio({
     const { Col, Row, Container } = grid();
 
     const [radioValues, setRadioValues] = useState([]);
+    const [currentLabel, setCurrentLabel] = useState(defaultLabel);
+
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -39,6 +43,7 @@ function CustomRadio({
     const validatorConfig = configValidators[object]
         ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
+
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
     const unSaved = isFieldUnSaved(forms, formName, uid);
@@ -74,10 +79,11 @@ function CustomRadio({
         }
 
         checkField({
-            value: getFieldValue(forms, formName, uid),
+            value: currentLabel || getFieldValue(forms, formName, uid),
             mode: 'silent',
         });
     }, [
+        currentLabel,
         checkField,
         formName,
         forms,
@@ -90,6 +96,9 @@ function CustomRadio({
 
     const onChange = (e) => {
         const { value } = e.target;
+
+        setCurrentLabel('');
+
         const lowValue = value.toLowerCase();
 
         const checkValue = {
@@ -126,15 +135,31 @@ function CustomRadio({
                                 >
                                     {radioValues.map((radio, i) => {
                                         const { value, label } = radio;
+                                        let checked = false;
 
-                                        const checked = formName
-                                            ? value ===
-                                              getFieldValue(
-                                                  forms,
-                                                  formName,
-                                                  uid
-                                              )
-                                            : false;
+                                        // TODO refacto
+                                        // case defaultLabel
+                                        if (currentLabel) {
+                                            checked = label === currentLabel;
+                                        }
+
+                                        // case indexDB data
+                                        if (
+                                            formName &&
+                                            getFieldValue(
+                                                forms,
+                                                formName,
+                                                uid
+                                            ) !== ''
+                                        ) {
+                                            checked =
+                                                value ===
+                                                getFieldValue(
+                                                    forms,
+                                                    formName,
+                                                    uid
+                                                );
+                                        }
 
                                         return (
                                             <Radio

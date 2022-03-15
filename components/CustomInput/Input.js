@@ -18,6 +18,7 @@ import Suggest from '../Suggest';
 
 function Input({
     label,
+    hint,
     index,
     subObject,
     infinite = false,
@@ -129,11 +130,14 @@ function Input({
             data-field={uid}
             data-testid={validatorId}
             value={textValue}
-            hint={`${
-                validatorConfig && !validatorConfig.required
-                    ? '(optionnel)'
-                    : ''
-            }`}
+            hint={
+                hint ||
+                `${
+                    validatorConfig && !validatorConfig.required
+                        ? '(optionnel)'
+                        : ''
+                }`
+            }
             label={label}
         />
     );

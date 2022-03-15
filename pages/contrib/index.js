@@ -1,9 +1,11 @@
+import { Select } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
+import { getObjectTypeDetails } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import DBService from '../../services/DB.service';
@@ -18,6 +20,7 @@ export default function Update() {
     // TODO remove
     const [currentObject, setCurrentObject] = useState('');
     const workerRef = useRef();
+    const [typeObject, setTypeObject] = useState('structure');
 
     const router = useRouter();
     const {
@@ -39,11 +42,11 @@ export default function Update() {
             ObjectService.newId(data).then((id) => {
                 dispatch({
                     type: 'CLEAR_FORM',
-                    payload: { formName: `update/${currentObject}` },
+                    payload: { formName: `contrib/${currentObject}` },
                 });
 
                 if (id) {
-                    router.push(`/update/${currentObject}/${id}`);
+                    router.push(`/contrib/${currentObject}/${id}`);
                 }
             });
         };
@@ -55,7 +58,7 @@ export default function Update() {
         setSpinner(true);
 
         // Clear current object
-        await DBService.clear(`update/${object}`).then(() => {
+        await DBService.clear(`contrib/${object}`).then(() => {
             setCurrentObject(object);
 
             // SW POST event: Init new Object
@@ -71,25 +74,45 @@ export default function Update() {
         <Layout>
             <HeaderLayout pageTitle="Ajouter un nouvel objet Paysage" />
             <Container>
-                <Row gutters spacing="px-2w">
-                    <Col n="12">
+                <Row gutters spacing="px-2w" alignItems="bottom">
+                    <Col n="6">
+                        <Select
+                            onChange={(e) => {
+                                setTypeObject(e.target.value);
+                            }}
+                            selected={typeObject}
+                            label={`Type d'objet`}
+                            options={[
+                                { label: 'Structure', value: 'structure' },
+                                { label: 'Catégorie', value: 'category' },
+                                { label: 'Personne', value: 'person' },
+                                {
+                                    label: 'Document',
+                                    value: 'officialDocument',
+                                },
+                            ]}
+                        />
+                    </Col>
+                    <Col n="6">
                         {spinner ? (
                             <Spinner active small>
-                                Créer un nouvel Établissement
+                                {`C'est parti !`}
                             </Spinner>
                         ) : (
                             <LinkClick
-                                dataCy="update/structure"
-                                href="/update/structure"
-                                onClick={(e) => onClick(e, 'structure')}
-                                text="Créer un nouvel Établissement"
+                                dataCy={`contrib/${typeObject}`}
+                                href={`/contrib/${typeObject}`}
+                                onClick={(e) => onClick(e, typeObject)}
+                                text={`Créer un nouvel objet « ${
+                                    getObjectTypeDetails('', typeObject).title
+                                } »`}
                             />
                         )}
                     </Col>
                     {updateObjectId && (
                         <Col>
                             <LinkClick
-                                href={`/update/structure/${updateObjectId}`}
+                                href={`/contrib/structure/${updateObjectId}`}
                                 text={`Reprendre la modification de ${updateObjectId}`}
                             />
                         </Col>

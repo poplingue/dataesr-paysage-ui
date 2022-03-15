@@ -1,4 +1,4 @@
-import { structureSubObjects } from '../config/objects';
+import { subObjects } from '../config/objects';
 import { mapFields } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
@@ -223,11 +223,10 @@ export const dataFormService = {
     },
 
     initFormSections: async (object, id, formName, storeObjects, filter) => {
-        // TODO generic
         const structureData = await dataFormService.getObjectData(
             object,
             id,
-            structureSubObjects
+            subObjects[object]
         );
 
         const fields = dataFormService.subObjectsFields(
@@ -286,6 +285,7 @@ export const dataFormService = {
                 return await resp.clone().json();
             })
             .catch((err) => {
+                console.log('==== LOG ==== ', err);
                 Promise.reject(err);
             });
     },
@@ -322,7 +322,6 @@ export const dataFormService = {
     getSubObjectData: async (object, id, subObject) => {
         const url = `/api/${object}/${id}/${subObject}`;
         const requestOptions = fetchHelper.requestOptions('GET');
-
         const response = await fetch(url, requestOptions);
 
         return fetchHelper.handleResponse(response);
@@ -369,6 +368,7 @@ export const dataFormService = {
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
+        debugger; // eslint-disable-line
         const response = await fetch(
             `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
             requestOptions

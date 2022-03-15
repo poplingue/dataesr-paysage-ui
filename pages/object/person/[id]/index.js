@@ -72,7 +72,7 @@ export default function Object(props) {
                         <Icon name="ri-edit-line" color={pink}>
                             <NavLink
                                 className="fs-14-24"
-                                href={`/update/person/${id}`}
+                                href={`/contrib/person/${id}`}
                             >
                                 Modifier
                             </NavLink>

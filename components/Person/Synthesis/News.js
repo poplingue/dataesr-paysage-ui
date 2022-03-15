@@ -18,7 +18,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
                             subInfo="subInfo"
@@ -27,7 +27,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
                             subInfo="subInfo"
@@ -36,7 +36,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #1"
                             subInfo="subInfo"
@@ -45,7 +45,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
                             subInfo="subInfo"
@@ -54,7 +54,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
                             subInfo="subInfo"
@@ -63,7 +63,7 @@ export default function News() {
                     <Col n="4">
                         <CardInfo
                             externalLink="http://www.depeche.fr"
-                            link="/update/person/1"
+                            link="/contrib/person/1"
                             supInfo="du 01/01/2019 au 31/12/2022"
                             title="Dépêche #2"
                             subInfo="subInfo"

@@ -1,4 +1,4 @@
-export const configValidatorLocalisations = {
+export const configValidator = {
     country: {
         required: true,
     },

@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure identifiers', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -11,7 +11,7 @@ context('Structure identifiers', () => {
         cy.getCookie('identifierId').then((cookie) => {
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@identifiers#${id}_active"]`)
+            cy.get(`[data-field="contrib/structure@identifiers#${id}_active"]`)
                 .find('[data-cy="false"] input')
                 .should('be.checked');
         });
@@ -32,7 +32,7 @@ context('Structure identifiers', () => {
 
             cy.wait('@patch');
 
-            cy.get(`[data-field="update/structure@identifiers#${id}_active"]`)
+            cy.get(`[data-field="contrib/structure@identifiers#${id}_active"]`)
                 .find('[data-cy="true"] input')
                 .should('be.checked');
         });

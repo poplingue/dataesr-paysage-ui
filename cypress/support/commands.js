@@ -13,7 +13,7 @@
 const baseUrl = Cypress.env('baseUrl');
 
 Cypress.Commands.add('newStructure', () => {
-    cy.get('[data-cy="update/structure"]').click();
+    cy.get('[data-cy="contrib/structure"]').click();
 
     cy.intercept('POST', '/api/structure/**').as('post');
 

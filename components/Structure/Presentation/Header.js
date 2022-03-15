@@ -116,7 +116,7 @@ export default function Header() {
                 >
                     <CardInfo
                         onClick={() => {
-                            router.push(`/update/structure/${id}`);
+                            router.push(`/contrib/structure/${id}`);
                         }}
                         supInfo={type}
                         title={value}
@@ -190,7 +190,7 @@ export default function Header() {
                             <Col n="4">
                                 <CardInfo
                                     onClick={() => {
-                                        router.push(`/update/structure/${id}`);
+                                        router.push(`/contrib/structure/${id}`);
                                     }}
                                     supInfo={`date de création sous le nom ${mainName.usualName}`}
                                     title={mainName.startDate}
