@@ -88,6 +88,10 @@ export const subObjects = {
     structure: structureSubObjects,
     category: categorySubObjects,
     officialDocument: officialDocumentSubObjects,
+    legalCategories: '',
+    prices: '',
+    documents: '',
+    terms: '',
 };
 
 export const configValidators = {

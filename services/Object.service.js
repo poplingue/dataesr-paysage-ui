@@ -7,7 +7,6 @@ import { niceFullDate } from '../helpers/utils';
 export const objectService = {
     newId: async (message) => {
         const newObject = JSON.parse(message);
-        console.log('==== newId ==== ', newObject);
 
         if (newObject.status < 400 && newObject.status >= 200) {
             return newObject.data.object.id;
@@ -31,6 +30,7 @@ export const objectService = {
     },
     getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();
+
         const url = `${publicRuntimeConfig.baseApiUrl}/${
             getObjectTypeDetails(objectCode).name
         }`;

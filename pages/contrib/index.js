@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import LinkClick from '../../components/LinkClick';
 import Spinner from '../../components/Spinner';
+import { subObjects } from '../../config/objects';
 import { getObjectTypeDetails } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
@@ -83,14 +84,13 @@ export default function Update() {
                             selected={typeObject}
                             label={`Type d'objet`}
                             options={[
-                                { label: 'Structure', value: 'structure' },
-                                { label: 'Catégorie', value: 'category' },
-                                { label: 'Personne', value: 'person' },
-                                {
-                                    label: 'Document',
-                                    value: 'officialDocument',
-                                },
-                            ]}
+                                ...Array(Object.keys(subObjects).length).keys(),
+                            ].map((object, i) => {
+                                return {
+                                    label: getObjectTypeDetails(i).title,
+                                    value: getObjectTypeDetails(i).name,
+                                };
+                            })}
                         />
                     </Col>
                     <Col n="6">

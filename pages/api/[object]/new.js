@@ -54,10 +54,7 @@ async function handler(req, res) {
                     .then((response) => {
                         return response.json();
                     })
-                    .then((data) => data)
-                    .catch((err) => {
-                        console.log('==== ERR ALL ==== ', err);
-                    });
+                    .then((data) => data);
             })
         )
             .then((values) => {
@@ -67,7 +64,6 @@ async function handler(req, res) {
                 });
             })
             .catch((error) => {
-                console.log('==== ERR ==== ', error);
                 res.status(500).send(error);
             });
     } catch (err) {

@@ -16,7 +16,7 @@ export function getUrl(key) {
 export function getVal(key) {
     const data = {
         IDB_DATABASE_NAME: 'SERVICE_FORMS',
-        IDB_DATABASE_VERSION: 6,
+        IDB_DATABASE_VERSION: 1,
     };
 
     return data[key];
@@ -30,6 +30,7 @@ export function getVal(key) {
  */
 export function getObjectTypeDetails(id, name) {
     // TODO handle color for each object
+    // TODO refacto param => {}
     const objectTypes = {
         0: {
             name: 'structure',
@@ -46,18 +47,41 @@ export function getObjectTypeDetails(id, name) {
             colorClassName: 'Pink',
             dataesrApi: 'persons',
         },
-        2: { name: 'project', title: 'Projet' },
-        3: {
+        2: {
             name: 'category',
             color: '--green-bourgeon-main-640',
             title: 'Catégorie',
             dataesrApi: 'categories',
         },
-        4: {
+        3: {
             name: 'officialDocument',
             color: '--green-archipel-main-557',
             title: 'Document Officiel',
             dataesrApi: 'official-documents',
+        },
+        4: {
+            name: 'legalCategory',
+            color: '--green-archipel-main-557',
+            title: 'Catégorie Légale',
+            dataesrApi: 'legal-categories',
+        },
+        5: {
+            name: 'price',
+            color: '--green-archipel-main-557',
+            title: 'Prix',
+            dataesrApi: 'prices',
+        },
+        6: {
+            name: 'term',
+            color: '--green-archipel-main-557',
+            title: 'Terme',
+            dataesrApi: 'terms',
+        },
+        7: {
+            name: 'document',
+            color: '--green-archipel-main-557',
+            title: 'Documents',
+            dataesrApi: 'documents',
         },
     };
 

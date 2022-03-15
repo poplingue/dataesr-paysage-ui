@@ -8,6 +8,7 @@ import reducersPage from './ReducersPage';
 export const AppContext = createContext();
 
 export const DataProvider = ({ user, error, children }) => {
+    // TODO refacto forms from { subObjects } from '../../config/objects';
     const initialStateForm = {
         darkTheme: false,
         storeObjects: [],
@@ -19,6 +20,10 @@ export const DataProvider = ({ user, error, children }) => {
             { 'contrib/person': [] },
             { 'contrib/structure': [] },
             { 'contrib/category': [] },
+            { 'contrib/price': [] },
+            { 'contrib/term': [] },
+            { 'contrib/legalCategory': [] },
+            { 'contrib/document': [] },
             { 'contrib/officialDocument': [] },
         ],
         savingSections: [],
@@ -70,12 +75,17 @@ export const DataProvider = ({ user, error, children }) => {
     };
 
     useEffect(() => {
+        // TODO refacto forms from { subObjects } from '../../config/objects';
         DBService.init(
             [
                 'contrib/person',
                 'contrib/structure',
                 'contrib/category',
                 'contrib/officialDocument',
+                'contrib/price',
+                'contrib/document',
+                'contrib/legalCategory',
+                'contrib/term',
             ],
             cbInit
         );

@@ -281,11 +281,8 @@ export const dataFormService = {
         const requestOptions = fetchHelper.requestOptions('POST', {});
 
         return await fetch(`/api/${type}/${id}/${subObject}`, requestOptions)
-            .then(async (resp) => {
-                return await resp.clone().json();
-            })
+            .then(async (resp) => await resp.clone().json())
             .catch((err) => {
-                console.log('==== LOG ==== ', err);
                 Promise.reject(err);
             });
     },
@@ -327,7 +324,7 @@ export const dataFormService = {
         return fetchHelper.handleResponse(response);
     },
 
-    save: async (form, objectId, subObject) => {
+    save: async (form, objectType, objectId, subObject) => {
         if (!form.length) {
             return Promise.reject(genericErrorMsg);
         }
@@ -368,9 +365,9 @@ export const dataFormService = {
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
-        debugger; // eslint-disable-line
+
         const response = await fetch(
-            `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
+            `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
             requestOptions
         );
 

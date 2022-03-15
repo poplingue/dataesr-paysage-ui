@@ -16,7 +16,11 @@ export default function SearchObject({ data }) {
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Recherche" />
+            <HeaderLayout
+                pageTitle={`Les objets « ${
+                    getObjectTypeDetails(objectCode).title
+                } »`}
+            />
             <Container>
                 <Row gutters>
                     {data.map((obj) => {
@@ -32,7 +36,7 @@ export default function SearchObject({ data }) {
                                     }/${obj.id}`}
                                     supInfo={name}
                                     subInfo={obj.id}
-                                    info={obj.currentName.usualName || ''}
+                                    info={obj.id || ''}
                                 />
                             </Col>
                         );

@@ -128,7 +128,6 @@ export default function InfiniteAccordion({
                 updateSection([...sections[subObjectType], data.id]);
             })
             .catch((err) => {
-                debugger; // eslint-disable-line
                 NotifService.info(genericErrorMsg, 'error');
             });
     };

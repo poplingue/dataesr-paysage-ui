@@ -30,7 +30,6 @@ const handler = nc()
             fetchHelper.checkAuthorized(tokens, request, res);
 
             const response = await request.text();
-            console.log('==== LOG ==== ', response);
 
             res.status(request.status).json(response);
         } catch (err) {

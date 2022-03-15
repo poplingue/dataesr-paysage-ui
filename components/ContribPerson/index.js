@@ -128,8 +128,8 @@ export default function ContribPerson({ data, id }) {
                 highlight={`${dateInfo} ${editor}`}
                 pageTitle={
                     published
-                        ? `Modifier la person ${id}`
-                        : `Initier une person ${id}`
+                        ? `Modifier la personne ${id}`
+                        : `Initier une personne ${id}`
                 }
             />
             <SideNavigation items={ContribPersonForm[0].form}>

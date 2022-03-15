@@ -122,7 +122,7 @@ export default function FormAccordionItem({
                 .map(dataFormService.cleanDateFormat);
 
             return dataFormService
-                .save(cleanedForm, updateObjectId, subObject)
+                .save(cleanedForm, object, updateObjectId, subObject)
                 .then(async () => {
                     return fieldsToSaved(filteredForm);
                 })

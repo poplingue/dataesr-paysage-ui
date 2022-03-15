@@ -1,7 +1,10 @@
+import { Button, Select, TextInput } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 
 import { useRouter } from 'next/router';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { subObjects } from '../config/objects';
+import { getObjectTypeDetails } from '../config/utils';
 import { AppContext } from '../context/GlobalState';
 import { fetchHelper } from '../helpers/fetch';
 import grid from '../helpers/imports';
@@ -23,6 +26,8 @@ const Layout = dynamic(() => import('../components/Layout'));
 
 function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
+    const [typeObject, setTypeObject] = useState(0);
+    const [searchValue, setSearchValue] = useState('');
 
     const router = useRouter();
 
@@ -44,13 +49,59 @@ function Home({ tokens = {} }) {
         }
     }, [router, tokens, error]);
 
+    const onSearch = () => {
+        if (!searchValue) {
+            router.push(`/search/${typeObject}`).then;
+        }
+    };
+
     return (
         <Layout>
             <HeaderLayout />
             <Container>
                 <Row>
                     <Col spacing="mb-5w">
-                        <h2>Recherchez</h2>
+                        <Row alignItems="bottom" gutters>
+                            <Col n="3">
+                                <Select
+                                    onChange={(e) => {
+                                        setTypeObject(e.target.value);
+                                    }}
+                                    selected={typeObject}
+                                    label="Objet recherché"
+                                    options={[
+                                        ...Array(
+                                            Object.keys(subObjects).length
+                                        ).keys(),
+                                    ].map((object, i) => {
+                                        return {
+                                            label: getObjectTypeDetails(i)
+                                                .title,
+                                            value: i,
+                                        };
+                                    })}
+                                />
+                            </Col>
+                            <Col n="7">
+                                <TextInput
+                                    disabled
+                                    label="Rechercher"
+                                    value={searchValue}
+                                    onChange={(e) =>
+                                        setSearchValue(e.target.value)
+                                    }
+                                />
+                            </Col>
+                            <Col n="2">
+                                <Button
+                                    icon="ri-search-2-line"
+                                    title="Rechercher"
+                                    onClick={onSearch}
+                                >
+                                    Rechercher
+                                </Button>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
                 <Row>

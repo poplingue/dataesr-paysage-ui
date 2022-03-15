@@ -2,12 +2,17 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
 import LinkTo from '../../../../components/LinkTo';
-import { StructurePageSkeleton } from '../../../../config/objects';
+import {
+    PersonPageSkeleton,
+    StructurePageSkeleton,
+} from '../../../../config/objects';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
+const Category = dynamic(() => import('../../../../components/Category'));
+const Person = dynamic(() => import('../../../../components/Person'));
 const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
 const SideNavigation = dynamic(() =>
     import('../../../../components/SideNavigation')
@@ -21,6 +26,14 @@ const templateObj = {
     structure: {
         component: Structure,
         skeleton: StructurePageSkeleton,
+    },
+    person: {
+        component: Person,
+        skeleton: PersonPageSkeleton,
+    },
+    category: {
+        component: Category,
+        skeleton: PersonPageSkeleton,
     },
 };
 
@@ -63,7 +76,9 @@ export default function PaysageObject({ data }) {
         <Layout>
             <HeaderLayout
                 pageTitle={
-                    !!Object.keys(data).length ? data.currentName.usualName : ''
+                    !!Object.keys(data).length
+                        ? `${getObjectTypeDetails('', type).title}`
+                        : ''
                 }
                 status={data.status}
             />
@@ -72,11 +87,7 @@ export default function PaysageObject({ data }) {
                     <Component
                         id={id}
                         fame={data.fame}
-                        name={
-                            !!Object.keys(data).length
-                                ? data.currentName.usualName
-                                : ''
-                        }
+                        name={!!Object.keys(data).length ? data.id : ''}
                         skeleton={skeleton}
                     >
                         <ToolBox
@@ -86,9 +97,9 @@ export default function PaysageObject({ data }) {
                         >
                             <LinkTo
                                 text={`modifier ${
-                                    getObjectTypeDetails('', type).text
+                                    getObjectTypeDetails('', type).name
                                 }`}
-                                href={`/contrib/structure/${id}`}
+                                href={`/contrib/${type}/${id}`}
                             />
                         </ToolBox>
                     </Component>
