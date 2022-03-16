@@ -223,7 +223,7 @@ function Layout({ children, headTitle }) {
                         <NavSubItem
                             current={pathname.startsWith('/search/1')}
                             title="Rechercher une personne"
-                            asLink={<NavLink href="/search" />}
+                            asLink={<NavLink href="/search/1" />}
                         />
                         <NavSubItem
                             title="Listes qualifiées"

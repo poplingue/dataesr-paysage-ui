@@ -4,39 +4,50 @@ import { useState } from 'react';
 import { subObjects } from '../../config/objects';
 import { getObjectTypeDetails } from '../../config/utils';
 import grid from '../../helpers/imports';
+import useViewport from '../../hooks/useViewport';
 import styles from './HomeSearch.module.scss';
 
-export default function HomeSearch({}) {
+export default function HomeSearch({ switchPage, defaultType }) {
     const { Col, Row, Container } = grid();
-    const [typeObject, setTypeObject] = useState(0);
+    const [typeObject, setTypeObject] = useState(defaultType || '');
     const [searchValue, setSearchValue] = useState('');
-
+    const options = [...Array(Object.keys(subObjects).length).keys()].map(
+        (object, i) => {
+            return {
+                label: getObjectTypeDetails(i).title,
+                value: i.toString(),
+            };
+        }
+    );
     const router = useRouter();
+    const { mobile } = useViewport();
 
     const onSearch = () => {
         if (!searchValue) {
-            router.push(`/search/${typeObject}`).then;
+            router.push(`/search/${typeObject}`);
+        }
+    };
+
+    const changeType = (e) => {
+        if (switchPage) {
+            router.push(`/search/${e.target.value}`);
+        } else {
+            setTypeObject(e.target.value);
         }
     };
 
     return (
-        <Container fluid className={styles.HomeSearch}>
+        <Container fluid={mobile} className={styles.HomeSearch}>
             <Row gutters spacing="p-3w" alignItems="bottom">
                 <Col n="12 md-3">
                     <Select
-                        onChange={(e) => {
-                            setTypeObject(e.target.value);
-                        }}
+                        onChange={changeType}
                         selected={typeObject}
                         label="Objet recherché"
                         options={[
-                            ...Array(Object.keys(subObjects).length).keys(),
-                        ].map((object, i) => {
-                            return {
-                                label: getObjectTypeDetails(i).title,
-                                value: i,
-                            };
-                        })}
+                            { value: '', label: 'Tout objet' },
+                            ...options,
+                        ]}
                     />
                 </Col>
                 <Col n="12 md-7">

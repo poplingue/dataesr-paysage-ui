@@ -11,6 +11,7 @@ import {
     connectedMsg,
     inactiveUserError,
 } from '../helpers/internalMessages';
+import useViewport from '../hooks/useViewport';
 import NotifService from '../services/Notif.service';
 
 const Tile = dynamic(() =>
@@ -26,6 +27,7 @@ function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
+    const { mobile } = useViewport();
 
     const {
         statePage: { user, error },
@@ -47,7 +49,7 @@ function Home({ tokens = {} }) {
 
     return (
         <Layout>
-            <HeaderLayout />
+            <HeaderLayout pageTitle="Bienvenue" />
             <Container fluid>
                 <Row>
                     <Col spacing="mb-5w">
@@ -55,45 +57,49 @@ function Home({ tokens = {} }) {
                     </Col>
                 </Row>
                 <Row>
-                    <Container>
-                        <Row>
-                            <Col n="12" spacing="mb-3w">
-                                <h2 data-cy="user">
-                                    {!!Object.keys(user).length
-                                        ? `Salut à toi ${user.fullName || ''}`
-                                        : 'Salut'}
-                                </h2>
-                            </Col>
-                            <Col n="12">
-                                <Row gutters>
-                                    <Col n="4">
-                                        <Tile horizontalMedium>
-                                            <TileBody
-                                                title="Temps passé sur le site"
-                                                description="22h50"
-                                            ></TileBody>
-                                        </Tile>
-                                    </Col>
-                                    <Col n="4">
-                                        <Tile horizontalMedium>
-                                            <TileBody
-                                                title="Nombre de modifications"
-                                                description="328"
-                                            ></TileBody>
-                                        </Tile>
-                                    </Col>
-                                    <Col n="4">
-                                        <Tile horizontalMedium>
-                                            <TileBody
-                                                title="Nombre d'objets ajoutés"
-                                                description="12"
-                                            ></TileBody>
-                                        </Tile>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <Col>
+                        <Container>
+                            <Row>
+                                <Col n="12" spacing="mb-3w">
+                                    <h2 data-cy="user">
+                                        {!!Object.keys(user).length
+                                            ? `Salut à toi ${
+                                                  user.fullName || ''
+                                              }`
+                                            : 'Salut'}
+                                    </h2>
+                                </Col>
+                                <Col n="12">
+                                    <Row gutters>
+                                        <Col n="4">
+                                            <Tile horizontalMedium>
+                                                <TileBody
+                                                    title="Temps passé sur le site"
+                                                    description="22h50"
+                                                ></TileBody>
+                                            </Tile>
+                                        </Col>
+                                        <Col n="4">
+                                            <Tile horizontalMedium>
+                                                <TileBody
+                                                    title="Nombre de modifications"
+                                                    description="328"
+                                                ></TileBody>
+                                            </Tile>
+                                        </Col>
+                                        <Col n="4">
+                                            <Tile horizontalMedium>
+                                                <TileBody
+                                                    title="Nombre d'objets ajoutés"
+                                                    description="12"
+                                                ></TileBody>
+                                            </Tile>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Col>
                 </Row>
             </Container>
         </Layout>

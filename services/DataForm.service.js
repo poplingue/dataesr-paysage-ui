@@ -4,6 +4,7 @@ import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
 import {
     checkDate,
+    checkFlatMap,
     getSubObjectId,
     getSubObjectType,
     getUniqueId,
@@ -223,16 +224,13 @@ export const dataFormService = {
     },
 
     initFormSections: async (object, id, formName, storeObjects, filter) => {
-        const structureData = await dataFormService.getObjectData(
+        const objectData = await dataFormService.getObjectData(
             object,
             id,
             subObjects[object]
         );
 
-        const fields = dataFormService.subObjectsFields(
-            structureData,
-            formName
-        );
+        const fields = dataFormService.subObjectsFields(objectData, formName);
 
         const listFields = {
             true: (fields) => filter(fields),
@@ -264,14 +262,14 @@ export const dataFormService = {
         }
 
         // GET all subObjects of an Object
-        // TODO add Promise.allSettled()
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
 
-        // TODO add Promise.allSettled()
         const jsons = await Promise.all(
-            res.map((r) => fetchHelper.handleResponse(r))
+            res.flatMap((r) =>
+                checkFlatMap[r.ok](fetchHelper.handleResponse(r))
+            )
         );
 
         return fetchHelper.handleJsons(jsons);

@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import HomeSearch from '../../components/HomeSearch';
 import grid from '../../helpers/imports';
 
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
@@ -11,14 +12,21 @@ export default function Search() {
     return (
         <Layout>
             <HeaderLayout pageTitle="Recherche" />
-            <Container>
+            <Container fluid>
                 <Row>
-                    <Col>
-                        <CardLink
-                            link={`/object/person/8`}
-                            info="Une personne"
-                        />
+                    <Col spacing="mb-5w">
+                        <HomeSearch defaultType="" switchPage />
                     </Col>
+                </Row>
+                <Row>
+                    <Container>
+                        <Row>
+                            <Col>...Filtres</Col>
+                        </Row>
+                        <Row>
+                            <Col>...Résultat de recherche</Col>
+                        </Row>
+                    </Container>
                 </Row>
             </Container>
         </Layout>

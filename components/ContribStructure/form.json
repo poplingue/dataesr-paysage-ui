@@ -172,7 +172,12 @@
           {
             "title": "Url",
             "type": "text",
-            "validatorId": "url"
+            "validatorId": "url",
+            "dependency": {
+              "validatorId": "language",
+              "action": "hidden",
+              "rule": "emptiness"
+            }
           },
           {
             "title": "Langage",
@@ -200,7 +205,7 @@
             "title": "Compte",
             "type": "text",
             "hint": "Identifiant du compte ou url",
-            "validatorId": "socialAccount"
+            "validatorId": "account"
           }
         ]
       },

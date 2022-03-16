@@ -2,7 +2,11 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { connexionNeeded, invalidToken } from '../../helpers/internalMessages';
+import {
+    connexionNeeded,
+    genericErrorMsg,
+    invalidToken,
+} from '../../helpers/internalMessages';
 import { checkFlatMap, getFormName, getSection } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
@@ -174,7 +178,8 @@ export default function FormAccordionItem({
                         'error'
                     );
                 } else {
-                    NotifService.info(err, 'error');
+                    console.error(err);
+                    NotifService.info(genericErrorMsg, 'error');
                 }
             });
     };

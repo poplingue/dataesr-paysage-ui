@@ -1,5 +1,5 @@
 export const configValidator = {
-    socialAccount: {
+    account: {
         required: true,
     },
     type: {

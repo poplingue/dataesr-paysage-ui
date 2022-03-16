@@ -44,6 +44,7 @@ const handler = nc()
             const url = `${serverRuntimeConfig.dataesrApiUrl}/${
                 getObjectTypeDetails('', object).dataesrApi
             }/${req.query.id}/${subObject}`;
+
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,

@@ -41,7 +41,7 @@
           {
             "title": "Compte",
             "type": "text",
-            "validatorId": "socialAccount"
+            "validatorId": "account"
           },
           {
             "title": "Type",

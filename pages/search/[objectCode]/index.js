@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import HomeSearch from '../../../components/HomeSearch';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import ObjectService from '../../../services/Object.service';
@@ -21,26 +22,41 @@ export default function SearchObject({ data }) {
                     getObjectTypeDetails(objectCode).title
                 } »`}
             />
-            <Container>
+            <Container fluid>
+                <Row>
+                    <Col spacing="mb-5w">
+                        <HomeSearch switchPage defaultType={objectCode} />
+                    </Col>
+                </Row>
                 <Row gutters>
-                    {data.map((obj) => {
-                        const name = getObjectTypeDetails(objectCode)
-                            ? getObjectTypeDetails(objectCode).name
-                            : objectCode;
+                    <Col>
+                        <Container>
+                            <Row gutters>
+                                {data.map((obj) => {
+                                    const name = getObjectTypeDetails(
+                                        objectCode
+                                    )
+                                        ? getObjectTypeDetails(objectCode).name
+                                        : objectCode;
 
-                        return (
-                            <Col n="3" key={obj.id}>
-                                <CardLink
-                                    link={`/object/${
-                                        getObjectTypeDetails(objectCode).name
-                                    }/${obj.id}`}
-                                    supInfo={name}
-                                    subInfo={obj.id}
-                                    info={obj.id || ''}
-                                />
-                            </Col>
-                        );
-                    })}
+                                    return (
+                                        <Col n="3" key={obj.id}>
+                                            <CardLink
+                                                link={`/object/${
+                                                    getObjectTypeDetails(
+                                                        objectCode
+                                                    ).name
+                                                }/${obj.id}`}
+                                                supInfo={name}
+                                                subInfo={obj.id}
+                                                info={obj.id || ''}
+                                            />
+                                        </Col>
+                                    );
+                                })}
+                            </Row>
+                        </Container>
+                    </Col>
                 </Row>
             </Container>
         </Layout>
