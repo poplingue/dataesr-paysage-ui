@@ -37,7 +37,7 @@ Cypress.Commands.add('newStructure', () => {
     cy.sectionsNoSticky(2000);
 });
 
-Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1500) => {
+Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1600) => {
     cy.wait(timeToWait);
 
     cy.document().then((document) => {
