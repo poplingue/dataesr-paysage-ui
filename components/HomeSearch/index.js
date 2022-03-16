@@ -45,7 +45,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
                         selected={typeObject}
                         label="Objet recherché"
                         options={[
-                            { value: '', label: 'Tout objet' },
+                            { value: '', label: 'Tout objet', disabled: true },
                             ...options,
                         ]}
                     />

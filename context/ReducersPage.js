@@ -61,6 +61,7 @@ const reducersPage = (state, action) => {
             let modalDetail = {
                 title: '',
                 open: false,
+                footer: null,
                 content: null,
             };
 

@@ -22,7 +22,9 @@ context('Structure identifiers', () => {
             const id = cookie.value;
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get('[data-testid="type"]').find('input').type('type');
+            cy.get(`[data-field="contrib/structure@identifiers#${id}_type"]`)
+                .find('input')
+                .type('type');
 
             cy.get('[data-testid="value"]').find('input').type('value');
 

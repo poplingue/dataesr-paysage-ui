@@ -11,7 +11,6 @@ import {
     connectedMsg,
     inactiveUserError,
 } from '../helpers/internalMessages';
-import useViewport from '../hooks/useViewport';
 import NotifService from '../services/Notif.service';
 
 const Tile = dynamic(() =>
@@ -27,7 +26,6 @@ function Home({ tokens = {} }) {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
-    const { mobile } = useViewport();
 
     const {
         statePage: { user, error },

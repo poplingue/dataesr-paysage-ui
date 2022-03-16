@@ -6,6 +6,7 @@ import {
     Col,
     Container,
     Row,
+    Text,
 } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -206,6 +207,7 @@ export default function Header() {
                             <Col n="12">
                                 <Row gutters>
                                     <Col>
+                                        <Text size="lg">Identifiants</Text>
                                         <ShowMoreList
                                             display={identifiers.length}
                                         >

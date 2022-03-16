@@ -1,8 +1,11 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import React from 'react';
 import HomeSearch from '../../../components/HomeSearch';
+import TileElement from '../../../components/TileElement';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
+import useCSSProperty from '../../../hooks/useCSSProperty';
 import ObjectService from '../../../services/Object.service';
 
 const CardLink = dynamic(() => import('../../../components/CardLink'));
@@ -14,6 +17,9 @@ export default function SearchObject({ data }) {
 
     const router = useRouter();
     const { objectCode } = router.query;
+    const { style: color } = useCSSProperty(
+        getObjectTypeDetails(objectCode).color
+    );
 
     return (
         <Layout>
@@ -41,15 +47,16 @@ export default function SearchObject({ data }) {
 
                                     return (
                                         <Col n="3" key={obj.id}>
-                                            <CardLink
-                                                link={`/object/${
+                                            <TileElement
+                                                title={obj.id}
+                                                body={name}
+                                                href={`/object/${
                                                     getObjectTypeDetails(
                                                         objectCode
                                                     ).name
                                                 }/${obj.id}`}
-                                                supInfo={name}
-                                                subInfo={obj.id}
-                                                info={obj.id || ''}
+                                                color={color}
+                                                icon="ri-arrow-right-line"
                                             />
                                         </Col>
                                     );

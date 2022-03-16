@@ -1,11 +1,11 @@
-import { Col, Container, Row } from '@dataesr/react-dsfr';
+import { Button, Col, Container, Row } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../context/GlobalState';
 import { niceFullDate } from '../../../helpers/utils';
+import useViewport from '../../../hooks/useViewport';
 import ObjectService from '../../../services/Object.service';
 import CardInfo from '../../CardInfo';
-import CardLink from '../../CardLink';
 import IconButton from '../../IconButton';
 
 export default function History({ section }) {
@@ -15,6 +15,8 @@ export default function History({ section }) {
     const {
         query: { id, type },
     } = useRouter();
+    const { mobile } = useViewport();
+    const router = useRouter();
 
     const {
         statePage: {
@@ -58,11 +60,11 @@ export default function History({ section }) {
                     return (
                         <Row key={history.id} gutters>
                             <Col n="12">
-                                <CardLink
+                                <CardInfo
+                                    onClick={() => goTo(history.id)}
                                     subInfo={history.shortName}
-                                    link="/list/2"
                                     supInfo={niceFullDate(history.startDate)}
-                                    info={history.officialName}
+                                    title={history.officialName}
                                 />
                             </Col>
                         </Row>
@@ -89,14 +91,38 @@ export default function History({ section }) {
         );
     };
 
+    const goTo = (resourceId) => {
+        dispatch({
+            type: 'UPDATE_MODAL_DETAIL',
+            payload: { open: false },
+        });
+
+        router.push(`/contrib/structure/${id}/${resourceId}`);
+    };
+
+    const buttonFooterModal = (resourceId) => {
+        return (
+            <Button
+                styleAsLink
+                onClick={() => goTo(resourceId)}
+                title="modifier"
+                icon="ri-arrow-right-line"
+                iconPosition="right"
+                size="sm"
+            >
+                modifier
+            </Button>
+        );
+    };
+
     const onClickDetails = async (resourceId) => {
         const { startDate, endDate, shortName, usualName, officialName } =
             await ObjectService.getResource(type, id, 'names', resourceId);
-
         dispatch({
             type: 'UPDATE_MODAL_DETAIL',
             payload: {
                 title: officialName,
+                footer: buttonFooterModal(resourceId),
                 content: renderDetails({
                     startDate,
                     usualName,
@@ -120,14 +146,13 @@ export default function History({ section }) {
 
     return (
         <Container>
-            <Row gutters alignItems="middle">
-                <Col n="12">Historique Structure {id}</Col>
+            <Row gutters={!mobile} alignItems="middle">
                 {history.map((historyCard) => {
                     const { officialName, id, startDate } = historyCard;
 
                     // TODO this is not a Card
                     return (
-                        <Col n="4" key={id}>
+                        <Col n="12 md-4" key={id}>
                             <CardInfo
                                 onClick={() => onClickDetails(id)}
                                 supInfo={startDate}

@@ -120,9 +120,8 @@ export default function Navigation({ items, color }) {
                                                     className={`${
                                                         !sideOpened && 'hidden'
                                                     } marianne`}
-                                                    onClick={(e) =>
+                                                    onClick={() =>
                                                         goToSection(
-                                                            e,
                                                             sectionUniqueId(
                                                                 subSectionTitle
                                                             )
@@ -142,9 +141,8 @@ export default function Navigation({ items, color }) {
                             return (
                                 <SideMenuLink
                                     className={sideOpened ? '' : 'hidden'}
-                                    onClick={(e) =>
+                                    onClick={() =>
                                         goToSection(
-                                            e,
                                             sectionUniqueId(
                                                 title,
                                                 content.length

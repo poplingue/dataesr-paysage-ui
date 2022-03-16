@@ -148,7 +148,7 @@ export default function InfiniteAccordion({
             })
             .catch(() => {
                 // use initial form json with a fake id
-                return { ids: ['fallbackId'] };
+                return { ids: ['fallback'] };
             });
     }, [object, subObjectType, updateObjectId]);
 

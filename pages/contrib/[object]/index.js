@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../../context/GlobalState';
+import { goToSection, matchRegex } from '../../../helpers/utils';
 
 const ContribOfficialDocument = dynamic(() =>
     import('../../../components/ContribOfficialDocument')
@@ -19,6 +20,8 @@ const ContribStructure = dynamic(() =>
 
 export default function ContribObject({ data }) {
     const router = useRouter();
+
+    const hashResourceId = matchRegex(/(?<=#)[\s\S]*/, router.asPath);
     const { object } = router.query;
     const components = {
         person: ContribPerson,
@@ -33,6 +36,15 @@ export default function ContribObject({ data }) {
     } = useContext(AppContext);
 
     const Component = object ? components[object] : null;
+
+    useEffect(() => {
+        // TODO better than setTimeout
+        setTimeout(() => {
+            if (hashResourceId) {
+                goToSection(hashResourceId, 'id');
+            }
+        }, 800);
+    }, [hashResourceId]);
 
     useEffect(() => {
         const updateObjectId = Cookies.get('updateObjectId');

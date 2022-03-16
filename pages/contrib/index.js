@@ -109,14 +109,6 @@ export default function Update() {
                             />
                         )}
                     </Col>
-                    {updateObjectId && (
-                        <Col>
-                            <LinkClick
-                                href={`/contrib/structure/${updateObjectId}`}
-                                text={`Reprendre la modification de ${updateObjectId}`}
-                            />
-                        </Col>
-                    )}
                 </Row>
             </Container>
         </Layout>
