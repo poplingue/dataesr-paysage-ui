@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import FieldButton from '../components/FieldButton';
-import useCSSProperty from './useCSSProperty';
+import { AppContext } from '../context/GlobalState';
 
 const useAccordions = (init = false) => {
     const [expanded, setExpanded] = useState(init);
     const [list, setList] = useState([]);
 
-    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const { style: white } = useCSSProperty('--grey-1000');
+    const { dispatchPage: dispatch } = useContext(AppContext);
 
     const actionAll = (expand) => {
         const btnAccordions = document.querySelectorAll(
@@ -54,6 +53,8 @@ const useAccordions = (init = false) => {
     const accordionClick = (section) => {
         const newList = [...list];
 
+        dispatch({ type: 'UPDATE_ACCORDION_ITEMS', payload: newList });
+
         for (let i = 0; i < newList.length; i++) {
             const currentList = newList[i];
 
@@ -86,10 +87,13 @@ const useAccordions = (init = false) => {
             }
 
             setList(l);
-        }
-    }, [list]);
 
-    return { expanded, Button, closeAll, expandAll, accordionClick };
+            // init Global state
+            dispatch({ type: 'UPDATE_ACCORDION_ITEMS', payload: l });
+        }
+    }, [dispatch, list]);
+
+    return { expanded, Button, closeAll, expandAll, accordionClick, list };
 };
 
 export default useAccordions;

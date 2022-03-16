@@ -26,6 +26,7 @@ export default function WrapperFieldType({
         title,
         content,
         dependency,
+        defaultLabel,
     } = field;
 
     const {
@@ -44,6 +45,7 @@ export default function WrapperFieldType({
             subObject={subObject}
             section={sectionTitle}
             title={title}
+            defaultLabel={defaultLabel}
         />
     );
     const switchField = (
@@ -58,6 +60,7 @@ export default function WrapperFieldType({
             type={fieldType}
             title={title}
             infinite={infinite}
+            defaultLabel={defaultLabel}
             staticValues={staticValues}
         />
     );

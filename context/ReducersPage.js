@@ -48,12 +48,20 @@ const reducersPage = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_ACCORDION_ITEMS: {
+            return {
+                ...state,
+                accordionItems: action.payload,
+            };
+        }
+
         case ACTIONS.UPDATE_MODAL_DETAIL: {
             const { open, content } = action.payload;
 
             let modalDetail = {
                 title: '',
                 open: false,
+                footer: null,
                 content: null,
             };
 

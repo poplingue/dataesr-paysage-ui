@@ -35,7 +35,7 @@ Open [http://localhost:3002](http://localhost:3002)
 #### first...
 
 ```bash
-# /UpdateStructure/form.json 
+# /ContribStructure/form.json 
 
 {
    "title": "My new field",
@@ -53,7 +53,7 @@ Open [http://localhost:3002](http://localhost:3002)
 #### ...then...
 
 ```bash
-# /UpdateStructure/configValidator.json 
+# /ContribStructure/configValidator.json 
 
 myValidatorId: {
     validators: [
@@ -72,7 +72,7 @@ myValidatorId: {
 # config/utils.js 
 
 const obj = {
-      'update/structure': [
+      'contrib/structure': [
           ...,
           'myNewfield'
       ]

@@ -9,6 +9,7 @@ function CustomInput({
     value,
     suggest,
     onGroupChange,
+    hint,
     infinite,
     section,
     updateValidSection,
@@ -25,6 +26,7 @@ function CustomInput({
             subObject={subObject}
         >
             <Input
+                hint={hint}
                 updateValidSection={updateValidSection}
                 validatorId={validatorId}
                 subObject={subObject}
@@ -39,6 +41,7 @@ function CustomInput({
     const classicalField = (
         <Col spacing="py-1w">
             <Input
+                hint={hint}
                 suggest={suggest}
                 onGroupChange={onGroupChange}
                 value={value}
@@ -72,10 +75,12 @@ function CustomInput({
 CustomInput.defaultProps = {
     infinite: false,
     value: '',
+    hint: '',
 };
 
 CustomInput.propTypes = {
     title: PropTypes.string.isRequired,
+    hint: PropTypes.string,
     value: PropTypes.string,
     infinite: PropTypes.bool,
     section: PropTypes.string.isRequired,

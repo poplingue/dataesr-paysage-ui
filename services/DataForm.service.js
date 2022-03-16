@@ -1,9 +1,10 @@
-import { structureSubObjects } from '../config/objects';
+import { subObjects } from '../config/objects';
 import { mapFields } from '../config/utils';
 import { fetchHelper } from '../helpers/fetch';
 import { genericErrorMsg } from '../helpers/internalMessages';
 import {
     checkDate,
+    checkFlatMap,
     getSubObjectId,
     getSubObjectType,
     getUniqueId,
@@ -223,17 +224,13 @@ export const dataFormService = {
     },
 
     initFormSections: async (object, id, formName, storeObjects, filter) => {
-        // TODO generic
-        const structureData = await dataFormService.getObjectData(
+        const objectData = await dataFormService.getObjectData(
             object,
             id,
-            structureSubObjects
+            subObjects[object]
         );
 
-        const fields = dataFormService.subObjectsFields(
-            structureData,
-            formName
-        );
+        const fields = dataFormService.subObjectsFields(objectData, formName);
 
         const listFields = {
             true: (fields) => filter(fields),
@@ -265,26 +262,24 @@ export const dataFormService = {
         }
 
         // GET all subObjects of an Object
-        // TODO add Promise.allSettled()
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
 
-        // TODO add Promise.allSettled()
-        const jsons = await Promise.all(
-            res.map((r) => fetchHelper.handleResponse(r))
+        const jsonResponses = await Promise.all(
+            res.flatMap((r) =>
+                checkFlatMap[r.ok](fetchHelper.handleResponse(r))
+            )
         );
 
-        return fetchHelper.handleJsons(jsons);
+        return fetchHelper.handleJsons(jsonResponses);
     },
 
     initSubObject: async (type, subObject, id) => {
         const requestOptions = fetchHelper.requestOptions('POST', {});
 
         return await fetch(`/api/${type}/${id}/${subObject}`, requestOptions)
-            .then(async (resp) => {
-                return await resp.clone().json();
-            })
+            .then(async (resp) => await resp.clone().json())
             .catch((err) => {
                 Promise.reject(err);
             });
@@ -319,16 +314,7 @@ export const dataFormService = {
         }
     },
 
-    getSubObjectData: async (object, id, subObject) => {
-        const url = `/api/${object}/${id}/${subObject}`;
-        const requestOptions = fetchHelper.requestOptions('GET');
-
-        const response = await fetch(url, requestOptions);
-
-        return fetchHelper.handleResponse(response);
-    },
-
-    save: async (form, objectId, subObject) => {
+    save: async (form, objectType, objectId, subObject) => {
         if (!form.length) {
             return Promise.reject(genericErrorMsg);
         }
@@ -369,8 +355,9 @@ export const dataFormService = {
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
+
         const response = await fetch(
-            `/api/structure/${objectId}/${subObjectType}/${subObjectId}`,
+            `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
             requestOptions
         );
 

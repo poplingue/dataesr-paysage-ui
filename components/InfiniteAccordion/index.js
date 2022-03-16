@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { genericErrorMsg } from '../../helpers/internalMessages';
+import { genericErrorMsg, noData } from '../../helpers/internalMessages';
 import {
     cleanString,
     getForm,
@@ -20,6 +20,7 @@ import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
+import ObjectService from '../../services/Object.service';
 import FieldButton from '../FieldButton';
 import AccordionForm from '../Form/AccordionForm';
 import FormAccordionItem from '../Form/FormAccordionItem';
@@ -44,9 +45,13 @@ export default function InfiniteAccordion({
         query: { object },
     } = useRouter();
     const [init, setInit] = useState(true);
+
     const [sections, setSections] = useState(() => {
-        return { [subObjectType]: [] };
+        return {
+            [subObjectType]: [],
+        };
     });
+
     const formName = getFormName(pathname, object);
     const {
         stateForm: { forms, storeObjects, updateObjectId },
@@ -123,16 +128,27 @@ export default function InfiniteAccordion({
             .then((data) => {
                 updateSection([...sections[subObjectType], data.id]);
             })
-            .catch(() => {
+            .catch((err) => {
                 NotifService.info(genericErrorMsg, 'error');
             });
     };
 
     const check = useCallback(() => {
-        return dataFormService
-            .getSubObjectData(object, updateObjectId, subObjectType)
+        return ObjectService.getSubObjectData(
+            object,
+            updateObjectId,
+            subObjectType
+        )
             .then(({ data }) => {
-                return { ids: data.data.map((subObject) => subObject.id) };
+                if (!data.length) {
+                    Promise.reject(noData);
+                }
+
+                return { ids: data.map((subObject) => subObject.id) };
+            })
+            .catch(() => {
+                // use initial form json with a fake id
+                return { ids: ['fallback'] };
             });
     }, [object, subObjectType, updateObjectId]);
 
@@ -162,6 +178,7 @@ export default function InfiniteAccordion({
                                     const sectionTitle = `${title} ${i + 1}/${
                                         sections[subObjectType].length
                                     }`;
+
                                     const deletable = i !== 0;
 
                                     return (

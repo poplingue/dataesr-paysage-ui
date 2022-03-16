@@ -9,16 +9,39 @@ self.addEventListener('message', async (event) => {
     } = event;
 
     if (name === 'New_object') {
+        // TODO refacto
+        let body = JSON.stringify({ [`${data.object}Status`]: 'active' });
+
+        if (data.object === 'person') {
+            body = JSON.stringify({ lastName: '' });
+        }
+
+        if (data.object === 'category') {
+            body = JSON.stringify({ usualNameFr: '' });
+        }
+
+        if (data.object === 'officialDocument') {
+            body = JSON.stringify({
+                nature: 'Publication au JO',
+                type: 'Loi',
+                document: '',
+                documentNumber: '',
+                title: '',
+                pageUrl: 'https://www.legifrance.gouv.fr/jorf/jo',
+            });
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [`${data.object}Status`]: 'active' }),
+            body,
         };
 
         // Request to API: Init new Object
         await fetch(`/api/${data.object}/new`, requestOptions).then(
             async (resp) => {
                 const data = await resp.clone().json();
+
                 // TODO check data
                 // SW POST event: Init new Object
                 self.postMessage(JSON.stringify({ status: resp.status, data }));

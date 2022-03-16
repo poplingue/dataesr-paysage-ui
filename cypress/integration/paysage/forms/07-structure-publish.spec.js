@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure publish', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 

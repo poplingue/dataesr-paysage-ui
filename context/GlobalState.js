@@ -8,6 +8,7 @@ import reducersPage from './ReducersPage';
 export const AppContext = createContext();
 
 export const DataProvider = ({ user, error, children }) => {
+    // TODO refacto forms from { subObjects } from '../../config/objects';
     const initialStateForm = {
         darkTheme: false,
         storeObjects: [],
@@ -15,7 +16,16 @@ export const DataProvider = ({ user, error, children }) => {
         validSections: [],
         departments: [],
         updateObjectId: Cookies.get('updateObjectId') || '',
-        forms: [{ 'update/person': [] }, { 'update/structure': [] }],
+        forms: [
+            { 'contrib/person': [] },
+            { 'contrib/structure': [] },
+            { 'contrib/category': [] },
+            { 'contrib/price': [] },
+            { 'contrib/term': [] },
+            { 'contrib/legalCategory': [] },
+            { 'contrib/document': [] },
+            { 'contrib/officialDocument': [] },
+        ],
         savingSections: [],
         currentObject: {},
         dependencies: {},
@@ -65,7 +75,20 @@ export const DataProvider = ({ user, error, children }) => {
     };
 
     useEffect(() => {
-        DBService.init(['update/person', 'update/structure'], cbInit);
+        // TODO refacto forms from { subObjects } from '../../config/objects';
+        DBService.init(
+            [
+                'contrib/person',
+                'contrib/structure',
+                'contrib/category',
+                'contrib/officialDocument',
+                'contrib/price',
+                'contrib/document',
+                'contrib/legalCategory',
+                'contrib/term',
+            ],
+            cbInit
+        );
     }, []);
 
     return (

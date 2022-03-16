@@ -15,7 +15,7 @@ export default function Identifiers() {
                 <Row gutters spacing="px-2w pb-6w pt-2w">
                     <Col>
                         <CardInfo
-                            link={`/update/person/${id}`}
+                            link={`/contrib/person/${id}`}
                             supInfo="Wikipédia"
                             title="090909"
                         />

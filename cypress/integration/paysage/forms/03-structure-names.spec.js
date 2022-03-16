@@ -1,10 +1,9 @@
-
 const baseUrl = Cypress.env('baseUrl');
 
 context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -15,7 +14,7 @@ context('Structure new form', () => {
 
         cy.wait('@post').then((interception) => {
             cy.get(
-                `[data-field="update/structure@names#${interception.response.body.id}_officialName"]`
+                `[data-field="contrib/structure@names#${interception.response.body.id}_officialName"]`
             )
                 .find('input')
                 .should('be.visible');
@@ -28,7 +27,7 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get(`[data-field="update/structure@names#${id}_officialName"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_officialName"]`)
                 .find('input')
                 .type('Officiel1');
 
@@ -48,7 +47,7 @@ context('Structure new form', () => {
                 cy.intercept('PATCH', '/api/structure/**').as('patch');
 
                 cy.get(
-                    `[data-field="update/structure@names#${id2}_officialName"]`
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
                 )
                     .find('input')
                     .type('Officiel2');
@@ -61,7 +60,7 @@ context('Structure new form', () => {
                 cy.sectionsNoSticky();
 
                 cy.get(
-                    `[data-field="update/structure@names#${id2}_officialName"]`
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
                 )
                     .find('input')
                     .should('have.value', 'Officiel2');
@@ -76,7 +75,7 @@ context('Structure new form', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
-            cy.get(`[data-field="update/structure@names#${id}_brandName"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_brandName"]`)
                 .find('input')
                 .type('Brand1');
 
@@ -94,7 +93,9 @@ context('Structure new form', () => {
 
                 cy.intercept('DELETE', '/api/structure/**').as('delete');
 
-                cy.get(`[data-field="update/structure@names#${id2}_brandName"]`)
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_brandName"]`
+                )
                     .find('input')
                     .type('Brand2');
 
@@ -103,7 +104,7 @@ context('Structure new form', () => {
                 cy.wait('@delete');
 
                 cy.get(
-                    `[data-field="update/structure@names#${id2}_officialName"]`
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
                 ).should('not.exist');
             });
         });

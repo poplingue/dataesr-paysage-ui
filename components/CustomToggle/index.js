@@ -28,15 +28,15 @@ function CustomToggle({ subObject, title, validatorId }) {
 
     useEffect(() => {
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
-        let defaultValue = 'false';
+        let defaultLabel = 'false';
 
         if (init && getForm(forms, formName)) {
             if (toggleValue) {
-                defaultValue = toggleValue;
+                defaultLabel = toggleValue;
             }
 
             const payload = {
-                value: defaultValue,
+                value: defaultLabel,
                 uid: uniqueId,
                 formName,
             };
@@ -47,7 +47,7 @@ function CustomToggle({ subObject, title, validatorId }) {
             const updateIndexDB = async () => {
                 await DBService.set(
                     {
-                        value: defaultValue,
+                        value: defaultLabel,
                         uid: uniqueId,
                     },
                     formName

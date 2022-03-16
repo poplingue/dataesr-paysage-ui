@@ -6,6 +6,7 @@ import {
     Col,
     Container,
     Row,
+    Text,
 } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -32,8 +33,11 @@ export default function Header() {
         // TODO use Promise.all for subObjects identifiers and localisations
         async function getData() {
             return (
-                (await ObjectService.getSubObject(type, id, 'identifiers')) ||
-                []
+                (await ObjectService.getSubObjectData(
+                    type,
+                    id,
+                    'identifiers'
+                )) || []
             );
         }
 
@@ -48,8 +52,11 @@ export default function Header() {
         async function getData() {
             // TODO pass await function as parameter??
             return (
-                (await ObjectService.getSubObject(type, id, 'localisations')) ||
-                []
+                (await ObjectService.getSubObjectData(
+                    type,
+                    id,
+                    'localisations'
+                )) || []
             );
         }
 
@@ -116,7 +123,7 @@ export default function Header() {
                 >
                     <CardInfo
                         onClick={() => {
-                            router.push(`/update/structure/${id}`);
+                            router.push(`/contrib/structure/${id}`);
                         }}
                         supInfo={type}
                         title={value}
@@ -190,7 +197,7 @@ export default function Header() {
                             <Col n="4">
                                 <CardInfo
                                     onClick={() => {
-                                        router.push(`/update/structure/${id}`);
+                                        router.push(`/contrib/structure/${id}`);
                                     }}
                                     supInfo={`date de création sous le nom ${mainName.usualName}`}
                                     title={mainName.startDate}
@@ -200,6 +207,7 @@ export default function Header() {
                             <Col n="12">
                                 <Row gutters>
                                     <Col>
+                                        <Text size="lg">Identifiants</Text>
                                         <ShowMoreList
                                             display={identifiers.length}
                                         >

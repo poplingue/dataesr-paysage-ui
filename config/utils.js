@@ -16,7 +16,7 @@ export function getUrl(key) {
 export function getVal(key) {
     const data = {
         IDB_DATABASE_NAME: 'SERVICE_FORMS',
-        IDB_DATABASE_VERSION: 3,
+        IDB_DATABASE_VERSION: 1,
     };
 
     return data[key];
@@ -29,22 +29,61 @@ export function getVal(key) {
  * @returns {*}
  */
 export function getObjectTypeDetails(id, name) {
+    // TODO handle color for each object
+    // TODO refacto param => {}
     const objectTypes = {
         0: {
             name: 'structure',
-            title: 'Établissement',
+            title: 'Structure',
             text: 'la structure',
             color: '--green-tilleul-verveine-main-707',
             colorClassName: 'Yellow',
+            dataesrApi: 'structures',
         },
         1: {
             name: 'person',
             title: 'Personne',
             color: '--pink-tuile-main-556',
             colorClassName: 'Pink',
+            dataesrApi: 'persons',
         },
-        2: { name: 'project', title: 'Projet' },
-        3: { name: 'category', title: 'Catégorie' },
+        2: {
+            name: 'category',
+            color: '--green-bourgeon-main-640',
+            title: 'Catégorie',
+            colorClassName: 'Greenish',
+            dataesrApi: 'categories',
+        },
+        3: {
+            name: 'officialDocument',
+            color: '--green-archipel-main-557',
+            title: 'Document Officiel',
+            dataesrApi: 'official-documents',
+        },
+        4: {
+            name: 'legalCategory',
+            color: '--green-archipel-main-557',
+            title: 'Catégorie Légale',
+            dataesrApi: 'legal-categories',
+        },
+        5: {
+            name: 'price',
+            color: '--green-archipel-main-557',
+            title: 'Prix',
+            dataesrApi: 'prices',
+        },
+        6: {
+            name: 'term',
+            color: '--green-archipel-main-557',
+            title: 'Terme',
+            dataesrApi: 'terms',
+        },
+        7: {
+            name: 'document',
+            color: '--green-archipel-main-557',
+            title: 'Documents',
+            dataesrApi: 'documents',
+        },
     };
 
     if (name) {
@@ -64,11 +103,17 @@ export function getObjectTypeDetails(id, name) {
 export const mapFields = (form) => {
     // TODO handle nested object like geometry
     const obj = {
-        'update/structure': [
+        'contrib/person': [],
+        'contrib/officialDocument': [],
+        'contrib/category': ['type', 'url', 'comment'],
+        'contrib/structure': [
             'address',
             'geometry.latitude',
             'geometry.longitude',
             'value',
+            'url',
+            'language',
+            'account',
             'type',
             'active',
             'postalCode',

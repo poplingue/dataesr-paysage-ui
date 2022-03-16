@@ -201,7 +201,12 @@ CreateForm.propTypes = {
         ),
     }).isRequired,
     color: PropTypes.string,
-    objectFormType: PropTypes.oneOf(['person', 'structure']).isRequired,
+    objectFormType: PropTypes.oneOf([
+        'person',
+        'structure',
+        'category',
+        'officialDocument',
+    ]).isRequired,
 };
 
 export default CreateForm;

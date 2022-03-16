@@ -58,7 +58,13 @@ export function niceFullDate(dirtyDate) {
  * @returns {*}
  */
 export function getSubObjectType(str) {
-    return str.slice(0, -9);
+    let newStr = str.slice(0, -9);
+
+    if (str.indexOf('#') < 0) {
+        newStr = str;
+    }
+
+    return newStr;
 }
 
 /**
@@ -340,11 +346,11 @@ export function setCSSProperty(property, value) {
 
 /**
  *
- * @param e
- * @param dataSection
+ * @param attribut
+ * @param value
  */
-export const goToSection = (e, dataSection) => {
-    const section = document.querySelector(`[data-section=${dataSection}]`);
+export const goToSection = (value, attribut = 'section') => {
+    const section = document.querySelector(`[data-${attribut}="${value}"]`);
 
     if (section) {
         const { left, top } = section.getBoundingClientRect();

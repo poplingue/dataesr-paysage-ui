@@ -12,6 +12,7 @@ const useScroll = () => {
             setScrollingDown(scrollTopDocument > scrollTop);
             setScrollY(window.scrollY);
         };
+
         window.addEventListener('scroll', onScroll);
 
         return () => window.removeEventListener('scroll', onScroll);
@@ -19,4 +20,5 @@ const useScroll = () => {
 
     return { scrollY, scrollTop, scrollingDown };
 };
+
 export default useScroll;

@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure localisation', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -16,7 +16,7 @@ context('Structure localisation', () => {
             );
 
             cy.get(
-                `[data-field="update/structure@localisations#${id}_locality"]`
+                `[data-field="contrib/structure@localisations#${id}_locality"]`
             )
                 .find('input')
                 .type('Nantes');
@@ -36,7 +36,7 @@ context('Structure localisation', () => {
             );
 
             cy.get(
-                `[data-field="update/structure@localisations#${id}_locality"]`
+                `[data-field="contrib/structure@localisations#${id}_locality"]`
             )
                 .find('input')
                 .type('Nantes');
@@ -44,7 +44,7 @@ context('Structure localisation', () => {
             cy.wait('@search');
 
             cy.get(
-                `[data-field="update/structure@localisations#${id}_telephone"]`
+                `[data-field="contrib/structure@localisations#${id}_telephone"]`
             )
                 .find('input')
                 .type('09');
@@ -62,7 +62,7 @@ context('Structure localisation', () => {
             );
 
             cy.get(
-                `[data-field="update/structure@localisations#${id}_locality"]`
+                `[data-field="contrib/structure@localisations#${id}_locality"]`
             )
                 .find('input')
                 .type('bordeaux');
@@ -74,12 +74,12 @@ context('Structure localisation', () => {
                 .click();
 
             cy.get(
-                `[data-field="update/structure@localisations#${id}_locality"]`
+                `[data-field="contrib/structure@localisations#${id}_locality"]`
             )
                 .find('input')
                 .should('have.value', 'Bordeaux-en-Gâtinais');
             cy.get(
-                `[data-field="update/structure@localisations#${id}_postalCode"]`
+                `[data-field="contrib/structure@localisations#${id}_postalCode"]`
             )
                 .find('input')
                 .should('have.value', '45041');

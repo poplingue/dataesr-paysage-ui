@@ -6683,7 +6683,7 @@ log-symbols@^4.0.0:
 
 log-update@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npmjs.org/log-update/-/log-update-4.0.0.tgz"
+  resolved "https://registry.npmjs.org/log-contrib/-/log-update-4.0.0.tgz"
   integrity sha512-9fkkDevMefjg0mmzWFBW8YkFP91OrizzkW3diF7CpG+S2EYdy4+TVfGwz1zeF8x7hCx1ovSPTOE9Ngib74qqUg==
   dependencies:
     ansi-escapes "^4.3.0"

@@ -11,16 +11,16 @@ const Providers = (props, options) => {
                 },
                 stateForm: options.stateForm || {
                     darkTheme: false,
-                    storeObjects: ['update/person'],
+                    storeObjects: ['contrib/person'],
                     departments: [],
-                    formName: 'update/person',
+                    formName: 'contrib/person',
                     forms: {
-                        'update/person': {
-                            'update/person@section_infinite#0': 'test 1',
-                            'update/person@section_infinite#1': 'test 2',
-                            'update/person@section_infinite#2': 'test 3',
+                        'contrib/person': {
+                            'contrib/person@section_infinite#0': 'test 1',
+                            'contrib/person@section_infinite#1': 'test 2',
+                            'contrib/person@section_infinite#2': 'test 3',
                         },
-                        'update/structure': {},
+                        'contrib/structure': {},
                     },
                 },
                 dispatchForm: () => {},

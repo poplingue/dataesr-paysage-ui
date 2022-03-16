@@ -1,7 +1,11 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import React from 'react';
+import HomeSearch from '../../../components/HomeSearch';
+import TileElement from '../../../components/TileElement';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
+import useCSSProperty from '../../../hooks/useCSSProperty';
 import ObjectService from '../../../services/Object.service';
 
 const CardLink = dynamic(() => import('../../../components/CardLink'));
@@ -13,30 +17,53 @@ export default function SearchObject({ data }) {
 
     const router = useRouter();
     const { objectCode } = router.query;
+    const { style: color } = useCSSProperty(
+        getObjectTypeDetails(objectCode).color
+    );
 
     return (
         <Layout>
-            <HeaderLayout pageTitle="Recherche" />
-            <Container>
+            <HeaderLayout
+                pageTitle={`Les objets « ${
+                    getObjectTypeDetails(objectCode).title
+                } »`}
+            />
+            <Container fluid>
+                <Row>
+                    <Col spacing="mb-5w">
+                        <HomeSearch switchPage defaultType={objectCode} />
+                    </Col>
+                </Row>
                 <Row gutters>
-                    {data.map((obj) => {
-                        const name = getObjectTypeDetails(objectCode)
-                            ? getObjectTypeDetails(objectCode).name
-                            : objectCode;
+                    <Col>
+                        <Container>
+                            <Row gutters>
+                                {data.map((obj) => {
+                                    const name = getObjectTypeDetails(
+                                        objectCode
+                                    )
+                                        ? getObjectTypeDetails(objectCode).name
+                                        : objectCode;
 
-                        return (
-                            <Col n="3" key={obj.id}>
-                                <CardLink
-                                    link={`/object/${
-                                        getObjectTypeDetails(objectCode).name
-                                    }/${obj.id}`}
-                                    supInfo={name}
-                                    subInfo={obj.id}
-                                    info={obj.currentName.usualName || ''}
-                                />
-                            </Col>
-                        );
-                    })}
+                                    return (
+                                        <Col n="3" key={obj.id}>
+                                            <TileElement
+                                                title={obj.id}
+                                                body={name}
+                                                href={`/object/${
+                                                    getObjectTypeDetails(
+                                                        objectCode
+                                                    ).name
+                                                }/${obj.id}`}
+                                                color={color}
+                                                icon="ri-arrow-right-line"
+                                            />
+                                        </Col>
+                                    );
+                                })}
+                            </Row>
+                        </Container>
+                    </Col>
                 </Row>
             </Container>
         </Layout>

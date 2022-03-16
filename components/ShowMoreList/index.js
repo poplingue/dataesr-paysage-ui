@@ -23,7 +23,7 @@ export default function ShowMoreList({ display, children }) {
         },
     };
 
-    if (display < 4) {
+    if (display < 2) {
         return <Row gutters>{children}</Row>;
     }
 

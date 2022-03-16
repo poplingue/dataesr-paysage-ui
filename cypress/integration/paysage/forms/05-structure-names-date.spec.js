@@ -3,7 +3,7 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
@@ -13,13 +13,15 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get(`[data-field="update/structure@names#${id}_startDateDay"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateDay"]`)
                 .find('select')
                 .select('04');
-            cy.get(`[data-field="update/structure@names#${id}_startDateMonth"]`)
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_startDateMonth"]`
+            )
                 .find('select')
                 .select('08');
-            cy.get(`[data-field="update/structure@names#${id}_startDateYear"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateYear"]`)
                 .find('select')
                 .select('2000');
 
@@ -29,13 +31,15 @@ context('Structure new form', () => {
             cy.reload();
             cy.sectionsNoSticky();
 
-            cy.get(`[data-field="update/structure@names#${id}_startDateDay"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateDay"]`)
                 .find('select')
                 .should('have.value', '04');
-            cy.get(`[data-field="update/structure@names#${id}_startDateMonth"]`)
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_startDateMonth"]`
+            )
                 .find('select')
                 .should('have.value', '08');
-            cy.get(`[data-field="update/structure@names#${id}_startDateYear"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateYear"]`)
                 .find('select')
                 .should('have.value', '2000');
         });
@@ -59,13 +63,15 @@ context('Structure new form', () => {
 
             cy.reload();
 
-            cy.get(`[data-field="update/structure@names#${id}_startDateDay"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateDay"]`)
                 .find('select')
                 .should('have.value', '01');
-            cy.get(`[data-field="update/structure@names#${id}_startDateMonth"]`)
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_startDateMonth"]`
+            )
                 .find('select')
                 .should('have.value', '01');
-            cy.get(`[data-field="update/structure@names#${id}_startDateYear"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateYear"]`)
                 .find('select')
                 .should('have.value', currentYear);
         });
@@ -77,10 +83,12 @@ context('Structure new form', () => {
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-            cy.get(`[data-field="update/structure@names#${id}_startDateMonth"]`)
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_startDateMonth"]`
+            )
                 .find('select')
                 .select('05');
-            cy.get(`[data-field="update/structure@names#${id}_startDateYear"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateYear"]`)
                 .find('select')
                 .select('2013');
 
@@ -89,13 +97,15 @@ context('Structure new form', () => {
 
             cy.reload();
 
-            cy.get(`[data-field="update/structure@names#${id}_startDateDay"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateDay"]`)
                 .find('select')
                 .should('have.value', null);
-            cy.get(`[data-field="update/structure@names#${id}_startDateMonth"]`)
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_startDateMonth"]`
+            )
                 .find('select')
                 .should('have.value', '05');
-            cy.get(`[data-field="update/structure@names#${id}_startDateYear"]`)
+            cy.get(`[data-field="contrib/structure@names#${id}_startDateYear"]`)
                 .find('select')
                 .should('have.value', '2013');
         });

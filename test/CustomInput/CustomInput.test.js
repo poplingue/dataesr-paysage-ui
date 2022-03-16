@@ -7,8 +7,8 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/update/structure',
-    pathname: '/update/[object]',
+    route: '/contrib/structure',
+    pathname: '/contrib/[object]',
     query: { object: 'structure' },
 }));
 
@@ -57,7 +57,7 @@ describe('Field component', () => {
 
     it('should have Title as data-field case infinite', () => {
         const uniqueId = getUniqueId(
-            'update/structure',
+            'contrib/structure',
             'names#K7L3c9M5',
             'shortName',
             1
@@ -71,7 +71,7 @@ describe('Field component', () => {
 
     it('should have Title as data-field', () => {
         const uniqueId = getUniqueId(
-            'update/structure',
+            'contrib/structure',
             'names#K7L3c9M5',
             'othernames'
         );

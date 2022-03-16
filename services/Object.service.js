@@ -30,6 +30,7 @@ export const objectService = {
     },
     getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();
+
         const url = `${publicRuntimeConfig.baseApiUrl}/${
             getObjectTypeDetails(objectCode).name
         }`;
@@ -47,10 +48,30 @@ export const objectService = {
                 return Promise.reject(err);
             });
     },
-    getSubObject: async (type, id, subObject) => {
+
+    getSubObjectData: async (type, id, subObject) => {
         const { publicRuntimeConfig } = getConfig();
 
         const url = `${publicRuntimeConfig.baseApiUrl}/${type}/${id}/${subObject}`;
+
+        const requestOptions = fetchHelper.requestOptions('GET');
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return Promise.resolve(data);
+            })
+            .catch((err) => {
+                return Promise.reject(err);
+            });
+    },
+
+    getResource: async (type, id, subObject, subObjectId) => {
+        const { publicRuntimeConfig } = getConfig();
+
+        const url = `${publicRuntimeConfig.baseApiUrl}/${type}/${id}/${subObject}/${subObjectId}`;
 
         const requestOptions = fetchHelper.requestOptions('GET');
 
