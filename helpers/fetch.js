@@ -33,10 +33,10 @@ export const fetchHelper = {
                 response,
             } = jsonResponses[i];
             const length = response.url.split('/').length - 1;
-            const subObject = response.url.split('/')[length];
+            const subObjectType = response.url.split('/')[length];
 
             if (response.status >= 200 && response.status < 400) {
-                merged.push({ data, subObject });
+                merged.push({ data, subObject: subObjectType });
             }
         }
 

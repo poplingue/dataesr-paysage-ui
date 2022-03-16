@@ -11,7 +11,6 @@ import { configValidator as configValidatorStructureIdentifiers } from '../compo
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
 
 import { configValidator as configValidatorStructureNames } from '../components/ContribStructure/configValidatorNames';
-import { configValidator as configValidatorStructureRankings } from '../components/ContribStructure/configValidatorRankings';
 import { configValidator as configValidatorStructureSocialmedias } from '../components/ContribStructure/configValidatorSocialmedias';
 
 import { configValidator as configValidatorStructureWeblinks } from '../components/ContribStructure/configValidatorWeblinks';
@@ -19,7 +18,6 @@ import { configValidator as configValidatorStructureWeblinks } from '../componen
 const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
     { subObject: 'localisations', initBody: { country: '' } },
-    { subObject: 'rankings', initBody: { url: '' } },
     {
         subObject: 'weblinks',
         initBody: {
@@ -101,7 +99,6 @@ export const configValidators = {
         localisations: configValidatorStructureLocalisations,
         weblinks: configValidatorStructureWeblinks,
         socialmedias: configValidatorStructureSocialmedias,
-        rankings: configValidatorStructureRankings,
     },
     person: {
         identifiers: configValidatorPersonIdentifiers,
@@ -167,7 +164,7 @@ export const StructurePageSkeleton = [
         title: 'Présentation',
         component: 'presentation',
         content: [
-            { title: '', component: 'header' },
+            { title: 'Aperçu', component: 'header' },
             { title: 'Historique et dates', component: 'history' },
             { title: 'Composition', component: 'composition' },
             { title: 'Structures internes', component: 'internals' },

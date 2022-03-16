@@ -32,8 +32,11 @@ export default function Header() {
         // TODO use Promise.all for subObjects identifiers and localisations
         async function getData() {
             return (
-                (await ObjectService.getSubObject(type, id, 'identifiers')) ||
-                []
+                (await ObjectService.getSubObjectData(
+                    type,
+                    id,
+                    'identifiers'
+                )) || []
             );
         }
 
@@ -48,8 +51,11 @@ export default function Header() {
         async function getData() {
             // TODO pass await function as parameter??
             return (
-                (await ObjectService.getSubObject(type, id, 'localisations')) ||
-                []
+                (await ObjectService.getSubObjectData(
+                    type,
+                    id,
+                    'localisations'
+                )) || []
             );
         }
 

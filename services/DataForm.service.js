@@ -266,13 +266,13 @@ export const dataFormService = {
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
 
-        const jsons = await Promise.all(
+        const jsonResponses = await Promise.all(
             res.flatMap((r) =>
                 checkFlatMap[r.ok](fetchHelper.handleResponse(r))
             )
         );
 
-        return fetchHelper.handleJsons(jsons);
+        return fetchHelper.handleJsons(jsonResponses);
     },
 
     initSubObject: async (type, subObject, id) => {
@@ -312,14 +312,6 @@ export const dataFormService = {
                 return dataFormService.getProp(object[path[0]], path.slice(1));
             }
         }
-    },
-
-    getSubObjectData: async (object, id, subObject) => {
-        const url = `/api/${object}/${id}/${subObject}`;
-        const requestOptions = fetchHelper.requestOptions('GET');
-        const response = await fetch(url, requestOptions);
-
-        return fetchHelper.handleResponse(response);
     },
 
     save: async (form, objectType, objectId, subObject) => {

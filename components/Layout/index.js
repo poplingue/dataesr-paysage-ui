@@ -214,7 +214,7 @@ function Layout({ children, headTitle }) {
                             current={asPath.startsWith('/contrib')}
                         >
                             <NavSubItem
-                                title="Ajouter un nouvel object"
+                                title="Ajouter un nouvel objet"
                                 asLink={<NavLink href="/contrib" />}
                             />
                         </NavItem>

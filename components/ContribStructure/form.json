@@ -210,33 +210,6 @@
         ]
       },
       {
-        "title": "Classement",
-        "subObject": "rankings",
-        "infinite": true,
-        "content": [
-          {
-            "title": "rankingId",
-            "type": "text",
-            "validatorId": "rankingId"
-          },
-          {
-            "title": "Url",
-            "type": "text",
-            "validatorId": "url"
-          },
-          {
-            "title": "Rank",
-            "type": "text",
-            "validatorId": "rank"
-          },
-          {
-            "title": "Année",
-            "type": "text",
-            "validatorId": "year"
-          }
-        ]
-      },
-      {
         "title": "Identifiants",
         "subObject": "identifiers",
         "infinite": true,

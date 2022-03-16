@@ -83,7 +83,10 @@ export default function PaysageObject({ data }) {
                 status={data.status}
             />
             {Component && (
-                <SideNavigation items={skeleton} color="Yellow">
+                <SideNavigation
+                    items={skeleton}
+                    color={getObjectTypeDetails('', type).colorClassName}
+                >
                     <Component
                         id={id}
                         fame={data.fame}

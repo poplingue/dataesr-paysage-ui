@@ -18,15 +18,18 @@ Cypress.Commands.add('newStructure', () => {
     cy.intercept('POST', '/api/structure/**').as('post');
 
     cy.wait('@post').then((interception) => {
-        if (interception.response.body.subObjects[0].id) {
-            cy.setCookie('nameId', interception.response.body.subObjects[0].id);
+        if (interception.response.body.subObjects[0].value.id) {
+            cy.setCookie(
+                'nameId',
+                interception.response.body.subObjects[0].value.id
+            );
             cy.setCookie(
                 'identifierId',
-                interception.response.body.subObjects[2].id
+                interception.response.body.subObjects[4].value.id
             );
             cy.setCookie(
                 'localisationId',
-                interception.response.body.subObjects[1].id
+                interception.response.body.subObjects[1].value.id
             );
         }
     });

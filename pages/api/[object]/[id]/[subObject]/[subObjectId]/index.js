@@ -8,12 +8,13 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc()
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
-        const { id, subObject, object } = req.query;
+        const { id, subObject, object, subObjectId } = req.query;
 
         try {
             const url = `${serverRuntimeConfig.dataesrApiUrl}/${
                 getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}`;
+            }/${id}/${subObject}/${subObjectId}`;
+
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,

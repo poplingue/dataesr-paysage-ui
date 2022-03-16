@@ -23,6 +23,7 @@ export default function ContribStructure({ data, id }) {
     const { style: yellow } = useCSSProperty(
         '--green-tilleul-verveine-main-707'
     );
+
     const [published, setPublished] = useState(
         currentObject.status === 'published'
     );

@@ -51,6 +51,7 @@ export function getObjectTypeDetails(id, name) {
             name: 'category',
             color: '--green-bourgeon-main-640',
             title: 'Catégorie',
+            colorClassName: 'Greenish',
             dataesrApi: 'categories',
         },
         3: {

@@ -3,10 +3,12 @@ import grid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
 import PresHeader from './Header';
 import History from './History';
+import Web from './Web';
 
 const components = {
     header: PresHeader,
     history: History,
+    web: Web,
 };
 
 export default function Presentation({ content, section }) {

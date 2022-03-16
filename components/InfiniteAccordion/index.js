@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { genericErrorMsg } from '../../helpers/internalMessages';
+import { genericErrorMsg, noData } from '../../helpers/internalMessages';
 import {
     cleanString,
     getForm,
@@ -20,6 +20,7 @@ import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
+import ObjectService from '../../services/Object.service';
 import FieldButton from '../FieldButton';
 import AccordionForm from '../Form/AccordionForm';
 import FormAccordionItem from '../Form/FormAccordionItem';
@@ -133,14 +134,21 @@ export default function InfiniteAccordion({
     };
 
     const check = useCallback(() => {
-        return dataFormService
-            .getSubObjectData(object, updateObjectId, subObjectType)
+        return ObjectService.getSubObjectData(
+            object,
+            updateObjectId,
+            subObjectType
+        )
             .then(({ data }) => {
-                return { ids: data.data.map((subObject) => subObject.id) };
+                if (!data.length) {
+                    Promise.reject(noData);
+                }
+
+                return { ids: data.map((subObject) => subObject.id) };
             })
             .catch(() => {
                 // use initial form json with a fake id
-                return { ids: ['azertyui'] };
+                return { ids: ['fallbackId'] };
             });
     }, [object, subObjectType, updateObjectId]);
 
