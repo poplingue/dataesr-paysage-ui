@@ -13,7 +13,6 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
-import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -54,8 +53,6 @@ const FooterBody = dynamic(() =>
 const FooterBottom = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.FooterBottom)
 );
-
-const { publicRuntimeConfig } = getConfig();
 
 function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
@@ -209,39 +206,39 @@ function Layout({ children, headTitle }) {
                         current={pathname === '/'}
                     />
                     {!noUser && (
-                        <NavItem
-                            title="Je contribue"
-                            current={asPath.startsWith('/contrib')}
-                        >
-                            <NavSubItem
-                                title="Ajouter un nouvel objet"
-                                asLink={<NavLink href="/contrib" />}
-                            />
-                        </NavItem>
-                    )}
-                    <NavItem title="Annuaire">
-                        <NavSubItem
-                            current={pathname.startsWith('/search/1')}
-                            title="Rechercher une personne"
-                            asLink={<NavLink href="/search/1" />}
-                        />
-                        <NavSubItem
-                            title="Listes qualifiées"
-                            asLink={<NavLink href="/list" />}
-                        />
-                    </NavItem>
-                    {!noUser && (
-                        <NavItem title="Répertoire">
-                            <NavSubItem
-                                current={pathname.startsWith('/search')}
-                                title="Rechercher une structure"
-                                asLink={<NavLink href="/search/0" />}
-                            />
-                            <NavSubItem
-                                title="Listes qualifiées"
-                                asLink={<NavLink href="/list" />}
-                            />
-                        </NavItem>
+                        <>
+                            <NavItem
+                                title="Je contribue"
+                                current={asPath.startsWith('/contrib')}
+                            >
+                                <NavSubItem
+                                    title="Ajouter un nouvel objet"
+                                    asLink={<NavLink href="/contrib" />}
+                                />
+                            </NavItem>
+                            <NavItem title="Annuaire">
+                                <NavSubItem
+                                    current={pathname.startsWith('/search/1')}
+                                    title="Rechercher une personne"
+                                    asLink={<NavLink href="/search/1" />}
+                                />
+                                <NavSubItem
+                                    title="Listes qualifiées"
+                                    asLink={<NavLink href="/list" />}
+                                />
+                            </NavItem>
+                            <NavItem title="Répertoire">
+                                <NavSubItem
+                                    current={pathname.startsWith('/search')}
+                                    title="Rechercher une structure"
+                                    asLink={<NavLink href="/search/0" />}
+                                />
+                                <NavSubItem
+                                    title="Listes qualifiées"
+                                    asLink={<NavLink href="/list" />}
+                                />
+                            </NavItem>
+                        </>
                     )}
                     <NavItem
                         title="Ressources"

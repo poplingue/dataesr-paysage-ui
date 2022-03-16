@@ -1,8 +1,9 @@
 import { Button, Select, TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { subObjects } from '../../config/objects';
 import { getObjectTypeDetails } from '../../config/utils';
+import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import useViewport from '../../hooks/useViewport';
 import styles from './HomeSearch.module.scss';
@@ -19,6 +20,12 @@ export default function HomeSearch({ switchPage, defaultType }) {
             };
         }
     );
+    const {
+        statePage: { user },
+    } = useContext(AppContext);
+
+    const noUser = !Object.keys(user).length;
+
     const router = useRouter();
     const { mobile } = useViewport();
 
@@ -60,6 +67,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
                 </Col>
                 <Col n="12 md-2">
                     <Button
+                        disabled={noUser}
                         icon="ri-search-2-line"
                         title="Rechercher"
                         onClick={onSearch}
