@@ -6,6 +6,7 @@ import { configValidator as configValidatorOfficialDocumentId } from '../compone
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
 import { configValidator as configValidatorPersonSocialmedias } from '../components/ContribPerson/configValidatorSocialmedias';
+import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
 import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
@@ -81,13 +82,24 @@ const categorySubObjects = [
     },
 ];
 
+const priceSubObjects = [
+    {
+        subObject: 'names',
+        initBody: {},
+    },
+    {
+        subObject: 'description',
+        initBody: {},
+    },
+];
+
 export const subObjects = {
     person: personSubObjects,
     structure: structureSubObjects,
     category: categorySubObjects,
     officialDocument: officialDocumentSubObjects,
+    prices: priceSubObjects,
     legalCategories: '',
-    prices: '',
     documents: '',
     terms: '',
 };
@@ -111,6 +123,9 @@ export const configValidators = {
     },
     officialDocument: {
         officialDocumentId: configValidatorOfficialDocumentId,
+    },
+    price: {
+        names: configValidatorPriceNames,
     },
 };
 

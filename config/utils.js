@@ -68,8 +68,9 @@ export function getObjectTypeDetails(id, name) {
         },
         5: {
             name: 'price',
-            color: '--green-archipel-main-557',
+            color: '--blue-ecume-main-400',
             title: 'Prix',
+            colorClassName: 'Blue',
             dataesrApi: 'prices',
         },
         6: {
@@ -104,6 +105,7 @@ export const mapFields = (form) => {
     // TODO handle nested object like geometry
     const obj = {
         'contrib/person': [],
+        'contrib/price': [],
         'contrib/officialDocument': [],
         'contrib/category': ['type', 'url', 'comment'],
         'contrib/structure': [
