@@ -2,74 +2,24 @@
   {
     "form": [
       {
-        "title": "Noms",
+        "title": "Dénomination",
         "subObject": "names",
         "infinite": true,
         "content": [
           {
-            "title": "Nom officiel",
+            "title": "Nom français",
             "type": "text",
-            "validatorId": "officialName"
-          },
-          {
-            "title": "Nom usuel",
-            "type": "text",
-            "validatorId": "usualName"
-          },
-          {
-            "title": "Article du nom usuel",
-            "type": "select",
-            "staticValues": [
-              "à",
-              "à l'",
-              "à la",
-              "dans le",
-              "dans les",
-              "aux",
-              "au"
-            ],
-            "validatorId": "article"
-          },
-          {
-            "title": "Acronyme",
-            "type": "text",
-            "validatorId": "acronymLocal"
-          },
-          {
-            "title": "ShortName",
-            "type": "text",
-            "validatorId": "shortName"
-          },
-          {
-            "title": "BrandName",
-            "type": "text",
-            "validatorId": "brandName"
-          },
-          {
-            "title": "Acronyme français",
-            "type": "text",
-            "validatorId": "acronymFr"
+            "validatorId": "nameFr"
           },
           {
             "title": "Nom anglais",
             "type": "text",
-            "validatorId": "nameEn",
-            "dependency": {
-              "validatorId": "acronymEn",
-              "action": "hidden",
-              "rule": "emptiness"
-            }
+            "validatorId": "nameEn"
           },
           {
-            "title": "Acronyme anglais",
+            "title": "Description",
             "type": "text",
-            "validatorId": "acronymEn"
-          },
-          {
-            "title": "Autre nom",
-            "type": "text",
-            "infinite": true,
-            "validatorId": "otherNames"
+            "validatorId": "description"
           },
           {
             "title": "Date de début",
@@ -85,164 +35,6 @@
             "title": "Commentaire",
             "type": "text",
             "validatorId": "comment"
-          }
-        ]
-      },
-      {
-        "title": "Localisations",
-        "subObject": "localisations",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Adresse",
-            "type": "text",
-            "suggest": true,
-            "validatorId": "address"
-          },
-          {
-            "title": "Ville",
-            "type": "text",
-            "suggest": true,
-            "validatorId": "locality"
-          },
-          {
-            "title": "Code postal",
-            "type": "text",
-            "validatorId": "postalCode"
-          },
-          {
-            "title": "Lieu-dit",
-            "type": "text",
-            "validatorId": "place"
-          },
-          {
-            "title": "Pays",
-            "type": "text",
-            "validatorId": "country"
-          },
-          {
-            "title": "Boîte postale",
-            "type": "text",
-            "validatorId": "postOfficeBoxNumber"
-          },
-          {
-            "title": "Téléphone",
-            "type": "text",
-            "validatorId": "telephone"
-          },
-          {
-            "title": "Géolocalisation",
-            "type": "group",
-            "validatorId": "geometry",
-            "content": [
-              {
-                "title": "Longitude",
-                "type": "text",
-                "validatorId": "longitude"
-              },
-              {
-                "title": "Latitude",
-                "type": "text",
-                "validatorId": "latitude"
-              }
-            ]
-          },
-          {
-            "title": "Date de début",
-            "type": "date",
-            "validatorId": "startDate"
-          },
-          {
-            "title": "Date de fin",
-            "type": "date",
-            "validatorId": "endDate"
-          }
-        ]
-      },
-      {
-        "title": "Liens web",
-        "subObject": "weblinks",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Type",
-            "type": "text",
-            "validatorId": "type"
-          },
-          {
-            "title": "Url",
-            "type": "text",
-            "validatorId": "url",
-            "dependency": {
-              "validatorId": "language",
-              "action": "hidden",
-              "rule": "emptiness"
-            }
-          },
-          {
-            "title": "Langage",
-            "type": "text",
-            "validatorId": "language"
-          }
-        ]
-      },
-      {
-        "title": "Réseaux sociaux",
-        "subObject": "socialmedias",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Type",
-            "type": "select",
-            "validatorId": "type",
-            "staticValues": [
-              "Facebook",
-              "Twitter",
-              "Linkedin"
-            ]
-          },
-          {
-            "title": "Compte",
-            "type": "text",
-            "hint": "Identifiant du compte ou url",
-            "validatorId": "account"
-          }
-        ]
-      },
-      {
-        "title": "Identifiants",
-        "subObject": "identifiers",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Type",
-            "type": "text",
-            "validatorId": "type",
-            "dependency": {
-              "validatorId": "value",
-              "action": "hidden"
-            }
-          },
-          {
-            "title": "Valeur",
-            "type": "text",
-            "validatorId": "value"
-          },
-          {
-            "title": "État",
-            "type": "radio",
-            "validatorId": "active",
-            "defaultLabel": "Actif",
-            "staticValues": [
-              {
-                "value": true,
-                "labelValue": "Actif"
-              },
-              {
-                "value": false,
-                "labelValue": "Inactif"
-              }
-            ]
           }
         ]
       }

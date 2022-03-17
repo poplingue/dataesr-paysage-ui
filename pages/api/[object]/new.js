@@ -14,6 +14,7 @@ async function handler(req, res) {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/${
             getObjectTypeDetails('', object).dataesrApi
         }`;
+
         const requestOptions = fetchHelper.requestOptions(
             'POST',
             req.body,
@@ -47,7 +48,6 @@ async function handler(req, res) {
             promises.push(request);
         }
 
-        // TODO add Promise.allSettled()
         return Promise.allSettled(
             promises.map((request) => {
                 return fetch(request)

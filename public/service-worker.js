@@ -16,6 +16,10 @@ self.addEventListener('message', async (event) => {
             body = JSON.stringify({ lastName: '' });
         }
 
+        if (data.object === 'price') {
+            body = JSON.stringify({ nameFr: '' });
+        }
+
         if (data.object === 'category') {
             body = JSON.stringify({ usualNameFr: '' });
         }
@@ -57,6 +61,8 @@ self.addEventListener('message', async (event) => {
 
         await fetch(`/api/${data.object}/${data.id}`, requestOptions).then(
             async (resp) => {
+                console.log('==== LOG ==== ', data);
+
                 const data = await resp.clone().json();
                 self.postMessage(JSON.stringify({ status: resp.status, data }));
             }

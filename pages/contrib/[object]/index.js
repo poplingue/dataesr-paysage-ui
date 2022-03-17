@@ -17,6 +17,7 @@ const ContribCategory = dynamic(() =>
 const ContribStructure = dynamic(() =>
     import('../../../components/ContribStructure')
 );
+const ContribPrice = dynamic(() => import('../../../components/ContribPrice'));
 
 export default function ContribObject({ data }) {
     const router = useRouter();
@@ -25,6 +26,7 @@ export default function ContribObject({ data }) {
     const { object } = router.query;
     const components = {
         person: ContribPerson,
+        price: ContribPrice,
         structure: ContribStructure,
         category: ContribCategory,
         officialDocument: ContribOfficialDocument,
@@ -88,6 +90,7 @@ export async function getStaticPaths() {
             '/contrib/structure',
             '/contrib/category',
             '/contrib/officialDocument',
+            '/contrib/price',
         ],
         fallback: true,
     };

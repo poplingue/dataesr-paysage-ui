@@ -14,7 +14,10 @@ export default function ContribPrice({ id }) {
     const {
         query: { object },
     } = useRouter();
-    const { style: blue } = useCSSProperty(getObjectTypeDetails(object).color);
+
+    const { style: blue } = useCSSProperty(
+        getObjectTypeDetails('', object).color
+    );
 
     const [editor, setEditor] = useState('');
     const [dateInfo, setDateInfo] = useState('');

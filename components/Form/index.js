@@ -11,6 +11,7 @@ import PageTheme from '../PageTheme';
 import AccordionForm from './AccordionForm';
 import FormAccordionItem from './FormAccordionItem';
 
+// TODO refacto propTypes
 const CreateForm = ({ jsonForm, color }) => {
     const { Col, Row } = grid();
 
@@ -116,7 +117,7 @@ const CreateForm = ({ jsonForm, color }) => {
     });
 
     useEffect(() => {
-        async function fetchStructure() {
+        async function fetchObject() {
             workerRef.current.postMessage({
                 object,
                 id: updateObjectId,
@@ -124,7 +125,7 @@ const CreateForm = ({ jsonForm, color }) => {
         }
 
         if (updateObjectId) {
-            fetchStructure();
+            fetchObject();
         }
     }, [updateObjectId, object]);
 
@@ -206,6 +207,7 @@ CreateForm.propTypes = {
         'structure',
         'category',
         'officialDocument',
+        'price',
     ]).isRequired,
 };
 

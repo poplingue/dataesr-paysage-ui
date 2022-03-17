@@ -85,11 +85,11 @@ const categorySubObjects = [
 const priceSubObjects = [
     {
         subObject: 'names',
-        initBody: {},
+        initBody: { nameFr: '' },
     },
     {
         subObject: 'description',
-        initBody: {},
+        initBody: { descriptionFr: '' },
     },
 ];
 
@@ -98,7 +98,7 @@ export const subObjects = {
     structure: structureSubObjects,
     category: categorySubObjects,
     officialDocument: officialDocumentSubObjects,
-    prices: priceSubObjects,
+    price: priceSubObjects,
     legalCategories: '',
     documents: '',
     terms: '',
