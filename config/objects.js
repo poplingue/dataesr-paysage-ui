@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { configValidator as configValidatorCategoryIdentifiers } from '../components/ContribCategory/configValidatorIdentifiers';
 
 import { configValidator as configValidatorCategoryWeblinks } from '../components/ContribCategory/configValidatorWeblinks';
+import { configValidator as configValidatorDocumentInfos } from '../components/ContribDocument/configValidatorInfos';
+import { configValidator as configValidatorLegalCategoryInfos } from '../components/ContribLegalCategory/configValidatorInfos';
 import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorOfficialDocumentId';
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
@@ -56,6 +58,13 @@ const personSubObjects = [
     },
 ];
 
+const legalCategorySubObjects = [
+    {
+        subObject: 'infos',
+        initBody: { longNameFr: '' },
+    },
+];
+
 const officialDocumentSubObjects = [
     {
         subObject: 'officialDocumentId',
@@ -97,6 +106,13 @@ const termSubObjects = [
     },
 ];
 
+const documentSubObjects = [
+    {
+        subObject: 'infos',
+        initBody: { usualNameFr: '' },
+    },
+];
+
 export const subObjects = {
     person: personSubObjects,
     structure: structureSubObjects,
@@ -104,8 +120,8 @@ export const subObjects = {
     officialDocument: officialDocumentSubObjects,
     price: priceSubObjects,
     term: termSubObjects,
-    legalCategories: '',
-    documents: '',
+    legalCategory: legalCategorySubObjects,
+    documents: documentSubObjects,
 };
 
 export const configValidators = {
@@ -134,8 +150,15 @@ export const configValidators = {
     term: {
         names: configValidatorTermNames,
     },
+    document: {
+        infos: configValidatorDocumentInfos,
+    },
+    legalCategory: {
+        infos: configValidatorLegalCategoryInfos,
+    },
 };
 
+// TODO refacto skeletons objects => {Person: Skeleton,...}
 export const PersonPageSkeletonPropType = PropTypes.shape({
     web: PropTypes.func.isRequired,
     responsability: PropTypes.func.isRequired,
@@ -189,10 +212,36 @@ export const PricePageSkeleton = [
         print: false,
     },
 ];
+export const CategoryPageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
+
+export const LegalCategoryPageSkeleton = [
+    {
+        title: 'Informations',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
 
 export const TermPageSkeleton = [
     {
         title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
+
+export const DocumentPageSkeleton = [
+    {
+        title: 'Informations',
         component: 'presentation',
         content: [{ title: 'Test', component: 'test' }],
         print: false,

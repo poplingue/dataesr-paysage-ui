@@ -34,9 +34,7 @@ export default function InfiniteAccordion({
     subObjectType,
 }) {
     const { Col, Row, Container } = grid();
-    const { style: yellow } = useCSSProperty(
-        '--green-tilleul-verveine-main-707'
-    );
+    const { style: yellow } = useCSSProperty('--yellow-tournesol-main-731');
     const { style: dark } = useCSSProperty('--grey-425');
     const { style: white } = useCSSProperty('--grey-1000');
 

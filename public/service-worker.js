@@ -39,6 +39,10 @@ self.addEventListener('message', async (event) => {
             body = JSON.stringify({ usualNameFr: '' });
         }
 
+        if (data.object === 'legalCategory') {
+            body = JSON.stringify({ longNameFr: '' });
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -7,12 +7,17 @@ import {
     PricePageSkeleton,
     StructurePageSkeleton,
     TermPageSkeleton,
+    LegalCategoryPageSkeleton,
+    CategoryPageSkeleton,
 } from '../../../../config/objects';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
+const LegalCategory = dynamic(() =>
+    import('../../../../components/LegalCategory')
+);
 const Category = dynamic(() => import('../../../../components/Category'));
 const Price = dynamic(() => import('../../../../components/Price'));
 const Term = dynamic(() => import('../../../../components/Term'));
@@ -37,7 +42,7 @@ const templateObj = {
     },
     category: {
         component: Category,
-        skeleton: PersonPageSkeleton,
+        skeleton: CategoryPageSkeleton,
     },
     price: {
         component: Price,
@@ -46,6 +51,10 @@ const templateObj = {
     term: {
         component: Term,
         skeleton: TermPageSkeleton,
+    },
+    legalCategory: {
+        component: LegalCategory,
+        skeleton: LegalCategoryPageSkeleton,
     },
 };
 
@@ -112,7 +121,7 @@ export default function PaysageObject({ data }) {
                         >
                             <LinkTo
                                 text={`modifier ${
-                                    getObjectTypeDetails('', type).name
+                                    getObjectTypeDetails('', type).text
                                 }`}
                                 href={`/contrib/${type}/${id}`}
                             />

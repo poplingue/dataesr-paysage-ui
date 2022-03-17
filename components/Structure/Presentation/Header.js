@@ -170,7 +170,7 @@ export default function Header() {
                                 <Col spacing="pb-8w pr-1w">
                                     <Callout
                                         hasInfoIcon={false}
-                                        colorFamily="green-tilleul-verveine"
+                                        colorFamily="yellow-tournesol"
                                     >
                                         <CalloutTitle>Téléphone</CalloutTitle>
                                         <CalloutText size="md">
@@ -183,7 +183,7 @@ export default function Header() {
                                 <Col spacing="pb-8w">
                                     <Callout
                                         hasInfoIcon={false}
-                                        colorFamily="green-tilleul-verveine"
+                                        colorFamily="yellow-tournesol"
                                     >
                                         <CalloutTitle>Adresse</CalloutTitle>
                                         <CalloutText size="md">

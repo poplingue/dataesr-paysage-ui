@@ -1,6 +1,6 @@
 .CardLink {
     &.Yellow {
-        border-bottom: 3px solid var(--green-tilleul-verveine-main-707);
+        border-bottom: 3px solid var(--yellow-tournesol-main-731);
     }
 
     &.Pink {
@@ -17,5 +17,13 @@
 
     &.Purple {
         border-bottom: 3px solid var(--purple-glycine-main-494);
+    }
+
+    &.Brown {
+        border-bottom: 3px solid var(--brown-caramel-main-648);
+    }
+
+    &.Archipel {
+        border-bottom: 3px solid var(--green-archipel-main-557);
     }
 }

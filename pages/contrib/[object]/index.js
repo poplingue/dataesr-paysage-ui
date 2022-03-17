@@ -19,6 +19,12 @@ const ContribStructure = dynamic(() =>
 );
 const ContribPrice = dynamic(() => import('../../../components/ContribPrice'));
 const ContribTerm = dynamic(() => import('../../../components/ContribTerm'));
+const ContribDocument = dynamic(() =>
+    import('../../../components/ContribDocument')
+);
+const ContribLegalCategory = dynamic(() =>
+    import('../../../components/ContribLegalCategory')
+);
 
 export default function ContribObject({ data }) {
     const router = useRouter();
@@ -32,6 +38,8 @@ export default function ContribObject({ data }) {
         category: ContribCategory,
         officialDocument: ContribOfficialDocument,
         term: ContribTerm,
+        document: ContribDocument,
+        legalCategory: ContribLegalCategory,
     };
 
     const {
@@ -92,8 +100,10 @@ export async function getStaticPaths() {
             '/contrib/structure',
             '/contrib/category',
             '/contrib/officialDocument',
+            '/contrib/legalCategory',
             '/contrib/price',
             '/contrib/term',
+            '/contrib/document',
         ],
         fallback: true,
     };

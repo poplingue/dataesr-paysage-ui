@@ -21,9 +21,7 @@ export default function ContribStructure({ data, id }) {
         stateForm: { departments, storeObjects, currentObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-    const { style: yellow } = useCSSProperty(
-        '--green-tilleul-verveine-main-707'
-    );
+    const { style: yellow } = useCSSProperty('--yellow-tournesol-main-731');
 
     const [published, setPublished] = useState(
         currentObject.status === 'published'
