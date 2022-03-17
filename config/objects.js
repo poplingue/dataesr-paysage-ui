@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { configValidator as configValidatorCategoryIdentifiers } from '../components/ContribCategory/configValidatorIdentifiers';
 
 import { configValidator as configValidatorCategoryWeblinks } from '../components/ContribCategory/configValidatorWeblinks';
-import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorofficialDocumentId';
+import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorOfficialDocumentId';
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
 import { configValidator as configValidatorPersonSocialmedias } from '../components/ContribPerson/configValidatorSocialmedias';
