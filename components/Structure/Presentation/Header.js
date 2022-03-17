@@ -21,6 +21,7 @@ export default function Header() {
     const [mainLocation, setMainLocation] = useState({});
     const [mainName, setMainName] = useState({});
     const [identifiers, setIdentifiers] = useState([]);
+    const [init, setInit] = useState(true);
 
     const {
         query: { id, type },
@@ -41,12 +42,13 @@ export default function Header() {
             );
         }
 
-        if (!Object.keys(identifiers).length) {
+        if (!Object.keys(identifiers).length && init) {
             getData().then(({ data }) => {
                 setIdentifiers(data);
+                setInit(false);
             });
         }
-    }, [id, identifiers, mainLocation, mainLocation.length, type]);
+    }, [id, identifiers, init, mainLocation, mainLocation.length, type]);
 
     useEffect(() => {
         async function getData() {

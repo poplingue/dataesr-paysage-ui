@@ -12,7 +12,7 @@ const handler = nc().get(async (req, res) => {
     try {
         const url = `${serverRuntimeConfig.dataesrApiUrl}/${
             getObjectTypeDetails('', object).dataesrApi
-        }`;
+        }?sort=id`;
 
         const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
         const request = await fetch(url, requestOptions);

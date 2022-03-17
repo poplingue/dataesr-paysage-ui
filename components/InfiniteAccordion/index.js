@@ -144,7 +144,9 @@ export default function InfiniteAccordion({
 
                 return { ids: data.map((subObject) => subObject.id) };
             })
-            .catch(() => {
+            .catch((err) => {
+                NotifService.info(err, 'error');
+
                 // use initial form json with a fake id
                 return { ids: ['fallback'] };
             });
