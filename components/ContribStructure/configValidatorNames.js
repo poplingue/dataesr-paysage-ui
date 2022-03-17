@@ -11,6 +11,9 @@ export const configValidator = {
     article: {
         required: false,
     },
+    category: {
+        required: false,
+    },
     officialName: {
         validators: [
             (value) => ({

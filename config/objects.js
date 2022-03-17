@@ -11,6 +11,7 @@ import { configValidator as configValidatorPersonSocialmedias } from '../compone
 import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
 import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 
+import { configValidator as configValidatorStructureLinks } from '../components/ContribStructure/configValidatorLinks';
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
 
 import { configValidator as configValidatorStructureNames } from '../components/ContribStructure/configValidatorNames';
@@ -21,6 +22,7 @@ import { configValidator as configValidatorTermNames } from '../components/Contr
 
 const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
+    { subObject: 'links', initBody: { categories: [] } },
     { subObject: 'localisations', initBody: { country: '' } },
     {
         subObject: 'weblinks',
@@ -128,6 +130,7 @@ export const configValidators = {
     structure: {
         identifiers: configValidatorStructureIdentifiers,
         names: configValidatorStructureNames,
+        links: configValidatorStructureLinks,
         localisations: configValidatorStructureLocalisations,
         weblinks: configValidatorStructureWeblinks,
         socialmedias: configValidatorStructureSocialmedias,

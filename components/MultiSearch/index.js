@@ -14,6 +14,7 @@ import {
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
+import ObjectService from '../../services/Object.service';
 import styles from './MultiSearch.module.scss';
 
 function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
@@ -36,15 +37,13 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
         [formName, forms]
     );
     const [selectedValues, setSelectedvalues] = useState([]);
-    const options = departments.map((departement) => ({
-        value: departement.nom,
-        label: `${departement.codeRegion} - ${departement.nom}`,
-    }));
+
+    const [options, setOptions] = useState([]);
+    const [filteredOptions, setFilteredOptions] = useState([]);
+
     const filterSearch = (internalValue, option) =>
         option.label.toLowerCase().includes(internalValue.toLowerCase());
-    const filteredOptions = options.filter((option, index, arr) =>
-        filterSearch(textValue, option, index, arr)
-    );
+
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const onSelectChange = async (e) => {
@@ -84,6 +83,38 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
     };
 
     useEffect(() => {
+        setFilteredOptions(
+            options.filter((option, index, arr) =>
+                filterSearch(textValue, option, index, arr)
+            )
+        );
+    }, [options, textValue]);
+
+    useEffect(() => {
+        async function getData() {
+            return await ObjectService.getAll(2);
+        }
+
+        if (validatorId === 'departments') {
+            setOptions(
+                departments.map((departement) => ({
+                    value: departement.nom,
+                    label: `${departement.codeRegion} - ${departement.nom}`,
+                }))
+            );
+        } else if (options.length === 0) {
+            getData().then(({ data }) => {
+                setOptions(
+                    data.map((resource) => ({
+                        value: resource.id,
+                        label: resource.id,
+                    }))
+                );
+            });
+        }
+    }, [departments, options.length, validatorId]);
+
+    useEffect(() => {
         if (uid && getForm(forms, formName)) {
             setSelectedvalues(getFieldValue(forms, formName, uid));
         }
@@ -94,46 +125,46 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
     }, [type, uid, updateValidSection]);
 
     return (
-        <section className="wrapper-multi-search">
-            <TextInput
-                message={message}
-                messageType={type}
-                onChange={(e) => setTextValue(e.target.value)}
-                value={textValue}
-                label={title}
-            />
+        <section>
             <Container fluid>
-                <Row gutters>
-                    <Col n="6" spacing="py-1w">
+                <Row>
+                    <Col n="12">
+                        <TextInput
+                            message={message}
+                            messageType={type}
+                            onChange={(e) => setTextValue(e.target.value)}
+                            value={textValue}
+                            label={title}
+                        />
+                    </Col>
+                    <Col n="8" spacing="py-1w">
                         <ul className="max-200">
                             {filteredOptions.map((option, i) => {
+                                const { value, label } = option;
+
                                 return (
                                     <li
-                                        data-cy={`${cleanString(
-                                            option.value
-                                        )}-${i}`}
-                                        key={i}
-                                        className={styles.listElement}
+                                        data-cy={`${cleanString(value)}-${i}`}
+                                        key={value}
+                                        className={styles.ListElement}
                                     >
                                         <Checkbox
-                                            label={option.label}
-                                            onChange={(e) => {
-                                                onSelectChange(e);
-                                            }}
+                                            size="sm"
+                                            label={label}
+                                            onChange={onSelectChange}
                                             defaultChecked={
-                                                selectedValues.indexOf(
-                                                    option.value
-                                                ) > -1
+                                                selectedValues.indexOf(value) >
+                                                -1
                                             }
-                                            value={option.value}
+                                            value={value}
                                         />
                                     </li>
                                 );
                             })}
                         </ul>
                     </Col>
-                    <Col n="6" spacing="py-1w">
-                        {selectedValues.length > 0 && (
+                    {selectedValues.length > 0 && (
+                        <Col n="4" spacing="py-1w">
                             <ul>
                                 {selectedValues.map((selected) => {
                                     return (
@@ -143,8 +174,8 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
                                     );
                                 })}
                             </ul>
-                        )}
-                    </Col>
+                        </Col>
+                    )}
                 </Row>
             </Container>
         </section>
