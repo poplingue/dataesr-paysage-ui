@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
+import { getObjectTypeDetails } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
@@ -135,7 +136,10 @@ export default function ContribStructure({ data, id }) {
                         : `Initier une structure ${id}`
                 }
             />
-            <SideNavigation items={ContribStructureForm[0].form}>
+            <SideNavigation
+                items={ContribStructureForm[0].form}
+                color={getObjectTypeDetails('', object).colorClassName}
+            >
                 <ToolBox accordions>
                     {!published ? (
                         <FieldButton

@@ -4,7 +4,9 @@ import { useCallback, useContext, useEffect } from 'react';
 import LinkTo from '../../../../components/LinkTo';
 import {
     PersonPageSkeleton,
+    PricePageSkeleton,
     StructurePageSkeleton,
+    TermPageSkeleton,
 } from '../../../../config/objects';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
@@ -12,6 +14,8 @@ import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
 const Category = dynamic(() => import('../../../../components/Category'));
+const Price = dynamic(() => import('../../../../components/Price'));
+const Term = dynamic(() => import('../../../../components/Term'));
 const Person = dynamic(() => import('../../../../components/Person'));
 const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
 const SideNavigation = dynamic(() =>
@@ -34,6 +38,14 @@ const templateObj = {
     category: {
         component: Category,
         skeleton: PersonPageSkeleton,
+    },
+    price: {
+        component: Price,
+        skeleton: PricePageSkeleton,
+    },
+    term: {
+        component: Term,
+        skeleton: TermPageSkeleton,
     },
 };
 

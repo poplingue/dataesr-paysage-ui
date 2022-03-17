@@ -35,6 +35,10 @@ self.addEventListener('message', async (event) => {
             });
         }
 
+        if (data.object === 'term') {
+            body = JSON.stringify({ usualNameFr: '' });
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

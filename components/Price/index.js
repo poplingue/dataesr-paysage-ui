@@ -18,7 +18,7 @@ export default function Category({ children, skeleton }) {
         <PageTheme color={color}>
             <Row gutters>
                 {children}
-                <Col>Page Catégorie</Col>
+                <Col>Page Prix</Col>
             </Row>
         </PageTheme>
     );

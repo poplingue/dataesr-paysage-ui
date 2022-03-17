@@ -15,6 +15,7 @@ import { configValidator as configValidatorStructureNames } from '../components/
 import { configValidator as configValidatorStructureSocialmedias } from '../components/ContribStructure/configValidatorSocialmedias';
 
 import { configValidator as configValidatorStructureWeblinks } from '../components/ContribStructure/configValidatorWeblinks';
+import { configValidator as configValidatorTermNames } from '../components/ContribTerm/configValidatorNames';
 
 const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
@@ -87,9 +88,12 @@ const priceSubObjects = [
         subObject: 'names',
         initBody: { nameFr: '' },
     },
+];
+
+const termSubObjects = [
     {
-        subObject: 'description',
-        initBody: { descriptionFr: '' },
+        subObject: 'names',
+        initBody: { usualNameFr: '' },
     },
 ];
 
@@ -99,9 +103,9 @@ export const subObjects = {
     category: categorySubObjects,
     officialDocument: officialDocumentSubObjects,
     price: priceSubObjects,
+    term: termSubObjects,
     legalCategories: '',
     documents: '',
-    terms: '',
 };
 
 export const configValidators = {
@@ -126,6 +130,9 @@ export const configValidators = {
     },
     price: {
         names: configValidatorPriceNames,
+    },
+    term: {
+        names: configValidatorTermNames,
     },
 };
 
@@ -171,6 +178,24 @@ export const PersonPageSkeleton = [
         content: [],
         component: 'identifier',
         print: true,
+    },
+];
+
+export const PricePageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Fonctions actuelles', component: 'functions' }],
+        print: false,
+    },
+];
+
+export const TermPageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
     },
 ];
 

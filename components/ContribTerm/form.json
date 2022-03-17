@@ -1,0 +1,38 @@
+[
+  {
+    "form": [
+      {
+        "title": "Dénomination",
+        "subObject": "names",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Nom usual français",
+            "type": "text",
+            "validatorId": "usualNameFr"
+          },
+          {
+            "title": "Nom usual anglais",
+            "type": "text",
+            "validatorId": "usualNameEn"
+          },
+          {
+            "title": "Date de début",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
+          }
+        ]
+      }
+    ]
+  }
+]
