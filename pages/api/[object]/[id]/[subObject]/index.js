@@ -9,6 +9,8 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc()
     .post(async (req, res) => {
         const { object, subObject, id } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
+
         const tokens = fetchHelper.headerTokens(req);
 
         const subObjectInit = subObjects[object].find(
@@ -16,9 +18,7 @@ const handler = nc()
         );
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'POST',

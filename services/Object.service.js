@@ -30,10 +30,9 @@ export const objectService = {
     },
     getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();
+        const { name } = getObjectTypeDetails(objectCode);
 
-        const url = `${publicRuntimeConfig.baseApiUrl}/${
-            getObjectTypeDetails(objectCode).name
-        }`;
+        const url = `${publicRuntimeConfig.baseApiUrl}/${name}`;
 
         const requestOptions = fetchHelper.requestOptions('GET');
 

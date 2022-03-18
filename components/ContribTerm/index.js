@@ -15,9 +15,9 @@ export default function ContribTerm({ id }) {
         query: { object },
     } = useRouter();
 
-    const { style: purple } = useCSSProperty(
-        getObjectTypeDetails('', object).color
-    );
+    const { colorClassName, color } = getObjectTypeDetails('', object);
+
+    const { style: purple } = useCSSProperty(color);
 
     const [editor, setEditor] = useState('');
     const [dateInfo, setDateInfo] = useState('');
@@ -30,7 +30,7 @@ export default function ContribTerm({ id }) {
             />
             <SideNavigation
                 items={ContribTermForm[0].form}
-                color={getObjectTypeDetails('', object).colorClassName}
+                color={colorClassName}
             >
                 <ToolBox accordions>
                     <LinkTo text="voir la fiche" href={`/object/term/${id}`} />

@@ -8,12 +8,11 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc()
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
-        const { object } = req.query;
+        const { object, id } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${req.query.id}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}`;
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
                 null,
@@ -33,12 +32,11 @@ const handler = nc()
     })
     .put(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
-        const { object } = req.query;
+        const { object, id } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${req.query.id}/status`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/status`;
             const requestOptions = fetchHelper.requestOptions(
                 'PUT',
                 req.body,

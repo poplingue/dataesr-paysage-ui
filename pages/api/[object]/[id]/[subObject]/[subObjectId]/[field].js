@@ -8,11 +8,10 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc().delete(async (req, res) => {
     const tokens = fetchHelper.headerTokens(req);
     const { id, object, subObject, subObjectId, field } = req.query;
+    const { dataesrApi } = getObjectTypeDetails('', object);
 
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-            getObjectTypeDetails('', object).dataesrApi
-        }/${id}/${subObject}/${subObjectId}/${field}`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}/${subObjectId}/${field}`;
 
         const requestOptions = fetchHelper.requestOptions(
             'DELETE',

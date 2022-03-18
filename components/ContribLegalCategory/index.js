@@ -15,9 +15,8 @@ export default function ContribDocument({ id }) {
         query: { object },
     } = useRouter();
 
-    const { style: brown } = useCSSProperty(
-        getObjectTypeDetails('', object).color
-    );
+    const { color, colorClassName } = getObjectTypeDetails('', object);
+    const { style: brown } = useCSSProperty(color);
 
     const [editor, setEditor] = useState('');
     const [dateInfo, setDateInfo] = useState('');
@@ -30,7 +29,7 @@ export default function ContribDocument({ id }) {
             />
             <SideNavigation
                 items={ContribLegalCategoryForm[0].form}
-                color={getObjectTypeDetails('', object).colorClassName}
+                color={colorClassName}
             >
                 <ToolBox accordions>
                     <LinkTo

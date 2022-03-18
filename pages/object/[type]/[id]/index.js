@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
 import LinkTo from '../../../../components/LinkTo';
 import {
+    CategoryPageSkeleton,
+    LegalCategoryPageSkeleton,
     PersonPageSkeleton,
     PricePageSkeleton,
     StructurePageSkeleton,
     TermPageSkeleton,
-    LegalCategoryPageSkeleton,
-    CategoryPageSkeleton,
 } from '../../../../config/objects';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
@@ -63,6 +63,7 @@ export default function PaysageObject({ data }) {
         query: { id, type },
     } = useRouter();
 
+    const { text, title, colorClassName } = getObjectTypeDetails('', type);
     const Component = templateObj[type] ? templateObj[type].component : null;
     const initSkeleton = templateObj[type] ? templateObj[type].skeleton : null;
 
@@ -96,18 +97,11 @@ export default function PaysageObject({ data }) {
     return (
         <Layout>
             <HeaderLayout
-                pageTitle={
-                    !!Object.keys(data).length
-                        ? `${getObjectTypeDetails('', type).title}`
-                        : ''
-                }
+                pageTitle={!!Object.keys(data).length ? `${title}` : ''}
                 status={data.status}
             />
             {Component && (
-                <SideNavigation
-                    items={skeleton}
-                    color={getObjectTypeDetails('', type).colorClassName}
-                >
+                <SideNavigation items={skeleton} color={colorClassName}>
                     <Component
                         id={id}
                         fame={data.fame}
@@ -120,9 +114,7 @@ export default function PaysageObject({ data }) {
                             initialSkeleton={initSkeleton}
                         >
                             <LinkTo
-                                text={`modifier ${
-                                    getObjectTypeDetails('', type).text
-                                }`}
+                                text={`modifier ${text}`}
                                 href={`/contrib/${type}/${id}`}
                             />
                         </ToolBox>

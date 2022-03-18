@@ -86,10 +86,10 @@ export default function Update() {
                             options={[
                                 ...Array(Object.keys(subObjects).length).keys(),
                             ].map((object, i) => {
-                                return {
-                                    label: getObjectTypeDetails(i).title,
-                                    value: getObjectTypeDetails(i).name,
-                                };
+                                const { title: label, name: value } =
+                                    getObjectTypeDetails(i);
+
+                                return { label, value };
                             })}
                         />
                     </Col>

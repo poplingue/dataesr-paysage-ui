@@ -103,7 +103,7 @@ export function getObjectTypeDetails(id, name) {
         );
     }
 
-    return objectTypes[id];
+    return objectTypes[id] || {};
 }
 
 /**
