@@ -30,6 +30,7 @@ export default function ContribObject({ data }) {
     const router = useRouter();
 
     const hashResourceId = matchRegex(/(?<=#)[\s\S]*/, router.asPath);
+
     const { object } = router.query;
     const components = {
         person: ContribPerson,

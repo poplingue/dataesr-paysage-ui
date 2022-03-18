@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
-import LinkTo from '../../../../components/LinkTo';
 import {
     CategoryPageSkeleton,
     LegalCategoryPageSkeleton,
@@ -15,6 +14,7 @@ import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
+const LinkTo = dynamic(() => import('../../../../components/LinkTo'));
 const LegalCategory = dynamic(() =>
     import('../../../../components/LegalCategory')
 );

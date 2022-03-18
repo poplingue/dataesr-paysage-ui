@@ -9,56 +9,41 @@ self.addEventListener('message', async (event) => {
     } = event;
 
     if (name === 'New_object') {
-        // TODO refacto
-        let body = JSON.stringify({ [`${data.object}Status`]: 'active' });
+        const { object } = data;
 
-        if (data.object === 'person') {
-            body = JSON.stringify({ lastName: '' });
-        }
-
-        if (data.object === 'price') {
-            body = JSON.stringify({ nameFr: '' });
-        }
-
-        if (data.object === 'category') {
-            body = JSON.stringify({ usualNameFr: '' });
-        }
-
-        if (data.object === 'officialDocument') {
-            body = JSON.stringify({
+        // initial body required per object
+        const bodyObject = {
+            person: { lastName: '' },
+            price: { nameFr: '' },
+            category: { usualNameFr: '' },
+            officialDocument: {
                 nature: 'Publication au JO',
                 type: 'Loi',
                 document: '',
                 documentNumber: '',
                 title: '',
                 pageUrl: 'https://www.legifrance.gouv.fr/jorf/jo',
-            });
-        }
-
-        if (data.object === 'term') {
-            body = JSON.stringify({ usualNameFr: '' });
-        }
-
-        if (data.object === 'legalCategory') {
-            body = JSON.stringify({ longNameFr: '' });
-        }
+            },
+            term: { usualNameFr: '' },
+            legalCategory: { longNameFr: '' },
+            structure: { [`${object}Status`]: 'active' },
+            document: { title: '' },
+        };
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body,
+            body: JSON.stringify(bodyObject[object]),
         };
 
         // Request to API: Init new Object
-        await fetch(`/api/${data.object}/new`, requestOptions).then(
-            async (resp) => {
-                const data = await resp.clone().json();
+        await fetch(`/api/${object}/new`, requestOptions).then(async (resp) => {
+            const data = await resp.clone().json();
 
-                // TODO check data
-                // SW POST event: Init new Object
-                self.postMessage(JSON.stringify({ status: resp.status, data }));
-            }
-        );
+            // TODO check data
+            // SW POST event: Init new Object
+            self.postMessage(JSON.stringify({ status: resp.status, data }));
+        });
     }
 
     if (name === 'Get_object') {

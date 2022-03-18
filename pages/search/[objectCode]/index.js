@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
-import HomeSearch from '../../../components/HomeSearch';
-import TileElement from '../../../components/TileElement';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 import ObjectService from '../../../services/Object.service';
 
+const HomeSearch = dynamic(() => import('../../../components/HomeSearch'));
+const TileElement = dynamic(() => import('../../../components/TileElement'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../../components/Layout'));
 

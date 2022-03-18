@@ -115,17 +115,19 @@ export default function Header() {
     const renderIdentifiers = () => {
         return identifiers.map((identifier, i) => {
             const { length } = identifiers;
-            const { type, value, id } = identifier;
+            const { type, value, id: identifierId } = identifier;
 
             return (
                 <Col
-                    key={id}
+                    key={identifierId}
                     n={length > 3 ? '4' : '6'}
                     spacing={i === length - 1 ? 'pb-8w' : ''}
                 >
                     <CardInfo
                         onClick={() => {
-                            router.push(`/contrib/structure/${id}`);
+                            router.push(
+                                `/contrib/structure/${id}/${identifierId}`
+                            );
                         }}
                         supInfo={type}
                         title={value}

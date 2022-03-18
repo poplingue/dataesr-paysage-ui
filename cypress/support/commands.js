@@ -12,12 +12,15 @@
 // -- This is a parent command --
 const baseUrl = Cypress.env('baseUrl');
 
+Cypress.on('uncaught:exception', () => false);
+
 Cypress.Commands.add('newStructure', () => {
     cy.get('[data-cy="contrib/structure"]').click();
 
     cy.intercept('POST', '/api/structure/**').as('post');
 
     cy.wait('@post').then((interception) => {
+        // TODO improve set cookie
         if (interception.response.body.subObjects[0].value.id) {
             cy.setCookie(
                 'nameId',
@@ -25,11 +28,11 @@ Cypress.Commands.add('newStructure', () => {
             );
             cy.setCookie(
                 'identifierId',
-                interception.response.body.subObjects[4].value.id
+                interception.response.body.subObjects[5].value.id
             );
             cy.setCookie(
                 'localisationId',
-                interception.response.body.subObjects[1].value.id
+                interception.response.body.subObjects[2].value.id
             );
         }
     });
