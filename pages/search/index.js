@@ -1,9 +1,8 @@
 import dynamic from 'next/dynamic';
-import HomeSearch from '../../components/HomeSearch';
 import grid from '../../helpers/imports';
 
+const HomeSearch = dynamic(() => import('../../components/HomeSearch'));
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
-const CardLink = dynamic(() => import('../../components/CardLink'));
 const Layout = dynamic(() => import('../../components/Layout'));
 
 export default function Search() {

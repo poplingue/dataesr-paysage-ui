@@ -210,6 +210,17 @@
         ]
       },
       {
+        "title": "Liens Paysage",
+        "subObject": "links",
+        "content": [
+          {
+            "title": "Lier à une catégorie",
+            "type": "multiSearch",
+            "validatorId": "category"
+          }
+        ]
+      },
+      {
         "title": "Identifiants",
         "subObject": "identifiers",
         "infinite": true,

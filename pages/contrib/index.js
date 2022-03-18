@@ -1,10 +1,8 @@
-import { Select } from '@dataesr/react-dsfr';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import LinkClick from '../../components/LinkClick';
-import Spinner from '../../components/Spinner';
 import { subObjects } from '../../config/objects';
 import { getObjectTypeDetails } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
@@ -12,10 +10,14 @@ import grid from '../../helpers/imports';
 import DBService from '../../services/DB.service';
 import ObjectService from '../../services/Object.service';
 
+const Select = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Select)
+);
 const HeaderLayout = dynamic(() => import('./../../components/HeaderLayout'));
+const Spinner = dynamic(() => import('../../components/Spinner'));
 const Layout = dynamic(() => import('./../../components/Layout'));
 
-export default function Update() {
+export default function Contrib() {
     const { Col, Row, Container } = grid();
     const [spinner, setSpinner] = useState(false);
     // TODO remove
@@ -24,10 +26,7 @@ export default function Update() {
     const [typeObject, setTypeObject] = useState('structure');
 
     const router = useRouter();
-    const {
-        stateForm: { updateObjectId },
-        dispatchForm: dispatch,
-    } = useContext(AppContext);
+    const { dispatchForm: dispatch } = useContext(AppContext);
 
     useEffect(() => {
         // New Service Worker
@@ -86,10 +85,10 @@ export default function Update() {
                             options={[
                                 ...Array(Object.keys(subObjects).length).keys(),
                             ].map((object, i) => {
-                                return {
-                                    label: getObjectTypeDetails(i).title,
-                                    value: getObjectTypeDetails(i).name,
-                                };
+                                const { title: label, name: value } =
+                                    getObjectTypeDetails(i);
+
+                                return { label, value };
                             })}
                         />
                     </Col>

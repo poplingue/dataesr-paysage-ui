@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { configValidator as configValidatorCategoryIdentifiers } from '../components/ContribCategory/configValidatorIdentifiers';
 
 import { configValidator as configValidatorCategoryWeblinks } from '../components/ContribCategory/configValidatorWeblinks';
+import { configValidator as configValidatorDocumentInfos } from '../components/ContribDocument/configValidatorInfos';
+import { configValidator as configValidatorLegalCategoryInfos } from '../components/ContribLegalCategory/configValidatorInfos';
 import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorOfficialDocumentId';
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
@@ -9,15 +11,18 @@ import { configValidator as configValidatorPersonSocialmedias } from '../compone
 import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
 import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 
+import { configValidator as configValidatorStructureLinks } from '../components/ContribStructure/configValidatorLinks';
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
 
 import { configValidator as configValidatorStructureNames } from '../components/ContribStructure/configValidatorNames';
 import { configValidator as configValidatorStructureSocialmedias } from '../components/ContribStructure/configValidatorSocialmedias';
 
 import { configValidator as configValidatorStructureWeblinks } from '../components/ContribStructure/configValidatorWeblinks';
+import { configValidator as configValidatorTermNames } from '../components/ContribTerm/configValidatorNames';
 
 const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
+    { subObject: 'links', initBody: { categories: [] } },
     { subObject: 'localisations', initBody: { country: '' } },
     {
         subObject: 'weblinks',
@@ -55,6 +60,13 @@ const personSubObjects = [
     },
 ];
 
+const legalCategorySubObjects = [
+    {
+        subObject: 'infos',
+        initBody: { longNameFr: '' },
+    },
+];
+
 const officialDocumentSubObjects = [
     {
         subObject: 'officialDocumentId',
@@ -87,9 +99,19 @@ const priceSubObjects = [
         subObject: 'names',
         initBody: { nameFr: '' },
     },
+];
+
+const termSubObjects = [
     {
-        subObject: 'description',
-        initBody: { descriptionFr: '' },
+        subObject: 'names',
+        initBody: { usualNameFr: '' },
+    },
+];
+
+const documentSubObjects = [
+    {
+        subObject: 'infos',
+        initBody: { usualNameFr: '' },
     },
 ];
 
@@ -99,15 +121,16 @@ export const subObjects = {
     category: categorySubObjects,
     officialDocument: officialDocumentSubObjects,
     price: priceSubObjects,
-    legalCategories: '',
-    documents: '',
-    terms: '',
+    term: termSubObjects,
+    legalCategory: legalCategorySubObjects,
+    documents: documentSubObjects,
 };
 
 export const configValidators = {
     structure: {
         identifiers: configValidatorStructureIdentifiers,
         names: configValidatorStructureNames,
+        links: configValidatorStructureLinks,
         localisations: configValidatorStructureLocalisations,
         weblinks: configValidatorStructureWeblinks,
         socialmedias: configValidatorStructureSocialmedias,
@@ -127,8 +150,18 @@ export const configValidators = {
     price: {
         names: configValidatorPriceNames,
     },
+    term: {
+        names: configValidatorTermNames,
+    },
+    document: {
+        infos: configValidatorDocumentInfos,
+    },
+    legalCategory: {
+        infos: configValidatorLegalCategoryInfos,
+    },
 };
 
+// TODO refacto skeletons objects => {Person: Skeleton,...}
 export const PersonPageSkeletonPropType = PropTypes.shape({
     web: PropTypes.func.isRequired,
     responsability: PropTypes.func.isRequired,
@@ -171,6 +204,50 @@ export const PersonPageSkeleton = [
         content: [],
         component: 'identifier',
         print: true,
+    },
+];
+
+export const PricePageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Fonctions actuelles', component: 'functions' }],
+        print: false,
+    },
+];
+export const CategoryPageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
+
+export const LegalCategoryPageSkeleton = [
+    {
+        title: 'Informations',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
+
+export const TermPageSkeleton = [
+    {
+        title: 'Présentation',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
+    },
+];
+
+export const DocumentPageSkeleton = [
+    {
+        title: 'Informations',
+        component: 'presentation',
+        content: [{ title: 'Test', component: 'test' }],
+        print: false,
     },
 ];
 

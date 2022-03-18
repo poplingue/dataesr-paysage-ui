@@ -2,14 +2,31 @@
   {
     "form": [
       {
-        "title": "Document ID",
+        "title": "Informations",
         "subObject": "officialDocumentId",
         "infinite": true,
         "content": [
           {
             "title": "Type",
-            "type": "text",
-            "validatorId": "type"
+            "type": "select",
+            "validatorId": "type",
+            "staticValues": [
+              "Publication au JO",
+              "Publication au BOESR"
+            ]
+          },
+          {
+            "title": "nature",
+            "type": "select",
+            "validatorId": "nature",
+            "staticValues": [
+              "Loi",
+              "Décret",
+              "Ordonnance",
+              "Avis de vacance d'emploi",
+              "Arrêté",
+              "Circulaire"
+            ]
           }
         ]
       }

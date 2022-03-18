@@ -168,7 +168,7 @@ Navigation.defaultProps = {
 };
 
 Navigation.propTypes = {
-    color: PropTypes.oneOf(['Yellow', 'Pink', '']),
+    color: PropTypes.oneOf(['Yellow', 'Pink', 'Purple', 'Blue', 'Green', '']),
     items: PropTypes.arrayOf(
         PropTypes.shape({
             title: PropTypes.string,

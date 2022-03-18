@@ -4,20 +4,21 @@ import grid from '../../helpers/imports';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import PageTheme from '../PageTheme';
 
-export default function Category({ children, skeleton }) {
+export default function LegalCategory({ children, skeleton }) {
     const { Col, Row } = grid();
     const {
         query: { type },
     } = useRouter();
 
-    const { color } = getObjectTypeDetails('', type);
-    const { style: green } = useCSSProperty(color);
+    const { style: color } = useCSSProperty(
+        getObjectTypeDetails('', type).color
+    );
 
     return (
-        <PageTheme color={green}>
+        <PageTheme color={color}>
             <Row gutters>
                 {children}
-                <Col>Page Catégorie</Col>
+                <Col>Page catégorie légale</Col>
             </Row>
         </PageTheme>
     );

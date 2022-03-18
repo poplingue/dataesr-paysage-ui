@@ -1,0 +1,38 @@
+[
+  {
+    "form": [
+      {
+        "title": "Informations",
+        "subObject": "infos",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Nom",
+            "type": "text",
+            "validatorId": "name"
+          },
+          {
+            "title": "Titre",
+            "type": "text",
+            "validatorId": "title"
+          },
+          {
+            "title": "Date de début",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          },
+          {
+            "title": "Description",
+            "type": "text",
+            "validatorId": "description"
+          }
+        ]
+      }
+    ]
+  }
+]

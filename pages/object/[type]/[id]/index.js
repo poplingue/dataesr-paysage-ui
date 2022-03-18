@@ -1,17 +1,26 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
-import LinkTo from '../../../../components/LinkTo';
 import {
+    CategoryPageSkeleton,
+    LegalCategoryPageSkeleton,
     PersonPageSkeleton,
+    PricePageSkeleton,
     StructurePageSkeleton,
+    TermPageSkeleton,
 } from '../../../../config/objects';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
+const LinkTo = dynamic(() => import('../../../../components/LinkTo'));
+const LegalCategory = dynamic(() =>
+    import('../../../../components/LegalCategory')
+);
 const Category = dynamic(() => import('../../../../components/Category'));
+const Price = dynamic(() => import('../../../../components/Price'));
+const Term = dynamic(() => import('../../../../components/Term'));
 const Person = dynamic(() => import('../../../../components/Person'));
 const ToolBox = dynamic(() => import('../../../../components/ToolBox'));
 const SideNavigation = dynamic(() =>
@@ -33,7 +42,19 @@ const templateObj = {
     },
     category: {
         component: Category,
-        skeleton: PersonPageSkeleton,
+        skeleton: CategoryPageSkeleton,
+    },
+    price: {
+        component: Price,
+        skeleton: PricePageSkeleton,
+    },
+    term: {
+        component: Term,
+        skeleton: TermPageSkeleton,
+    },
+    legalCategory: {
+        component: LegalCategory,
+        skeleton: LegalCategoryPageSkeleton,
     },
 };
 
@@ -42,6 +63,7 @@ export default function PaysageObject({ data }) {
         query: { id, type },
     } = useRouter();
 
+    const { text, title, colorClassName } = getObjectTypeDetails('', type);
     const Component = templateObj[type] ? templateObj[type].component : null;
     const initSkeleton = templateObj[type] ? templateObj[type].skeleton : null;
 
@@ -75,18 +97,11 @@ export default function PaysageObject({ data }) {
     return (
         <Layout>
             <HeaderLayout
-                pageTitle={
-                    !!Object.keys(data).length
-                        ? `${getObjectTypeDetails('', type).title}`
-                        : ''
-                }
+                pageTitle={!!Object.keys(data).length ? `${title}` : ''}
                 status={data.status}
             />
             {Component && (
-                <SideNavigation
-                    items={skeleton}
-                    color={getObjectTypeDetails('', type).colorClassName}
-                >
+                <SideNavigation items={skeleton} color={colorClassName}>
                     <Component
                         id={id}
                         fame={data.fame}
@@ -99,9 +114,7 @@ export default function PaysageObject({ data }) {
                             initialSkeleton={initSkeleton}
                         >
                             <LinkTo
-                                text={`modifier ${
-                                    getObjectTypeDetails('', type).name
-                                }`}
+                                text={`modifier ${text}`}
                                 href={`/contrib/${type}/${id}`}
                             />
                         </ToolBox>

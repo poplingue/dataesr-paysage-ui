@@ -12,6 +12,8 @@ export default function HomeSearch({ switchPage, defaultType }) {
     const { Col, Row, Container } = grid();
     const [typeObject, setTypeObject] = useState(defaultType || '');
     const [searchValue, setSearchValue] = useState('');
+
+    // TODO refacto
     const options = [...Array(Object.keys(subObjects).length).keys()].map(
         (object, i) => {
             return {
@@ -20,6 +22,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
             };
         }
     );
+
     const {
         statePage: { user },
     } = useContext(AppContext);

@@ -10,14 +10,15 @@ export default function Category({ children, skeleton }) {
         query: { type },
     } = useRouter();
 
-    const { color } = getObjectTypeDetails('', type);
-    const { style: green } = useCSSProperty(color);
+    const { style: color } = useCSSProperty(
+        getObjectTypeDetails('', type).color
+    );
 
     return (
-        <PageTheme color={green}>
+        <PageTheme color={color}>
             <Row gutters>
                 {children}
-                <Col>Page Catégorie</Col>
+                <Col>Page Terme</Col>
             </Row>
         </PageTheme>
     );

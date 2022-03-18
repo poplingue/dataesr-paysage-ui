@@ -9,11 +9,10 @@ const handler = nc()
     .get(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
         const { id, subObject, object, subObjectId } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}/${subObjectId}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'GET',
@@ -35,11 +34,10 @@ const handler = nc()
         // TODO merge patch & delete
         const tokens = fetchHelper.headerTokens(req);
         const { id, object, subObject, subObjectId } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}/${subObjectId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PATCH',
                 req.body,
@@ -61,11 +59,10 @@ const handler = nc()
         // TODO merge patch & delete & put
         const tokens = fetchHelper.headerTokens(req);
         const { id, object, subObject, subObjectId } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}/${subObjectId}`;
             const requestOptions = fetchHelper.requestOptions(
                 'PUT',
                 req.body,
@@ -85,11 +82,10 @@ const handler = nc()
     .delete(async (req, res) => {
         const tokens = fetchHelper.headerTokens(req);
         const { id, object, subObject, subObjectId } = req.query;
+        const { dataesrApi } = getObjectTypeDetails('', object);
 
         try {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${subObject}/${subObjectId}`;
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${subObject}/${subObjectId}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'DELETE',

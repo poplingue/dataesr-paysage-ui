@@ -36,13 +36,14 @@ export function getObjectTypeDetails(id, name) {
             name: 'structure',
             title: 'Structure',
             text: 'la structure',
-            color: '--green-tilleul-verveine-main-707',
+            color: '--yellow-tournesol-main-731',
             colorClassName: 'Yellow',
             dataesrApi: 'structures',
         },
         1: {
             name: 'person',
             title: 'Personne',
+            text: 'la personne',
             color: '--pink-tuile-main-556',
             colorClassName: 'Pink',
             dataesrApi: 'persons',
@@ -50,24 +51,29 @@ export function getObjectTypeDetails(id, name) {
         2: {
             name: 'category',
             color: '--green-bourgeon-main-640',
+            text: 'la catégorie',
             title: 'Catégorie',
-            colorClassName: 'Greenish',
+            colorClassName: 'Green',
             dataesrApi: 'categories',
         },
         3: {
             name: 'officialDocument',
             color: '--green-archipel-main-557',
+            text: 'le document officiel',
             title: 'Document Officiel',
             dataesrApi: 'official-documents',
         },
         4: {
             name: 'legalCategory',
-            color: '--green-archipel-main-557',
+            color: '--brown-caramel-main-648',
+            text: 'la catégorie légale',
             title: 'Catégorie Légale',
+            colorClassName: 'Brown',
             dataesrApi: 'legal-categories',
         },
         5: {
             name: 'price',
+            text: 'le prix',
             color: '--blue-ecume-main-400',
             title: 'Prix',
             colorClassName: 'Blue',
@@ -75,14 +81,18 @@ export function getObjectTypeDetails(id, name) {
         },
         6: {
             name: 'term',
-            color: '--green-archipel-main-557',
+            text: 'le terme',
+            color: '--purple-glycine-main-494',
             title: 'Terme',
+            colorClassName: 'Purple',
             dataesrApi: 'terms',
         },
         7: {
             name: 'document',
+            text: 'le document',
             color: '--green-archipel-main-557',
             title: 'Documents',
+            colorClassName: 'Archipel',
             dataesrApi: 'documents',
         },
     };
@@ -93,7 +103,7 @@ export function getObjectTypeDetails(id, name) {
         );
     }
 
-    return objectTypes[id];
+    return objectTypes[id] || {};
 }
 
 /**
@@ -105,6 +115,7 @@ export const mapFields = (form) => {
     // TODO handle nested object like geometry
     const obj = {
         'contrib/person': [],
+        'contrib/document': [],
         'contrib/price': [],
         'contrib/officialDocument': [],
         'contrib/category': ['type', 'url', 'comment'],

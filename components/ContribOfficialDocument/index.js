@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import SideNavigation from '../../components/SideNavigation';
+import { getObjectTypeDetails } from '../../config/utils';
 import { AppContext } from '../../context/GlobalState';
 import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
@@ -20,7 +21,7 @@ export default function ContribOfficialDocument({ data, id }) {
         stateForm: { departments, storeObjects, currentObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-    const { style: blue } = useCSSProperty('--green-archipel-main-557');
+
     const [published, setPublished] = useState(
         currentObject.status === 'published'
     );
@@ -31,6 +32,10 @@ export default function ContribOfficialDocument({ data, id }) {
         pathname,
         query: { object },
     } = useRouter();
+
+    const { style: blue } = useCSSProperty(
+        getObjectTypeDetails('', object).color
+    );
 
     const objCheck = useCallback(
         (keyA, keyB) => {
@@ -145,7 +150,7 @@ export default function ContribOfficialDocument({ data, id }) {
                     ) : (
                         <LinkTo
                             text="voir la fiche"
-                            href={`/object/category/${id}`}
+                            href={`/object/officialDocument/${id}`}
                         />
                     )}
                 </ToolBox>

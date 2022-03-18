@@ -1,59 +1,59 @@
 export const configValidator = {
-    siret: {
-        required: true,
-        validators: [
-            (value) => ({
-                valid: value.length > 2,
-                errorMsg: 'error msg siret',
-            }),
-        ],
-    },
-    article: {
+    insee: {
         required: false,
     },
-    category: {
+    wikidata: {
         required: false,
     },
-    officialName: {
-        validators: [
-            (value) => ({
-                valid: value.length > 2,
-                errorMsg: 'Au moins 2 caractères',
-            }),
-        ],
+    officialDocumentId: {
         required: true,
-    },
-    usualName: {
-        required: true,
-    },
-    shortName: {
-        required: false,
     },
     comment: {
         required: false,
     },
-    brandName: {
+    inPublicResearch: {
         required: false,
     },
-    nameEn: {
-        validators: [
-            (value) => ({
-                valid: !!value.match(/^[a-zA-Z\s]*$/g),
-                errorMsg: 'Uniquement des lettres',
-            }),
-        ],
+    legalPersonality: {
+        required: false,
+    },
+    sector: {
+        required: false,
+    },
+    longNameFr: {
+        required: false,
+    },
+    longNameEn: {
+        required: false,
+    },
+    shortNameFr: {
         required: false,
     },
     acronymFr: {
         required: false,
     },
-    acronymLocal: {
-        required: false,
-    },
     acronymEn: {
         required: false,
     },
+    shortNameEn: {
+        required: false,
+    },
+    pluralNameFr: {
+        required: false,
+    },
+    pluralNameEn: {
+        required: false,
+    },
     otherNames: {
+        required: false,
+    },
+    descriptionFr: {
+        required: false,
+    },
+    websiteFr: {
+        required: false,
+    },
+    websiteEn: {
         required: false,
     },
     startDate: {

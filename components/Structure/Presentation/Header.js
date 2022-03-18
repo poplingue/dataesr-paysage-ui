@@ -21,6 +21,7 @@ export default function Header() {
     const [mainLocation, setMainLocation] = useState({});
     const [mainName, setMainName] = useState({});
     const [identifiers, setIdentifiers] = useState([]);
+    const [init, setInit] = useState(true);
 
     const {
         query: { id, type },
@@ -41,12 +42,13 @@ export default function Header() {
             );
         }
 
-        if (!Object.keys(identifiers).length) {
+        if (!Object.keys(identifiers).length && init) {
             getData().then(({ data }) => {
                 setIdentifiers(data);
+                setInit(false);
             });
         }
-    }, [id, identifiers, mainLocation, mainLocation.length, type]);
+    }, [id, identifiers, init, mainLocation, mainLocation.length, type]);
 
     useEffect(() => {
         async function getData() {
@@ -113,17 +115,19 @@ export default function Header() {
     const renderIdentifiers = () => {
         return identifiers.map((identifier, i) => {
             const { length } = identifiers;
-            const { type, value, id } = identifier;
+            const { type, value, id: identifierId } = identifier;
 
             return (
                 <Col
-                    key={id}
+                    key={identifierId}
                     n={length > 3 ? '4' : '6'}
                     spacing={i === length - 1 ? 'pb-8w' : ''}
                 >
                     <CardInfo
                         onClick={() => {
-                            router.push(`/contrib/structure/${id}`);
+                            router.push(
+                                `/contrib/structure/${id}/${identifierId}`
+                            );
                         }}
                         supInfo={type}
                         title={value}
@@ -170,7 +174,7 @@ export default function Header() {
                                 <Col spacing="pb-8w pr-1w">
                                     <Callout
                                         hasInfoIcon={false}
-                                        colorFamily="green-tilleul-verveine"
+                                        colorFamily="yellow-tournesol"
                                     >
                                         <CalloutTitle>Téléphone</CalloutTitle>
                                         <CalloutText size="md">
@@ -183,7 +187,7 @@ export default function Header() {
                                 <Col spacing="pb-8w">
                                     <Callout
                                         hasInfoIcon={false}
-                                        colorFamily="green-tilleul-verveine"
+                                        colorFamily="yellow-tournesol"
                                     >
                                         <CalloutTitle>Adresse</CalloutTitle>
                                         <CalloutText size="md">

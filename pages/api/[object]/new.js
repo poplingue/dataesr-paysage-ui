@@ -9,11 +9,10 @@ async function handler(req, res) {
     const tokens = fetchHelper.headerTokens(req);
 
     const { object } = req.query;
+    const { dataesrApi } = getObjectTypeDetails('', object);
 
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-            getObjectTypeDetails('', object).dataesrApi
-        }`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}`;
 
         const requestOptions = fetchHelper.requestOptions(
             'POST',
@@ -34,9 +33,9 @@ async function handler(req, res) {
         const currentSubObjects = subObjects[object];
 
         for (let i = 0; i < currentSubObjects.length; i++) {
-            const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-                getObjectTypeDetails('', object).dataesrApi
-            }/${id}/${currentSubObjects[i].subObject}`;
+            const { dataesrApi } = getObjectTypeDetails('', object);
+
+            const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}/${id}/${currentSubObjects[i].subObject}`;
 
             const requestOptions = fetchHelper.requestOptions(
                 'POST',

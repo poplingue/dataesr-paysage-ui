@@ -1,8 +1,6 @@
 import dynamic from 'next/dynamic';
-
 import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
-import HomeSearch from '../components/HomeSearch';
 import { AppContext } from '../context/GlobalState';
 import { fetchHelper } from '../helpers/fetch';
 import grid from '../helpers/imports';
@@ -19,6 +17,7 @@ const Tile = dynamic(() =>
 const TileBody = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.TileBody)
 );
+const HomeSearch = dynamic(() => import('../components/HomeSearch'));
 const HeaderLayout = dynamic(() => import('../components/HeaderLayout'));
 const Layout = dynamic(() => import('../components/Layout'));
 

@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
-import HomeSearch from '../../../components/HomeSearch';
-import TileElement from '../../../components/TileElement';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
 import ObjectService from '../../../services/Object.service';
 
-const CardLink = dynamic(() => import('../../../components/CardLink'));
+const HomeSearch = dynamic(() => import('../../../components/HomeSearch'));
+const TileElement = dynamic(() => import('../../../components/TileElement'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../../components/Layout'));
 
@@ -17,17 +16,12 @@ export default function SearchObject({ data }) {
 
     const router = useRouter();
     const { objectCode } = router.query;
-    const { style: color } = useCSSProperty(
-        getObjectTypeDetails(objectCode).color
-    );
+    const { color, name, title } = getObjectTypeDetails(objectCode);
+    const { style: objectColor } = useCSSProperty(color);
 
     return (
         <Layout>
-            <HeaderLayout
-                pageTitle={`Les objets « ${
-                    getObjectTypeDetails(objectCode).title
-                } »`}
-            />
+            <HeaderLayout pageTitle={`Les objets « ${title} »`} />
             <Container fluid>
                 <Row>
                     <Col spacing="mb-5w">
@@ -39,23 +33,15 @@ export default function SearchObject({ data }) {
                         <Container>
                             <Row gutters>
                                 {data.map((obj) => {
-                                    const name = getObjectTypeDetails(
-                                        objectCode
-                                    )
-                                        ? getObjectTypeDetails(objectCode).name
-                                        : objectCode;
+                                    const { id } = obj;
 
                                     return (
-                                        <Col n="3" key={obj.id}>
+                                        <Col n="3" key={id}>
                                             <TileElement
-                                                title={obj.id}
-                                                body={name}
-                                                href={`/object/${
-                                                    getObjectTypeDetails(
-                                                        objectCode
-                                                    ).name
-                                                }/${obj.id}`}
-                                                color={color}
+                                                title={id}
+                                                body={name || objectCode}
+                                                href={`/object/${name}/${id}`}
+                                                color={objectColor}
                                                 icon="ri-arrow-right-line"
                                             />
                                         </Col>

@@ -34,11 +34,6 @@ export default function SwitchField({
         ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
-    console.log(
-        '==== configValidators[object] ==== ',
-        configValidators[object]
-    );
-
     const renderSwitch = (type) => {
         switch (type) {
             case 'text':

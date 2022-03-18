@@ -11,6 +11,7 @@ import IconButton from '../../IconButton';
 export default function History({ section }) {
     const [history, setHistory] = useState([]);
     const [fullHistory, setFullHistory] = useState([]);
+    const [init, setInit] = useState(true);
 
     const {
         query: { id, type },
@@ -43,14 +44,15 @@ export default function History({ section }) {
             accordionItems[index] &&
             accordionItems[index].expanded
         ) {
-            if (!Object.keys(history).length) {
+            if (!Object.keys(history).length && init) {
                 getData().then(({ data }) => {
                     setHistory(data.slice(0, 2));
                     setFullHistory(data);
+                    setInit(false);
                 });
             }
         }
-    }, [history, accordionItems, section, type, id]);
+    }, [history, accordionItems, section, type, id, init]);
 
     const renderList = () => {
         // TODO make component

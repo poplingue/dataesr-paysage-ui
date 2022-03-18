@@ -8,11 +8,10 @@ const { serverRuntimeConfig } = getConfig();
 const handler = nc().get(async (req, res) => {
     const tokens = fetchHelper.headerTokens(req);
     const { object } = req.query;
+    const { dataesrApi } = getObjectTypeDetails('', object);
 
     try {
-        const url = `${serverRuntimeConfig.dataesrApiUrl}/${
-            getObjectTypeDetails('', object).dataesrApi
-        }`;
+        const url = `${serverRuntimeConfig.dataesrApiUrl}/${dataesrApi}`;
 
         const requestOptions = fetchHelper.requestOptions('GET', null, tokens);
         const request = await fetch(url, requestOptions);
