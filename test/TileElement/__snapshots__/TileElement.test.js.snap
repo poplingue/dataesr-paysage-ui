@@ -44,17 +44,6 @@ Object {
                   body
                 </div>
               </div>
-              <div
-                class="fr-col-1 txt-right"
-              >
-                <span>
-                  <span
-                    aria-hidden="false"
-                    class="ri-2x icon-left ds-fr--v-middle ri-focus-2-fill"
-                    style="color: rgb(0, 0, 145);"
-                  />
-                </span>
-              </div>
             </div>
           </div>
         </div>
@@ -100,17 +89,6 @@ Object {
               <div>
                 body
               </div>
-            </div>
-            <div
-              class="fr-col-1 txt-right"
-            >
-              <span>
-                <span
-                  aria-hidden="false"
-                  class="ri-2x icon-left ds-fr--v-middle ri-focus-2-fill"
-                  style="color: rgb(0, 0, 145);"
-                />
-              </span>
             </div>
           </div>
         </div>
