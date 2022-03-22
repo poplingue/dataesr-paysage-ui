@@ -27,6 +27,7 @@ function Input({
     updateValidSection,
     validatorId,
     suggest = false,
+    customOnChange,
 }) {
     const {
         stateForm: { forms, storeObjects },
@@ -87,7 +88,9 @@ function Input({
         updateValidSection(null, null);
         setFocus(true);
 
-        if (onGroupChange) {
+        if (customOnChange) {
+            customOnChange(value, false);
+        } else if (onGroupChange) {
             onGroupChange(e, uid);
         } else {
             await saveValue(value);

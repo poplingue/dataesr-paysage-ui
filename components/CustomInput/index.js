@@ -15,6 +15,7 @@ function CustomInput({
     updateValidSection,
     validatorId,
     subObject,
+    customOnChange,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -41,6 +42,7 @@ function CustomInput({
     const classicalField = (
         <Col spacing="py-1w">
             <Input
+                customOnChange={customOnChange}
                 hint={hint}
                 suggest={suggest}
                 onGroupChange={onGroupChange}

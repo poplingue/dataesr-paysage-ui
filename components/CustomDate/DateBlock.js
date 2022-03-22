@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import CustomInput from '../CustomInput';
 import CustomSelect from '../CustomSelect';
 
 export default function DateBlock({
@@ -64,6 +65,26 @@ export default function DateBlock({
 
     return data.map((select) => {
         const { selectedValue, options, regex, fieldId, title } = select;
+
+        if (title === 'Année') {
+            return (
+                <Col n="12 xl-4" key={title} spacing="py-1w">
+                    <CustomInput
+                        customOnChange={(...params) =>
+                            onChange(regex, fieldId, params)
+                        }
+                        updateValidSection={updateValidSection}
+                        title={title}
+                        validatorId={fieldId}
+                        value={selectedValue}
+                        section=""
+                        subObject={subObject}
+                        infinite={false}
+                        suggest={false}
+                    />
+                </Col>
+            );
+        }
 
         return (
             <Col n="12 xl-4" key={title} spacing="py-1w">
