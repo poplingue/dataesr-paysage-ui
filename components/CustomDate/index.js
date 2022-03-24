@@ -1,4 +1,4 @@
-import { Text } from '@dataesr/react-dsfr';
+import { Text, Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -38,7 +38,6 @@ export default function CustomDate({
         stateForm: { forms, storeObjects, updateObjectId },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-
     const {
         pathname,
         query: { object },
@@ -149,6 +148,12 @@ export default function CustomDate({
             });
     };
 
+    const [mode, setMode] = useState('defined');
+
+    const onToggleChange = () => {
+        setMode(mode === 'defined' ? 'open' : 'defined');
+    };
+
     return (
         <section className="wrapper-select">
             <Container fluid>
@@ -197,17 +202,32 @@ export default function CustomDate({
                         </Container>
                     </Col>
                     <Col n="12 xl-9">
-                        <Row gutters>
-                            <DateBlock
-                                updateValidSection={updateValidSection}
-                                setNewValueCheck={setNewValueCheck}
-                                newValueCheck={newValueCheck}
-                                validatorId={validatorId}
-                                updateDate={updateDate}
-                                data={dateData}
-                                subObject={subObject}
-                            />
-                        </Row>
+                        {/*<ToggleSelect>*/}
+                        <DateBlock
+                            mode={mode}
+                            updateValidSection={updateValidSection}
+                            setNewValueCheck={setNewValueCheck}
+                            newValueCheck={newValueCheck}
+                            validatorId={validatorId}
+                            updateDate={updateDate}
+                            data={dateData}
+                            subObject={subObject}
+                        />
+                        <Col n="12 xl-3">
+                            <Container fluid>
+                                <Row>
+                                    <Col>
+                                        <Toggle
+                                            description="pour les dates antérieures à 1930"
+                                            onChange={(e) => onToggleChange(e)}
+                                            checked={mode === 'open'}
+                                            label="Mode libre"
+                                        />
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Col>
+                        {/*</ToggleSelect>*/}
                     </Col>
                 </Row>
             </Container>

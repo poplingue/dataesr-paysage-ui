@@ -88,12 +88,18 @@ function Input({
         updateValidSection(null, null);
         setFocus(true);
 
-        if (customOnChange) {
-            customOnChange(value, false);
-        } else if (onGroupChange) {
+        // if (customOnChange) {
+        // customOnChange(value, true);
+        // } else
+
+        if (onGroupChange) {
             onGroupChange(e, uid);
         } else {
-            await saveValue(value);
+            if (customOnChange) {
+                customOnChange(value, false);
+            } else {
+                await saveValue(value);
+            }
         }
     };
 

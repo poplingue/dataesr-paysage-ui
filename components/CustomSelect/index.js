@@ -116,6 +116,14 @@ export default function CustomSelect({
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
+    // useEffect(() => {
+    //
+    //     if (fieldValue && toggleMode && staticValues.indexOf(fieldValue) < 0) {
+    //         toggleMode('open');
+    //     }
+    //
+    // }, [fieldValue, staticValues, toggleMode]);
+
     useEffect(() => {
         if (!options.length) {
             setOptions(

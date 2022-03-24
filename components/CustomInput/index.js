@@ -40,7 +40,7 @@ function CustomInput({
     );
 
     const classicalField = (
-        <Col spacing="py-1w">
+        <Col>
             <Input
                 customOnChange={customOnChange}
                 hint={hint}
@@ -78,6 +78,7 @@ CustomInput.defaultProps = {
     infinite: false,
     value: '',
     hint: '',
+    section: '',
 };
 
 CustomInput.propTypes = {
@@ -85,7 +86,7 @@ CustomInput.propTypes = {
     hint: PropTypes.string,
     value: PropTypes.string,
     infinite: PropTypes.bool,
-    section: PropTypes.string.isRequired,
+    section: PropTypes.string,
     updateValidSection: PropTypes.func.isRequired,
     validatorId: PropTypes.string.isRequired,
     subObject: PropTypes.string.isRequired,
