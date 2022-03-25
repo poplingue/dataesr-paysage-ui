@@ -29,6 +29,7 @@ export const DataProvider = ({ user, error, children }) => {
         savingSections: [],
         currentObject: {},
         dependencies: {},
+        fieldsMode: {},
     };
 
     const initialStateList = {

@@ -231,6 +231,20 @@ const reducersForm = (state, action) => {
             };
         }
 
+        case ACTIONS.UPDATE_FIELDS_MODE: {
+            return {
+                ...state,
+                fieldsMode: { ...state.fieldsMode, ...action.payload },
+            };
+        }
+
+        case ACTIONS.DELETE_FIELDS_MODE: {
+            return {
+                ...state,
+                fieldsMode: {},
+            };
+        }
+
         default:
             break;
     }

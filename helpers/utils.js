@@ -140,6 +140,22 @@ export function containsObject(obj, array) {
 
 /**
  *
+ * @param array
+ * @param val
+ * @returns {boolean}
+ */
+export function arrayContains(array, val) {
+    let r = false;
+
+    if (array && val) {
+        r = array.indexOf(val) > -1;
+    }
+
+    return r;
+}
+
+/**
+ *
  * @param formName
  * @param nameId
  * @param eq
@@ -440,4 +456,19 @@ export function arraysEqual(arrayA, arrayB) {
         arrayA.length === arrayB.length &&
         arrayBSorted.every((value, index) => value === arrayASorted[index])
     );
+}
+
+/**
+ *
+ * @param str
+ * @returns {boolean}
+ */
+export function isNumber(str) {
+    let r = false;
+
+    if (str) {
+        r = /^\d+$/.test(str);
+    }
+
+    return r;
 }

@@ -1,7 +1,7 @@
 import { TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
@@ -28,9 +28,10 @@ function Input({
     validatorId,
     suggest = false,
     customOnChange,
+    onToggleChange,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -55,8 +56,14 @@ function Input({
         infinite ? index : null
     );
 
-    const currentValue = getFieldValue(forms, formName, uid);
-    const unSaved = isFieldUnSaved(forms, formName, uid);
+    const currentValue = useMemo(
+        () => getFieldValue(forms, formName, uid),
+        [formName, forms, uid]
+    );
+    const unSaved = useMemo(
+        () => isFieldUnSaved(forms, formName, uid),
+        [formName, forms, uid]
+    );
 
     const saveValue = useCallback(
         async (value) => {
@@ -88,18 +95,14 @@ function Input({
         updateValidSection(null, null);
         setFocus(true);
 
-        // if (customOnChange) {
-        // customOnChange(value, true);
-        // } else
-
         if (onGroupChange) {
             onGroupChange(e, uid);
         } else {
-            if (customOnChange) {
-                customOnChange(value, false);
-            } else {
-                await saveValue(value);
-            }
+            await saveValue(value);
+        }
+
+        if (customOnChange) {
+            customOnChange(value, false);
         }
     };
 
@@ -121,6 +124,7 @@ function Input({
     }, [checkField, textValue]);
 
     useEffect(() => {
+        // set value from GlobalState
         if (textValue !== currentValue) {
             setTextValue(currentValue);
         }
@@ -128,7 +132,11 @@ function Input({
 
     useEffect(() => {
         updateValidSection(uid, type);
-    }, [type, uid, updateValidSection]);
+
+        // if (type === 'valid' && customOnChange) {
+        //     customOnChange(textValue, false);
+        // }
+    }, [customOnChange, textValue, type, uid, updateValidSection]);
 
     const renderTextInput = (
         <TextInput

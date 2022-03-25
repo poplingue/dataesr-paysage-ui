@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
+    arrayContains,
     getFieldValue,
     getFormName,
     getSubObjectType,
@@ -20,6 +21,7 @@ import SavingWrapper from '../SavingWrapper';
 
 export default function CustomSelect({
     title,
+    onToggleChange,
     customOnChange,
     staticValues = [],
     newValue,
@@ -29,11 +31,13 @@ export default function CustomSelect({
     subObject,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const [options, setOptions] = useState([]);
+    const [init, setInit] = useState(true);
+
     const {
         pathname,
         query: { object },
@@ -116,14 +120,6 @@ export default function CustomSelect({
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
-    // useEffect(() => {
-    //
-    //     if (fieldValue && toggleMode && staticValues.indexOf(fieldValue) < 0) {
-    //         toggleMode('open');
-    //     }
-    //
-    // }, [fieldValue, staticValues, toggleMode]);
-
     useEffect(() => {
         if (!options.length) {
             setOptions(
@@ -144,6 +140,30 @@ export default function CustomSelect({
         handleValue(value);
         updateValidSection(null, null);
     };
+
+    useEffect(() => {
+        // init fieldsMode
+        if (!fieldsMode[uid] && uid.endsWith('Year')) {
+            dispatch({
+                type: 'UPDATE_FIELDS_MODE',
+                payload: { [uid]: { mode: 'select' } },
+            });
+        }
+    }, [dispatch, fieldValue, fieldsMode, uid]);
+
+    useEffect(() => {
+        if (onToggleChange) {
+            if (
+                !arrayContains(staticValues, fieldValue) &&
+                fieldValue &&
+                fieldsMode[uid] &&
+                fieldsMode[uid].mode === 'select'
+            ) {
+                console.log('====  ==== ');
+                onToggleChange(uid, 'input');
+            }
+        }
+    }, [fieldValue, fieldsMode, onToggleChange, staticValues, uid]);
 
     useEffect(() => {
         updateValidSection(uid, type);

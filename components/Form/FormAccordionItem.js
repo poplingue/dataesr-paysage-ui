@@ -16,6 +16,8 @@ import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import WrapperFieldType from '../WrapperFieldType';
 
+let timer;
+
 export default function FormAccordionItem({
     content,
     sectionTitle,
@@ -67,6 +69,7 @@ export default function FormAccordionItem({
                 };
             }
 
+            // case validType changes
             if (
                 id &&
                 (!validSection ||
@@ -80,6 +83,7 @@ export default function FormAccordionItem({
                 };
             }
 
+            // case section is updated
             if (section) {
                 dispatch({
                     type: 'UPDATE_VALID_SECTION',
@@ -307,8 +311,7 @@ export default function FormAccordionItem({
                         <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 onClick={resetSection}
-                                disabled={disabled}
-                                colors={disabled ? [] : [white, orange]}
+                                colors={[white, orange]}
                                 title="Annuler"
                                 dataTestId={`${subObject}-resetSection-button`}
                             />

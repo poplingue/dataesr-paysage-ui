@@ -24,6 +24,12 @@ export const configValidator = {
         required: false,
     },
     startDateYear: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/^\d{4}$/g),
+                errorMsg: 'Format non valide',
+            }),
+        ],
         required: false,
     },
     endDateDay: {
@@ -33,6 +39,12 @@ export const configValidator = {
         required: false,
     },
     endDateYear: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/^\d{4}$/g),
+                errorMsg: 'Format non valide',
+            }),
+        ],
         required: false,
     },
 };

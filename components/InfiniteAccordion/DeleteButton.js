@@ -8,6 +8,7 @@ export default function DeleteButton({
     display,
     title,
     index,
+    disabled,
     background,
     dataTestId,
     onClick,
@@ -27,15 +28,16 @@ export default function DeleteButton({
         display && (
             <Col>
                 <FieldButton
-                    colors={[red, background || white]}
+                    title="Supprimer"
+                    disabled={disabled}
+                    colors={disabled ? [] : [red, background || white]}
+                    onClick={confirmBeforeClick}
                     dataTestId={
                         dataTestId ||
                         `btn-delete-${cleanString(title)}${
                             index ? `#${index}` : ''
                         }`
                     }
-                    onClick={confirmBeforeClick}
-                    title="Supprimer"
                 />
             </Col>
         )

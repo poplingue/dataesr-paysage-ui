@@ -1,4 +1,4 @@
-import { Text, Toggle } from '@dataesr/react-dsfr';
+import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -35,7 +35,7 @@ export default function CustomDate({
     const [newValueCheck, setNewValueCheck] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
     const {
-        stateForm: { forms, storeObjects, updateObjectId },
+        stateForm: { forms, storeObjects, updateObjectId, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -46,15 +46,18 @@ export default function CustomDate({
     const uid = getUniqueId(formName, subObject, validatorId);
     const currenField = getField(forms, formName, uid);
     const camelValidator = camelCase(validatorId);
+
     const daysObj = {
         options: days,
         fieldId: `${camelValidator}Day`,
         title: `Jour`,
         regex: '[^-]*$',
+        open: false,
         selectedValue: '',
     };
     const monthsObj = {
         options: months,
+        open: false,
         fieldId: `${camelValidator}Month`,
         title: `Mois`,
         regex: '(?<=-).*(?=-)',
@@ -62,6 +65,7 @@ export default function CustomDate({
     };
     const yearsObj = {
         options: years,
+        open: false,
         fieldId: `${camelValidator}Year`,
         title: `Année`,
         regex: '[\\s\\S]*?(?=-)',
@@ -69,6 +73,7 @@ export default function CustomDate({
     };
 
     const initDateData = [daysObj, monthsObj, yearsObj];
+    const [dateData, setDateData] = useState(initDateData);
 
     const updateDate = useCallback(
         async (payload) => {
@@ -82,8 +87,6 @@ export default function CustomDate({
         },
         [dispatch, formName, storeObjects]
     );
-
-    const [dateData, setDateData] = useState(initDateData);
 
     const automaticDate = async (when) => {
         const now = new Date();
@@ -138,6 +141,8 @@ export default function CustomDate({
             },
         });
 
+        dispatch({ type: 'DELETE_FIELDS_MODE' });
+
         await DBService.deleteList(uids, formName);
 
         dataFormService
@@ -146,12 +151,6 @@ export default function CustomDate({
                 setDateData(initDateData);
                 NotifService.info('Date supprimée', 'valid');
             });
-    };
-
-    const [mode, setMode] = useState('defined');
-
-    const onToggleChange = () => {
-        setMode(mode === 'defined' ? 'open' : 'defined');
     };
 
     return (
@@ -187,24 +186,22 @@ export default function CustomDate({
                                         }
                                     />
                                 </Col>
-                                {currenField && (
-                                    <Col n="xs-12 md-4 xl-12">
-                                        <DeleteButton
-                                            dataTestId={`btn-delete-${validator}-${subObject}`}
-                                            background={grey}
-                                            display
-                                            onClick={deleteDate}
-                                            title={validatorId}
-                                        />
-                                    </Col>
-                                )}
+                                <Col n="xs-12 md-4 xl-12">
+                                    <DeleteButton
+                                        dataTestId={`btn-delete-${validator}-${subObject}`}
+                                        background={grey}
+                                        display
+                                        disabled={!currenField || undefined}
+                                        onClick={deleteDate}
+                                        title={validatorId}
+                                    />
+                                </Col>
                             </Row>
                         </Container>
                     </Col>
-                    <Col n="12 xl-9">
-                        {/*<ToggleSelect>*/}
+                    <Col>
                         <DateBlock
-                            mode={mode}
+                            years={years}
                             updateValidSection={updateValidSection}
                             setNewValueCheck={setNewValueCheck}
                             newValueCheck={newValueCheck}
@@ -213,21 +210,6 @@ export default function CustomDate({
                             data={dateData}
                             subObject={subObject}
                         />
-                        <Col n="12 xl-3">
-                            <Container fluid>
-                                <Row>
-                                    <Col>
-                                        <Toggle
-                                            description="pour les dates antérieures à 1930"
-                                            onChange={(e) => onToggleChange(e)}
-                                            checked={mode === 'open'}
-                                            label="Mode libre"
-                                        />
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </Col>
-                        {/*</ToggleSelect>*/}
                     </Col>
                 </Row>
             </Container>

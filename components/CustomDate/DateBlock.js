@@ -1,25 +1,32 @@
+import { Checkbox } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
-import CustomInput from '../CustomInput';
+import {
+    arrayContains,
+    getFieldValue,
+    getFormName,
+    getUniqueId,
+} from '../../helpers/utils';
+import Input from '../CustomInput/Input';
 import CustomSelect from '../CustomSelect';
 
 export default function DateBlock({
-    data,
-    mode,
+    data: fieldsData,
     subObject,
     updateDate,
     newValueCheck,
     validatorId,
     updateValidSection,
     setNewValueCheck,
+    years,
 }) {
     const { Col, Container, Row } = grid();
 
     const {
-        stateForm: { forms },
+        stateForm: { forms, fieldsMode },
+        dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
         pathname,
@@ -27,13 +34,15 @@ export default function DateBlock({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
-    const inputMode = useMemo(() => mode, [mode]);
+    const dateValue = useMemo(
+        () => getFieldValue(forms, formName, uid) || 'yyyy-mm-dd',
+        [formName, forms, uid]
+    );
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
             const [value, updateCheck] = params;
-            const dateValue =
-                getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
+
             const reg = new RegExp(regex);
             const newValue = dateValue.replace(reg, value);
             const currentDateValue = dateValue.match(reg);
@@ -64,54 +73,113 @@ export default function DateBlock({
                 setNewValueCheck(updateCheck);
             }
         },
-        [formName, forms, setNewValueCheck, subObject, uid, updateDate]
+        [
+            dateValue,
+            formName,
+            forms,
+            setNewValueCheck,
+            subObject,
+            uid,
+            updateDate,
+        ]
     );
 
-    const renderInput = () => {
-        return data.map((select) => {
-            const { selectedValue, options, regex, fieldId, title } = select;
+    const onToggleChange = (currentUID, m) => {
+        const year = getFieldValue(forms, formName, currentUID);
+        const check = arrayContains(years, year);
+        const mode = check ? 'select' : 'input';
 
-            if (title === 'Année' && inputMode === 'open') {
+        if (m !== undefined) {
+            // case update by value
+            if (fieldsMode[currentUID]) {
+                dispatch({
+                    type: 'UPDATE_FIELDS_MODE',
+                    payload: { [currentUID]: { mode: m } },
+                });
+            }
+        } else {
+            // case onClick checkbox
+            if (Object.keys(fieldsMode).length > 0 && fieldsMode[currentUID]) {
+                // case update value on init form
+                dispatch({
+                    type: 'UPDATE_FIELDS_MODE',
+                    payload: {
+                        [currentUID]: {
+                            mode:
+                                fieldsMode[currentUID].mode === 'input'
+                                    ? 'select'
+                                    : 'input',
+                        },
+                    },
+                });
+            }
+        }
+    };
+
+    const renderInputs = () => {
+        return fieldsData.map((input) => {
+            let open = false;
+            const { selectedValue, options, regex, fieldId, title } = input;
+            const inputUID = getUniqueId(formName, subObject, fieldId);
+
+            if (Object.keys(fieldsMode).length > 0 && fieldsMode[inputUID]) {
+                open = fieldsMode[inputUID].mode === 'input';
+            }
+
+            if (open) {
                 return (
-                    <Col n="12 xl-4" key={title}>
-                        <CustomInput
+                    <Col n="12 xl-4" key={title} spacing="py-1w">
+                        <Input
+                            customOnChange={(...params) =>
+                                onChange(regex, fieldId, params)
+                            }
+                            updateValidSection={updateValidSection}
+                            validatorId={fieldId}
+                            value={selectedValue}
+                            subObject={subObject}
+                            label={title}
+                            onToggleChange={
+                                title === 'Année' ? onToggleChange : undefined
+                            }
+                        />
+                    </Col>
+                );
+            } else {
+                return (
+                    <Col n="12 xl-4" key={title} spacing="py-1w">
+                        <CustomSelect
+                            onToggleChange={
+                                title === 'Année' ? onToggleChange : undefined
+                            }
                             customOnChange={(...params) =>
                                 onChange(regex, fieldId, params)
                             }
                             updateValidSection={updateValidSection}
                             title={title}
                             validatorId={fieldId}
-                            value={selectedValue}
+                            staticValues={options}
+                            newValue={selectedValue}
+                            newValueCheck={newValueCheck}
                             subObject={subObject}
-                            infinite={false}
-                            suggest={false}
                         />
+                        {title === 'Année' && (
+                            <Checkbox
+                                size="sm"
+                                label="champs libre"
+                                value=""
+                                checked={open}
+                                onChange={() => onToggleChange(inputUID)}
+                            />
+                        )}
                     </Col>
                 );
             }
-
-            return (
-                <Col n="12 xl-4" key={title} spacing="py-1w">
-                    <CustomSelect
-                        customOnChange={(...params) =>
-                            onChange(regex, fieldId, params)
-                        }
-                        updateValidSection={updateValidSection}
-                        title={title}
-                        validatorId={fieldId}
-                        staticValues={options}
-                        newValue={selectedValue}
-                        newValueCheck={newValueCheck}
-                        subObject={subObject}
-                    />
-                </Col>
-            );
         });
     };
 
     return (
         <Container fluid>
-            <Row gutters>{renderInput()}</Row>
+            <Row gutters>{renderInputs()}</Row>
         </Container>
     );
 }
