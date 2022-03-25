@@ -3,12 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import {
-    arrayContains,
-    getFieldValue,
-    getFormName,
-    getUniqueId,
-} from '../../helpers/utils';
+import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import Input from '../CustomInput/Input';
 import CustomSelect from '../CustomSelect';
 
@@ -20,7 +15,6 @@ export default function DateBlock({
     validatorId,
     updateValidSection,
     setNewValueCheck,
-    years,
 }) {
     const { Col, Container, Row } = grid();
 
@@ -41,7 +35,7 @@ export default function DateBlock({
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
-            const [value, updateCheck] = params;
+            const [value, updateCheck, fullDateOnly = false] = params;
 
             const reg = new RegExp(regex);
             const newValue = dateValue.replace(reg, value);
@@ -60,7 +54,7 @@ export default function DateBlock({
             }
 
             // Save field (day, month or year)
-            if (currentFieldValue !== value) {
+            if (currentFieldValue !== value && !fullDateOnly) {
                 await updateDate({
                     value,
                     uid: fieldUid,
@@ -84,35 +78,22 @@ export default function DateBlock({
         ]
     );
 
-    const onToggleChange = (currentUID, m) => {
-        const year = getFieldValue(forms, formName, currentUID);
-        const check = arrayContains(years, year);
-        const mode = check ? 'select' : 'input';
+    const onToggleChange = (currentUID, mode) => {
+        if (fieldsMode[currentUID]) {
+            const payloadMode = {
+                true: mode,
+                false:
+                    fieldsMode[currentUID].mode === 'input'
+                        ? 'select'
+                        : 'input',
+            };
 
-        if (m !== undefined) {
-            // case update by value
-            if (fieldsMode[currentUID]) {
-                dispatch({
-                    type: 'UPDATE_FIELDS_MODE',
-                    payload: { [currentUID]: { mode: m } },
-                });
-            }
-        } else {
-            // case onClick checkbox
-            if (Object.keys(fieldsMode).length > 0 && fieldsMode[currentUID]) {
-                // case update value on init form
-                dispatch({
-                    type: 'UPDATE_FIELDS_MODE',
-                    payload: {
-                        [currentUID]: {
-                            mode:
-                                fieldsMode[currentUID].mode === 'input'
-                                    ? 'select'
-                                    : 'input',
-                        },
-                    },
-                });
-            }
+            dispatch({
+                type: 'UPDATE_FIELDS_MODE',
+                payload: {
+                    [currentUID]: { mode: payloadMode[mode !== undefined] },
+                },
+            });
         }
     };
 
@@ -142,6 +123,15 @@ export default function DateBlock({
                                 title === 'Année' ? onToggleChange : undefined
                             }
                         />
+                        {title === 'Année' && (
+                            <Checkbox
+                                size="sm"
+                                label="année antérieure à 1930"
+                                value=""
+                                checked={open}
+                                onChange={() => onToggleChange(inputUID)}
+                            />
+                        )}
                     </Col>
                 );
             } else {
@@ -165,7 +155,7 @@ export default function DateBlock({
                         {title === 'Année' && (
                             <Checkbox
                                 size="sm"
-                                label="champs libre"
+                                label="année antérieure à 1930"
                                 value=""
                                 checked={open}
                                 onChange={() => onToggleChange(inputUID)}

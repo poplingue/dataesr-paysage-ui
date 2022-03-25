@@ -28,10 +28,9 @@ function Input({
     validatorId,
     suggest = false,
     customOnChange,
-    onToggleChange,
 }) {
     const {
-        stateForm: { forms, storeObjects, fieldsMode },
+        stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -84,6 +83,8 @@ function Input({
             if (checkStoreObject) {
                 await DBService.set(payload, formName);
             }
+
+            return true;
         },
         [dispatch, formName, infinite, storeObjects, uid]
     );
@@ -102,7 +103,9 @@ function Input({
         }
 
         if (customOnChange) {
-            customOnChange(value, false);
+            // fullDateOnly ==== true
+            // TODO refacto params as object
+            customOnChange(value, undefined, true);
         }
     };
 
@@ -132,10 +135,6 @@ function Input({
 
     useEffect(() => {
         updateValidSection(uid, type);
-
-        // if (type === 'valid' && customOnChange) {
-        //     customOnChange(textValue, false);
-        // }
     }, [customOnChange, textValue, type, uid, updateValidSection]);
 
     const renderTextInput = (

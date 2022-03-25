@@ -201,7 +201,6 @@ export default function CustomDate({
                     </Col>
                     <Col>
                         <DateBlock
-                            years={years}
                             updateValidSection={updateValidSection}
                             setNewValueCheck={setNewValueCheck}
                             newValueCheck={newValueCheck}

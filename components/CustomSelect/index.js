@@ -159,7 +159,6 @@ export default function CustomSelect({
                 fieldsMode[uid] &&
                 fieldsMode[uid].mode === 'select'
             ) {
-                console.log('====  ==== ');
                 onToggleChange(uid, 'input');
             }
         }
