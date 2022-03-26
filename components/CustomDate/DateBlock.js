@@ -1,4 +1,4 @@
-import { Checkbox } from '@dataesr/react-dsfr';
+import { Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -124,12 +124,11 @@ export default function DateBlock({
                             }
                         />
                         {title === 'Année' && (
-                            <Checkbox
-                                size="sm"
-                                label="année antérieure à 1930"
-                                value=""
-                                checked={open}
+                            <Toggle
+                                description="année antérieure à 1930"
                                 onChange={() => onToggleChange(inputUID)}
+                                checked={open}
+                                label="Mode libre"
                             />
                         )}
                     </Col>
@@ -153,12 +152,11 @@ export default function DateBlock({
                             subObject={subObject}
                         />
                         {title === 'Année' && (
-                            <Checkbox
-                                size="sm"
-                                label="année antérieure à 1930"
-                                value=""
-                                checked={open}
+                            <Toggle
+                                description="année antérieure à 1930"
                                 onChange={() => onToggleChange(inputUID)}
+                                checked={open}
+                                label={'Mode libre'}
                             />
                         )}
                     </Col>

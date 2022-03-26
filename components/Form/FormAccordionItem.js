@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -7,7 +7,7 @@ import {
     genericErrorMsg,
     invalidToken,
 } from '../../helpers/internalMessages';
-import { checkFlatMap, getFormName, getSection } from '../../helpers/utils';
+import { checkFlatMap, getFormName, getSectionName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
@@ -53,21 +53,6 @@ export default function FormAccordionItem({
         (id, validType) => {
             const validSection = validSections[subObject];
             let section = null;
-            const currentSection = getSection(id);
-
-            if (
-                (!id && !validType && disabled) ||
-                (savingSections.indexOf(currentSection) > -1 && disabled)
-            ) {
-                setDisabled(false);
-
-                section = {
-                    [subObject]: {
-                        ...validSection,
-                        ...{ saved: false },
-                    },
-                };
-            }
 
             // case validType changes
             if (
@@ -78,7 +63,7 @@ export default function FormAccordionItem({
                 section = {
                     [subObject]: {
                         ...validSection,
-                        ...{ [id]: validType, saved: disabled },
+                        ...{ [id]: validType, saved: false },
                     },
                 };
             }
@@ -91,8 +76,24 @@ export default function FormAccordionItem({
                 });
             }
         },
-        [disabled, dispatch, savingSections, subObject, validSections]
+        [dispatch, subObject, validSections]
     );
+
+    /**
+     * handle submit button status
+     */
+    useEffect(() => {
+        if (validSections[subObject]) {
+            const valid =
+                Object.values(validSections[subObject]).indexOf('error') < 0;
+
+            if (valid && disabled) {
+                setDisabled(false);
+            } else if (!valid && !disabled) {
+                setDisabled(true);
+            }
+        }
+    }, [disabled, subObject, validSections]);
 
     const save = async () => {
         const currentSection = validSections[subObject];
@@ -261,14 +262,12 @@ export default function FormAccordionItem({
     };
 
     const resetDisabled = (uid) => {
-        const section = getSection(uid);
+        const section = getSectionName(uid);
 
         dispatch({
             type: 'DELETE_SAVING_SECTION',
             payload: { section },
         });
-
-        setDisabled(true);
     };
 
     return (

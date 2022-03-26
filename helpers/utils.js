@@ -258,7 +258,7 @@ export function getForm(forms, name) {
  * @param uid
  * @returns {RegExpExecArray}
  */
-export function getSection(uid) {
+export function getSectionName(uid) {
     const match = /(?<=\@).+?(?=\_)/.exec(uid);
 
     return match && match[0];
