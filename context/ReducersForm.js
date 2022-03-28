@@ -1,6 +1,7 @@
 import { getFieldValue, getForm, niceDate } from '../helpers/utils';
 import ACTIONS from './Actions';
 
+// TODO Use object instead of switch inside the reducer
 const reducersForm = (state, action) => {
     switch (action.type) {
         case ACTIONS.UPDATE_FORM_FIELD: {

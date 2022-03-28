@@ -167,7 +167,7 @@ export default function CustomDate({
                             {title}
                         </Text>
                     </Col>
-                    <Col n="10 xl-3" spacing="p-1w">
+                    <Col n="12 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
                                 <Col n="xs-6 md-4 xl-12">
@@ -199,7 +199,7 @@ export default function CustomDate({
                             </Row>
                         </Container>
                     </Col>
-                    <Col>
+                    <Col n="12 xl-9">
                         <DateBlock
                             updateValidSection={updateValidSection}
                             setNewValueCheck={setNewValueCheck}

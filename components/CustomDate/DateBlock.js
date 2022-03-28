@@ -1,4 +1,3 @@
-import { Toggle } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
@@ -6,6 +5,7 @@ import grid from '../../helpers/imports';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import Input from '../CustomInput/Input';
 import CustomSelect from '../CustomSelect';
+import ToggleMode from './ToggleMode';
 
 export default function DateBlock({
     data: fieldsData,
@@ -107,61 +107,43 @@ export default function DateBlock({
                 open = fieldsMode[inputUID].mode === 'input';
             }
 
-            if (open) {
-                return (
-                    <Col n="12 xl-4" key={title} spacing="py-1w">
-                        <Input
-                            customOnChange={(...params) =>
-                                onChange(regex, fieldId, params)
-                            }
-                            updateValidSection={updateValidSection}
-                            validatorId={fieldId}
-                            value={selectedValue}
-                            subObject={subObject}
-                            label={title}
-                            onToggleChange={
-                                title === 'Année' ? onToggleChange : undefined
-                            }
-                        />
-                        {title === 'Année' && (
-                            <Toggle
-                                description="année antérieure à 1930"
-                                onChange={() => onToggleChange(inputUID)}
-                                checked={open}
-                                label="Mode libre"
+            return (
+                <Col n="12 xl-4" key={title} spacing="">
+                    <ToggleMode
+                        mode={open}
+                        uid={inputUID}
+                        onToggleChange={onToggleChange}
+                        active={title === 'Année'}
+                    >
+                        {open ? (
+                            <Input
+                                customOnChange={(...params) =>
+                                    onChange(regex, fieldId, params)
+                                }
+                                updateValidSection={updateValidSection}
+                                validatorId={fieldId}
+                                value={selectedValue}
+                                subObject={subObject}
+                                label={title}
+                            />
+                        ) : (
+                            <CustomSelect
+                                onToggleChange={onToggleChange}
+                                customOnChange={(...params) =>
+                                    onChange(regex, fieldId, params)
+                                }
+                                updateValidSection={updateValidSection}
+                                title={title}
+                                validatorId={fieldId}
+                                staticValues={options}
+                                newValue={selectedValue}
+                                newValueCheck={newValueCheck}
+                                subObject={subObject}
                             />
                         )}
-                    </Col>
-                );
-            } else {
-                return (
-                    <Col n="12 xl-4" key={title} spacing="py-1w">
-                        <CustomSelect
-                            onToggleChange={
-                                title === 'Année' ? onToggleChange : undefined
-                            }
-                            customOnChange={(...params) =>
-                                onChange(regex, fieldId, params)
-                            }
-                            updateValidSection={updateValidSection}
-                            title={title}
-                            validatorId={fieldId}
-                            staticValues={options}
-                            newValue={selectedValue}
-                            newValueCheck={newValueCheck}
-                            subObject={subObject}
-                        />
-                        {title === 'Année' && (
-                            <Toggle
-                                description="année antérieure à 1930"
-                                onChange={() => onToggleChange(inputUID)}
-                                checked={open}
-                                label={'Mode libre'}
-                            />
-                        )}
-                    </Col>
-                );
-            }
+                    </ToggleMode>
+                </Col>
+            );
         });
     };
 

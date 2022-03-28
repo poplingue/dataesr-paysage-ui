@@ -162,7 +162,7 @@ export default function FormAccordionItem({
                 },
                 formName
             ).then(() => {
-                resetDisabled(uid);
+                resetSaving(uid);
             });
         }
     };
@@ -252,7 +252,7 @@ export default function FormAccordionItem({
             });
 
         // rollback disabled status
-        resetDisabled(uids[0]);
+        resetSaving(uids[0]);
 
         // update valid section with { saved: true } values
         dispatch({
@@ -261,7 +261,7 @@ export default function FormAccordionItem({
         });
     };
 
-    const resetDisabled = (uid) => {
+    const resetSaving = (uid) => {
         const section = getSectionName(uid);
 
         dispatch({
