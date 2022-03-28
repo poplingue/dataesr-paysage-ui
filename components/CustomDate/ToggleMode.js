@@ -22,6 +22,7 @@ export default function ToggleMode({
                             name={mode ? 'ri-toggle-fill' : 'ri-toggle-line'}
                         >
                             <Button
+                                data-cy={`toggle-${uid}`}
                                 title="Mode"
                                 size="sm"
                                 secondary={!mode}

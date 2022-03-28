@@ -11,6 +11,8 @@ context('Structure new form', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
+            cy.mandatoryStructureFields(id);
+
             const now = new Date();
             const currentYear = now.getFullYear().toString();
             const currentMonth = (now.getMonth() + 1)

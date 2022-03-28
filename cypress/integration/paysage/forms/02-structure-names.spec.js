@@ -13,6 +13,8 @@ context('Structure new form', () => {
 
             const id = cookie.value;
 
+            cy.mandatoryStructureFields(id);
+
             cy.get(`[data-field="contrib/structure@names#${id}_article"]`)
                 .find('select')
                 .select('aux');
@@ -33,6 +35,8 @@ context('Structure new form', () => {
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
             const id = cookie.value;
+
+            cy.mandatoryStructureFields(id);
 
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
@@ -63,6 +67,8 @@ context('Structure new form', () => {
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
             const id = cookie.value;
+
+            cy.mandatoryStructureFields(id);
 
             cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
                 .find('input')

@@ -107,3 +107,13 @@ Cypress.Commands.add('deleteIndexDB', () => {
         resolve();
     });
 });
+
+Cypress.Commands.add('mandatoryStructureFields', (id) => {
+    cy.get(`[data-field="contrib/structure@names#${id}_officialName"]`)
+        .find('input')
+        .type('Officiel');
+
+    cy.get(`[data-field="contrib/structure@names#${id}_usualName"]`)
+        .find('input')
+        .type('Usuel');
+});

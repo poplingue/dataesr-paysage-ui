@@ -83,8 +83,6 @@ function Input({
             if (checkStoreObject) {
                 await DBService.set(payload, formName);
             }
-
-            return true;
         },
         [dispatch, formName, infinite, storeObjects, uid]
     );
