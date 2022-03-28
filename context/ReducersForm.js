@@ -240,9 +240,13 @@ const reducersForm = (state, action) => {
         }
 
         case ACTIONS.DELETE_FIELDS_MODE: {
+            const fieldsMode = Object.keys(state.fieldsMode).filter(
+                (uid) => action.payload.indexOf(uid) < 0
+            );
+
             return {
                 ...state,
-                fieldsMode: {},
+                fieldsMode,
             };
         }
 

@@ -138,8 +138,8 @@ export default function CustomDate({
             },
         });
 
-        // TODO still needed?
-        dispatch({ type: 'DELETE_FIELDS_MODE' });
+        // clean fieldsMode object
+        dispatch({ type: 'DELETE_FIELDS_MODE', payload: uids });
 
         await DBService.deleteList(uids, formName);
 
