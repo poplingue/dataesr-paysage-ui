@@ -79,44 +79,24 @@ export default function DateBlock({
         ]
     );
 
-    const onToggleChange = (currentUID, mode) => {
-        // TODO move to ToggleMode?
-        const currentField = fieldsMode[currentUID];
-
-        if (currentField) {
-            const payloadMode = {
-                true: mode,
-                false: currentField.mode === 'input' ? 'select' : 'input',
-            };
-
-            dispatch({
-                type: 'UPDATE_FIELDS_MODE',
-                payload: {
-                    [currentUID]: { mode: payloadMode[mode !== undefined] },
-                },
-            });
-        }
-    };
-
     const renderInputs = () => {
         return fieldsData.map((input) => {
-            let open = false;
             const { selectedValue, options, regex, fieldId, title } = input;
             const inputUID = getUniqueId(formName, subObject, fieldId);
+            let inputMode = false;
 
             if (Object.keys(fieldsMode).length > 0 && fieldsMode[inputUID]) {
-                open = fieldsMode[inputUID].mode === 'input';
+                inputMode = fieldsMode[inputUID].mode === 'input';
             }
 
             return (
                 <Col n="12 xl-4" key={title}>
                     <ToggleMode
-                        mode={open}
+                        inputMode={inputMode}
                         uid={inputUID}
-                        onToggleChange={onToggleChange}
                         active={title === 'Année'}
                     >
-                        {open ? (
+                        {inputMode ? (
                             <Input
                                 customOnChange={(...params) =>
                                     onChange(regex, fieldId, params)
@@ -129,7 +109,6 @@ export default function DateBlock({
                             />
                         ) : (
                             <CustomSelect
-                                onToggleChange={onToggleChange}
                                 customOnChange={(...params) =>
                                     onChange(regex, fieldId, params)
                                 }
