@@ -101,9 +101,8 @@ function Input({
         }
 
         if (customOnChange) {
-            // fullDateOnly ==== true
-            // TODO refacto params as object
-            customOnChange(value, undefined, true);
+            // case input Date
+            customOnChange(value, { fullDateOnly: true });
         }
     };
 

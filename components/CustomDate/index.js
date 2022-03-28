@@ -44,7 +44,7 @@ export default function CustomDate({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
-    const currenField = getField(forms, formName, uid);
+    const currentField = getField(forms, formName, uid) || undefined;
     const camelValidator = camelCase(validatorId);
 
     const daysObj = {
@@ -52,12 +52,10 @@ export default function CustomDate({
         fieldId: `${camelValidator}Day`,
         title: `Jour`,
         regex: '[^-]*$',
-        open: false,
         selectedValue: '',
     };
     const monthsObj = {
         options: months,
-        open: false,
         fieldId: `${camelValidator}Month`,
         title: `Mois`,
         regex: '(?<=-).*(?=-)',
@@ -65,7 +63,6 @@ export default function CustomDate({
     };
     const yearsObj = {
         options: years,
-        open: false,
         fieldId: `${camelValidator}Year`,
         title: `Année`,
         regex: '[\\s\\S]*?(?=-)',
@@ -141,6 +138,7 @@ export default function CustomDate({
             },
         });
 
+        // TODO still needed?
         dispatch({ type: 'DELETE_FIELDS_MODE' });
 
         await DBService.deleteList(uids, formName);
@@ -191,7 +189,7 @@ export default function CustomDate({
                                         dataTestId={`btn-delete-${validator}-${subObject}`}
                                         background={grey}
                                         display
-                                        disabled={!currenField || undefined}
+                                        disabled={!currentField}
                                         onClick={deleteDate}
                                         title={validatorId}
                                     />

@@ -16,7 +16,6 @@ function CustomInput({
     validatorId,
     subObject,
     customOnChange,
-    onToggleChange,
 }) {
     const { Col, Row, Container } = grid();
 

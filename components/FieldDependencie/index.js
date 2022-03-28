@@ -31,16 +31,19 @@ export function FieldDependency({ children, subObject, validatorId }) {
 
     const toDisable = (input, check) => {
         input.disabled = check || undefined;
-        // input.setAttribute('aria-disabled', check ? 'true' : 'false');
+        input.setAttribute('aria-disabled', check ? 'true' : 'false');
     };
 
     const toHidden = (input, check) => {
-        // input.setAttribute('aria-hidden', check ? 'true' : 'false');
+        input.setAttribute('aria-hidden', check ? 'true' : 'false');
     };
 
     const updateDOMFields = useCallback(() => {
-        // TODO filter inputs !!!
-        const inputs = document.querySelectorAll('input') || [];
+        const inputs =
+            document.querySelectorAll(
+                `.${styles.IsHidden} input`,
+                `.${styles.IsDisable} input`
+            ) || [];
 
         Array.from(inputs).forEach((input) => {
             toDisable(input, getComputedStyle(input).pointerEvents === 'none');

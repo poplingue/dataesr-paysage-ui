@@ -102,7 +102,7 @@ export default function CustomSelect({
 
     const onChangeObj = useMemo(() => {
         return {
-            true: (value, updateCheck) => customOnChange(value, updateCheck),
+            true: (value, options) => customOnChange(value, options),
             false: (value) => onSelectChange(value),
         };
     }, [customOnChange, onSelectChange]);
@@ -116,7 +116,7 @@ export default function CustomSelect({
 
     useEffect(() => {
         if (newValue !== undefined && newValueCheck) {
-            onChangeObj[!!customOnChange](newValue, false);
+            onChangeObj[!!customOnChange](newValue, { updateCheck: false });
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
@@ -136,13 +136,13 @@ export default function CustomSelect({
 
     const onChange = (e) => {
         const { value } = e.target;
-        onChangeObj[!!customOnChange](value, false);
+        onChangeObj[!!customOnChange](value, { updateCheck: false });
         handleValue(value);
         updateValidSection(null, null);
     };
 
     useEffect(() => {
-        // init fieldsMode
+        // init fieldsMode to type select
         if (!fieldsMode[uid] && uid.endsWith('Year')) {
             dispatch({
                 type: 'UPDATE_FIELDS_MODE',
@@ -152,6 +152,7 @@ export default function CustomSelect({
     }, [dispatch, fieldValue, fieldsMode, uid]);
 
     useEffect(() => {
+        // case Date Year
         if (onToggleChange) {
             if (
                 !arrayContains(staticValues, fieldValue) &&

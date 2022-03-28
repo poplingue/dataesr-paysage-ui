@@ -35,7 +35,8 @@ export default function DateBlock({
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
-            const [value, updateCheck, fullDateOnly = false] = params;
+            const [value, options] = params;
+            const { updateCheck = undefined, fullDateOnly = false } = options;
 
             const reg = new RegExp(regex);
             const newValue = dateValue.replace(reg, value);
@@ -79,13 +80,13 @@ export default function DateBlock({
     );
 
     const onToggleChange = (currentUID, mode) => {
-        if (fieldsMode[currentUID]) {
+        // TODO move to ToggleMode?
+        const currentField = fieldsMode[currentUID];
+
+        if (currentField) {
             const payloadMode = {
                 true: mode,
-                false:
-                    fieldsMode[currentUID].mode === 'input'
-                        ? 'select'
-                        : 'input',
+                false: currentField.mode === 'input' ? 'select' : 'input',
             };
 
             dispatch({
@@ -108,7 +109,7 @@ export default function DateBlock({
             }
 
             return (
-                <Col n="12 xl-4" key={title} spacing="">
+                <Col n="12 xl-4" key={title}>
                     <ToggleMode
                         mode={open}
                         uid={inputUID}
