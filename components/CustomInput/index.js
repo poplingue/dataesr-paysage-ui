@@ -15,6 +15,7 @@ function CustomInput({
     updateValidSection,
     validatorId,
     subObject,
+    customOnChange,
 }) {
     const { Col, Row, Container } = grid();
 
@@ -39,8 +40,9 @@ function CustomInput({
     );
 
     const classicalField = (
-        <Col spacing="py-1w">
+        <Col>
             <Input
+                customOnChange={customOnChange}
                 hint={hint}
                 suggest={suggest}
                 onGroupChange={onGroupChange}
@@ -76,6 +78,7 @@ CustomInput.defaultProps = {
     infinite: false,
     value: '',
     hint: '',
+    section: '',
 };
 
 CustomInput.propTypes = {
@@ -83,7 +86,7 @@ CustomInput.propTypes = {
     hint: PropTypes.string,
     value: PropTypes.string,
     infinite: PropTypes.bool,
-    section: PropTypes.string.isRequired,
+    section: PropTypes.string,
     updateValidSection: PropTypes.func.isRequired,
     validatorId: PropTypes.string.isRequired,
     subObject: PropTypes.string.isRequired,

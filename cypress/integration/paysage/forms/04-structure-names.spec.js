@@ -17,6 +17,8 @@ context('Structure new form', () => {
                 .find('input')
                 .type('Offiffi');
 
+            cy.get('[data-testid="usualName"]').find('input').type('usualName');
+
             cy.get(`[data-testid="names#${id}-save-button"]`).click();
             cy.wait('@patch');
 

@@ -1,7 +1,7 @@
 import { TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
@@ -27,6 +27,7 @@ function Input({
     updateValidSection,
     validatorId,
     suggest = false,
+    customOnChange,
 }) {
     const {
         stateForm: { forms, storeObjects },
@@ -54,8 +55,14 @@ function Input({
         infinite ? index : null
     );
 
-    const currentValue = getFieldValue(forms, formName, uid);
-    const unSaved = isFieldUnSaved(forms, formName, uid);
+    const currentValue = useMemo(
+        () => getFieldValue(forms, formName, uid),
+        [formName, forms, uid]
+    );
+    const unSaved = useMemo(
+        () => isFieldUnSaved(forms, formName, uid),
+        [formName, forms, uid]
+    );
 
     const saveValue = useCallback(
         async (value) => {
@@ -92,6 +99,11 @@ function Input({
         } else {
             await saveValue(value);
         }
+
+        if (customOnChange) {
+            // case input Date
+            customOnChange(value, { fullDateOnly: true });
+        }
     };
 
     useEffect(() => {
@@ -112,6 +124,7 @@ function Input({
     }, [checkField, textValue]);
 
     useEffect(() => {
+        // set value from GlobalState
         if (textValue !== currentValue) {
             setTextValue(currentValue);
         }
@@ -119,7 +132,7 @@ function Input({
 
     useEffect(() => {
         updateValidSection(uid, type);
-    }, [type, uid, updateValidSection]);
+    }, [customOnChange, textValue, type, uid, updateValidSection]);
 
     const renderTextInput = (
         <TextInput

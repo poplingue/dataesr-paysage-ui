@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DB.service';
-import reducersForm from './ReducersForm';
-import reducersList from './ReducersList';
-import reducersPage from './ReducersPage';
+import reducerForm from './ReducerForm';
+import reducerList from './ReducerList';
+import reducerPage from './ReducerPage';
 
 export const AppContext = createContext();
 
@@ -29,6 +29,7 @@ export const DataProvider = ({ user, error, children }) => {
         savingSections: [],
         currentObject: {},
         dependencies: {},
+        fieldsMode: {},
     };
 
     const initialStateList = {
@@ -54,18 +55,9 @@ export const DataProvider = ({ user, error, children }) => {
         userConnected: user && Object.keys(user).length > 0,
     };
 
-    const [stateForm, dispatchForm] = useReducer(
-        reducersForm,
-        initialStateForm
-    );
-    const [stateList, dispatchList] = useReducer(
-        reducersList,
-        initialStateList
-    );
-    const [statePage, dispatchPage] = useReducer(
-        reducersPage,
-        initialStatePage
-    );
+    const [stateForm, dispatchForm] = useReducer(reducerForm, initialStateForm);
+    const [stateList, dispatchList] = useReducer(reducerList, initialStateList);
+    const [statePage, dispatchPage] = useReducer(reducerPage, initialStatePage);
 
     const cbInit = (storeObjects) => {
         dispatchForm({

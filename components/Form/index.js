@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useRef } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { getFormName, getSection, sectionUniqueId } from '../../helpers/utils';
+import {
+    getFormName,
+    getSectionName,
+    sectionUniqueId,
+} from '../../helpers/utils';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
 import InfiniteAccordion from '../InfiniteAccordion';
 import PageTheme from '../PageTheme';
 import AccordionForm from './AccordionForm';
@@ -59,14 +62,15 @@ const CreateForm = ({ jsonForm, color }) => {
 
     const retrieveIndexDBData = useCallback(
         async (objectStoreChecked) => {
-            const indexDBData = await NotifService.promise(
-                DBService.getAllObjects(formName, objectStoreChecked),
-                'Data from IndexDB fetched'
+            const indexDBData = await DBService.getAllObjects(
+                formName,
+                objectStoreChecked
             );
+
             indexDBData
                 .filter((data) => data.unSaved === true)
                 .forEach((elm) => {
-                    const section = getSection(elm.uid);
+                    const section = getSectionName(elm.uid);
 
                     if (section) {
                         dispatch({

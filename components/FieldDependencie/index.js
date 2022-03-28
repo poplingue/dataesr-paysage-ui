@@ -39,7 +39,11 @@ export function FieldDependency({ children, subObject, validatorId }) {
     };
 
     const updateDOMFields = useCallback(() => {
-        const inputs = document.querySelectorAll('input') || [];
+        const inputs =
+            document.querySelectorAll(
+                `.${styles.IsHidden} input`,
+                `.${styles.IsDisable} input`
+            ) || [];
 
         Array.from(inputs).forEach((input) => {
             toDisable(input, getComputedStyle(input).pointerEvents === 'none');

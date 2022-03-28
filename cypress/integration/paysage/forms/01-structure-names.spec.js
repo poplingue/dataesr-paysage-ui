@@ -15,6 +15,8 @@ context('Structure new form infinite otherName and article', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
+            cy.mandatoryStructureFields(id);
+
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
                 .type('OtherName#0');
@@ -49,6 +51,8 @@ context('Structure new form infinite otherName and article', () => {
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
             const id = cookie.value;
+
+            cy.mandatoryStructureFields(id);
 
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')

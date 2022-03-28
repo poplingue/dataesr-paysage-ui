@@ -31,6 +31,10 @@ context('Structure new form', () => {
                 .find('input')
                 .type('Officiel1');
 
+            cy.get(`[data-field="contrib/structure@names#${id}_usualName"]`)
+                .find('input')
+                .type('Usuel1');
+
             cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
             cy.wait('@patch');
@@ -51,6 +55,12 @@ context('Structure new form', () => {
                 )
                     .find('input')
                     .type('Officiel2');
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_usualName"]`
+                )
+                    .find('input')
+                    .type('Usuel2');
 
                 cy.get(`[data-testid="names#${id2}-save-button"]`).click();
 
@@ -74,6 +84,8 @@ context('Structure new form', () => {
 
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
+
+            cy.mandatoryStructureFields(id);
 
             cy.get(`[data-field="contrib/structure@names#${id}_brandName"]`)
                 .find('input')

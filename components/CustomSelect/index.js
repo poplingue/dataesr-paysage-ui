@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
+    arrayContains,
     getFieldValue,
     getFormName,
     getSubObjectType,
@@ -20,6 +21,7 @@ import SavingWrapper from '../SavingWrapper';
 
 export default function CustomSelect({
     title,
+    onToggleChange,
     customOnChange,
     staticValues = [],
     newValue,
@@ -29,11 +31,13 @@ export default function CustomSelect({
     subObject,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const [options, setOptions] = useState([]);
+    const [init, setInit] = useState(true);
+
     const {
         pathname,
         query: { object },
@@ -98,7 +102,7 @@ export default function CustomSelect({
 
     const onChangeObj = useMemo(() => {
         return {
-            true: (value, updateCheck) => customOnChange(value, updateCheck),
+            true: (value, options) => customOnChange(value, options),
             false: (value) => onSelectChange(value),
         };
     }, [customOnChange, onSelectChange]);
@@ -112,7 +116,7 @@ export default function CustomSelect({
 
     useEffect(() => {
         if (newValue !== undefined && newValueCheck) {
-            onChangeObj[!!customOnChange](newValue, false);
+            onChangeObj[!!customOnChange](newValue, { updateCheck: false });
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
@@ -132,10 +136,34 @@ export default function CustomSelect({
 
     const onChange = (e) => {
         const { value } = e.target;
-        onChangeObj[!!customOnChange](value, false);
+        onChangeObj[!!customOnChange](value, { updateCheck: false });
         handleValue(value);
         updateValidSection(null, null);
     };
+
+    useEffect(() => {
+        // init fieldsMode to type select
+        if (!fieldsMode[uid] && uid.endsWith('Year')) {
+            dispatch({
+                type: 'UPDATE_FIELDS_MODE',
+                payload: { [uid]: { mode: 'select' } },
+            });
+        }
+    }, [dispatch, fieldValue, fieldsMode, uid]);
+
+    useEffect(() => {
+        // case Date Year
+        if (onToggleChange) {
+            if (
+                !arrayContains(staticValues, fieldValue) &&
+                fieldValue &&
+                fieldsMode[uid] &&
+                fieldsMode[uid].mode === 'select'
+            ) {
+                onToggleChange(uid, 'input');
+            }
+        }
+    }, [fieldValue, fieldsMode, onToggleChange, staticValues, uid]);
 
     useEffect(() => {
         updateValidSection(uid, type);

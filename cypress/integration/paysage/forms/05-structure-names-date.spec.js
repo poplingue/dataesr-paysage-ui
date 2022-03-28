@@ -11,6 +11,8 @@ context('Structure new form', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
+            cy.mandatoryStructureFields(id);
+
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
             cy.get(`[data-field="contrib/structure@names#${id}_startDateDay"]`)
@@ -53,6 +55,8 @@ context('Structure new form', () => {
             const now = new Date();
             const currentYear = now.getFullYear().toString();
 
+            cy.mandatoryStructureFields(id);
+
             cy.get(
                 `[data-testId="firstJanuary-startdate-names#${id}"]`
             ).click();
@@ -80,6 +84,8 @@ context('Structure new form', () => {
     it('should save new Structure partial date data', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
+
+            cy.mandatoryStructureFields(id);
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
 
