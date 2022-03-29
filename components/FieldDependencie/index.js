@@ -42,7 +42,9 @@ export function FieldDependency({ children, subObject, validatorId }) {
         const inputs =
             document.querySelectorAll(
                 `.${styles.IsHidden} input`,
-                `.${styles.IsDisable} input`
+                `.${styles.IsHidden} select`,
+                `.${styles.IsDisable} input`,
+                `.${styles.IsDisable} select`
             ) || [];
 
         Array.from(inputs).forEach((input) => {

@@ -70,7 +70,12 @@
           {
             "title": "Nom usuel",
             "type": "text",
-            "validatorId": "usualName"
+            "validatorId": "usualName",
+            "dependency": {
+              "validatorIds": ["article"],
+              "rule": "validator",
+              "action": "hidden"
+            }
           },
           {
             "title": "Article du nom usuel",

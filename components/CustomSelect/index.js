@@ -171,11 +171,11 @@ export default function CustomSelect({
 
     return (
         <FieldDependency subObject={subObject} validatorId={validatorId}>
-            <SavingWrapper
-                unSaved={unSaved}
-                inline={matchRegex(`Day|Year|Month$`, uid)}
-            >
-                <section className="wrapper-select">
+            <section className="wrapper-select">
+                <SavingWrapper
+                    unSaved={unSaved}
+                    inline={matchRegex(`Day|Year|Month$`, uid)}
+                >
                     <Select
                         message={message}
                         messageType={type || undefined}
@@ -190,8 +190,8 @@ export default function CustomSelect({
                         label={title}
                         options={options}
                     />
-                </section>
-            </SavingWrapper>
+                </SavingWrapper>
+            </section>
         </FieldDependency>
     );
 }

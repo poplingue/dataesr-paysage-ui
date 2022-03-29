@@ -11,6 +11,7 @@ import {
     isArray,
     matchRegex,
 } from '../helpers/utils';
+import DBService from './DB.service';
 
 const fieldMapping = {
     endDate: (uid, value) => dataFormService.mapDate(uid, value),
@@ -265,16 +266,16 @@ export const dataFormService = {
             false: () => fields,
         };
 
-        // const checkStoreObject = storeObjects.indexOf(formName) > -1;
+        const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        // if (checkStoreObject) {
-        //     // indexDB
-        //     await DBService.setList(
-        //         listFields[!!filter](fields),
-        //         formName,
-        //         false
-        //     );
-        // }
+        if (checkStoreObject) {
+            // indexDB
+            await DBService.setList(
+                listFields[!!filter](fields),
+                formName,
+                false
+            );
+        }
 
         return listFields[!!filter](fields);
     },
