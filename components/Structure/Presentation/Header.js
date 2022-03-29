@@ -144,24 +144,20 @@ export default function Header() {
                 <Col n="12">
                     <Container fluid>
                         <Row>
-                            {mainLocation && mainLocation.geometry && (
+                            {mainLocation && mainLocation.coordinates && (
                                 <Col spacing="pb-2w">
                                     <Map
-                                        lat={
-                                            mainLocation.geometry.coordinates[0]
-                                        }
-                                        lng={
-                                            mainLocation.geometry.coordinates[1]
-                                        }
+                                        lat={mainLocation.coordinates.lat}
+                                        lng={mainLocation.coordinates.lng}
                                         markers={[
                                             {
                                                 address:
                                                     mainLocation.fullAddress,
                                                 latLng: [
-                                                    mainLocation.geometry
-                                                        .coordinates[1],
-                                                    mainLocation.geometry
-                                                        .coordinates[0],
+                                                    mainLocation.coordinates
+                                                        .lat,
+                                                    mainLocation.coordinates
+                                                        .lng,
                                                 ],
                                             },
                                         ]}

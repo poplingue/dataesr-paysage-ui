@@ -16,6 +16,7 @@ import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
+import { FieldDependency } from '../FieldDependencie';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './CustomDate.module.scss';
 import DateBlock from './DateBlock';
@@ -152,64 +153,68 @@ export default function CustomDate({
     };
 
     return (
-        <section className="wrapper-select">
-            <Container fluid>
-                <Row
-                    gutters
-                    alignItems="middle"
-                    className={styles.Background}
-                    spacing="mb-1v"
-                >
-                    <Col n="12" spacing="pb-1w">
-                        <Text spacing="mb-1w" size="md">
-                            {title}
-                        </Text>
-                    </Col>
-                    <Col n="12 xl-3" spacing="p-1w">
-                        <Container fluid>
-                            <Row gutters>
-                                <Col n="xs-6 md-4 xl-12">
-                                    <FieldButton
-                                        dataTestId={`today-${validator}-${subObject}`}
-                                        title="Aujourd'hui"
-                                        onClick={() => automaticDate('today')}
-                                    />
-                                </Col>
-                                <Col n="xs-6 md-4 xl-12">
-                                    <FieldButton
-                                        dataTestId={`firstJanuary-${validator}-${subObject}`}
-                                        title="1er janvier"
-                                        onClick={() =>
-                                            automaticDate('firstJanuary')
-                                        }
-                                    />
-                                </Col>
-                                <Col n="xs-12 md-4 xl-12">
-                                    <DeleteButton
-                                        dataTestId={`btn-delete-${validator}-${subObject}`}
-                                        background={grey}
-                                        display
-                                        disabled={!currentField}
-                                        onClick={deleteDate}
-                                        title={validatorId}
-                                    />
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Col>
-                    <Col n="12 xl-9">
-                        <DateBlock
-                            updateValidSection={updateValidSection}
-                            setNewValueCheck={setNewValueCheck}
-                            newValueCheck={newValueCheck}
-                            validatorId={validatorId}
-                            updateDate={updateDate}
-                            data={dateData}
-                            subObject={subObject}
-                        />
-                    </Col>
-                </Row>
-            </Container>
-        </section>
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <section className="wrapper-select">
+                <Container fluid>
+                    <Row
+                        gutters
+                        alignItems="middle"
+                        className={styles.Background}
+                        spacing="mb-1v"
+                    >
+                        <Col n="12" spacing="pb-1w">
+                            <Text spacing="mb-1w" size="md">
+                                {title}
+                            </Text>
+                        </Col>
+                        <Col n="12 xl-3" spacing="p-1w">
+                            <Container fluid>
+                                <Row gutters>
+                                    <Col n="xs-6 md-4 xl-12">
+                                        <FieldButton
+                                            dataTestId={`today-${validator}-${subObject}`}
+                                            title="Aujourd'hui"
+                                            onClick={() =>
+                                                automaticDate('today')
+                                            }
+                                        />
+                                    </Col>
+                                    <Col n="xs-6 md-4 xl-12">
+                                        <FieldButton
+                                            dataTestId={`firstJanuary-${validator}-${subObject}`}
+                                            title="1er janvier"
+                                            onClick={() =>
+                                                automaticDate('firstJanuary')
+                                            }
+                                        />
+                                    </Col>
+                                    <Col n="xs-12 md-4 xl-12">
+                                        <DeleteButton
+                                            dataTestId={`btn-delete-${validator}-${subObject}`}
+                                            background={grey}
+                                            display
+                                            disabled={!currentField}
+                                            onClick={deleteDate}
+                                            title={validatorId}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Col>
+                        <Col n="12 xl-9">
+                            <DateBlock
+                                updateValidSection={updateValidSection}
+                                setNewValueCheck={setNewValueCheck}
+                                newValueCheck={newValueCheck}
+                                validatorId={validatorId}
+                                updateDate={updateDate}
+                                data={dateData}
+                                subObject={subObject}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+        </FieldDependency>
     );
 }

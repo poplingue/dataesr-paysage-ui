@@ -8,6 +8,7 @@ import {
     getSectionName,
     sectionUniqueId,
 } from '../../helpers/utils';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import InfiniteAccordion from '../InfiniteAccordion';
 import PageTheme from '../PageTheme';
@@ -115,6 +116,20 @@ const CreateForm = ({ jsonForm, color }) => {
                 dispatch({
                     type: 'UPDATE_CURRENT_OBJECT',
                     payload: JSON.parse(data).data,
+                });
+
+                // Retrieve general data object
+                const fields = dataFormService.objectFields(
+                    JSON.parse(data).data,
+                    formName
+                );
+
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD_LIST',
+                    payload: {
+                        formName,
+                        fields,
+                    },
                 });
             }
         };

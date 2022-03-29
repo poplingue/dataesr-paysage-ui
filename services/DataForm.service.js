@@ -11,11 +11,11 @@ import {
     isArray,
     matchRegex,
 } from '../helpers/utils';
-import DBService from './DB.service';
 
 const fieldMapping = {
     endDate: (uid, value) => dataFormService.mapDate(uid, value),
     startDate: (uid, value) => dataFormService.mapDate(uid, value),
+    creationDate: (uid, value) => dataFormService.mapDate(uid, value),
 };
 
 const fields = {
@@ -77,7 +77,9 @@ export const dataFormService = {
 
     cleanDateFormat: (field) => {
         const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
-        const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
+        const needClean =
+            ['endDate', 'startDate', 'creationDate'].indexOf(subObjectType) >
+            -1;
 
         if (needClean) {
             // remove empty date values in date format yyyy-mm-dd
@@ -151,8 +153,9 @@ export const dataFormService = {
 
     uniqueField: (params) => {
         const [value, subObject, sectionId, field, formName] = params;
+        const section = sectionId ? `${subObject}#${sectionId}` : subObject;
 
-        const uid = getUniqueId(formName, `${subObject}#${sectionId}`, field);
+        const uid = getUniqueId(formName, section, field);
 
         const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
 
@@ -168,14 +171,10 @@ export const dataFormService = {
 
     infiniteField: (params) => {
         const [values, subObject, sectionId, field, formName] = params;
+        const section = sectionId ? `${subObject}#${sectionId}` : subObject;
 
         return values.map((value, vIndex) => {
-            const uid = getUniqueId(
-                formName,
-                `${subObject}#${sectionId}`,
-                field,
-                vIndex
-            );
+            const uid = getUniqueId(formName, section, field, vIndex);
 
             return {
                 uid,
@@ -183,6 +182,35 @@ export const dataFormService = {
                 infinite: true,
             };
         });
+    },
+
+    objectFields: (object, formName) => {
+        const keys = Object.keys(object);
+        let objFields = [];
+
+        for (let i = 0; i < keys.length; i++) {
+            const currentField = keys[i];
+            const value = object[currentField];
+
+            if (
+                mapFields(formName).indexOf(currentField) > -1 &&
+                (value || typeof value === 'boolean')
+            ) {
+                const infinite = isArray(value);
+
+                objFields.push(
+                    ...fields[infinite](
+                        value,
+                        'general',
+                        '',
+                        currentField,
+                        formName
+                    )
+                );
+            }
+        }
+
+        return objFields;
     },
 
     subObjectsFields: (subObjects, formName) => {
@@ -237,16 +265,16 @@ export const dataFormService = {
             false: () => fields,
         };
 
-        const checkStoreObject = storeObjects.indexOf(formName) > -1;
+        // const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
-        if (checkStoreObject) {
-            // indexDB
-            await DBService.setList(
-                listFields[!!filter](fields),
-                formName,
-                false
-            );
-        }
+        // if (checkStoreObject) {
+        //     // indexDB
+        //     await DBService.setList(
+        //         listFields[!!filter](fields),
+        //         formName,
+        //         false
+        //     );
+        // }
 
         return listFields[!!filter](fields);
     },
@@ -261,7 +289,7 @@ export const dataFormService = {
             promises.push({ url, requestOptions });
         }
 
-        // GET all subObjects of an Object
+        // GET all subObjects of the Object
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
@@ -350,22 +378,26 @@ export const dataFormService = {
                 bodyObject[field] = currentObj[field];
             } else {
                 const field = matchRegex(`([^\_]+)$`, uid);
-                bodyObject[field] = value;
+                // TODO shitty null
+                bodyObject[field] = value || null;
             }
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
+        // handle case general or with subObject
+        const url = {
+            true: `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
+            false: `/api/${objectType}/${objectId}`,
+        };
         const response = await fetch(
-            `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
+            url[!!(subObjectType && subObjectId)],
             requestOptions
         );
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ response }) => {
-                return response;
-            })
+            .then(({ response }) => response)
             .catch((err) => {
                 return Promise.reject(err);
             });

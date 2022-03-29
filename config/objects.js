@@ -8,16 +8,17 @@ import { configValidator as configValidatorOfficialDocumentId } from '../compone
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
 import { configValidator as configValidatorPersonSocialmedias } from '../components/ContribPerson/configValidatorSocialmedias';
-import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
-import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 
+import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
+
+import { configValidator as configValidatorStructure } from '../components/ContribStructure/configValidator';
+import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 import { configValidator as configValidatorStructureLinks } from '../components/ContribStructure/configValidatorLinks';
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
-
 import { configValidator as configValidatorStructureNames } from '../components/ContribStructure/configValidatorNames';
 import { configValidator as configValidatorStructureSocialmedias } from '../components/ContribStructure/configValidatorSocialmedias';
-
 import { configValidator as configValidatorStructureWeblinks } from '../components/ContribStructure/configValidatorWeblinks';
+
 import { configValidator as configValidatorTermNames } from '../components/ContribTerm/configValidatorNames';
 
 const structureSubObjects = [
@@ -32,7 +33,7 @@ const structureSubObjects = [
         },
     },
     {
-        subObject: 'socialmedias',
+        subObject: 'socials',
         initBody: {
             type: '',
             account: '',
@@ -133,12 +134,13 @@ export const configValidators = {
         links: configValidatorStructureLinks,
         localisations: configValidatorStructureLocalisations,
         weblinks: configValidatorStructureWeblinks,
-        socialmedias: configValidatorStructureSocialmedias,
+        socials: configValidatorStructureSocialmedias,
+        general: configValidatorStructure,
     },
     person: {
         identifiers: configValidatorPersonIdentifiers,
         names: configValidatorPersonNames,
-        socialmedias: configValidatorPersonSocialmedias,
+        socials: configValidatorPersonSocialmedias,
     },
     category: {
         identifiers: configValidatorCategoryIdentifiers,

@@ -119,8 +119,9 @@ export const objectService = {
                     } ${target.locality || ''} ${target.country || ''}`;
                 }
 
-                if (property === 'geometry') {
-                    return Object.keys(target.geometry).length > 0
+                if (property === 'coordinates') {
+                    return target.coordinates &&
+                        Object.keys(target.coordinates).length > 0
                         ? target[property]
                         : null;
                 }

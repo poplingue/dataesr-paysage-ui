@@ -16,8 +16,6 @@ import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import WrapperFieldType from '../WrapperFieldType';
 
-let timer;
-
 export default function FormAccordionItem({
     content,
     sectionTitle,
@@ -29,13 +27,7 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: {
-            validSections,
-            updateObjectId,
-            savingSections,
-            storeObjects,
-            forms,
-        },
+        stateForm: { validSections, updateObjectId, storeObjects, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -131,7 +123,12 @@ export default function FormAccordionItem({
                 .map(dataFormService.cleanDateFormat);
 
             return dataFormService
-                .save(cleanedForm, object, updateObjectId, subObject)
+                .save(
+                    cleanedForm,
+                    object,
+                    updateObjectId,
+                    subObject === 'general' ? '' : subObject
+                )
                 .then(async () => {
                     return fieldsToSaved(filteredForm);
                 })

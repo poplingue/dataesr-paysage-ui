@@ -39,9 +39,8 @@ export default function ToggleMode({ inputMode, uid, children, active }) {
                     })}
                 </Col>
                 {active && (
-                    <Col n="12" spacing="py-2w">
+                    <Col spacing="py-2w" className="txt-right">
                         <Icon
-                            color=""
                             size="2x"
                             name={
                                 inputMode ? 'ri-toggle-fill' : 'ri-toggle-line'

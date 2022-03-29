@@ -81,7 +81,7 @@ export default function GroupField({
                 );
             });
 
-            // TODO make generic (and handle geometry)
+            // TODO make generic (and handle coordinates)
             const coordinates = newValue
                 ? [...groupValues, parseFloat(newValue)]
                 : groupValues;
