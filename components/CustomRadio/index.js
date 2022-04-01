@@ -1,15 +1,26 @@
 import { Radio, RadioGroup } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators, getUrl } from '../../helpers/constants';
 import grid from '../../helpers/imports';
-import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import {
+    getFieldValue,
+    getFormName,
+    getSubObjectType,
+    getUniqueId,
+    isFieldUnSaved,
+} from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
+import { FieldDependency } from '../FieldDependencie';
+import SavingWrapper from '../SavingWrapper';
 
+// TODO add proptypes
 function CustomRadio({
     title,
+    defaultLabel,
+    hint,
     staticValues = [],
     subObject,
     validatorId,
@@ -18,6 +29,8 @@ function CustomRadio({
     const { Col, Row, Container } = grid();
 
     const [radioValues, setRadioValues] = useState([]);
+    const [currentLabel, setCurrentLabel] = useState(defaultLabel);
+
     const {
         stateForm: { forms, storeObjects },
         dispatchForm: dispatch,
@@ -26,57 +39,51 @@ function CustomRadio({
         pathname,
         query: { object },
     } = useRouter();
-    const validatorConfig = object
-        ? configValidators[object][validatorId]
+
+    const validatorConfig = configValidators[object]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
+
     const formName = getFormName(pathname, object);
-    const uid = getUniqueId(formName, subObject, title);
+    const uid = getUniqueId(formName, subObject, validatorId);
+    const unSaved = isFieldUnSaved(forms, formName, uid);
+
     const { checkField, message, type } = useValidator(validatorConfig);
 
     const onRadioChange = async (value) => {
         const checkStoreObject = storeObjects.indexOf(formName) > -1;
 
+        const payload = {
+            value,
+            uid,
+            unSaved: true,
+        };
+
         dispatch({
             type: 'UPDATE_FORM_FIELD',
-            payload: { value, uid, formName },
+            payload: { ...payload, formName },
         });
 
         if (checkStoreObject) {
-            await DBService.set(
-                {
-                    value,
-                    uid,
-                },
-                formName
-            );
+            await DBService.set(payload, formName);
         }
     };
 
     useEffect(() => {
-        if (!staticValues.length && !radioValues.length) {
-            // case no static values
-            fetch(getUrl(title))
-                .then((res) => res.json())
-                .then(() => {
-                    // fake data
-                    const fakeData = ['1', '2', '3'].map((s) => {
-                        return { value: s, label: s };
-                    });
-                    setRadioValues(fakeData);
-                });
-        } else if (!radioValues.length) {
+        if (!radioValues.length) {
             setRadioValues(
-                staticValues.map((value) => {
-                    return { value, label: value };
+                staticValues.map(({ value, labelValue }) => {
+                    return { value, label: labelValue };
                 })
             );
         }
 
         checkField({
-            value: getFieldValue(forms, formName, uid),
+            value: currentLabel || getFieldValue(forms, formName, uid),
             mode: 'silent',
         });
     }, [
+        currentLabel,
         checkField,
         formName,
         forms,
@@ -89,7 +96,20 @@ function CustomRadio({
 
     const onChange = (e) => {
         const { value } = e.target;
-        onRadioChange(value);
+
+        setCurrentLabel('');
+
+        const lowValue = value.toLowerCase();
+
+        const checkValue = {
+            true: () => lowValue === 'true',
+            false: () => value,
+        };
+
+        onRadioChange(
+            checkValue[lowValue === 'true' || lowValue === 'false']()
+        );
+
         checkField({ value });
         updateValidSection(null, null);
     };
@@ -99,39 +119,67 @@ function CustomRadio({
     }, [type, uid, updateValidSection]);
 
     return (
-        <Container fluid>
-            <section className="wrapper-input">
-                <Row>
-                    <Col spacing="py-1w">
-                        <RadioGroup
-                            legend={title}
-                            data-field={uid}
-                            message={message}
-                            messageType={type}
-                        >
-                            {radioValues.map((radio, i) => {
-                                const { value, label } = radio;
-                                const checked = formName
-                                    ? value ===
-                                      getFieldValue(forms, formName, uid)
-                                    : false;
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <Container fluid>
+                <section className="wrapper-input">
+                    <Row>
+                        <Col spacing="py-1w">
+                            <SavingWrapper unSaved={unSaved}>
+                                <RadioGroup
+                                    isInline
+                                    legend={title}
+                                    hint={hint}
+                                    data-field={uid}
+                                    message={message}
+                                    messageType={type}
+                                >
+                                    {radioValues.map((radio, i) => {
+                                        const { value, label } = radio;
+                                        let checked = false;
 
-                                return (
-                                    <Radio
-                                        data-cy={value}
-                                        key={i}
-                                        label={label}
-                                        value={value}
-                                        checked={checked}
-                                        onChange={onChange}
-                                    />
-                                );
-                            })}
-                        </RadioGroup>
-                    </Col>
-                </Row>
-            </section>
-        </Container>
+                                        // TODO refacto
+                                        // case defaultLabel
+                                        if (currentLabel) {
+                                            checked = label === currentLabel;
+                                        }
+
+                                        // case indexDB data
+                                        if (
+                                            formName &&
+                                            getFieldValue(
+                                                forms,
+                                                formName,
+                                                uid
+                                            ) !== ''
+                                        ) {
+                                            checked =
+                                                value ===
+                                                getFieldValue(
+                                                    forms,
+                                                    formName,
+                                                    uid
+                                                );
+                                        }
+
+                                        return (
+                                            <Radio
+                                                size="sm"
+                                                data-cy={value}
+                                                key={i}
+                                                label={label}
+                                                value={value.toString()}
+                                                checked={checked}
+                                                onChange={onChange}
+                                            />
+                                        );
+                                    })}
+                                </RadioGroup>
+                            </SavingWrapper>
+                        </Col>
+                    </Row>
+                </section>
+            </Container>
+        </FieldDependency>
     );
 }
 

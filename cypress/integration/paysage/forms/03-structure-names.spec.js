@@ -3,72 +3,122 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
-    afterEach(() => {
-        cy.signOut();
-    });
-
-    // it('should add Name section', () => {
-    //     cy.get('[data-testid="btn-add-names"]').click();
-    //
-    //     cy.get('[data-field="update/structure@names#2_officialName"]')
-    //         .find('input')
-    //         .should('be.visible');
-    // });
-
-    it('should save in new section', () => {
-        cy.get('[data-field="update/structure@names#1_officialName"]')
-            .find('input')
-            .type('Officiel1');
-
-        cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait('@patch');
-
+    it('should add Name section', () => {
         cy.get('[data-testid="btn-add-names"]').click();
 
-        cy.sectionsNoSticky();
+        cy.intercept('POST', '/api/structure/**').as('post');
 
-        cy.get('[data-field="update/structure@names#2_officialName"]')
-            .find('input')
-            .type('Officiel2');
+        cy.wait('@post').then((interception) => {
+            cy.get(
+                `[data-field="contrib/structure@names#${interception.response.body.id}_officialName"]`
+            )
+                .find('input')
+                .should('be.visible');
+        });
+    });
 
-        cy.get('[data-testid="noms#2-save-button"]').click();
-        cy.wait('@patch');
+    it('should save in new section', () => {
+        cy.getCookie('nameId').then((cookie) => {
+            const id = cookie.value;
 
-        cy.reload();
-        cy.sectionsNoSticky();
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-field="update/structure@names#2_officialName"]')
-            .find('input')
-            .should('have.value', 'Officiel2');
+            cy.get(`[data-field="contrib/structure@names#${id}_officialName"]`)
+                .find('input')
+                .type('Officiel1');
+
+            cy.get(`[data-field="contrib/structure@names#${id}_usualName"]`)
+                .find('input')
+                .type('Usuel1');
+
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+
+            cy.wait('@patch');
+
+            cy.intercept('POST', '/api/structure/**').as('post');
+
+            cy.get('[data-testid="btn-add-names"]').click();
+
+            cy.wait('@post').then((interception) => {
+                cy.sectionsNoSticky();
+
+                const id2 = interception.response.body.id;
+
+                cy.intercept('PATCH', '/api/structure/**').as('patch');
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
+                )
+                    .find('input')
+                    .type('Officiel2');
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_usualName"]`
+                )
+                    .find('input')
+                    .type('Usuel2');
+
+                cy.get(`[data-testid="names#${id2}-save-button"]`).click();
+
+                cy.wait('@patch');
+
+                cy.reload();
+                cy.sectionsNoSticky();
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
+                )
+                    .find('input')
+                    .should('have.value', 'Officiel2');
+            });
+        });
     });
 
     it('should delete new section', () => {
         cy.intercept('DELETE', '/api/structure/**').as('delete');
         cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-field="update/structure@names#1_brandName"]')
-            .find('input')
-            .type('Brand1');
+        cy.getCookie('nameId').then((cookie) => {
+            const id = cookie.value;
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait('@patch');
+            cy.mandatoryStructureFields(id);
 
-        cy.get('[data-testid="btn-add-names"]').click();
-        cy.sectionsNoSticky();
+            cy.get(`[data-field="contrib/structure@names#${id}_brandName"]`)
+                .find('input')
+                .type('Brand1');
 
-        cy.get('[data-field="update/structure@names#2_brandName"]')
-            .find('input')
-            .type('Brand2');
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+            cy.wait('@patch');
 
-        cy.get('[data-testid="btn-delete-noms#2"]').click();
-        cy.wait('@delete');
+            cy.intercept('POST', '/api/structure/**').as('post');
 
-        cy.get('[data-field="update/structure@names#2_officialName"]').should(
-            'not.exist'
-        );
+            cy.get('[data-testid="btn-add-names"]').click();
+
+            cy.wait('@post').then((interception) => {
+                cy.sectionsNoSticky();
+
+                const id2 = interception.response.body.id;
+
+                cy.intercept('DELETE', '/api/structure/**').as('delete');
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_brandName"]`
+                )
+                    .find('input')
+                    .type('Brand2');
+
+                cy.get(`[data-testid="btn-delete-names#${id2}"]`).click();
+
+                cy.wait('@delete');
+
+                cy.get(
+                    `[data-field="contrib/structure@names#${id2}_officialName"]`
+                ).should('not.exist');
+            });
+        });
     });
 });

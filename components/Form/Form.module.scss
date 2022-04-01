@@ -4,7 +4,14 @@
 
 .Item h3 {
     position: sticky;
-    top: 0;
+    z-index: 1;
+    top: 48px;
     background: var(--grey-925-125);
     color: var(--grey-50-1000);
+}
+
+@media (min-width: 767px) {
+    .Item h3 {
+        top: 0;
+    }
 }

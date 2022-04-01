@@ -1,9 +1,29 @@
 .CardLink {
     &.Yellow {
-        border-bottom: 3px solid var(--green-tilleul-verveine-main-707);
+        border-bottom: 3px solid var(--yellow-tournesol-main-731);
     }
 
     &.Pink {
         border-bottom: 3px solid var(--pink-tuile-main-556);
+    }
+
+    &.Blue {
+        border-bottom: 3px solid var(--blue-ecume-main-400);
+    }
+
+    &.Green {
+        border-bottom: 3px solid var(--green-bourgeon-main-640);
+    }
+
+    &.Purple {
+        border-bottom: 3px solid var(--purple-glycine-main-494);
+    }
+
+    &.Brown {
+        border-bottom: 3px solid var(--brown-caramel-main-648);
+    }
+
+    &.Archipel {
+        border-bottom: 3px solid var(--green-archipel-main-557);
     }
 }

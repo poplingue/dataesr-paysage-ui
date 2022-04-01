@@ -4,7 +4,7 @@ import useCSSProperty from '../../hooks/useCSSProperty';
 import FieldButton from '../FieldButton';
 import styles from './ShowMoreList.module.scss';
 
-export default function ShowMoreList({ children }) {
+export default function ShowMoreList({ display, children }) {
     const { Row } = grid();
 
     const { style: grey } = useCSSProperty('--grey-main-525');
@@ -22,6 +22,10 @@ export default function ShowMoreList({ children }) {
             text: 'Voir plus',
         },
     };
+
+    if (display < 2) {
+        return <Row gutters>{children}</Row>;
+    }
 
     return (
         <>

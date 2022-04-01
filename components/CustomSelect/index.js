@@ -2,11 +2,13 @@ import { Select } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators } from '../../helpers/constants';
 import {
+    arrayContains,
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
     matchRegex,
@@ -14,10 +16,12 @@ import {
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
-import WrapperField from '../WrapperField';
+import { FieldDependency } from '../FieldDependencie';
+import SavingWrapper from '../SavingWrapper';
 
 export default function CustomSelect({
     title,
+    onToggleChange,
     customOnChange,
     staticValues = [],
     newValue,
@@ -27,18 +31,20 @@ export default function CustomSelect({
     subObject,
 }) {
     const {
-        stateForm: { forms, storeObjects },
+        stateForm: { forms, storeObjects, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const [options, setOptions] = useState([]);
+    const [init, setInit] = useState(true);
+
     const {
         pathname,
         query: { object },
     } = useRouter();
 
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const formName = getFormName(pathname, object);
@@ -96,7 +102,7 @@ export default function CustomSelect({
 
     const onChangeObj = useMemo(() => {
         return {
-            true: (value, updateCheck) => customOnChange(value, updateCheck),
+            true: (value, options) => customOnChange(value, options),
             false: (value) => onSelectChange(value),
         };
     }, [customOnChange, onSelectChange]);
@@ -110,7 +116,7 @@ export default function CustomSelect({
 
     useEffect(() => {
         if (newValue !== undefined && newValueCheck) {
-            onChangeObj[!!customOnChange](newValue, false);
+            onChangeObj[!!customOnChange](newValue, { updateCheck: false });
         }
     }, [onSelectChange, newValueCheck, newValue, onChangeObj, customOnChange]);
 
@@ -118,49 +124,75 @@ export default function CustomSelect({
         if (!options.length) {
             setOptions(
                 staticValues.map((value) => {
-                    return { value: value, label: value };
+                    return { value, label: value };
                 })
             );
             setOptions((prev) => [
                 ...prev,
-                { value: '', label: 'Sélectionnez...', disabled: true },
+                { value: '', label: '', disabled: true },
             ]);
         }
     }, [options, setOptions, staticValues, title]);
 
     const onChange = (e) => {
         const { value } = e.target;
-        onChangeObj[!!customOnChange](value);
+        onChangeObj[!!customOnChange](value, { updateCheck: false });
         handleValue(value);
         updateValidSection(null, null);
     };
+
+    useEffect(() => {
+        // init fieldsMode to type select
+        if (!fieldsMode[uid] && uid.endsWith('Year')) {
+            dispatch({
+                type: 'UPDATE_FIELDS_MODE',
+                payload: { [uid]: { mode: 'select' } },
+            });
+        }
+    }, [dispatch, fieldValue, fieldsMode, uid]);
+
+    useEffect(() => {
+        // case Date Year
+        if (onToggleChange) {
+            if (
+                !arrayContains(staticValues, fieldValue) &&
+                fieldValue &&
+                fieldsMode[uid] &&
+                fieldsMode[uid].mode === 'select'
+            ) {
+                onToggleChange(uid, 'input');
+            }
+        }
+    }, [fieldValue, fieldsMode, onToggleChange, staticValues, uid]);
 
     useEffect(() => {
         updateValidSection(uid, type);
     }, [type, uid, updateValidSection]);
 
     return (
-        <WrapperField
-            unSaved={unSaved}
-            inline={matchRegex(`Day|Year|Month$`, uid)}
-        >
-            <section className="wrapper-select">
-                <Select
-                    message={message}
-                    messageType={type || undefined}
-                    data-field={uid}
-                    onChange={onChange}
-                    selected={fieldValue}
-                    hint={`${
-                        validatorConfig && !validatorConfig.required
-                            ? '(optionnel)'
-                            : ''
-                    }`}
-                    label={title}
-                    options={options}
-                />
-            </section>
-        </WrapperField>
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <SavingWrapper
+                unSaved={unSaved}
+                inline={matchRegex(`Day|Year|Month$`, uid)}
+            >
+                <section className="wrapper-select">
+                    <Select
+                        message={message}
+                        messageType={type || undefined}
+                        data-field={uid}
+                        onChange={onChange}
+                        selected={fieldValue}
+                        hint={`${
+                            validatorConfig && !validatorConfig.required
+                                ? '(optionnel)'
+                                : ''
+                        }`}
+                        label={title}
+                        options={options}
+                    />
+                </section>
+            </SavingWrapper>
+        </FieldDependency>
     );
 }
 

@@ -15,9 +15,7 @@ const components = {
 export default function Structure({ children, skeleton }) {
     const { Col, Row } = grid();
 
-    const { style: yellow } = useCSSProperty(
-        '--green-tilleul-verveine-main-707'
-    );
+    const { style: yellow } = useCSSProperty('--yellow-tournesol-main-731');
     const { expanded } = useAccordions(true);
 
     return (

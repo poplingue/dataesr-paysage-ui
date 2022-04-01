@@ -1,22 +1,35 @@
 import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useReducer } from 'react';
 import DBService from '../services/DB.service';
-import reducersForm from './ReducersForm';
-import reducersList from './ReducersList';
-import reducersPage from './ReducersPage';
+import reducerForm from './ReducerForm';
+import reducerList from './ReducerList';
+import reducerPage from './ReducerPage';
 
 export const AppContext = createContext();
 
 export const DataProvider = ({ user, error, children }) => {
-    const initialState = {
+    // TODO refacto forms from { subObjects } from '../../config/objects';
+    const initialStateForm = {
         darkTheme: false,
         storeObjects: [],
         objectFormType: '',
         validSections: [],
         departments: [],
         updateObjectId: Cookies.get('updateObjectId') || '',
-        forms: [{ 'update/person': [] }, { 'update/structure': [] }],
+        forms: [
+            { 'contrib/person': [] },
+            { 'contrib/structure': [] },
+            { 'contrib/category': [] },
+            { 'contrib/price': [] },
+            { 'contrib/term': [] },
+            { 'contrib/legalCategory': [] },
+            { 'contrib/document': [] },
+            { 'contrib/officialDocument': [] },
+        ],
         savingSections: [],
+        currentObject: {},
+        dependencies: {},
+        fieldsMode: {},
     };
 
     const initialStateList = {
@@ -42,15 +55,9 @@ export const DataProvider = ({ user, error, children }) => {
         userConnected: user && Object.keys(user).length > 0,
     };
 
-    const [stateForm, dispatchForm] = useReducer(reducersForm, initialState);
-    const [stateList, dispatchList] = useReducer(
-        reducersList,
-        initialStateList
-    );
-    const [statePage, dispatchPage] = useReducer(
-        reducersPage,
-        initialStatePage
-    );
+    const [stateForm, dispatchForm] = useReducer(reducerForm, initialStateForm);
+    const [stateList, dispatchList] = useReducer(reducerList, initialStateList);
+    const [statePage, dispatchPage] = useReducer(reducerPage, initialStatePage);
 
     const cbInit = (storeObjects) => {
         dispatchForm({
@@ -60,7 +67,20 @@ export const DataProvider = ({ user, error, children }) => {
     };
 
     useEffect(() => {
-        DBService.init(['update/person', 'update/structure'], cbInit);
+        // TODO refacto forms from { subObjects } from '../../config/objects';
+        DBService.init(
+            [
+                'contrib/person',
+                'contrib/structure',
+                'contrib/category',
+                'contrib/officialDocument',
+                'contrib/price',
+                'contrib/document',
+                'contrib/legalCategory',
+                'contrib/term',
+            ],
+            cbInit
+        );
     }, []);
 
     return (

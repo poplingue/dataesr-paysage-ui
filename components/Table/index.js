@@ -6,7 +6,7 @@ import useCSSProperty from '../../hooks/useCSSProperty';
 
 export default function Table({ columns, data }) {
     const deleteRow = (props) => {
-        console.log('==== LOG ==== ', props.cell._cell.row.delete());
+        console.log('==== deleteRow ==== ', props.cell._cell.row.delete());
     };
 
     const DeleteButton = (props) => {

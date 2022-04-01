@@ -12,17 +12,37 @@
 // -- This is a parent command --
 const baseUrl = Cypress.env('baseUrl');
 
+Cypress.on('uncaught:exception', () => false);
+
 Cypress.Commands.add('newStructure', () => {
-    cy.get('[data-cy="update/structure"]').click();
+    cy.get('[data-cy="contrib/structure"]').click();
 
-    cy.intercept('PATCH', '/api/structure/**').as('patch');
+    cy.intercept('POST', '/api/structure/**').as('post');
 
-    cy.wait(3000);
+    cy.wait('@post').then((interception) => {
+        // TODO improve set cookie
+        if (interception.response.body.subObjects[0].value.id) {
+            cy.setCookie(
+                'nameId',
+                interception.response.body.subObjects[0].value.id
+            );
+            cy.setCookie(
+                'identifierId',
+                interception.response.body.subObjects[5].value.id
+            );
+            cy.setCookie(
+                'localisationId',
+                interception.response.body.subObjects[2].value.id
+            );
+        }
+    });
 
-    cy.sectionsNoSticky();
+    cy.sectionsNoSticky(2000);
 });
 
-Cypress.Commands.add('sectionsNoSticky', () => {
+Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1600) => {
+    cy.wait(timeToWait);
+
     cy.document().then((document) => {
         const accordions = document.querySelectorAll('.fr-accordion');
 
@@ -35,8 +55,8 @@ Cypress.Commands.add('sectionsNoSticky', () => {
 });
 
 Cypress.Commands.add('signIn', () => {
-    const password = Cypress.env('password');
-    const account = Cypress.env('account');
+    const password = Cypress.env('PASSWORD');
+    const account = Cypress.env('ACCOUNT');
 
     cy.request({
         method: 'POST',
@@ -48,7 +68,9 @@ Cypress.Commands.add('signIn', () => {
             account: account,
         },
     }).then((response) => {
-        cy.setCookie('tokens', JSON.stringify(response.body));
+        if (Object.keys(response.body).length) {
+            cy.setCookie('tokens', JSON.stringify(response.body));
+        }
     });
 });
 
@@ -84,4 +106,14 @@ Cypress.Commands.add('deleteIndexDB', () => {
         window.indexedDB.deleteDatabase('SERVICE_FORMS');
         resolve();
     });
+});
+
+Cypress.Commands.add('mandatoryStructureFields', (id) => {
+    cy.get(`[data-field="contrib/structure@names#${id}_officialName"]`)
+        .find('input')
+        .type('Officiel');
+
+    cy.get(`[data-field="contrib/structure@names#${id}_usualName"]`)
+        .find('input')
+        .type('Usuel');
 });

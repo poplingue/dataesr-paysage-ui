@@ -1,8 +1,8 @@
 import dynamic from 'next/dynamic';
 import grid from '../../helpers/imports';
 
+const HomeSearch = dynamic(() => import('../../components/HomeSearch'));
 const HeaderLayout = dynamic(() => import('../../components/HeaderLayout'));
-const CardLink = dynamic(() => import('../../components/CardLink'));
 const Layout = dynamic(() => import('../../components/Layout'));
 
 export default function Search() {
@@ -11,14 +11,21 @@ export default function Search() {
     return (
         <Layout>
             <HeaderLayout pageTitle="Recherche" />
-            <Container>
+            <Container fluid>
                 <Row>
-                    <Col>
-                        <CardLink
-                            link={`/object/person/8`}
-                            info="Une personne"
-                        />
+                    <Col spacing="mb-5w">
+                        <HomeSearch defaultType="" switchPage />
                     </Col>
+                </Row>
+                <Row>
+                    <Container>
+                        <Row>
+                            <Col>...Filtres</Col>
+                        </Row>
+                        <Row>
+                            <Col>...Résultat de recherche</Col>
+                        </Row>
+                    </Container>
                 </Row>
             </Container>
         </Layout>

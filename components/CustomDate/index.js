@@ -2,18 +2,17 @@ import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
-import { fetchHelper } from '../../helpers/fetch';
 import grid from '../../helpers/imports';
 import {
     camelCase,
     cleanString,
+    getField,
     getFormName,
     getUniqueId,
-    lastChar,
     range,
-    sliceEnd,
 } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
@@ -36,17 +35,18 @@ export default function CustomDate({
     const [newValueCheck, setNewValueCheck] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { forms, storeObjects, updateObjectId, fieldsMode },
         dispatchForm: dispatch,
     } = useContext(AppContext);
-
     const {
         pathname,
         query: { object },
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
+    const currentField = getField(forms, formName, uid) || undefined;
     const camelValidator = camelCase(validatorId);
+
     const daysObj = {
         options: days,
         fieldId: `${camelValidator}Day`,
@@ -70,6 +70,7 @@ export default function CustomDate({
     };
 
     const initDateData = [daysObj, monthsObj, yearsObj];
+    const [dateData, setDateData] = useState(initDateData);
 
     const updateDate = useCallback(
         async (payload) => {
@@ -83,8 +84,6 @@ export default function CustomDate({
         },
         [dispatch, formName, storeObjects]
     );
-
-    const [dateData, setDateData] = useState(initDateData);
 
     const automaticDate = async (when) => {
         const now = new Date();
@@ -139,25 +138,17 @@ export default function CustomDate({
             },
         });
 
+        // clean fieldsMode object
+        dispatch({ type: 'DELETE_FIELDS_MODE', payload: uids });
+
         await DBService.deleteList(uids, formName);
 
-        // TODO move to ServiceForm
-        const requestOptions = fetchHelper.requestOptions('PATCH', {
-            [validatorId]: '',
-        });
-        const subObjectType = sliceEnd(subObject);
-        const subObjectId = lastChar(subObject);
-
-        const response = await fetch(
-            `/api/structure/${updateObjectId}/${subObjectType}/${subObjectId}`,
-            requestOptions
-        );
-
-        await response.json();
-
-        setDateData(initDateData);
-
-        NotifService.info('Date supprimée', 'valid');
+        dataFormService
+            .deleteField(object, updateObjectId, subObject, validatorId, '')
+            .then(() => {
+                setDateData(initDateData);
+                NotifService.info('Date supprimée', 'valid');
+            });
     };
 
     return (
@@ -174,29 +165,31 @@ export default function CustomDate({
                             {title}
                         </Text>
                     </Col>
-                    <Col n="10 xl-3" spacing="p-1w">
+                    <Col n="12 xl-3" spacing="p-1w">
                         <Container fluid>
                             <Row gutters>
-                                <Col n="4 xl-12">
+                                <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
-                                        dataTestId={`today-${validator}`}
+                                        dataTestId={`today-${validator}-${subObject}`}
                                         title="Aujourd'hui"
                                         onClick={() => automaticDate('today')}
                                     />
                                 </Col>
-                                <Col n="4 xl-12">
+                                <Col n="xs-6 md-4 xl-12">
                                     <FieldButton
-                                        dataTestId={`firstJanuary-${validator}`}
+                                        dataTestId={`firstJanuary-${validator}-${subObject}`}
                                         title="1er janvier"
                                         onClick={() =>
                                             automaticDate('firstJanuary')
                                         }
                                     />
                                 </Col>
-                                <Col n="4 xl-12">
+                                <Col n="xs-12 md-4 xl-12">
                                     <DeleteButton
+                                        dataTestId={`btn-delete-${validator}-${subObject}`}
                                         background={grey}
                                         display
+                                        disabled={!currentField}
                                         onClick={deleteDate}
                                         title={validatorId}
                                     />
@@ -205,17 +198,15 @@ export default function CustomDate({
                         </Container>
                     </Col>
                     <Col n="12 xl-9">
-                        <Row gutters>
-                            <DateBlock
-                                updateValidSection={updateValidSection}
-                                setNewValueCheck={setNewValueCheck}
-                                newValueCheck={newValueCheck}
-                                validatorId={validatorId}
-                                updateDate={updateDate}
-                                data={dateData}
-                                subObject={subObject}
-                            />
-                        </Row>
+                        <DateBlock
+                            updateValidSection={updateValidSection}
+                            setNewValueCheck={setNewValueCheck}
+                            newValueCheck={newValueCheck}
+                            validatorId={validatorId}
+                            updateDate={updateDate}
+                            data={dateData}
+                            subObject={subObject}
+                        />
                     </Col>
                 </Row>
             </Container>

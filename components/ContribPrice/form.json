@@ -1,0 +1,43 @@
+[
+  {
+    "form": [
+      {
+        "title": "Dénomination",
+        "subObject": "names",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Nom français",
+            "type": "text",
+            "validatorId": "nameFr"
+          },
+          {
+            "title": "Nom anglais",
+            "type": "text",
+            "validatorId": "nameEn"
+          },
+          {
+            "title": "Description",
+            "type": "text",
+            "validatorId": "description"
+          },
+          {
+            "title": "Date de début",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
+          }
+        ]
+      }
+    ]
+  }
+]

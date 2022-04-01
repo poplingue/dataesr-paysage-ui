@@ -1,27 +1,33 @@
 import { TextInput } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
-import { configValidators } from '../../helpers/constants';
 import {
     getFieldValue,
     getFormName,
+    getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
 } from '../../helpers/utils';
 import useValidator from '../../hooks/useValidator';
 import DBService from '../../services/DB.service';
-import WrapperField from '../WrapperField';
+import SavingWrapper from '../SavingWrapper';
+import Suggest from '../Suggest';
 
 function Input({
     label,
+    hint,
     index,
     subObject,
     infinite = false,
     value: initValue,
+    onGroupChange,
     updateValidSection,
     validatorId,
+    suggest = false,
+    customOnChange,
 }) {
     const {
         stateForm: { forms, storeObjects },
@@ -34,11 +40,13 @@ function Input({
     } = useRouter();
 
     const validatorConfig = object
-        ? configValidators[object][validatorId]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const { checkField, message, type } = useValidator(validatorConfig);
     const [textValue, setTextValue] = useState(initValue || '');
+    const [focus, setFocus] = useState(false);
+
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(
         formName,
@@ -47,8 +55,14 @@ function Input({
         infinite ? index : null
     );
 
-    const currentValue = getFieldValue(forms, formName, uid);
-    const unSaved = isFieldUnSaved(forms, formName, uid);
+    const currentValue = useMemo(
+        () => getFieldValue(forms, formName, uid),
+        [formName, forms, uid]
+    );
+    const unSaved = useMemo(
+        () => isFieldUnSaved(forms, formName, uid),
+        [formName, forms, uid]
+    );
 
     const saveValue = useCallback(
         async (value) => {
@@ -66,7 +80,6 @@ function Input({
                 payload: { ...payload, formName },
             });
 
-            // TODO add unSaved Radio
             if (checkStoreObject) {
                 await DBService.set(payload, formName);
             }
@@ -79,8 +92,18 @@ function Input({
         checkField({ value });
         setTextValue(value);
         updateValidSection(null, null);
+        setFocus(true);
 
-        await saveValue(value);
+        if (onGroupChange) {
+            onGroupChange(e, uid);
+        } else {
+            await saveValue(value);
+        }
+
+        if (customOnChange) {
+            // case input Date
+            customOnChange(value, { fullDateOnly: true });
+        }
     };
 
     useEffect(() => {
@@ -101,6 +124,7 @@ function Input({
     }, [checkField, textValue]);
 
     useEffect(() => {
+        // set value from GlobalState
         if (textValue !== currentValue) {
             setTextValue(currentValue);
         }
@@ -108,25 +132,43 @@ function Input({
 
     useEffect(() => {
         updateValidSection(uid, type);
-    }, [type, uid, updateValidSection]);
+    }, [customOnChange, textValue, type, uid, updateValidSection]);
 
-    return (
-        <WrapperField unSaved={unSaved}>
-            <TextInput
-                message={message}
-                messageType={type}
-                data-field={uid}
-                data-testid={validatorId}
-                onChange={onChange}
-                value={textValue}
-                hint={`${
+    const renderTextInput = (
+        <TextInput
+            onBlur={() => setFocus(false)}
+            onChange={onChange}
+            message={message}
+            messageType={type}
+            data-field={uid}
+            data-testid={validatorId}
+            value={textValue}
+            hint={
+                hint ||
+                `${
                     validatorConfig && !validatorConfig.required
                         ? '(optionnel)'
                         : ''
-                }`}
-                label={label}
-            />
-        </WrapperField>
+                }`
+            }
+            label={label}
+        />
+    );
+
+    return (
+        <SavingWrapper unSaved={unSaved}>
+            <Suggest
+                focus={focus}
+                subObject={subObject}
+                suggest={suggest}
+                value={textValue}
+                validatorId={validatorId}
+                onChange={onChange}
+                onGroupChange={onGroupChange}
+            >
+                {renderTextInput}
+            </Suggest>
+        </SavingWrapper>
     );
 }
 
@@ -134,10 +176,12 @@ Input.defaultProps = {
     value: '',
     index: 0,
     infinite: false,
+    suggest: false,
     updateValidSection: () => {},
 };
 
 Input.propTypes = {
+    suggest: PropTypes.bool,
     infinite: PropTypes.bool,
     label: PropTypes.string.isRequired,
     index: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

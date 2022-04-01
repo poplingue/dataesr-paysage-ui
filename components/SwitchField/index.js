@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { configValidators } from '../../helpers/constants';
+import { configValidators } from '../../config/objects';
+import { getSubObjectType } from '../../helpers/utils';
 import CustomCheckbox from '../CustomCheckbox';
 import CustomDate from '../CustomDate';
 import CustomInput from '../CustomInput';
@@ -13,18 +14,24 @@ export default function SwitchField({
     value,
     validatorId,
     title,
+    suggest,
+    onGroupChange,
     infinite,
     staticValues,
-    index,
     section,
     updateValidSection,
     subObject,
+    hint,
+    defaultLabel,
 }) {
     const {
         query: { object },
     } = useRouter();
-    const validatorConfig = object
-        ? configValidators[object][validatorId]
+
+    const validatorConfig = configValidators[object][
+        getSubObjectType(subObject)
+    ]
+        ? configValidators[object][getSubObjectType(subObject)][validatorId]
         : null;
 
     const renderSwitch = (type) => {
@@ -32,18 +39,22 @@ export default function SwitchField({
             case 'text':
                 return (
                     <CustomInput
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
                         value={value}
                         infinite={infinite}
                         section={section}
                         subObject={subObject}
+                        suggest={suggest}
                     />
                 );
             case 'select':
                 return (
                     <CustomSelect
+                        onGroupChange={onGroupChange}
                         newValue={value}
                         updateValidSection={updateValidSection}
                         title={title}
@@ -55,6 +66,7 @@ export default function SwitchField({
             case 'multiSearch':
                 return (
                     <MultiSearch
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
@@ -64,12 +76,14 @@ export default function SwitchField({
             case 'radio':
                 return (
                     <CustomRadio
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
                         staticValues={staticValues}
-                        index={index}
                         subObject={subObject}
+                        defaultLabel={defaultLabel}
                     />
                 );
             case 'date':
@@ -84,21 +98,22 @@ export default function SwitchField({
             case 'toggle':
                 return (
                     <CustomToggle
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         title={title}
                         validatorId={validatorId}
-                        index={index}
                         subObject={subObject}
                     />
                 );
             case 'checkbox':
                 return (
                     <CustomCheckbox
+                        onGroupChange={onGroupChange}
                         updateValidSection={updateValidSection}
                         staticValues={staticValues}
                         title={title}
+                        hint={hint}
                         validatorId={validatorId}
-                        index={index}
                         subObject={subObject}
                     />
                 );

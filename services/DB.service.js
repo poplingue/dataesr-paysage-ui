@@ -1,5 +1,5 @@
 import { deleteDB, openDB } from 'idb';
-import { getVal } from '../helpers/constants';
+import { getVal } from '../config/utils';
 import NotifService from './Notif.service';
 
 const DBService = {
@@ -144,6 +144,7 @@ const DBService = {
 
         promises.push(tx.done);
 
+        // TODO add Promise.allSettled()
         return await Promise.all(promises);
     },
 
@@ -168,6 +169,7 @@ const DBService = {
 
             promises.push(tx.done);
 
+            // TODO add Promise.allSettled()
             return await Promise.all(promises);
         }
     },

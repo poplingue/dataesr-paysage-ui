@@ -1,16 +1,14 @@
 import cookie from 'cookie';
 import { genericErrorMsg, invalidToken } from './internalMessages';
+import { cookieOptions } from './utils';
 
 export const fetchHelper = {
-    setCookieTokens: (res, tokens, maxAge = 60 * 60) => {
+    setCookieTokens: (res, tokens, maxAge = cookieOptions.maxAge) => {
         res.setHeader(
             'Set-Cookie',
             cookie.serialize('tokens', JSON.stringify(tokens), {
-                httpOnly: true,
-                secure: process.env.NODE_ENV !== 'development',
+                ...cookieOptions,
                 maxAge,
-                sameSite: 'strict',
-                path: '/',
             })
         );
     },
@@ -35,10 +33,10 @@ export const fetchHelper = {
                 response,
             } = jsonResponses[i];
             const length = response.url.split('/').length - 1;
-            const subObject = response.url.split('/')[length];
+            const subObjectType = response.url.split('/')[length];
 
             if (response.status >= 200 && response.status < 400) {
-                merged.push({ data, subObject });
+                merged.push({ data, subObject: subObjectType });
             }
         }
 
@@ -75,6 +73,7 @@ export const fetchHelper = {
                 return Promise.resolve({ response, data });
             });
     },
+
     requestOptions: (method, body, tokens, opts = {}) => {
         let options = {
             method,

@@ -1,10 +1,9 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
+import { getObjectTypeDetails } from '../../../config/utils';
 import { AppContext } from '../../../context/GlobalState';
-import { getObjectType } from '../../../helpers/constants';
 import grid from '../../../helpers/imports';
-import useCSSProperty from '../../../hooks/useCSSProperty';
 
 const CardInfo = dynamic(() => import('./../../../components/CardInfo'));
 const CardLink = dynamic(() => import('./../../../components/CardLink'));
@@ -23,11 +22,12 @@ export default function Category(props) {
         stateList: { exportMode },
     } = useContext(AppContext);
     const { category } = router.query;
-    const { style: color } = useCSSProperty(getObjectType(category).color);
-    const [selection, setSelection] = useState([]);
 
+    const { name: objectType, title } = getObjectTypeDetails(category);
+
+    const [selection, setSelection] = useState([]);
     const [elements, setElements] = useState(() => {
-        const items = props[getObjectType(category).name] || [];
+        const items = props[objectType] || [];
 
         return items.map((structure, i) => {
             return { ...structure, checked: false };
@@ -37,7 +37,7 @@ export default function Category(props) {
     // TODO replace by <Card>
     const onTileClick = (id) => {
         if (!exportMode) {
-            router.push(`/object/${getObjectType(category).name}/${id}`);
+            router.push(`/object/${objectType}/${id}`);
         } else {
             const newList = elements.map((elm) => {
                 return {
@@ -52,9 +52,7 @@ export default function Category(props) {
 
     return (
         <Layout>
-            <HeaderLayout
-                pageTitle={`Liste catégorie : ${getObjectType(category).title}`}
-            />
+            <HeaderLayout pageTitle={`Liste catégorie : ${title}`} />
             <Container>
                 <Row>
                     <Col>

@@ -13,6 +13,15 @@ const okPaths = [
     '/favicon/favicon.ico',
     '/api/auth/sign-in',
     '/api/auth/signup',
+    '/api/structure',
+    '/api/category',
+    '/api/person',
+    '/api/officialDocument',
+    '/api/legalCategory',
+    '/api/price',
+    '/api/term',
+    '/api/document',
+    '/api/term',
     '/api/user/me',
     '/api/auth/refresh-access-token',
     '/api/auth/send-password-renewal-code',
@@ -24,21 +33,21 @@ const okPaths = [
 export async function middleware(request) {
     const headersCookies = request.headers.get('cookie');
     const cookies = cookie.parse(headersCookies ? headersCookies : '');
-    const currentPathName = request.nextUrl.pathname;
+    const nextPathname = request.nextUrl.pathname;
     const pattern = okPaths.join('|');
     let re = new RegExp(pattern, 'i');
 
     // // tokens | okPaths | home
     if (
         Object.keys(cookies).includes('tokens') ||
-        re.test(currentPathName) ||
-        currentPathName === '/'
+        re.test(nextPathname) ||
+        nextPathname === '/'
     ) {
         return NextResponse.next();
     }
 
-    if (!Object.keys(cookies).includes('tokens') && !re.test(currentPathName)) {
-        return NextResponse.redirect('/account/sign-in');
+    if (!Object.keys(cookies).includes('tokens') && !re.test(nextPathname)) {
+        return NextResponse.redirect(new URL('/account/sign-in', request.url));
     }
 
     return NextResponse.next();

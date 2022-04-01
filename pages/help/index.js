@@ -18,6 +18,7 @@ export default function Help() {
 
     const {
         statePage: { user },
+        stateForm: { updateObjectId },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -75,6 +76,14 @@ export default function Help() {
                             text={lostPasswordMsg}
                         />
                     </Col>
+                    {updateObjectId && (
+                        <Col>
+                            <LinkClick
+                                href={`/contrib/structure/${updateObjectId}`}
+                                text={`Reprendre la modification de l'objet ${updateObjectId}`}
+                            />
+                        </Col>
+                    )}
                 </Row>
             </Container>
         </Layout>

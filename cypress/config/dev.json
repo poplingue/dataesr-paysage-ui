@@ -1,8 +1,6 @@
 {
   "baseUrl": "http://localhost:3002",
   "env": {
-    "baseUrl": "http://localhost:3002",
-    "account": "hequce@mailinator.com",
-    "password": "Polk000!"
+    "baseUrl": "http://localhost:3002"
   }
 }

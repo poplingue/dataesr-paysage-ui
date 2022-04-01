@@ -1,11 +1,16 @@
-import { Modal, ModalContent, ModalTitle } from '@dataesr/react-dsfr';
+import {
+    Modal,
+    ModalContent,
+    ModalFooter,
+    ModalTitle,
+} from '@dataesr/react-dsfr';
 import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 
 export default function ModalDetail() {
     const {
         statePage: {
-            modalDetail: { title, open, content },
+            modalDetail: { title, open, content, footer },
         },
         dispatchPage: dispatch,
     } = useContext(AppContext);
@@ -23,6 +28,7 @@ export default function ModalDetail() {
         >
             <ModalTitle>{title || 'No Title'}</ModalTitle>
             <ModalContent>{content || 'No content'}</ModalContent>
+            {footer && <ModalFooter>{footer}</ModalFooter>}
         </Modal>
     );
 }

@@ -1,5 +1,9 @@
-.listElement {
+.ListElement {
+    label {
+        padding: 0 5px;
+    }
+
     &:hover label {
-        background: var(--grey-625-425);
+        background: var(--grey-925-125);
     }
 }

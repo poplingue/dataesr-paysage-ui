@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      CYPRESS_ACCOUNT: ${{secrets.CYPRESS_ACCOUNT}}
+      CYPRESS_PASSWORD: ${{secrets.CYPRESS_PASSWORD}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

@@ -7,9 +7,9 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/update/person',
-    pathname: '/update/[object]',
-    query: { object: 'person' },
+    route: '/contrib/structure',
+    pathname: '/contrib/[object]',
+    query: { object: 'structure' },
 }));
 
 jest.mock('react', () => ({
@@ -41,8 +41,8 @@ describe('Field component', () => {
                 infinite
                 label="Label"
                 value="Content value"
-                subObject="subObject"
-                validatorId="validator-infinite"
+                subObject="names#K7L3c9M5"
+                validatorId="shortName"
             />
         );
     });
@@ -57,20 +57,24 @@ describe('Field component', () => {
 
     it('should have Title as data-field case infinite', () => {
         const uniqueId = getUniqueId(
-            'update/person',
-            'subObject',
-            'validator-infinite',
+            'contrib/structure',
+            'names#K7L3c9M5',
+            'shortName',
             1
         );
 
-        expect(screen.getByTestId('validator-infinite')).toHaveAttribute(
+        expect(screen.getByTestId('shortName')).toHaveAttribute(
             'data-field',
             uniqueId
         );
     });
 
     it('should have Title as data-field', () => {
-        const uniqueId = getUniqueId('update/person', 'subObject', 'validator');
+        const uniqueId = getUniqueId(
+            'contrib/structure',
+            'names#K7L3c9M5',
+            'othernames'
+        );
 
         wrapper = render(
             <Input
@@ -90,12 +94,12 @@ describe('Field component', () => {
                 infinite={false}
                 label="Label"
                 value="Content value"
-                subObject="subObject"
-                validatorId="validator"
+                subObject="names#K7L3c9M5"
+                validatorId="othernames"
             />
         );
 
-        expect(screen.getByTestId('validator')).toHaveAttribute(
+        expect(screen.getByTestId('othernames')).toHaveAttribute(
             'data-field',
             uniqueId
         );

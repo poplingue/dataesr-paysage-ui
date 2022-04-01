@@ -1,3 +1,4 @@
+
 # paysage-ui
 
 > Frontend application of new Paysage project.
@@ -13,9 +14,9 @@ UI is managed with package [@dataesr/react-dsfr](https://www.npmjs.com/package/@
 ## Getting Started
 
 Add .env file
+
 ```
 NEXT_API_URL=''
-BASE_PATH=''
 API_URL=''
 API_AUTH_URL=''
 ```
@@ -28,6 +29,129 @@ yarn dev
 
 Open [http://localhost:3002](http://localhost:3002)
 
+## Use forms
+
+### Example adding a new field in a form
+
+#### first...
+
+```bash
+# /ContribStructure/form.json 
+
+{
+   "title": "My new field",
+   "type": "text | checkbox | multisearch | radio",
+   "validatorId": "myMajorValidatorId",
+   "staticValues": [...],
+   "dependency": {
+      "validatorId": "myMinorValidatorId",
+      "action": "disabled | hidden",
+      "rule": "validator | emptiness"
+    }
+ }
+```
+
+#### ...then...
+
+```bash
+# /ContribStructure/configValidator.json 
+
+myValidatorId: {
+    validators: [
+        (value) => ({
+            valid: value.length > 2,
+            errorMsg: 'Au moins 2 caractères',
+        }),
+    ],
+    required: true,
+}
+```
+
+#### finally...
+
+```bash
+# config/utils.js 
+
+const obj = {
+      'contrib/structure': [
+          ...,
+          'myNewfield'
+      ]
+}
+```
+
+### Add suggestions autocomplete to an input field
+
+```bash
+
+# form.json
+
+{
+  "title": "Adresse",
+  "type": "text",
+  "suggest": true,
+  "validatorId": "address"
+}
+```
+
+```js
+// config/utils.js
+
+// Add url to getUrl function
+
+function getUrl(key) {
+    const urls = {
+        address: 'https://expernal-api/search?baseConfig=true'
+    }
+}
+```
+
+```js
+// ExternalAPI.service.js
+
+// Create new API function calling function handleResp
+function myNewAPI(query, validatorId) {
+    const myBody = {
+        q: query
+    }
+  
+    externalAPI.handleResp(myBody, validatorId, 'myNewAPI');
+}
+```
+
+```js
+// ExternalAPI.service.js
+
+// Add type of API
+function getAPI(validatorId) {
+    const typesByValidatorId = {
+        'address': externalAPI.myNewAPI
+    }
+}
+```
+
+```js
+// ExternalAPI.service.js
+
+// Build response for suggestions field and for updates fields
+function myNewAPI_address(data) {
+    return data.map(({ d }) => {
+        return {
+            suggestion: {
+                label: d.label,
+                value: d.value,
+            },
+            updates: [
+                {
+                    validatorId: 'field_to_update',
+                    value: d.otherValue,
+                },
+            ]
+        }
+    })
+}
+```
+
 ## Tests
 
 Launch unit tests and watcher
@@ -37,6 +161,14 @@ yarn test
 ```
 
 ### Cypress
+
+To run tests you must export variables:
+
+```bash
+export CYPRESS_ACCOUNT=my_account
+
+export CYPRESS_PASSWORD=my_password
+```
 
 ### With browser
 
@@ -57,7 +189,8 @@ yarn dev
 yarn cy:run-rec
 ```
 
-`cypress/integration/paysage/3-user/account.spec.js` needs Mollie Dickinson Inactive and Mollie Dickinson Active users. Be certain to have it in DB for Cypress account tests.
+Tests in `cypress/integration/paysage/user/**.spec.js` need Mollie Dickinson Inactive and Mollie Dickinson Active users.
+Be certain to have it in DB for Cypress account tests.
 
 ```
 {
@@ -74,15 +207,20 @@ yarn cy:run-rec
   username: 'mollie-inactive',
 }
 ```
+
 ## IndexDB
 
-IndexDB is used to store data from forms. On each change value is updated in SERVICE_FORMS database with a unique key.
+IndexDB is used to store data from forms. On each change of value is updated in SERVICE_FORMS database the unique key
+with the following pattern:
 
-:warning: If objectStore names change, version of the database must be updated in `helpers/constants.js`
+`pathname@[section#id]_[nameId]#[eq]`
+
+:warning: If objectStore names change, version of the database must be updated in `helpers/utils-contants.js`
 
 ## Errors handler
 
-ErrorBoundary can be used to catch runtime error. As this feature doesn't work with server side rendering, it must wrapped a NoSSRWrapper component.
+ErrorBoundary can be used to catch runtime error. As this feature doesn't work with server side rendering, it must
+wrapped a NoSSRWrapper component.
 
 ## Learn More
 
@@ -114,12 +252,14 @@ docker-compose up --build
 
 * add unit tests for complex components
 * add possibility of comments to section/field
-* adding link to section/field 
+* adding link to section/field
 * improve DynamicBreadcrumb system
 * add middleware functions for theme
 * Forms: compare data from DB and data from IndexDB
-  * check validation field
-  * check validation section
+    * check validation field
+    * check validation section
 * https://www.telerik.com/blogs/generating-pdf-html-react-example-exporting-data-grids?utm_medium=cpm&utm_source=reactnewsletter&utm_campaign=kendo-ui-react-awareness-prod-masters-of-the-grid&utm_content=generating-pdf-html&utm_content=blog-generating-pdf-h&ck_subscriber_id=1366272460
-* manage dark mode
 * Navigation focus accessibility
+* autocomplete Location https://api-adresse.data.gouv.fr
+* fill fields based on autocomplete click
+* Manage telephone pattern with .replaceAll()

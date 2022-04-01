@@ -1,16 +1,16 @@
 import { Accordion, AccordionItem, Icon } from '@dataesr/react-dsfr';
+import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import styles from './Form.module.scss';
 
-// TODO add proptypes
-export default function AccordionForm({
-    size = 'lg',
-    newTitle,
+function AccordionForm({
+    size = 'md',
+    sectionTitle,
+    sectionId,
     children,
     dataSection,
     spacing,
@@ -20,7 +20,7 @@ export default function AccordionForm({
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: grey } = useCSSProperty('--grey-850');
     const { style: dark } = useCSSProperty('--grey-50-1000');
-    const { style: orange } = useCSSProperty('--warning-main-525');
+    const { style: orange } = useCSSProperty('--text-default-warning');
 
     const [sectionStatus, setSectionStatus] = useState('neutral');
     const { expanded } = useAccordions(true);
@@ -30,12 +30,12 @@ export default function AccordionForm({
     } = useContext(AppContext);
 
     useEffect(() => {
-        const section = validSections[cleanString(newTitle)];
+        const section = validSections[sectionId];
 
         if (section) {
             setSectionStatus(section.saved ? 'valid' : 'warning');
         }
-    }, [newTitle, savingSections, validSections]);
+    }, [savingSections, sectionId, validSections]);
 
     const renderTitle = () => {
         const colorIcon = {
@@ -51,7 +51,7 @@ export default function AccordionForm({
                 size="1x"
                 name="ri-shield-check-line"
             >
-                {newTitle}
+                {sectionTitle}
             </Icon>
         );
     };
@@ -64,7 +64,6 @@ export default function AccordionForm({
                         className={styles.Accordion}
                         color={dark}
                         keepOpen
-                        data-cy="accordion"
                         size={size}
                         data-section={dataSection}
                     >
@@ -81,3 +80,22 @@ export default function AccordionForm({
         </Container>
     );
 }
+
+AccordionForm.default = {
+    size: 'md',
+    spacing: '',
+    dataSection: '',
+};
+AccordionForm.propTypes = {
+    size: PropTypes.string,
+    sectionTitle: PropTypes.string.isRequired,
+    sectionId: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.string,
+    ]).isRequired,
+    dataSection: PropTypes.string,
+    spacing: PropTypes.string,
+};
+export default AccordionForm;

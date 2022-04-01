@@ -5,6 +5,7 @@ export const emailPatternHint =
 
 export const activationCodePattern = '^\\d{6}$';
 export const lostPasswordMsg = "J'ai perdu mon mot de passe";
+export const noData = 'Donnée vide';
 export const inactiveUserError = 'Utilisateur inactif';
 export const genericErrorMsg = 'Une erreur est survenue';
 export const passwordErrorMsg = 'Mot de passe incorrect';
@@ -18,6 +19,7 @@ export const codeMandatoryMsg = "Code d'activation obligatoire";
 export const activateAdviceMsg = 'Activez votre compte';
 export const connectToAccessMsg = 'Connectez-vous pour accéder';
 export const noTokensError = 'No Tokens';
+export const connexionNeeded = 'Vous devez être connecté';
 
 // External errors
 export const combinationError = 'Mauvaise combinaison utilisateur/mot de passe';

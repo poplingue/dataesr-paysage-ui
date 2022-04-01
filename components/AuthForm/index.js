@@ -1,14 +1,9 @@
 import { Button, TextInput } from '@dataesr/react-dsfr';
 import { yupResolver } from '@hookform/resolvers/yup';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 
-// TODO add proptypes
-export default function AuthForm({
-    schema,
-    onSubmit,
-    validationSchema,
-    disable,
-}) {
+function AuthForm({ schema, onSubmit, validationSchema }) {
     const formOptions = {
         resolver: yupResolver(validationSchema),
         mode: 'onChange',
@@ -50,9 +45,24 @@ export default function AuthForm({
                     />
                 );
             })}
-            <Button title="Valider" submit disabled={disable || isSubmitting}>
+            <Button title="Valider" submit disabled={isSubmitting}>
                 Valider
             </Button>
         </form>
     );
 }
+
+AuthForm.propTypes = {
+    schema: PropTypes.arrayOf(
+        PropTypes.shape({
+            required: PropTypes.bool.isRequired,
+            label: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    validationSchema: PropTypes.any.isRequired,
+};
+
+export default AuthForm;

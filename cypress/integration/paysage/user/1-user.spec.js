@@ -10,10 +10,10 @@ context('Account manager', () => {
         cy.get('[name="password"]').type('Polk000!');
         cy.get('form').submit();
 
-        cy.wait('@auth');
-
-        cy.location().should((loc) => {
-            expect(loc.pathname).to.eq('/account/activate-account');
+        cy.wait('@auth').then((interception) => {
+            cy.location().should((loc) => {
+                expect(loc.pathname).to.eq('/account/activate-account');
+            });
         });
     });
 
@@ -25,11 +25,12 @@ context('Account manager', () => {
         cy.get('[name="account"]').type('mollie-active.dickinson@email.com');
         cy.get('[name="password"]').type('Polk000!');
         cy.get('form').submit();
+
         cy.wait('@auth');
 
         cy.get('[data-cy=user]').should(
             'have.text',
-            'Salut à toi mollie-active'
+            'Salut à toi Mollie Dickinson'
         );
     });
 });

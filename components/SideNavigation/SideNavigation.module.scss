@@ -40,19 +40,39 @@
     right: 50px;
 }
 
-.Sticky {
-    width: 100vw;
-    position: fixed;
+.StickyMobile {
+    position: sticky;
     top: 0;
     z-index: 100;
+    width: 100%;
 }
 
 .Yellow button {
-    color: var(--green-tilleul-verveine-main-707);
+    color: var(--yellow-tournesol-main-731);
 }
 
 .Pink button {
     color: var(--pink-tuile-main-556);
+}
+
+.Green button {
+    color: var(--green-bourgeon-main-640);
+}
+
+.Purple button {
+    color: var(--purple-glycine-main-494);
+}
+
+.Brown button {
+    color: var(--brown-caramel-main-648);
+}
+
+.Archipel button {
+    color: var(--green-archipel-main-557);
+}
+
+.Blue button {
+    color: var(--blue-ecume-main-400);
 }
 
 @media (min-width: 767px) {

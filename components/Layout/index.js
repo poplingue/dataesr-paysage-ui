@@ -13,7 +13,6 @@ import {
     ToolItem,
     ToolItemGroup,
 } from '@dataesr/react-dsfr';
-import getConfig from 'next/config';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -55,10 +54,7 @@ const FooterBottom = dynamic(() =>
     import('@dataesr/react-dsfr').then((mod) => mod.FooterBottom)
 );
 
-const { publicRuntimeConfig } = getConfig();
-
-// TODO add propTypes
-export default function Layout({ children, headTitle }) {
+function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
@@ -69,9 +65,10 @@ export default function Layout({ children, headTitle }) {
     } = useContext(AppContext);
 
     const router = useRouter();
+    const noUser = !Object.keys(user).length;
 
     useEffect(() => {
-        if (!Object.keys(user).length) {
+        if (noUser) {
             accountService
                 .me()
                 .then((response) => {
@@ -94,7 +91,7 @@ export default function Layout({ children, headTitle }) {
                     });
                 });
         }
-    }, [dispatch, router, user]);
+    }, [dispatch, noUser, router, user]);
 
     const signOut = () => {
         authService
@@ -125,61 +122,42 @@ export default function Layout({ children, headTitle }) {
         <>
             <Head>
                 <title>{headTitle || 'Paysage'}</title>
-                <link
-                    rel="stylesheet"
-                    href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
-                />
-                <link
-                    rel="icon"
-                    href={`${publicRuntimeConfig.basePath}/favicon/favicon.ico`}
-                />
+                <link rel="icon" href="/favicon/favicon.ico" />
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
+                    href="/fonts/Marianne-Regular.woff"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Regular.woff" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
+                    href="/fonts/Marianne-Regular.woff2"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Regular.woff2`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Regular.woff2" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
+                    href="/fonts/Marianne-Bold.woff"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Bold.woff" />
                 </noscript>
                 <link
                     rel="preload"
-                    href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
+                    href="/fonts/Marianne-Bold.woff2"
                     as="font"
                     onLoad="this.onload=null;this.rel='font'"
                 />
                 <noscript>
-                    <link
-                        rel="font"
-                        href={`${publicRuntimeConfig.basePath}/fonts/Marianne-Bold.woff2`}
-                    />
+                    <link rel="font" href="/fonts/Marianne-Bold.woff2" />
                 </noscript>
             </Head>
             <Header>
@@ -193,8 +171,7 @@ export default function Layout({ children, headTitle }) {
                     />
                     <Tool closeButtonLabel="fermer">
                         <ToolItemGroup>
-                            {(user && user.username) ||
-                            error === inactiveUserError ? (
+                            {!noUser || error === inactiveUserError ? (
                                 <ToolItem
                                     onClick={signOut}
                                     icon="ri-user-3-line"
@@ -228,37 +205,41 @@ export default function Layout({ children, headTitle }) {
                         asLink={<NavLink href="/">Accueil</NavLink>}
                         current={pathname === '/'}
                     />
-                    <NavItem
-                        title="Je contribue"
-                        current={asPath.startsWith('/update')}
-                    >
-                        <NavSubItem
-                            title="Ajouter un nouvel object"
-                            asLink={<NavLink href="/update" />}
-                        />
-                    </NavItem>
-                    <NavItem title="Annuaire">
-                        <NavSubItem
-                            current={pathname.startsWith('/search/1')}
-                            title="Rechercher une personne"
-                            asLink={<NavLink href="/search" />}
-                        />
-                        <NavSubItem
-                            title="Listes qualifiées"
-                            asLink={<NavLink href="/list" />}
-                        />
-                    </NavItem>
-                    <NavItem title="Répertoire">
-                        <NavSubItem
-                            current={pathname.startsWith('/search')}
-                            title="Rechercher une structure"
-                            asLink={<NavLink href="/search/0" />}
-                        />
-                        <NavSubItem
-                            title="Listes qualifiées"
-                            asLink={<NavLink href="/list" />}
-                        />
-                    </NavItem>
+                    {!noUser && (
+                        <>
+                            <NavItem
+                                title="Je contribue"
+                                current={asPath.startsWith('/contrib')}
+                            >
+                                <NavSubItem
+                                    title="Ajouter un nouvel objet"
+                                    asLink={<NavLink href="/contrib" />}
+                                />
+                            </NavItem>
+                            <NavItem title="Annuaire">
+                                <NavSubItem
+                                    current={pathname.startsWith('/search/1')}
+                                    title="Rechercher une personne"
+                                    asLink={<NavLink href="/search/1" />}
+                                />
+                                <NavSubItem
+                                    title="Listes qualifiées"
+                                    asLink={<NavLink href="/list" />}
+                                />
+                            </NavItem>
+                            <NavItem title="Répertoire">
+                                <NavSubItem
+                                    current={pathname.startsWith('/search')}
+                                    title="Rechercher une structure"
+                                    asLink={<NavLink href="/search/0" />}
+                                />
+                                <NavSubItem
+                                    title="Listes qualifiées"
+                                    asLink={<NavLink href="/list" />}
+                                />
+                            </NavItem>
+                        </>
+                    )}
                     <NavItem
                         title="Ressources"
                         asLink={<NavLink href="/resources" />}
@@ -338,11 +319,9 @@ export default function Layout({ children, headTitle }) {
 }
 
 Layout.defaultProps = {
-    fluid: false,
     headTitle: '',
 };
 Layout.propTypes = {
-    fluid: PropTypes.bool,
     headTitle: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
@@ -350,3 +329,5 @@ Layout.propTypes = {
         PropTypes.string,
     ]).isRequired,
 };
+
+export default Layout;

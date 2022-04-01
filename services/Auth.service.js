@@ -4,8 +4,8 @@ import {
     combinationError,
     emailErrorMsg,
     genericErrorMsg,
-    passwordErrorMsg,
     invalidToken,
+    passwordErrorMsg,
 } from '../helpers/internalMessages';
 
 const authService = {
@@ -156,13 +156,9 @@ const authService = {
             refreshTokenUrl ||
             `${publicRuntimeConfig.baseApiUrl}/auth/refresh-access-token`;
 
-        // TODO requestOtion refacto
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({}),
-            credentials: 'include',
-        });
+        const requestOptions = fetchHelper.requestOptions('POST', {});
+
+        const response = await fetch(url, requestOptions);
 
         return fetchHelper
             .handleResponse(response)
@@ -171,9 +167,7 @@ const authService = {
 
                 return { response, data };
             })
-            .catch((err) => {
-                return Promise.reject(err);
-            });
+            .catch((err) => Promise.reject(err));
     },
     forgotPassword: async (email) => {
         const { publicRuntimeConfig } = getConfig();

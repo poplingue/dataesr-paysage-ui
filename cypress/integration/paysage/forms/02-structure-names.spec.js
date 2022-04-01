@@ -3,82 +3,102 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form', () => {
     beforeEach(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
-    afterEach(() => {
-        cy.signOut();
-    });
-
     it('should save Article Select field', () => {
-        cy.get('[data-field="update/structure@names#1_article"]')
-            .find('select')
-            .select('aux');
+        cy.getCookie('nameId').then((cookie) => {
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.intercept('PATCH', '/api/structure/**').as('patch');
+            const id = cookie.value;
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+            cy.mandatoryStructureFields(id);
 
-        cy.wait('@patch');
-        cy.reload();
+            cy.get(`[data-field="contrib/structure@names#${id}_article"]`)
+                .find('select')
+                .select('aux');
 
-        cy.get('[data-field="update/structure@names#1_article"]')
-            .find('select')
-            .should('have.value', 'aux');
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+
+            cy.wait('@patch');
+            cy.reload();
+
+            cy.get(`[data-field="contrib/structure@names#${id}_article"]`)
+                .find('select')
+                .should('have.value', 'aux');
+        });
     });
 
     it('should delete Othername field', () => {
-        cy.get('[data-field="update/structure@names#1_otherName#0"]')
-            .find('input')
-            .type('OtherName#0');
+        cy.getCookie('nameId').then((cookie) => {
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.get('[data-testid="btn-add"]').click();
+            const id = cookie.value;
 
-        cy.get('[data-field="update/structure@names#1_otherName#1"]')
-            .find('input')
-            .type('OtherName#1');
+            cy.mandatoryStructureFields(id);
 
-        cy.intercept('DELETE', '/api/structure/**').as('delete');
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
+                .find('input')
+                .type('OtherName#0');
 
-        cy.get('[data-testid="btn-delete-autrenom#1"]').click();
+            cy.get('[data-testid="btn-add"]').click();
 
-        cy.wait('@delete');
+            cy.get(`[data-field="contrib/structure@names#${id}_otherNames#1"]`)
+                .find('input')
+                .type('OtherName#1');
 
-        cy.get('[data-field="update/structure@names#1_otherName#1"]').should(
-            'not.exist'
-        );
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+
+            cy.wait('@patch');
+
+            cy.get('[data-testid="btn-delete-autrenom#1"]').click();
+
+            cy.wait('@patch');
+
+            cy.get(
+                `[data-field="contrib/structure@names#${id}_otherNames#1"]`
+            ).should('not.exist');
+        });
     });
 
     it('should save empty ShortName field', () => {
-        cy.get('[data-field="update/structure@names#1_shortName"]')
-            .find('input')
-            .type('ShortName');
+        cy.getCookie('nameId').then((cookie) => {
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.intercept('PATCH', '/api/structure/**').as('ShortName');
+            const id = cookie.value;
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+            cy.mandatoryStructureFields(id);
 
-        cy.wait('@ShortName');
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
+                .find('input')
+                .type('ShortName');
 
-        cy.reload();
-        cy.sectionsNoSticky();
+            cy.intercept('PATCH', '/api/structure/**').as('ShortName');
 
-        cy.get('[data-field="update/structure@names#1_shortName"]')
-            .find('input')
-            .type('toutouyoutou')
-            .clear();
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
 
-        cy.intercept('PATCH', '/api/structure/**').as('NoShortName');
+            cy.wait('@ShortName');
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
+            cy.reload();
+            cy.sectionsNoSticky();
 
-        cy.wait('@NoShortName');
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
+                .find('input')
+                .type('toutouyoutou')
+                .clear();
 
-        cy.reload();
+            cy.intercept('PATCH', '/api/structure/**').as('NoShortName');
 
-        cy.get('[data-field="update/structure@names#1_shortName"]')
-            .find('input')
-            .should('have.value', '');
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+
+            cy.wait('@NoShortName');
+
+            cy.reload();
+
+            cy.get(`[data-field="contrib/structure@names#${id}_shortName"]`)
+                .find('input')
+                .should('have.value', '');
+        });
     });
 });

@@ -1,0 +1,26 @@
+.IsHidden {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    clip-path: inset(50%) !important;
+    -webkit-clip-path: inset(50%) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+
+    input {
+        display: none;
+    }
+}
+
+.IsDisable {
+    label {
+        color: var(--text-mention-grey) !important;
+    }
+
+    input {
+        pointer-events: none;
+    }
+}

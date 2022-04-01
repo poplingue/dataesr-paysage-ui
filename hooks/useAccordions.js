@@ -1,14 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import FieldButton from '../components/FieldButton';
 import { AppContext } from '../context/GlobalState';
-import useCSSProperty from './useCSSProperty';
 
 const useAccordions = (init = false) => {
     const [expanded, setExpanded] = useState(init);
     const [list, setList] = useState([]);
-
-    const { style: pink } = useCSSProperty('--pink-tuile-main-556');
-    const { style: white } = useCSSProperty('--grey-1000');
 
     const { dispatchPage: dispatch } = useContext(AppContext);
 
@@ -57,12 +53,13 @@ const useAccordions = (init = false) => {
     const accordionClick = (section) => {
         const newList = [...list];
 
+        dispatch({ type: 'UPDATE_ACCORDION_ITEMS', payload: newList });
+
         for (let i = 0; i < newList.length; i++) {
             const currentList = newList[i];
 
             if (currentList.section === section) {
                 currentList.expanded = !currentList.expanded;
-                setList(newList);
 
                 return;
             }
@@ -71,19 +68,11 @@ const useAccordions = (init = false) => {
 
     const Button = (
         <FieldButton
-            colors={[pink, white]}
             dataTestId="btn-expand-close"
-            title="Réduire / Ouvrir"
+            title="Réduire / Ouvrir les sections"
             onClick={expandCloseAll}
         />
     );
-
-    useEffect(() => {
-        dispatch({
-            type: 'UPDATE_ACCORDION_ITEMS',
-            payload: list,
-        });
-    }, [dispatch, list]);
 
     useEffect(() => {
         const l = [];
@@ -98,10 +87,13 @@ const useAccordions = (init = false) => {
             }
 
             setList(l);
-        }
-    }, [list]);
 
-    return { expanded, Button, closeAll, expandAll, accordionClick };
+            // init Global state
+            dispatch({ type: 'UPDATE_ACCORDION_ITEMS', payload: l });
+        }
+    }, [dispatch, list]);
+
+    return { expanded, Button, closeAll, expandAll, accordionClick, list };
 };
 
 export default useAccordions;

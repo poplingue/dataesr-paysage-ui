@@ -8,7 +8,9 @@ export default function DeleteButton({
     display,
     title,
     index,
+    disabled,
     background,
+    dataTestId,
     onClick,
 }) {
     const { Col } = grid();
@@ -16,16 +18,26 @@ export default function DeleteButton({
     const { style: red } = useCSSProperty('--error-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
 
+    const confirmBeforeClick = (e) => {
+        if (confirm(`❗ Êtes-vous sûr·e ?`)) {
+            onClick(e);
+        }
+    };
+
     return (
         display && (
-            <Col n="2" className="txt-right">
+            <Col>
                 <FieldButton
-                    colors={[red, background || white]}
-                    dataTestId={`btn-delete-${cleanString(title)}${
-                        index ? `#${index}` : ''
-                    }`}
-                    onClick={onClick}
                     title="Supprimer"
+                    disabled={disabled}
+                    colors={disabled ? [] : [red, background || white]}
+                    onClick={confirmBeforeClick}
+                    dataTestId={
+                        dataTestId ||
+                        `btn-delete-${cleanString(title)}${
+                            index ? `#${index}` : ''
+                        }`
+                    }
                 />
             </Col>
         )

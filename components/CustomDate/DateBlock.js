@@ -1,12 +1,14 @@
-import { Col } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
+import Input from '../CustomInput/Input';
 import CustomSelect from '../CustomSelect';
+import ToggleMode from './ToggleMode';
 
 export default function DateBlock({
-    data,
+    data: fieldsData,
     subObject,
     updateDate,
     newValueCheck,
@@ -14,8 +16,11 @@ export default function DateBlock({
     updateValidSection,
     setNewValueCheck,
 }) {
+    const { Col, Container, Row } = grid();
+
     const {
-        stateForm: { forms },
+        stateForm: { forms, fieldsMode },
+        dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
         pathname,
@@ -23,12 +28,16 @@ export default function DateBlock({
     } = useRouter();
     const formName = getFormName(pathname, object);
     const uid = getUniqueId(formName, subObject, validatorId);
+    const dateValue = useMemo(
+        () => getFieldValue(forms, formName, uid) || 'yyyy-mm-dd',
+        [formName, forms, uid]
+    );
 
     const onChange = useCallback(
         async (regex, fieldId, params) => {
-            const [value, updateCheck] = params;
-            const dateValue =
-                getFieldValue(forms, formName, uid) || 'yyyy-mm-dd';
+            const [value, options] = params;
+            const { updateCheck = undefined, fullDateOnly = false } = options;
+
             const reg = new RegExp(regex);
             const newValue = dateValue.replace(reg, value);
             const currentDateValue = dateValue.match(reg);
@@ -46,7 +55,7 @@ export default function DateBlock({
             }
 
             // Save field (day, month or year)
-            if (currentFieldValue !== value) {
+            if (currentFieldValue !== value && !fullDateOnly) {
                 await updateDate({
                     value,
                     uid: fieldUid,
@@ -59,27 +68,68 @@ export default function DateBlock({
                 setNewValueCheck(updateCheck);
             }
         },
-        [formName, forms, setNewValueCheck, subObject, uid, updateDate]
+        [
+            dateValue,
+            formName,
+            forms,
+            setNewValueCheck,
+            subObject,
+            uid,
+            updateDate,
+        ]
     );
 
-    return data.map((select) => {
-        const { selectedValue, options, regex, fieldId, title } = select;
+    const renderInputs = () => {
+        return fieldsData.map((input) => {
+            const { selectedValue, options, regex, fieldId, title } = input;
+            const inputUID = getUniqueId(formName, subObject, fieldId);
+            let inputMode = false;
 
-        return (
-            <Col n="12 xl-4" key={title} spacing="py-1w">
-                <CustomSelect
-                    customOnChange={(...params) =>
-                        onChange(regex, fieldId, params)
-                    }
-                    updateValidSection={updateValidSection}
-                    title={title}
-                    validatorId={fieldId}
-                    staticValues={options}
-                    newValue={selectedValue}
-                    newValueCheck={newValueCheck}
-                    subObject={subObject}
-                />
-            </Col>
-        );
-    });
+            if (Object.keys(fieldsMode).length > 0 && fieldsMode[inputUID]) {
+                inputMode = fieldsMode[inputUID].mode === 'input';
+            }
+
+            return (
+                <Col n="12 xl-4" key={title}>
+                    <ToggleMode
+                        inputMode={inputMode}
+                        uid={inputUID}
+                        active={title === 'Année'}
+                    >
+                        {inputMode ? (
+                            <Input
+                                customOnChange={(...params) =>
+                                    onChange(regex, fieldId, params)
+                                }
+                                updateValidSection={updateValidSection}
+                                validatorId={fieldId}
+                                value={selectedValue}
+                                subObject={subObject}
+                                label={title}
+                            />
+                        ) : (
+                            <CustomSelect
+                                customOnChange={(...params) =>
+                                    onChange(regex, fieldId, params)
+                                }
+                                updateValidSection={updateValidSection}
+                                title={title}
+                                validatorId={fieldId}
+                                staticValues={options}
+                                newValue={selectedValue}
+                                newValueCheck={newValueCheck}
+                                subObject={subObject}
+                            />
+                        )}
+                    </ToggleMode>
+                </Col>
+            );
+        });
+    };
+
+    return (
+        <Container fluid>
+            <Row gutters>{renderInputs()}</Row>
+        </Container>
+    );
 }

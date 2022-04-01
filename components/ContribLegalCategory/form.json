@@ -1,0 +1,138 @@
+[
+  {
+    "form": [
+      {
+        "title": "Informations",
+        "subObject": "infos",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Code Insee",
+            "type": "text",
+            "validatorId": "insee"
+          },
+          {
+            "title": "Wikidata",
+            "type": "text",
+            "validatorId": "wikidata"
+          },
+          {
+            "title": "Document officiel",
+            "type": "text",
+            "validatorId": "officialDocumentId"
+          },
+          {
+            "title": "Secteur public",
+            "type": "radio",
+            "validatorId": "inPublicResearch",
+            "defaultLabel": "Recherche publique",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Recherche publique"
+              },
+              {
+                "value": false,
+                "labelValue": "Industrie"
+              }
+            ]
+          },
+          {
+            "title": "Personnalité legale",
+            "hint": "personne morale de droit public",
+            "type": "text",
+            "validatorId": "legalPersonality"
+          },
+          {
+            "title": "Secteur",
+            "type": "text",
+            "validatorId": "sector"
+          },
+          {
+            "title": "Nom français",
+            "type": "text",
+            "validatorId": "longNameFr"
+          },
+          {
+            "title": "Nom court français",
+            "type": "text",
+            "validatorId": "shortNameFr"
+          },
+          {
+            "title": "Acronyme français",
+            "type": "text",
+            "validatorId": "acronymFr"
+          },
+          {
+            "title": "Nom pluriel français",
+            "type": "text",
+            "validatorId": "pluralNameFr"
+          },
+          {
+            "title": "description français",
+            "type": "text",
+            "validatorId": "descriptionFr"
+          },
+          {
+            "title": "Nom anglais",
+            "type": "text",
+            "validatorId": "longNameFr"
+          },
+          {
+            "title": "Nom court anglais",
+            "type": "text",
+            "validatorId": "shortNameFr"
+          },
+          {
+            "title": "Acronyme anglais",
+            "type": "text",
+            "validatorId": "acronymEn"
+          },
+          {
+            "title": "Nom pluriel anglais",
+            "type": "text",
+            "validatorId": "pluralNameFr"
+          },
+          {
+            "title": "description anglais",
+            "type": "text",
+            "validatorId": "descriptionFr"
+          },
+          {
+            "title": "Autre dénomination",
+            "type": "text",
+            "infinite": true,
+            "validatorId": "otherNames"
+          },
+          {
+            "title": "Site web officiel fr",
+            "type": "text",
+            "hint": "url du site",
+            "validatorId": "websiteFr"
+          },
+          {
+            "title": "Site web officiel en",
+            "type": "text",
+            "hint": "url du site",
+            "validatorId": "websiteEn"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
+          },
+          {
+            "title": "Date de début",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          }
+        ]
+      }
+    ]
+  }
+]

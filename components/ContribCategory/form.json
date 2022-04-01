@@ -1,0 +1,69 @@
+[
+  {
+    "form": [
+      {
+        "title": "Identifiants",
+        "subObject": "identifiers",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type",
+            "dependency": {
+              "validatorId": "value",
+              "action": "hidden"
+            }
+          },
+          {
+            "title": "Valeur",
+            "type": "text",
+            "validatorId": "value"
+          },
+          {
+            "title": "État",
+            "type": "radio",
+            "validatorId": "active",
+            "defaultLabel": "Actif",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Actif"
+              },
+              {
+                "value": false,
+                "labelValue": "Inactif"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Weblinks",
+        "subObject": "weblinks",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type",
+            "dependency": {
+              "validatorId": "value",
+              "action": "hidden"
+            }
+          },
+          {
+            "title": "Url",
+            "type": "text",
+            "validatorId": "url"
+          },
+          {
+            "title": "Langage",
+            "type": "text",
+            "validatorId": "language"
+          }
+        ]
+      }
+    ]
+  }
+]

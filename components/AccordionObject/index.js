@@ -1,9 +1,7 @@
 import { Accordion, AccordionItem } from '@dataesr/react-dsfr';
 import PropTypes from 'prop-types';
-import {
-    PersonPageSkeletonPropType,
-    StructurePageSkeletonPropType,
-} from '../../helpers/constants';
+import { PersonPageSkeletonPropType } from '../../config/objects';
+import { StructurePageSkeletonPropType } from '../../config/propTypes';
 import grid from '../../helpers/imports';
 import { sectionUniqueId } from '../../helpers/utils';
 import useAccordions from '../../hooks/useAccordions';

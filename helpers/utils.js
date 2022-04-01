@@ -1,10 +1,79 @@
 /**
  *
+ * @param dirtyDate
+ * @returns {string}
+ */
+export function niceDate(dirtyDate) {
+    let niceDate = '';
+
+    if (dirtyDate) {
+        const date = new Date(dirtyDate);
+        niceDate = new Intl.DateTimeFormat('fr-FR').format(date);
+    }
+
+    return niceDate;
+}
+
+/**
+ *
+ * @param date
+ * @returns {{hasMonth: boolean, hasDay: boolean, onlyYear: boolean, splitDate: *}}
+ */
+export function checkDate(date) {
+    const splitDate = date.split('-');
+
+    const hasDay = splitDate.length === 3;
+    const hasMonth = splitDate.length >= 2;
+    const onlyYear = splitDate.length === 1;
+
+    return { hasDay, hasMonth, onlyYear, splitDate };
+}
+
+/**
+ *
+ * @param dirtyDate
+ * @returns {string}
+ */
+export function niceFullDate(dirtyDate) {
+    let niceDate = '';
+
+    if (dirtyDate) {
+        const date = new Date(dirtyDate);
+        const { hasDay, hasMonth } = checkDate(dirtyDate);
+
+        const options = {
+            day: hasDay ? 'numeric' : undefined,
+            month: hasMonth ? 'long' : undefined,
+            year: 'numeric',
+        };
+        niceDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+    }
+
+    return niceDate;
+}
+
+/**
+ *
  * @param str
  * @returns {*}
  */
-export function sliceEnd(str) {
-    return str.slice(0, -2);
+export function getSubObjectType(str) {
+    let newStr = str.slice(0, -9);
+
+    if (str.indexOf('#') < 0) {
+        newStr = str;
+    }
+
+    return newStr;
+}
+
+/**
+ *
+ * @param section
+ * @returns {*|string}
+ */
+export function getSubObjectId(section) {
+    return matchRegex(`[^#]*$`, section);
 }
 
 /**
@@ -71,22 +140,38 @@ export function containsObject(obj, array) {
 
 /**
  *
+ * @param array
+ * @param val
+ * @returns {boolean}
+ */
+export function arrayContains(array, val) {
+    let r = false;
+
+    if (array && val) {
+        r = array.indexOf(val) > -1;
+    }
+
+    return r;
+}
+
+/**
+ *
  * @param formName
  * @param nameId
  * @param eq
  * @param section
- * @returns {string} format pathname@[section#i]_[nameId]#[eq]
+ * @returns {string} format pathname@[section#id]_[nameId]#[eq]
  */
 export function getUniqueId(formName, section = '', nameId = '', eq = null) {
     const checkedEq = eq !== null && eq >= 0 ? `#${eq}` : '';
-    let uniqueId = `${formName}@${cleanString(section)}_${nameId}${checkedEq}`;
+    let uniqueId = `${formName}@${section}_${nameId}${checkedEq}`;
 
     if (!nameId && nameId !== 0) {
-        uniqueId = `${formName}@${cleanString(section)}_${nameId}`;
+        uniqueId = `${formName}@${section}_${nameId}`;
     }
 
     if (!nameId) {
-        uniqueId = `${formName}@${cleanString(section)}`;
+        uniqueId = `${formName}@${section}`;
     }
 
     return uniqueId;
@@ -173,7 +258,7 @@ export function getForm(forms, name) {
  * @param uid
  * @returns {RegExpExecArray}
  */
-export function getSection(uid) {
+export function getSectionName(uid) {
     const match = /(?<=\@).+?(?=\_)/.exec(uid);
 
     return match && match[0];
@@ -203,18 +288,56 @@ export function getFieldValue(forms, name, id) {
  * @param forms
  * @param name
  * @param id
- * @returns {*}
+ * @returns {{}}
  */
-export function isFieldUnSaved(forms, name, id) {
-    let fieldUnSaved = { unSaved: false };
+export function getField(forms, name, id) {
+    let field = {};
 
     if (getForm(forms, name) && id) {
-        fieldUnSaved = getForm(forms, name).find((field) => {
+        field = getForm(forms, name).find((field) => {
             return field.uid === id;
         });
     }
 
+    return field;
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {*}
+ */
+export function isFieldUnSaved(forms, name, id) {
+    let fieldUnSaved = { unSaved: false };
+    const form = getForm(forms, name) || [];
+
+    if (!!form.length && id) {
+        fieldUnSaved = form.find((field) => field.uid === id);
+    }
+
     return fieldUnSaved && fieldUnSaved.unSaved;
+}
+
+/**
+ *
+ * @param forms
+ * @param name
+ * @param id
+ * @returns {boolean}
+ */
+export function isFieldSuggest(forms, name, id) {
+    const form = getForm(forms, name);
+    let fieldSuggest = [];
+
+    if (!!form.length && id) {
+        fieldSuggest = form.find(
+            (field) => field.uid === id && !!field.suggest
+        );
+    }
+
+    return fieldSuggest && fieldSuggest.length > 0;
 }
 
 /**
@@ -239,11 +362,11 @@ export function setCSSProperty(property, value) {
 
 /**
  *
- * @param e
- * @param dataSection
+ * @param attribut
+ * @param value
  */
-export const goToSection = (e, dataSection) => {
-    const section = document.querySelector(`[data-section=${dataSection}]`);
+export const goToSection = (value, attribut = 'section') => {
+    const section = document.querySelector(`[data-${attribut}="${value}"]`);
 
     if (section) {
         const { left, top } = section.getBoundingClientRect();
@@ -274,14 +397,22 @@ export function cleanedPrintPage(pageId) {
  * @param value
  */
 export function isArray(value) {
+    if (typeof value === 'boolean') {
+        return false;
+    }
+
     return value && value.indexOf('') < 0;
 }
 
 export const idToPrint = 'page-to-print';
 export const noPrintClass = 'no-print';
+
 export const cookieOptions = {
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 60 * 60,
     path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict',
 };
 
 /**
@@ -300,4 +431,44 @@ export function matchRegex(pattern, str) {
     };
 
     return obj[!!matchField](matchField);
+}
+
+/**
+ *
+ * @type {{true: (function(): *[]), false: (function(*): *)}}
+ */
+export const checkFlatMap = {
+    false: () => [],
+    true: (value) => value,
+};
+
+/**
+ *
+ * @param arrayA
+ * @param arrayB
+ * @returns {*}
+ */
+export function arraysEqual(arrayA, arrayB) {
+    const arrayASorted = arrayA.slice().sort();
+    const arrayBSorted = arrayB.slice().sort();
+
+    return (
+        arrayA.length === arrayB.length &&
+        arrayBSorted.every((value, index) => value === arrayASorted[index])
+    );
+}
+
+/**
+ *
+ * @param str
+ * @returns {boolean}
+ */
+export function isNumber(str) {
+    let r = false;
+
+    if (str) {
+        r = /^\d+$/.test(str);
+    }
+
+    return r;
 }

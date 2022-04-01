@@ -1,4 +1,5 @@
 import {
+    ButtonGroup,
     Icon,
     Modal,
     ModalContent,
@@ -6,6 +7,7 @@ import {
     ModalTitle,
     Text,
 } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useState } from 'react';
 import ReactToPrint, { PrintContextConsumer } from 'react-to-print';
@@ -34,6 +36,10 @@ export default function ToolBox({
         statePage: { printPage, accordionSkeleton },
         dispatchPage: dispatch,
     } = useContext(AppContext);
+
+    const {
+        query: { type },
+    } = useRouter();
 
     const printThisOut = async (cb) => {
         validPrint().then((response) => {
@@ -153,10 +159,14 @@ export default function ToolBox({
                     >
                         <PrintContextConsumer>
                             {({ handlePrint }) => (
-                                <FieldButton
-                                    title="Valider"
-                                    onClick={() => printThisOut(handlePrint)}
-                                />
+                                <ButtonGroup>
+                                    <FieldButton
+                                        title="Valider"
+                                        onClick={() =>
+                                            printThisOut(handlePrint)
+                                        }
+                                    />
+                                </ButtonGroup>
                             )}
                         </PrintContextConsumer>
                     </ReactToPrint>

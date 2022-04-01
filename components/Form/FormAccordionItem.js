@@ -1,30 +1,29 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
-import { cleanString, getFormName, getSection } from '../../helpers/utils';
+import {
+    connexionNeeded,
+    genericErrorMsg,
+    invalidToken,
+} from '../../helpers/internalMessages';
+import { checkFlatMap, getFormName, getSectionName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
-import SwitchField from '../SwitchField';
+import WrapperFieldType from '../WrapperFieldType';
 
-const notif = {
-    valid: { msg: 'Données sauvegardées' },
-    error: {
-        msg: 'Erreur : tous les champs ne sont pas valides',
-        type: 'error',
-    },
-};
+let timer;
 
 export default function FormAccordionItem({
     content,
-    newTitle,
-    title,
+    sectionTitle,
     deletable = false,
     index,
+    suggest,
     subObject,
     deleteSection,
 }) {
@@ -35,6 +34,7 @@ export default function FormAccordionItem({
             updateObjectId,
             savingSections,
             storeObjects,
+            forms,
         },
         dispatchForm: dispatch,
     } = useContext(AppContext);
@@ -46,43 +46,29 @@ export default function FormAccordionItem({
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
-    const { style: orange } = useCSSProperty('--warning-main-525');
+    const { style: orange } = useCSSProperty('--text-default-warning');
     const [disabled, setDisabled] = useState(true);
 
     const updateValidSection = useCallback(
         (id, validType) => {
-            const title = cleanString(newTitle);
-            const validSection = validSections[title];
+            const validSection = validSections[subObject];
             let section = null;
-            const currentSection = getSection(id);
 
-            if (
-                (!id && !validType && disabled) ||
-                (savingSections.indexOf(currentSection) > -1 && disabled)
-            ) {
-                setDisabled(false);
-
-                section = {
-                    [title]: {
-                        ...validSection,
-                        ...{ saved: false },
-                    },
-                };
-            }
-
+            // case validType changes
             if (
                 id &&
                 (!validSection ||
                     (validSection && validSection[id] !== validType))
             ) {
                 section = {
-                    [title]: {
+                    [subObject]: {
                         ...validSection,
-                        ...{ [id]: validType, saved: disabled },
+                        ...{ [id]: validType, saved: false },
                     },
                 };
             }
 
+            // case section is updated
             if (section) {
                 dispatch({
                     type: 'UPDATE_VALID_SECTION',
@@ -90,19 +76,34 @@ export default function FormAccordionItem({
                 });
             }
         },
-        [newTitle, validSections, savingSections, disabled, dispatch]
+        [dispatch, subObject, validSections]
     );
 
+    /**
+     * handle submit button status
+     */
+    useEffect(() => {
+        if (validSections[subObject]) {
+            const valid =
+                Object.values(validSections[subObject]).indexOf('error') < 0;
+
+            if (valid && disabled) {
+                setDisabled(false);
+            } else if (!valid && !disabled) {
+                setDisabled(true);
+            }
+        }
+    }, [disabled, subObject, validSections]);
+
     const save = async () => {
-        const title = cleanString(newTitle);
-        const currentSection = validSections[title];
+        const currentSection = validSections[subObject];
 
         if (validSections && currentSection) {
             const valid = Object.values(currentSection).indexOf('error') < 0;
 
             const payload = {
                 section: {
-                    [title]: {
+                    [subObject]: {
                         ...currentSection,
                         ...{ saved: valid },
                     },
@@ -115,9 +116,9 @@ export default function FormAccordionItem({
             });
 
             // Save data
-            // TODO add objecStoreCheck
-            // TODO instead DBservice use form props??
-            const form = await DBService.getAllObjects(formName, true);
+            const form = forms.find(
+                (form) => Object.keys(form)[0] === formName
+            )[formName];
 
             const filteredForm = form
                 .filter((field) =>
@@ -130,12 +131,12 @@ export default function FormAccordionItem({
                 .map(dataFormService.cleanDateFormat);
 
             return dataFormService
-                .save(cleanedForm, updateObjectId, subObject)
+                .save(cleanedForm, object, updateObjectId, subObject)
                 .then(async () => {
                     return fieldsToSaved(filteredForm);
                 })
                 .catch((err) => {
-                    NotifService.info(err, 'error');
+                    return Promise.reject(err);
                 });
         }
     };
@@ -161,7 +162,7 @@ export default function FormAccordionItem({
                 },
                 formName
             ).then(() => {
-                resetDisabled(uid);
+                resetSaving(uid);
             });
         }
     };
@@ -169,9 +170,23 @@ export default function FormAccordionItem({
     const onSubmit = (e) => {
         e.preventDefault();
 
-        save().then(() => {
-            NotifService.info('Données sauvegardées', 'valid');
-        });
+        save()
+            .then(() => {
+                NotifService.info('Données sauvegardées', 'valid');
+            })
+            .catch((err) => {
+                // TODO add to NotifService
+
+                if (err === connexionNeeded || err === invalidToken) {
+                    NotifService.info(
+                        'Utilisateur inactif, rechargez votre page',
+                        'error'
+                    );
+                } else {
+                    console.error(err);
+                    NotifService.info(genericErrorMsg, 'error');
+                }
+            });
     };
 
     /**
@@ -183,26 +198,29 @@ export default function FormAccordionItem({
         fields.filter((field) => field.uid.indexOf(subObject) > -1);
 
     /**
-     * Delete all fields unSaved in indexDB and state and rollback to init Section fields
+     * Rollback to init Section fields and delete all fields unSaved in indexDB and state
      * @returns {Promise<void>}
      */
     const resetSection = async () => {
-        const title = cleanString(newTitle);
-        const validSection = validSections[title];
+        const validSection = validSections[subObject];
         const section = {
-            [title]: {
+            [subObject]: {
                 ...validSection,
                 ...{ saved: true },
             },
         };
-        const form = await DBService.getAllObjects(formName, true);
-        const uids = form.flatMap((f) => {
-            const { uid, unSaved } = f;
+        const form = forms.find((form) => Object.keys(form)[0] === formName)[
+            formName
+        ];
 
-            return uid.indexOf(subObject) > -1 && unSaved ? uid : [];
+        // get current section uids
+        const uids = form.flatMap((field) => {
+            const { uid, unSaved } = field;
+
+            return checkFlatMap[uid.indexOf(subObject) > -1 && !!unSaved](uid);
         });
 
-        // TODO refacto
+        // update global state
         dispatch({
             type: 'DELETE_FORM_FIELD_LIST',
             payload: {
@@ -211,8 +229,10 @@ export default function FormAccordionItem({
             },
         });
 
+        // update indexDB
         await DBService.deleteList(uids, formName);
 
+        // rollback to init data
         dataFormService
             .initFormSections(
                 object,
@@ -231,54 +251,39 @@ export default function FormAccordionItem({
                 });
             });
 
-        resetDisabled(uids[0]);
+        // rollback disabled status
+        resetSaving(uids[0]);
 
+        // update valid section with { saved: true } values
         dispatch({
             type: 'UPDATE_VALID_SECTION',
             payload: { section },
         });
     };
 
-    const resetDisabled = (uid) => {
-        const section = getSection(uid);
+    const resetSaving = (uid) => {
+        const section = getSectionName(uid);
 
         dispatch({
             type: 'DELETE_SAVING_SECTION',
             payload: { section },
         });
-
-        setDisabled(true);
     };
 
     return (
         <form onSubmit={onSubmit}>
             {content.map((field) => {
-                const {
-                    type: fieldType,
-                    infinite,
-                    staticValues,
-                    validatorId,
-                    title,
-                    value,
-                } = field;
-
-                const fieldTitle = title;
-
                 return (
-                    <div key={fieldTitle}>
+                    <div key={field.title}>
                         <Container>
                             <Row alignItems="middle" gutters>
                                 <Col spacing="py-2w">
-                                    <SwitchField
-                                        updateValidSection={updateValidSection}
-                                        validatorId={validatorId}
+                                    <WrapperFieldType
+                                        suggest={suggest}
+                                        field={field}
                                         subObject={subObject}
-                                        value={value}
-                                        section={newTitle}
-                                        type={fieldType}
-                                        title={fieldTitle}
-                                        infinite={infinite}
-                                        staticValues={staticValues}
+                                        updateValidSection={updateValidSection}
+                                        sectionTitle={sectionTitle}
                                     />
                                 </Col>
                             </Row>
@@ -290,38 +295,33 @@ export default function FormAccordionItem({
                 <Container>
                     <Row gutters justifyContent="right" spacing="pt-2w">
                         <DeleteButton
+                            dataTestId={`btn-delete-${subObject}`}
                             display={deletable}
-                            title={title}
-                            index={index}
+                            title={sectionTitle}
                             onClick={async () =>
                                 await deleteSection(
-                                    cleanString(subObject.slice(0, -2)),
+                                    subObject,
                                     index,
-                                    newTitle
+                                    sectionTitle
                                 )
                             }
                         />
                         {/* TODO remove data-testId */}
-                        <Col n="2" className="txt-right">
+                        <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 onClick={resetSection}
-                                disabled={disabled}
-                                colors={disabled ? [] : [white, orange]}
+                                colors={[white, orange]}
                                 title="Annuler"
-                                dataTestId={`${cleanString(
-                                    newTitle
-                                )}-resetSection-button`}
+                                dataTestId={`${subObject}-resetSection-button`}
                             />
                         </Col>
-                        <Col n="2" className="txt-right">
+                        <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 submit
                                 disabled={disabled}
                                 colors={disabled ? [] : [white, green]}
                                 title="Sauvegarder"
-                                dataTestId={`${cleanString(
-                                    newTitle
-                                )}-save-button`}
+                                dataTestId={`${subObject}-save-button`}
                             />
                         </Col>
                     </Row>

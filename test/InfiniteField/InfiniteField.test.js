@@ -8,9 +8,9 @@ import { render, screen } from '../test-utils';
 
 nextRouter.useRouter = jest.fn();
 nextRouter.useRouter.mockImplementation(() => ({
-    route: '/update/person',
-    pathname: '/update/[object]',
-    query: { object: 'person' },
+    route: '/contrib/structure',
+    pathname: '/contrib/[object]',
+    query: { object: 'structure' },
 }));
 
 jest.mock('react', () => ({
@@ -28,7 +28,12 @@ describe('InfiniteField component', () => {
     beforeEach(() => {
         React.useState.mockImplementation((init) => [init, setState]);
         render(
-            <InfiniteField title="Infinite" section="Section">
+            <InfiniteField
+                title="Infinite"
+                section="Section"
+                subObject="names"
+                validatorId="usualName"
+            >
                 <p>Test</p>
             </InfiniteField>
         );

@@ -3,24 +3,30 @@ const baseUrl = Cypress.env('baseUrl');
 context('Structure new form', () => {
     before(() => {
         cy.signIn();
-        cy.visit(`${baseUrl}/update`);
+        cy.visit(`${baseUrl}/contrib`);
         cy.newStructure();
     });
 
-    after(() => {
-        cy.signOut();
-    });
-
     it('should save new Structure officialName data', () => {
-        cy.get('[data-testid="officialName"]').find('input').type('Offiffi');
+        cy.getCookie('nameId').then((cookie) => {
+            const id = cookie.value;
 
-        cy.get('[data-testid="noms#1-save-button"]').click();
-        cy.wait('@patch');
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
 
-        cy.reload();
+            cy.get('[data-testid="officialName"]')
+                .find('input')
+                .type('Offiffi');
 
-        cy.get('[data-testid="officialName"]')
-            .find('input')
-            .should('have.value', 'Offiffi');
+            cy.get('[data-testid="usualName"]').find('input').type('usualName');
+
+            cy.get(`[data-testid="names#${id}-save-button"]`).click();
+            cy.wait('@patch');
+
+            cy.reload();
+
+            cy.get('[data-testid="officialName"]')
+                .find('input')
+                .should('have.value', 'Offiffi');
+        });
     });
 });
