@@ -1,0 +1,10 @@
+POST https://api.paysage.staging.dataesr.ovh/structures/7CYWd/names HTTP/1.1
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY2MzQwT1kiLCJ1cGRhdGVkQXQiOiIyMDIyLTAxLTA1VDEwOjIwOjA5LjM4NVoiLCJjcmVhdGVkQXQiOiIyMDIyLTAxLTA1VDEwOjIwOjA5LjUzM1oiLCJlbWFpbCI6ImplcmVteS5wZWdsaW9uQGdtYWlsLmNvbSIsImZpcnN0TmFtZSI6IkplcmVteSIsImxhc3ROYW1lIjoiUEVHTElPTiIsInVzZXJuYW1lIjoiamVyZW0iLCJyb2xlIjoidXNlciIsImFjdGl2ZSI6dHJ1ZSwiY29uZmlybWVkIjpmYWxzZX0sInR5cGUiOiJhY2Nlc3MtdG9rZW4iLCJpYXQiOjE2NDU0NDAwMzcsImV4cCI6MTY0NTQ0MDYzN30.IM28B9Ubw_ZAGtKZv0gj2JrI0ECOBSks3XMZnLEMJ_g
+
+{
+  "officialName": "Université Nice - Sophia-Antipolis (UNS)",
+  "usualName": "Université Nice - Sophia-Antipolis",
+  "shortName": "University of Nice Sophia Antipolis",
+  "nameEn": "University of Nice Sophia Antipolis"
+}
