@@ -7,6 +7,7 @@ import { AppContext } from '../../context/GlobalState';
 import {
     getFieldValue,
     getFormName,
+    getSectionName,
     getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
@@ -91,7 +92,6 @@ function Input({
         const { value } = e.target;
         checkField({ value });
         setTextValue(value);
-        updateValidSection(null, null);
         setFocus(true);
 
         if (onGroupChange) {
@@ -104,6 +104,12 @@ function Input({
             // case input Date
             customOnChange(value, { fullDateOnly: true });
         }
+
+        // section is unSaved
+        dispatch({
+            type: 'ADD_SAVING_SECTION',
+            payload: { section: getSectionName(uid) },
+        });
     };
 
     useEffect(() => {

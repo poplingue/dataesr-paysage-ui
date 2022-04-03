@@ -27,7 +27,13 @@ export default function FormAccordionItem({
 }) {
     const { Col, Row, Container } = grid();
     const {
-        stateForm: { validSections, updateObjectId, storeObjects, forms },
+        stateForm: {
+            validSections,
+            updateObjectId,
+            storeObjects,
+            forms,
+            savingSections,
+        },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
@@ -46,7 +52,6 @@ export default function FormAccordionItem({
             const validSection = validSections[subObject];
             let section = null;
 
-            // case validType changes
             if (
                 id &&
                 (!validSection ||
@@ -55,7 +60,7 @@ export default function FormAccordionItem({
                 section = {
                     [subObject]: {
                         ...validSection,
-                        ...{ [id]: validType, saved: false },
+                        ...{ [id]: validType },
                     },
                 };
             }
@@ -75,38 +80,24 @@ export default function FormAccordionItem({
      * handle submit button status
      */
     useEffect(() => {
-        if (validSections[subObject]) {
-            const valid =
-                Object.values(validSections[subObject]).indexOf('error') < 0;
+        const section = validSections[subObject];
 
-            if (valid && disabled) {
+        if (section) {
+            const valid = Object.values(section).indexOf('error') < 0;
+            const unSaved = savingSections.indexOf(subObject) > -1;
+
+            if (valid && unSaved) {
                 setDisabled(false);
-            } else if (!valid && !disabled) {
+            } else if (valid && !unSaved) {
                 setDisabled(true);
             }
         }
-    }, [disabled, subObject, validSections]);
+    }, [savingSections, subObject, validSections]);
 
     const save = async () => {
         const currentSection = validSections[subObject];
 
         if (validSections && currentSection) {
-            const valid = Object.values(currentSection).indexOf('error') < 0;
-
-            const payload = {
-                section: {
-                    [subObject]: {
-                        ...currentSection,
-                        ...{ saved: valid },
-                    },
-                },
-            };
-
-            dispatch({
-                type: 'UPDATE_VALID_SECTION',
-                payload,
-            });
-
             // Save data
             const form = forms.find(
                 (form) => Object.keys(form)[0] === formName
@@ -199,13 +190,6 @@ export default function FormAccordionItem({
      * @returns {Promise<void>}
      */
     const resetSection = async () => {
-        const validSection = validSections[subObject];
-        const section = {
-            [subObject]: {
-                ...validSection,
-                ...{ saved: true },
-            },
-        };
         const form = forms.find((form) => Object.keys(form)[0] === formName)[
             formName
         ];
@@ -213,6 +197,7 @@ export default function FormAccordionItem({
         // get current section uids
         const uids = form.flatMap((field) => {
             const { uid, unSaved } = field;
+            // const unSaved = savingSections.indexOf(subObject) > -1;
 
             return checkFlatMap[uid.indexOf(subObject) > -1 && !!unSaved](uid);
         });
@@ -229,7 +214,7 @@ export default function FormAccordionItem({
         // update indexDB
         await DBService.deleteList(uids, formName);
 
-        // rollback to init data
+        // rollback to init subObject's data
         dataFormService
             .initFormSections(
                 object,
@@ -250,12 +235,6 @@ export default function FormAccordionItem({
 
         // rollback disabled status
         resetSaving(uids[0]);
-
-        // update valid section with { saved: true } values
-        dispatch({
-            type: 'UPDATE_VALID_SECTION',
-            payload: { section },
-        });
     };
 
     const resetSaving = (uid) => {
@@ -307,7 +286,12 @@ export default function FormAccordionItem({
                         <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 onClick={resetSection}
-                                colors={[white, orange]}
+                                colors={
+                                    savingSections.indexOf(subObject) < 0
+                                        ? []
+                                        : [white, orange]
+                                }
+                                disabled={savingSections.indexOf(subObject) < 0}
                                 title="Annuler"
                                 dataTestId={`${subObject}-resetSection-button`}
                             />

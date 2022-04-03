@@ -9,6 +9,7 @@ import {
     getSubObjectType,
     getUniqueId,
     isArray,
+    isFieldUnSaved,
     matchRegex,
 } from '../helpers/utils';
 import DBService from './DB.service';
@@ -185,7 +186,7 @@ export const dataFormService = {
         });
     },
 
-    objectFields: (object, formName) => {
+    objectFields: (object, formName, forms) => {
         const keys = Object.keys(object);
         let objFields = [];
 
@@ -197,17 +198,22 @@ export const dataFormService = {
                 mapFields(formName).indexOf(currentField) > -1 &&
                 (value || typeof value === 'boolean')
             ) {
+                // TODO test Array.isArray
                 const infinite = isArray(value);
+                const uid = getUniqueId(formName, 'general', currentField);
 
-                objFields.push(
-                    ...fields[infinite](
-                        value,
-                        'general',
-                        '',
-                        currentField,
-                        formName
-                    )
-                );
+                // check no unSaved field exists
+                if (isFieldUnSaved(forms, formName, uid)) {
+                    objFields.push(
+                        ...fields[infinite](
+                            value,
+                            'general',
+                            '',
+                            currentField,
+                            formName
+                        )
+                    );
+                }
             }
         }
 
@@ -233,6 +239,7 @@ export const dataFormService = {
                         mapFields(formName).indexOf(currentField) > -1 &&
                         (value || typeof value === 'boolean')
                     ) {
+                        // TODO test Array.isArray
                         const infinite = isArray(value);
 
                         subObjectsFields.push(

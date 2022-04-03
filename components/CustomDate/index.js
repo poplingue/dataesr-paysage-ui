@@ -1,6 +1,6 @@
 import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -34,6 +34,7 @@ export default function CustomDate({
     const months = range(1, 12, true);
     const years = range(1930, 2030, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
+    const [anteriorYear, setAnteriorYear] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
     const {
         stateForm: { forms, storeObjects, updateObjectId, fieldsMode },
@@ -109,7 +110,6 @@ export default function CustomDate({
 
         setDateData(newDate);
 
-        updateValidSection(null, null);
         setNewValueCheck(!newValueCheck);
 
         // Save xxxx-xx-xx
@@ -152,6 +152,24 @@ export default function CustomDate({
             });
     };
 
+    useEffect(() => {
+        if (
+            fieldsMode[`${uid}Year`] &&
+            fieldsMode[`${uid}Year`].mode === 'input' &&
+            !anteriorYear
+        ) {
+            setAnteriorYear(true);
+        }
+
+        if (
+            fieldsMode[`${uid}Year`] &&
+            fieldsMode[`${uid}Year`].mode === 'select' &&
+            anteriorYear
+        ) {
+            setAnteriorYear(false);
+        }
+    }, [anteriorYear, fieldsMode, uid]);
+
     return (
         <FieldDependency subObject={subObject} validatorId={validatorId}>
             <section className="wrapper-select">
@@ -172,6 +190,7 @@ export default function CustomDate({
                                 <Row gutters>
                                     <Col n="xs-6 md-4 xl-12">
                                         <FieldButton
+                                            disabled={anteriorYear}
                                             dataTestId={`today-${validator}-${subObject}`}
                                             title="Aujourd'hui"
                                             onClick={() =>
@@ -181,6 +200,7 @@ export default function CustomDate({
                                     </Col>
                                     <Col n="xs-6 md-4 xl-12">
                                         <FieldButton
+                                            disabled={anteriorYear}
                                             dataTestId={`firstJanuary-${validator}-${subObject}`}
                                             title="1er janvier"
                                             onClick={() =>

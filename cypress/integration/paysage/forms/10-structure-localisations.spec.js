@@ -11,6 +11,8 @@ context('Structure localisation', () => {
         cy.getCookie('localisationId').then((cookie) => {
             const id = cookie.value;
 
+            cy.sectionsNoSticky();
+
             cy.intercept('POST', '/api/public?validatorId=locality').as(
                 'search'
             );

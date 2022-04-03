@@ -15,6 +15,8 @@ context('Structure new form infinite otherName and article', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
+            cy.sectionsNoSticky();
+
             cy.mandatoryStructureFields(id);
 
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
@@ -24,15 +26,19 @@ context('Structure new form infinite otherName and article', () => {
             cy.get('[data-testid="btn-add"]').click();
 
             cy.intercept('PATCH', '/api/structure/**').as('patch');
+            cy.intercept('GET', `/api/structure/**/names`).as('get');
 
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#1"]`)
                 .find('input')
                 .type('OtherName#1');
 
             cy.get(`[data-testid="names#${id}-save-button"]`).click();
+
             cy.wait('@patch');
 
             cy.reload();
+
+            cy.wait('@get');
 
             cy.sectionsNoSticky();
 
@@ -48,11 +54,12 @@ context('Structure new form infinite otherName and article', () => {
 
     it('should save new Structure article data', () => {
         cy.getCookie('nameId').then((cookie) => {
-            cy.intercept('PATCH', '/api/structure/**').as('patch');
-
             const id = cookie.value;
 
             cy.mandatoryStructureFields(id);
+
+            cy.intercept('PATCH', '/api/structure/**').as('patch');
+            cy.intercept('GET', `/api/structure/**/names`).as('get');
 
             cy.get(`[data-field="contrib/structure@names#${id}_otherNames#0"]`)
                 .find('input')
@@ -62,6 +69,8 @@ context('Structure new form infinite otherName and article', () => {
             cy.wait('@patch');
 
             cy.reload();
+
+            cy.wait('@get');
 
             cy.sectionsNoSticky();
 

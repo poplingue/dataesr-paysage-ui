@@ -178,11 +178,13 @@ const actionMap = {
         };
     },
     DELETE_SAVING_SECTION: (state, action) => {
+        const savingSections = state.savingSections.filter(
+            (section) => section !== action.payload.section
+        );
+
         return {
             ...state,
-            savingSections: state.savingSections.filter(
-                (section) => section !== action.payload.section
-            ),
+            savingSections,
         };
     },
     CLEAR_FORM: (state, action) => {

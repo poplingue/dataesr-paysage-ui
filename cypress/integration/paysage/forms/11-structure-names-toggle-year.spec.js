@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Structure new form', () => {
+context('Structure new form toggle year', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/contrib`);
@@ -10,6 +10,9 @@ context('Structure new form', () => {
     it('should toggle input type text to select', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
+
+            cy.sectionsNoSticky();
+
             cy.get(
                 `[data-cy="toggle-contrib/structure@names#${id}_endDateYear"]`
             ).click();

@@ -8,6 +8,7 @@ import {
     arrayContains,
     getFieldValue,
     getFormName,
+    getSectionName,
     getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
@@ -138,7 +139,12 @@ export default function CustomSelect({
         const { value } = e.target;
         onChangeObj[!!customOnChange](value, { updateCheck: false });
         handleValue(value);
-        updateValidSection(null, null);
+
+        // section is unSaved
+        dispatch({
+            type: 'ADD_SAVING_SECTION',
+            payload: { section: getSectionName(uid) },
+        });
     };
 
     useEffect(() => {

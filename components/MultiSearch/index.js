@@ -79,7 +79,6 @@ function MultiSearch({ title, subObject, updateValidSection, validatorId }) {
         }
 
         checkField({ value: newValue.join(' ') });
-        updateValidSection(null, null);
     };
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Structure new form', () => {
+context('Structure new form save fields', () => {
     beforeEach(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/contrib`);

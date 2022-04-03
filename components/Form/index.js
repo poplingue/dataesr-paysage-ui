@@ -22,7 +22,7 @@ const CreateForm = ({ jsonForm, color }) => {
     const workerRef = useRef();
 
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { storeObjects, updateObjectId, savingSections, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -121,7 +121,8 @@ const CreateForm = ({ jsonForm, color }) => {
                 // Retrieve general data object
                 const fields = dataFormService.objectFields(
                     JSON.parse(data).data,
-                    formName
+                    formName,
+                    forms
                 );
 
                 dispatch({
@@ -135,6 +136,10 @@ const CreateForm = ({ jsonForm, color }) => {
         };
     });
 
+    /**
+     * Get init object data &
+     * retrieve general object data on reset section
+     */
     useEffect(() => {
         async function fetchObject() {
             workerRef.current.postMessage({
@@ -143,10 +148,10 @@ const CreateForm = ({ jsonForm, color }) => {
             });
         }
 
-        if (updateObjectId) {
+        if (updateObjectId && !savingSections.length) {
             fetchObject();
         }
-    }, [updateObjectId, object]);
+    }, [savingSections, updateObjectId, object]);
 
     return (
         <PageTheme color={color}>
@@ -159,6 +164,7 @@ const CreateForm = ({ jsonForm, color }) => {
                             subObject,
                             content,
                             infinite,
+                            validatorId,
                         } = section;
 
                         const dataSection = sectionUniqueId(
