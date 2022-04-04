@@ -153,21 +153,36 @@ export default function CustomDate({
     };
 
     useEffect(() => {
-        if (
-            fieldsMode[`${uid}Year`] &&
-            fieldsMode[`${uid}Year`].mode === 'input' &&
-            !anteriorYear
-        ) {
-            setAnteriorYear(true);
+        const anterior = {
+            true: (v) => setAnteriorYear(v),
+            false: () => {},
+        };
+
+        if (fieldsMode[`${uid}Year`]) {
+            const checkInput =
+                fieldsMode[`${uid}Year`].mode === 'input' && !anteriorYear;
+            const checkSelect =
+                fieldsMode[`${uid}Year`].mode === 'select' && anteriorYear;
+
+            anterior[checkInput](true);
+            anterior[checkSelect](false);
         }
 
-        if (
-            fieldsMode[`${uid}Year`] &&
-            fieldsMode[`${uid}Year`].mode === 'select' &&
-            anteriorYear
-        ) {
-            setAnteriorYear(false);
-        }
+        // if (
+        //     fieldsMode[`${uid}Year`] &&
+        //     fieldsMode[`${uid}Year`].mode === 'input' &&
+        //     !anteriorYear
+        // ) {
+        //     setAnteriorYear(true);
+        // }
+        //
+        // if (
+        //     fieldsMode[`${uid}Year`] &&
+        //     fieldsMode[`${uid}Year`].mode === 'select' &&
+        //     anteriorYear
+        // ) {
+        //     setAnteriorYear(false);
+        // }
     }, [anteriorYear, fieldsMode, uid]);
 
     return (

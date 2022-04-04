@@ -70,6 +70,7 @@ export default function GroupField({
         async ({ fieldUid = '', newValue }) => {
             // group field
             const groupUid = getUniqueId(formName, subObject, validatorId);
+            // TODO make it generic (and handle coordinates)
             const fieldValue = getFieldValue(forms, formName, groupUid) || {
                 lat: '',
                 lng: '',
@@ -85,7 +86,6 @@ export default function GroupField({
                 );
             });
 
-            // TODO make generic (and handle coordinates)
             const coordinates = newValue
                 ? { ...groupValues, [field]: parseFloat(newValue) }
                 : { lat: groupValues[1], lng: groupValues[0] };

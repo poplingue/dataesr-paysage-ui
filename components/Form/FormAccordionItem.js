@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -46,6 +46,10 @@ export default function FormAccordionItem({
     const { style: white } = useCSSProperty('--grey-1000');
     const { style: orange } = useCSSProperty('--text-default-warning');
     const [disabled, setDisabled] = useState(true);
+    const [resetStatus] = useMemo(
+        () => savingSections.indexOf(subObject) < 0,
+        [savingSections, subObject]
+    );
 
     const updateValidSection = useCallback(
         (id, validType) => {
@@ -197,7 +201,6 @@ export default function FormAccordionItem({
         // get current section uids
         const uids = form.flatMap((field) => {
             const { uid, unSaved } = field;
-            // const unSaved = savingSections.indexOf(subObject) > -1;
 
             return checkFlatMap[uid.indexOf(subObject) > -1 && !!unSaved](uid);
         });
@@ -286,12 +289,8 @@ export default function FormAccordionItem({
                         <Col n="6 lg-2" className="txt-right">
                             <FieldButton
                                 onClick={resetSection}
-                                colors={
-                                    savingSections.indexOf(subObject) < 0
-                                        ? []
-                                        : [white, orange]
-                                }
-                                disabled={savingSections.indexOf(subObject) < 0}
+                                colors={resetStatus ? [] : [white, orange]}
+                                disabled={resetStatus}
                                 title="Annuler"
                                 dataTestId={`${subObject}-resetSection-button`}
                             />

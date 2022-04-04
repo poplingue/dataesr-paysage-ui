@@ -5,11 +5,11 @@ import { genericErrorMsg } from '../helpers/internalMessages';
 import {
     checkDate,
     checkFlatMap,
+    getFieldValue,
     getSubObjectId,
     getSubObjectType,
     getUniqueId,
     isArray,
-    isFieldUnSaved,
     matchRegex,
 } from '../helpers/utils';
 import DBService from './DB.service';
@@ -201,19 +201,18 @@ export const dataFormService = {
                 // TODO test Array.isArray
                 const infinite = isArray(value);
                 const uid = getUniqueId(formName, 'general', currentField);
+                const fieldValue = getFieldValue(forms, formName, uid);
 
                 // check no unSaved field exists
-                if (isFieldUnSaved(forms, formName, uid)) {
-                    objFields.push(
-                        ...fields[infinite](
-                            value,
-                            'general',
-                            '',
-                            currentField,
-                            formName
-                        )
-                    );
-                }
+                objFields.push(
+                    ...fields[infinite](
+                        fieldValue || value,
+                        'general',
+                        '',
+                        currentField,
+                        formName
+                    )
+                );
             }
         }
 
@@ -235,7 +234,7 @@ export const dataFormService = {
                 for (let j = 0; j < sections.length; j++) {
                     const currentField = sections[j];
                     const isNested = !!nestedFields.flatMap((field) =>
-                        field.split('.')[0] === currentField ? x : []
+                        field.split('.')[0] === currentField ? field : []
                     ).length;
                     const value = field[currentField];
 
@@ -427,8 +426,6 @@ export const dataFormService = {
             url[!!(subObjectType && subObjectId)],
             requestOptions
         );
-
-        debugger; // eslint-disable-line
 
         return fetchHelper
             .handleResponse(response)
