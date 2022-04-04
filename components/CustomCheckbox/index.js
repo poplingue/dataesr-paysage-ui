@@ -89,7 +89,6 @@ function CustomCheckbox({
         }
 
         checkField({ value: newValues.join(' ') });
-        updateValidSection(null, null);
     };
 
     const fetchData = useCallback(() => {

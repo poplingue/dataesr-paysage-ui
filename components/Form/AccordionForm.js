@@ -30,11 +30,9 @@ function AccordionForm({
     } = useContext(AppContext);
 
     useEffect(() => {
-        const section = validSections[sectionId];
-
-        if (section) {
-            setSectionStatus(section.saved ? 'valid' : 'warning');
-        }
+        setSectionStatus(
+            savingSections.indexOf(sectionId) < 0 ? 'valid' : 'warning'
+        );
     }, [savingSections, sectionId, validSections]);
 
     const renderTitle = () => {

@@ -8,6 +8,7 @@ import {
     arrayContains,
     getFieldValue,
     getFormName,
+    getSectionName,
     getSubObjectType,
     getUniqueId,
     isFieldUnSaved,
@@ -138,7 +139,12 @@ export default function CustomSelect({
         const { value } = e.target;
         onChangeObj[!!customOnChange](value, { updateCheck: false });
         handleValue(value);
-        updateValidSection(null, null);
+
+        // section is unSaved
+        dispatch({
+            type: 'ADD_SAVING_SECTION',
+            payload: { section: getSectionName(uid) },
+        });
     };
 
     useEffect(() => {
@@ -171,11 +177,11 @@ export default function CustomSelect({
 
     return (
         <FieldDependency subObject={subObject} validatorId={validatorId}>
-            <SavingWrapper
-                unSaved={unSaved}
-                inline={matchRegex(`Day|Year|Month$`, uid)}
-            >
-                <section className="wrapper-select">
+            <section className="wrapper-select">
+                <SavingWrapper
+                    unSaved={unSaved}
+                    inline={matchRegex(`Day|Year|Month$`, uid)}
+                >
                     <Select
                         message={message}
                         messageType={type || undefined}
@@ -190,8 +196,8 @@ export default function CustomSelect({
                         label={title}
                         options={options}
                     />
-                </section>
-            </SavingWrapper>
+                </SavingWrapper>
+            </section>
         </FieldDependency>
     );
 }

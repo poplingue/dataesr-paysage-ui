@@ -4,12 +4,12 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { configValidators } from '../../config/objects';
 import { AppContext } from '../../context/GlobalState';
 import {
-    arraysEqual,
     checkFlatMap,
     getFieldValue,
     getFormName,
     getSubObjectType,
     getUniqueId,
+    matchRegex,
 } from '../../helpers/utils';
 import DBService from '../../services/DB.service';
 import SwitchField from '../SwitchField';
@@ -70,7 +70,12 @@ export default function GroupField({
         async ({ fieldUid = '', newValue }) => {
             // group field
             const groupUid = getUniqueId(formName, subObject, validatorId);
-            const fieldValue = getFieldValue(forms, formName, groupUid);
+            // TODO make it generic (and handle coordinates)
+            const fieldValue = getFieldValue(forms, formName, groupUid) || {
+                lat: '',
+                lng: '',
+            };
+            const field = matchRegex(`([^\_]+)$`, fieldUid);
 
             // array of group values
             const groupValues = uidsGroup.flatMap((uidGroup) => {
@@ -81,16 +86,15 @@ export default function GroupField({
                 );
             });
 
-            // TODO make generic (and handle geometry)
             const coordinates = newValue
-                ? [...groupValues, parseFloat(newValue)]
-                : groupValues;
+                ? { ...groupValues, [field]: parseFloat(newValue) }
+                : { lat: groupValues[1], lng: groupValues[0] };
 
             if (
-                (!!groupValues.length && !fieldValue) ||
-                !arraysEqual(groupValues, fieldValue.coordinates || [])
+                coordinates.lat !== fieldValue.lat ||
+                coordinates.lng !== fieldValue.lng
             ) {
-                await updateData({ value: { coordinates }, uid: groupUid });
+                await updateData({ value: coordinates, uid: groupUid });
             }
         },
         [formName, forms, subObject, uidsGroup, updateData, validatorId]

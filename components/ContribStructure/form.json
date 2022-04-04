@@ -2,6 +2,62 @@
   {
     "form": [
       {
+        "title": "Général",
+        "subObject": "general",
+        "content": [
+          {
+            "title": "Date de création",
+            "type": "date",
+            "validatorId": "creationDate"
+          },
+          {
+            "title": "Texte officiel de création",
+            "type": "text",
+            "validatorId": "creationOfficialDocumentId",
+            "dependency": {
+              "validatorIds": ["creationReason"],
+              "action": "hidden",
+              "rule": "emptiness"
+            }
+          },
+          {
+            "title": "Motif de création",
+            "type": "text",
+            "validatorId": "creationReason"
+          },
+          {
+            "title": "Description Fr",
+            "type": "text",
+            "validatorId": "descriptionFr"
+          },
+          {
+            "title": "Description En",
+            "type": "text",
+            "validatorId": "descriptionEn"
+          },
+          {
+            "title": "Texte officiel de fermeture",
+            "type": "text",
+            "validatorId": "closureOfficialDocumentId",
+            "dependency": {
+              "validatorIds": ["closureDate", "closureReason"],
+              "action": "hidden",
+              "rule": "emptiness"
+            }
+          },
+          {
+            "title": "Date de fermeture",
+            "type": "date",
+            "validatorId": "closureDate"
+          },
+          {
+            "title": "Motif de fermeture",
+            "type": "text",
+            "validatorId": "closureReason"
+          }
+        ]
+      },
+      {
         "title": "Noms",
         "subObject": "names",
         "infinite": true,
@@ -14,7 +70,12 @@
           {
             "title": "Nom usuel",
             "type": "text",
-            "validatorId": "usualName"
+            "validatorId": "usualName",
+            "dependency": {
+              "validatorIds": ["article"],
+              "rule": "validator",
+              "action": "hidden"
+            }
           },
           {
             "title": "Article du nom usuel",
@@ -55,7 +116,7 @@
             "type": "text",
             "validatorId": "nameEn",
             "dependency": {
-              "validatorId": "acronymEn",
+              "validatorIds": ["acronymEn"],
               "action": "hidden",
               "rule": "emptiness"
             }
@@ -133,17 +194,17 @@
           {
             "title": "Géolocalisation",
             "type": "group",
-            "validatorId": "geometry",
+            "validatorId": "coordinates",
             "content": [
               {
                 "title": "Longitude",
                 "type": "text",
-                "validatorId": "longitude"
+                "validatorId": "lng"
               },
               {
                 "title": "Latitude",
                 "type": "text",
-                "validatorId": "latitude"
+                "validatorId": "lat"
               }
             ]
           },
@@ -174,7 +235,7 @@
             "type": "text",
             "validatorId": "url",
             "dependency": {
-              "validatorId": "language",
+              "validatorIds": ["language"],
               "action": "hidden",
               "rule": "emptiness"
             }
@@ -188,7 +249,7 @@
       },
       {
         "title": "Réseaux sociaux",
-        "subObject": "socialmedias",
+        "subObject": "socials",
         "infinite": true,
         "content": [
           {
@@ -230,7 +291,7 @@
             "type": "text",
             "validatorId": "type",
             "dependency": {
-              "validatorId": "value",
+              "validatorIds": ["value"],
               "action": "hidden"
             }
           },

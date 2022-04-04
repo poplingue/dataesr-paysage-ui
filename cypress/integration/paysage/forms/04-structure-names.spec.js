@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl');
 
-context('Structure new form', () => {
+context('Structure new form save officialName', () => {
     before(() => {
         cy.signIn();
         cy.visit(`${baseUrl}/contrib`);
@@ -11,7 +11,10 @@ context('Structure new form', () => {
         cy.getCookie('nameId').then((cookie) => {
             const id = cookie.value;
 
+            cy.sectionsNoSticky();
+
             cy.intercept('PATCH', '/api/structure/**').as('patch');
+            cy.intercept('GET', '/api/structure/**/names').as('get');
 
             cy.get('[data-testid="officialName"]')
                 .find('input')
@@ -23,6 +26,8 @@ context('Structure new form', () => {
             cy.wait('@patch');
 
             cy.reload();
+
+            cy.wait('@get');
 
             cy.get('[data-testid="officialName"]')
                 .find('input')

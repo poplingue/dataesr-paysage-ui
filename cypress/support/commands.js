@@ -35,9 +35,10 @@ Cypress.Commands.add('newStructure', () => {
                 interception.response.body.subObjects[2].value.id
             );
         }
-    });
 
-    cy.sectionsNoSticky(2000);
+        // TODO still useful??
+        cy.sectionsNoSticky(2000);
+    });
 });
 
 Cypress.Commands.add('sectionsNoSticky', (timeToWait = 1600) => {
@@ -109,11 +110,13 @@ Cypress.Commands.add('deleteIndexDB', () => {
 });
 
 Cypress.Commands.add('mandatoryStructureFields', (id) => {
+    cy.sectionsNoSticky();
+
     cy.get(`[data-field="contrib/structure@names#${id}_officialName"]`)
         .find('input')
-        .type('Officiel');
+        .type('Mandatory Officiel');
 
     cy.get(`[data-field="contrib/structure@names#${id}_usualName"]`)
         .find('input')
-        .type('Usuel');
+        .type('Mandatory Usuel');
 });

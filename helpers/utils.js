@@ -58,7 +58,7 @@ export function niceFullDate(dirtyDate) {
  * @returns {*}
  */
 export function getSubObjectType(str) {
-    let newStr = str.slice(0, -9);
+    let newStr = str ? str.slice(0, -9) : '';
 
     if (str.indexOf('#') < 0) {
         newStr = str;

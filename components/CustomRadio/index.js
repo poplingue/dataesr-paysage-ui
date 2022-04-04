@@ -111,7 +111,6 @@ function CustomRadio({
         );
 
         checkField({ value });
-        updateValidSection(null, null);
     };
 
     useEffect(() => {

@@ -75,25 +75,31 @@ export default function WrapperFieldType({
 
         // Handle dependencies of the current field
         if (dependency) {
-            const { validatorId: minorValidationId, action, rule } = dependency;
-            const uidMinor = getUniqueId(
-                formName,
-                subObject,
-                minorValidationId
-            );
-            const uidMajor = getUniqueId(formName, subObject, validatorId);
+            const { validatorIds } = dependency;
 
-            if (!dependencies[uidMinor] && !check) {
-                dispatch({
-                    type: 'UPDATE_FORM_DEPENDENCIES',
-                    payload: {
-                        [uidMinor]: {
-                            action,
-                            rule: rule || 'validator',
-                            major: uidMajor,
+            for (let i = 0; i < validatorIds.length; i = i + 1) {
+                const { action, rule } = dependency;
+                const minorValidationId = validatorIds[i];
+
+                const uidMinor = getUniqueId(
+                    formName,
+                    subObject,
+                    minorValidationId
+                );
+                const uidMajor = getUniqueId(formName, subObject, validatorId);
+
+                if (!dependencies[uidMinor] && !check) {
+                    dispatch({
+                        type: 'UPDATE_FORM_DEPENDENCIES',
+                        payload: {
+                            [uidMinor]: {
+                                action,
+                                rule: rule || 'validator',
+                                major: uidMajor,
+                            },
                         },
-                    },
-                });
+                    });
+                }
             }
         }
     }, [dependencies, dependency, dispatch, formName, subObject, validatorId]);

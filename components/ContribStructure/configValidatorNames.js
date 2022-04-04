@@ -24,6 +24,12 @@ export const configValidator = {
         required: true,
     },
     usualName: {
+        validators: [
+            (value) => ({
+                valid: value.length > 2,
+                errorMsg: 'Nom usuel invalide',
+            }),
+        ],
         required: true,
     },
     shortName: {

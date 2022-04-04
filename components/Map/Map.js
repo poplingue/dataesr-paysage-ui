@@ -17,7 +17,7 @@ const Map = ({ markers, height, width, lat, lng }) => {
         });
     }, []);
 
-    const DEFAULT_CENTER = [lng, lat];
+    const DEFAULT_CENTER = [lat, lng];
 
     return (
         <MapContainer

@@ -15,7 +15,7 @@ export function FieldDependency({ children, subObject, validatorId }) {
     const {
         stateForm: { forms, dependencies, validSections },
     } = useContext(AppContext);
-    const [action, setAction] = useState('');
+    const [localAction, setLocalAction] = useState('');
     const classAction = useMemo(() => {
         return {
             hidden: styles.IsHidden,
@@ -42,7 +42,9 @@ export function FieldDependency({ children, subObject, validatorId }) {
         const inputs =
             document.querySelectorAll(
                 `.${styles.IsHidden} input`,
-                `.${styles.IsDisable} input`
+                `.${styles.IsHidden} select`,
+                `.${styles.IsDisable} input`,
+                `.${styles.IsDisable} select`
             ) || [];
 
         Array.from(inputs).forEach((input) => {
@@ -53,8 +55,8 @@ export function FieldDependency({ children, subObject, validatorId }) {
 
     const updateAction = useMemo(() => {
         return {
-            false: () => setAction(''),
-            true: (action) => setAction(action),
+            false: () => setLocalAction(''),
+            true: (action) => setLocalAction(action),
         };
     }, []);
 
@@ -95,6 +97,6 @@ export function FieldDependency({ children, subObject, validatorId }) {
 
     return cloneElement(children, {
         ...children.props,
-        className: classAction[action],
+        className: classAction[localAction],
     });
 }

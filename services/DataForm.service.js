@@ -5,6 +5,7 @@ import { genericErrorMsg } from '../helpers/internalMessages';
 import {
     checkDate,
     checkFlatMap,
+    getFieldValue,
     getSubObjectId,
     getSubObjectType,
     getUniqueId,
@@ -16,6 +17,7 @@ import DBService from './DB.service';
 const fieldMapping = {
     endDate: (uid, value) => dataFormService.mapDate(uid, value),
     startDate: (uid, value) => dataFormService.mapDate(uid, value),
+    creationDate: (uid, value) => dataFormService.mapDate(uid, value),
 };
 
 const fields = {
@@ -77,7 +79,9 @@ export const dataFormService = {
 
     cleanDateFormat: (field) => {
         const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
-        const needClean = ['endDate', 'startDate'].indexOf(subObjectType) > -1;
+        const needClean =
+            ['endDate', 'startDate', 'creationDate'].indexOf(subObjectType) >
+            -1;
 
         if (needClean) {
             // remove empty date values in date format yyyy-mm-dd
@@ -151,8 +155,9 @@ export const dataFormService = {
 
     uniqueField: (params) => {
         const [value, subObject, sectionId, field, formName] = params;
+        const section = sectionId ? `${subObject}#${sectionId}` : subObject;
 
-        const uid = getUniqueId(formName, `${subObject}#${sectionId}`, field);
+        const uid = getUniqueId(formName, section, field);
 
         const needMapping = Object.keys(fieldMapping).indexOf(field) > -1;
 
@@ -168,14 +173,10 @@ export const dataFormService = {
 
     infiniteField: (params) => {
         const [values, subObject, sectionId, field, formName] = params;
+        const section = sectionId ? `${subObject}#${sectionId}` : subObject;
 
         return values.map((value, vIndex) => {
-            const uid = getUniqueId(
-                formName,
-                `${subObject}#${sectionId}`,
-                field,
-                vIndex
-            );
+            const uid = getUniqueId(formName, section, field, vIndex);
 
             return {
                 uid,
@@ -185,8 +186,44 @@ export const dataFormService = {
         });
     },
 
+    objectFields: (object, formName, forms) => {
+        const keys = Object.keys(object);
+        let objFields = [];
+
+        for (let i = 0; i < keys.length; i++) {
+            const currentField = keys[i];
+            const value = object[currentField];
+
+            if (
+                mapFields(formName).indexOf(currentField) > -1 &&
+                (value || typeof value === 'boolean')
+            ) {
+                // TODO test Array.isArray
+                const infinite = isArray(value);
+                const uid = getUniqueId(formName, 'general', currentField);
+                const fieldValue = getFieldValue(forms, formName, uid);
+
+                // check no unSaved field exists
+                objFields.push(
+                    ...fields[infinite](
+                        fieldValue || value,
+                        'general',
+                        '',
+                        currentField,
+                        formName
+                    )
+                );
+            }
+        }
+
+        return objFields;
+    },
+
     subObjectsFields: (subObjects, formName) => {
         const subObjectsFields = [];
+        const nestedFields = mapFields(formName).flatMap((n) =>
+            n.indexOf('.') > -1 ? n : []
+        );
 
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
@@ -196,14 +233,16 @@ export const dataFormService = {
 
                 for (let j = 0; j < sections.length; j++) {
                     const currentField = sections[j];
-
+                    const isNested = !!nestedFields.flatMap((field) =>
+                        field.split('.')[0] === currentField ? field : []
+                    ).length;
                     const value = field[currentField];
 
-                    // TODO handle nested data
                     if (
                         mapFields(formName).indexOf(currentField) > -1 &&
                         (value || typeof value === 'boolean')
                     ) {
+                        // TODO test Array.isArray
                         const infinite = isArray(value);
 
                         subObjectsFields.push(
@@ -215,6 +254,27 @@ export const dataFormService = {
                                 formName
                             )
                         );
+                    } else if (isNested) {
+                        // case nested data (example: coordinates.lat)
+                        for (let k = 0; k < nestedFields.length; k++) {
+                            const nestedFieldsList = nestedFields[k].split('.');
+                            const value = dataFormService.getProp(
+                                field,
+                                nestedFieldsList
+                            );
+
+                            if (value) {
+                                subObjectsFields.push(
+                                    ...fields[false](
+                                        value.toString(),
+                                        subObject,
+                                        field.id || id + 1,
+                                        nestedFieldsList[1],
+                                        formName
+                                    )
+                                );
+                            }
+                        }
                     }
                 }
             });
@@ -261,7 +321,7 @@ export const dataFormService = {
             promises.push({ url, requestOptions });
         }
 
-        // GET all subObjects of an Object
+        // GET all subObjects of the Object
         const res = await Promise.all(
             promises.map((obj) => fetch(obj.url, obj.requestOptions))
         );
@@ -350,22 +410,26 @@ export const dataFormService = {
                 bodyObject[field] = currentObj[field];
             } else {
                 const field = matchRegex(`([^\_]+)$`, uid);
-                bodyObject[field] = value;
+                // TODO shitty null
+                bodyObject[field] = value || null;
             }
         }
 
         const requestOptions = fetchHelper.requestOptions('PATCH', bodyObject);
 
+        // handle case general or with subObject
+        const url = {
+            true: `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
+            false: `/api/${objectType}/${objectId}`,
+        };
         const response = await fetch(
-            `/api/${objectType}/${objectId}/${subObjectType}/${subObjectId}`,
+            url[!!(subObjectType && subObjectId)],
             requestOptions
         );
 
         return fetchHelper
             .handleResponse(response)
-            .then(({ response }) => {
-                return response;
-            })
+            .then(({ response }) => response)
             .catch((err) => {
                 return Promise.reject(err);
             });

@@ -138,37 +138,38 @@ export default function Header() {
         });
     };
 
+    const renderMap = () => {
+        if (!mainLocation || !mainLocation.coordinates) {
+            return null;
+        }
+
+        return (
+            <Row>
+                <Col spacing="pb-2w">
+                    <Map
+                        lat={mainLocation.coordinates.lat}
+                        lng={mainLocation.coordinates.lng}
+                        markers={[
+                            {
+                                address: mainLocation.fullAddress,
+                                latLng: [
+                                    mainLocation.coordinates.lat,
+                                    mainLocation.coordinates.lng,
+                                ],
+                            },
+                        ]}
+                    />
+                </Col>
+            </Row>
+        );
+    };
+
     return (
         <Container>
             <Row gutters>
                 <Col n="12">
                     <Container fluid>
-                        <Row>
-                            {mainLocation && mainLocation.geometry && (
-                                <Col spacing="pb-2w">
-                                    <Map
-                                        lat={
-                                            mainLocation.geometry.coordinates[0]
-                                        }
-                                        lng={
-                                            mainLocation.geometry.coordinates[1]
-                                        }
-                                        markers={[
-                                            {
-                                                address:
-                                                    mainLocation.fullAddress,
-                                                latLng: [
-                                                    mainLocation.geometry
-                                                        .coordinates[1],
-                                                    mainLocation.geometry
-                                                        .coordinates[0],
-                                                ],
-                                            },
-                                        ]}
-                                    />
-                                </Col>
-                            )}
-                        </Row>
+                        {renderMap()}
                         <Row>
                             {mainLocation.telephone && (
                                 <Col spacing="pb-8w pr-1w">

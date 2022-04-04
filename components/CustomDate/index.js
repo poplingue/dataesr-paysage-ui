@@ -1,6 +1,6 @@
 import { Text } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 import {
@@ -16,6 +16,7 @@ import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import NotifService from '../../services/Notif.service';
 import FieldButton from '../FieldButton';
+import { FieldDependency } from '../FieldDependencie';
 import DeleteButton from '../InfiniteAccordion/DeleteButton';
 import styles from './CustomDate.module.scss';
 import DateBlock from './DateBlock';
@@ -33,6 +34,7 @@ export default function CustomDate({
     const months = range(1, 12, true);
     const years = range(1930, 2030, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
+    const [anteriorYear, setAnteriorYear] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');
     const {
         stateForm: { forms, storeObjects, updateObjectId, fieldsMode },
@@ -108,7 +110,6 @@ export default function CustomDate({
 
         setDateData(newDate);
 
-        updateValidSection(null, null);
         setNewValueCheck(!newValueCheck);
 
         // Save xxxx-xx-xx
@@ -151,65 +152,104 @@ export default function CustomDate({
             });
     };
 
+    useEffect(() => {
+        const anterior = {
+            true: (v) => setAnteriorYear(v),
+            false: () => {},
+        };
+
+        if (fieldsMode[`${uid}Year`]) {
+            const checkInput =
+                fieldsMode[`${uid}Year`].mode === 'input' && !anteriorYear;
+            const checkSelect =
+                fieldsMode[`${uid}Year`].mode === 'select' && anteriorYear;
+
+            anterior[checkInput](true);
+            anterior[checkSelect](false);
+        }
+
+        // if (
+        //     fieldsMode[`${uid}Year`] &&
+        //     fieldsMode[`${uid}Year`].mode === 'input' &&
+        //     !anteriorYear
+        // ) {
+        //     setAnteriorYear(true);
+        // }
+        //
+        // if (
+        //     fieldsMode[`${uid}Year`] &&
+        //     fieldsMode[`${uid}Year`].mode === 'select' &&
+        //     anteriorYear
+        // ) {
+        //     setAnteriorYear(false);
+        // }
+    }, [anteriorYear, fieldsMode, uid]);
+
     return (
-        <section className="wrapper-select">
-            <Container fluid>
-                <Row
-                    gutters
-                    alignItems="middle"
-                    className={styles.Background}
-                    spacing="mb-1v"
-                >
-                    <Col n="12" spacing="pb-1w">
-                        <Text spacing="mb-1w" size="md">
-                            {title}
-                        </Text>
-                    </Col>
-                    <Col n="12 xl-3" spacing="p-1w">
-                        <Container fluid>
-                            <Row gutters>
-                                <Col n="xs-6 md-4 xl-12">
-                                    <FieldButton
-                                        dataTestId={`today-${validator}-${subObject}`}
-                                        title="Aujourd'hui"
-                                        onClick={() => automaticDate('today')}
-                                    />
-                                </Col>
-                                <Col n="xs-6 md-4 xl-12">
-                                    <FieldButton
-                                        dataTestId={`firstJanuary-${validator}-${subObject}`}
-                                        title="1er janvier"
-                                        onClick={() =>
-                                            automaticDate('firstJanuary')
-                                        }
-                                    />
-                                </Col>
-                                <Col n="xs-12 md-4 xl-12">
-                                    <DeleteButton
-                                        dataTestId={`btn-delete-${validator}-${subObject}`}
-                                        background={grey}
-                                        display
-                                        disabled={!currentField}
-                                        onClick={deleteDate}
-                                        title={validatorId}
-                                    />
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Col>
-                    <Col n="12 xl-9">
-                        <DateBlock
-                            updateValidSection={updateValidSection}
-                            setNewValueCheck={setNewValueCheck}
-                            newValueCheck={newValueCheck}
-                            validatorId={validatorId}
-                            updateDate={updateDate}
-                            data={dateData}
-                            subObject={subObject}
-                        />
-                    </Col>
-                </Row>
-            </Container>
-        </section>
+        <FieldDependency subObject={subObject} validatorId={validatorId}>
+            <section className="wrapper-select">
+                <Container fluid>
+                    <Row
+                        gutters
+                        alignItems="middle"
+                        className={styles.Background}
+                        spacing="mb-1v"
+                    >
+                        <Col n="12" spacing="pb-1w">
+                            <Text spacing="mb-1w" size="md">
+                                {title}
+                            </Text>
+                        </Col>
+                        <Col n="12 xl-3" spacing="p-1w">
+                            <Container fluid>
+                                <Row gutters>
+                                    <Col n="xs-6 md-4 xl-12">
+                                        <FieldButton
+                                            disabled={anteriorYear}
+                                            dataTestId={`today-${validator}-${subObject}`}
+                                            title="Aujourd'hui"
+                                            onClick={() =>
+                                                automaticDate('today')
+                                            }
+                                        />
+                                    </Col>
+                                    <Col n="xs-6 md-4 xl-12">
+                                        <FieldButton
+                                            disabled={anteriorYear}
+                                            dataTestId={`firstJanuary-${validator}-${subObject}`}
+                                            title="1er janvier"
+                                            onClick={() =>
+                                                automaticDate('firstJanuary')
+                                            }
+                                        />
+                                    </Col>
+                                    <Col n="xs-12 md-4 xl-12">
+                                        <DeleteButton
+                                            dataTestId={`btn-delete-${validator}-${subObject}`}
+                                            background={grey}
+                                            display
+                                            disabled={!currentField}
+                                            onClick={deleteDate}
+                                            title={validatorId}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Col>
+                        <Col n="12 xl-9">
+                            <DateBlock
+                                updateValidSection={updateValidSection}
+                                setNewValueCheck={setNewValueCheck}
+                                newValueCheck={newValueCheck}
+                                validatorId={validatorId}
+                                updateDate={updateDate}
+                                data={dateData}
+                                subObject={subObject}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+        </FieldDependency>
     );
 }

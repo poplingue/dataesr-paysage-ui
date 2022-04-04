@@ -8,6 +8,7 @@ import {
     getSectionName,
     sectionUniqueId,
 } from '../../helpers/utils';
+import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
 import InfiniteAccordion from '../InfiniteAccordion';
 import PageTheme from '../PageTheme';
@@ -21,7 +22,7 @@ const CreateForm = ({ jsonForm, color }) => {
     const workerRef = useRef();
 
     const {
-        stateForm: { storeObjects, updateObjectId },
+        stateForm: { storeObjects, updateObjectId, savingSections, forms },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -116,10 +117,29 @@ const CreateForm = ({ jsonForm, color }) => {
                     type: 'UPDATE_CURRENT_OBJECT',
                     payload: JSON.parse(data).data,
                 });
+
+                // Retrieve general data object
+                const fields = dataFormService.objectFields(
+                    JSON.parse(data).data,
+                    formName,
+                    forms
+                );
+
+                dispatch({
+                    type: 'UPDATE_FORM_FIELD_LIST',
+                    payload: {
+                        formName,
+                        fields,
+                    },
+                });
             }
         };
     });
 
+    /**
+     * Get init object data &
+     * retrieve general object data on reset section
+     */
     useEffect(() => {
         async function fetchObject() {
             workerRef.current.postMessage({
@@ -128,10 +148,10 @@ const CreateForm = ({ jsonForm, color }) => {
             });
         }
 
-        if (updateObjectId) {
+        if (updateObjectId && !savingSections.length) {
             fetchObject();
         }
-    }, [updateObjectId, object]);
+    }, [savingSections, updateObjectId, object]);
 
     return (
         <PageTheme color={color}>
@@ -144,6 +164,7 @@ const CreateForm = ({ jsonForm, color }) => {
                             subObject,
                             content,
                             infinite,
+                            validatorId,
                         } = section;
 
                         const dataSection = sectionUniqueId(

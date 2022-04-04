@@ -3,11 +3,17 @@ import { cloneElement, useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
 
-export default function ToggleMode({ inputMode, uid, children, active }) {
+export default function ToggleMode({
+    inputMode,
+    uid,
+    children,
+    active,
+    subObject,
+}) {
     const { Col, Row, Container } = grid();
 
     const {
-        stateForm: { fieldsMode },
+        stateForm: { fieldsMode, savingSections },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
@@ -39,9 +45,8 @@ export default function ToggleMode({ inputMode, uid, children, active }) {
                     })}
                 </Col>
                 {active && (
-                    <Col n="12" spacing="py-2w">
+                    <Col spacing="py-2w" className="txt-right">
                         <Icon
-                            color=""
                             size="2x"
                             name={
                                 inputMode ? 'ri-toggle-fill' : 'ri-toggle-line'
@@ -52,6 +57,10 @@ export default function ToggleMode({ inputMode, uid, children, active }) {
                                 title="Mode"
                                 size="sm"
                                 secondary={!inputMode}
+                                disabled={
+                                    inputMode &&
+                                    !savingSections.indexOf(subObject) < 0
+                                }
                                 onClick={() => onToggleChange(uid)}
                             >
                                 {'antérieure à 1930'}

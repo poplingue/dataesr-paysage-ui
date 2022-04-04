@@ -20,7 +20,7 @@ export const configValidator = {
             }),
         ],
     },
-    latitude: {
+    lat: {
         validators: [
             (value) => ({
                 valid: !!value.match(
@@ -31,7 +31,7 @@ export const configValidator = {
         ],
         required: false,
     },
-    longitude: {
+    lng: {
         validators: [
             (value) => ({
                 valid: !!value.match(

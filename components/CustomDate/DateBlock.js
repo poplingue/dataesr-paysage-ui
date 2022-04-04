@@ -20,7 +20,6 @@ export default function DateBlock({
 
     const {
         stateForm: { forms, fieldsMode },
-        dispatchForm: dispatch,
     } = useContext(AppContext);
     const {
         pathname,
@@ -92,6 +91,7 @@ export default function DateBlock({
             return (
                 <Col n="12 xl-4" key={title}>
                     <ToggleMode
+                        subObject={subObject}
                         inputMode={inputMode}
                         uid={inputUID}
                         active={title === 'Année'}
