@@ -222,6 +222,9 @@ export const dataFormService = {
 
     subObjectsFields: (subObjects, formName) => {
         const subObjectsFields = [];
+        const nestedFields = mapFields(formName).flatMap((n) =>
+            n.indexOf('.') > -1 ? n : []
+        );
 
         for (let i = 0; i < subObjects.length; i++) {
             const { data, subObject } = subObjects[i];
@@ -231,10 +234,11 @@ export const dataFormService = {
 
                 for (let j = 0; j < sections.length; j++) {
                     const currentField = sections[j];
-
+                    const isNested = !!nestedFields.flatMap((field) =>
+                        field.split('.')[0] === currentField ? x : []
+                    ).length;
                     const value = field[currentField];
 
-                    // TODO handle nested data
                     if (
                         mapFields(formName).indexOf(currentField) > -1 &&
                         (value || typeof value === 'boolean')
@@ -251,6 +255,27 @@ export const dataFormService = {
                                 formName
                             )
                         );
+                    } else if (isNested) {
+                        // case nested data (example: coordinates.lat)
+                        for (let k = 0; k < nestedFields.length; k++) {
+                            const nestedFieldsList = nestedFields[k].split('.');
+                            const value = dataFormService.getProp(
+                                field,
+                                nestedFieldsList
+                            );
+
+                            if (value) {
+                                subObjectsFields.push(
+                                    ...fields[false](
+                                        value.toString(),
+                                        subObject,
+                                        field.id || id + 1,
+                                        nestedFieldsList[1],
+                                        formName
+                                    )
+                                );
+                            }
+                        }
                     }
                 }
             });
@@ -402,6 +427,8 @@ export const dataFormService = {
             url[!!(subObjectType && subObjectId)],
             requestOptions
         );
+
+        debugger; // eslint-disable-line
 
         return fetchHelper
             .handleResponse(response)

@@ -170,7 +170,6 @@ function Input({
                 value={textValue}
                 validatorId={validatorId}
                 onChange={onChange}
-                onGroupChange={onGroupChange}
             >
                 {renderTextInput}
             </Suggest>

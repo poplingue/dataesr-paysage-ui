@@ -199,12 +199,12 @@
               {
                 "title": "Longitude",
                 "type": "text",
-                "validatorId": "longitude"
+                "validatorId": "lng"
               },
               {
                 "title": "Latitude",
                 "type": "text",
-                "validatorId": "latitude"
+                "validatorId": "lat"
               }
             ]
           },

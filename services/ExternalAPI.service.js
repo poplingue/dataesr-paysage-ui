@@ -81,11 +81,11 @@ export const externalAPI = {
                         value: properties.postcode,
                     },
                     {
-                        validatorId: 'latitude',
+                        validatorId: 'lat',
                         value: geometry.coordinates[1].toString(),
                     },
                     {
-                        validatorId: 'longitude',
+                        validatorId: 'lng',
                         value: geometry.coordinates[0].toString(),
                     },
                     {
@@ -112,11 +112,11 @@ export const externalAPI = {
                         value: fields.com_current_code[0],
                     },
                     {
-                        validatorId: 'latitude',
+                        validatorId: 'lat',
                         value: fields.geo_point_2d.lat.toString(),
                     },
                     {
-                        validatorId: 'longitude',
+                        validatorId: 'lng',
                         value: fields.geo_point_2d.lon.toString(),
                     },
                     {
