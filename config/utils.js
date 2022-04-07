@@ -76,7 +76,7 @@ export function getObjectTypeDetails(id, name) {
             color: '--green-archipel-main-557',
             text: 'le document officiel',
             title: 'Document Officiel',
-            dataesrApi: 'official-documents',
+            dataesrApi: 'officialdocuments',
             tableSchema: [],
         },
         4: {
@@ -85,7 +85,7 @@ export function getObjectTypeDetails(id, name) {
             text: 'la catégorie légale',
             title: 'Catégorie Légale',
             colorClassName: 'Brown',
-            dataesrApi: 'legal-categories',
+            dataesrApi: 'legalcategories',
             tableSchema: [],
         },
         5: {
@@ -146,6 +146,7 @@ export const mapFields = (form) => {
             'comment',
         ],
         'contrib/document': [],
+        'contrib/legalCategory': [],
         'contrib/price': [],
         'contrib/officialDocument': [],
         'contrib/category': ['type', 'url', 'comment'],

@@ -232,6 +232,7 @@ CreateForm.propTypes = {
         'structure',
         'category',
         'officialDocument',
+        'legalCategory',
         'price',
     ]).isRequired,
 };

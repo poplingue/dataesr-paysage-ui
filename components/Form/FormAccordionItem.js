@@ -256,15 +256,13 @@ export default function FormAccordionItem({
                     <div key={field.title}>
                         <Container>
                             <Row alignItems="middle" gutters>
-                                <Col spacing="py-2w">
-                                    <WrapperFieldType
-                                        suggest={suggest}
-                                        field={field}
-                                        subObject={subObject}
-                                        updateValidSection={updateValidSection}
-                                        sectionTitle={sectionTitle}
-                                    />
-                                </Col>
+                                <WrapperFieldType
+                                    suggest={suggest}
+                                    field={field}
+                                    subObject={subObject}
+                                    updateValidSection={updateValidSection}
+                                    sectionTitle={sectionTitle}
+                                />
                             </Row>
                         </Container>
                     </div>

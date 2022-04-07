@@ -3,8 +3,8 @@ import { configValidator as configValidatorCategoryIdentifiers } from '../compon
 
 import { configValidator as configValidatorCategoryWeblinks } from '../components/ContribCategory/configValidatorWeblinks';
 import { configValidator as configValidatorDocumentInfos } from '../components/ContribDocument/configValidatorInfos';
-import { configValidator as configValidatorLegalCategoryInfos } from '../components/ContribLegalCategory/configValidatorInfos';
-import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorOfficialDocumentId';
+import { configValidator as configValidatorLegalCategory } from '../components/ContribLegalCategory/configValidator';
+import { configValidator as configValidatorOfficialDocument } from '../components/ContribOfficialDocument/configValidator';
 import { configValidator as configValidatorPerson } from '../components/ContribPerson/configValidator';
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
 import { configValidator as configValidatorPersonWebLinks } from '../components/ContribPerson/configValidatorPersonWebLinks';
@@ -75,21 +75,9 @@ const personSubObjects = [
     },
 ];
 
-const legalCategorySubObjects = [
-    {
-        subObject: 'infos',
-        initBody: { longNameFr: '' },
-    },
-];
+const legalCategorySubObjects = [];
 
-const officialDocumentSubObjects = [
-    {
-        subObject: 'officialDocumentId',
-        initBody: {
-            type: '',
-        },
-    },
-];
+const officialDocumentSubObjects = [];
 
 const categorySubObjects = [
     {
@@ -162,7 +150,7 @@ export const configValidators = {
         weblinks: configValidatorCategoryWeblinks,
     },
     officialDocument: {
-        officialDocumentId: configValidatorOfficialDocumentId,
+        general: configValidatorOfficialDocument,
     },
     price: {
         names: configValidatorPriceNames,
@@ -174,7 +162,7 @@ export const configValidators = {
         infos: configValidatorDocumentInfos,
     },
     legalCategory: {
-        infos: configValidatorLegalCategoryInfos,
+        general: configValidatorLegalCategory,
     },
 };
 

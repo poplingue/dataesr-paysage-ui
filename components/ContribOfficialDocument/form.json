@@ -2,23 +2,18 @@
   {
     "form": [
       {
-        "title": "Informations",
-        "subObject": "officialDocumentId",
-        "infinite": true,
+        "title": "Général",
+        "subObject": "general",
         "content": [
+          {
+            "textExtract": "string",
+            "comment": "string"
+          },
+
           {
             "title": "Type",
             "type": "select",
             "validatorId": "type",
-            "staticValues": [
-              "Publication au JO",
-              "Publication au BOESR"
-            ]
-          },
-          {
-            "title": "nature",
-            "type": "select",
-            "validatorId": "nature",
             "staticValues": [
               "Loi",
               "Décret",
@@ -27,6 +22,60 @@
               "Arrêté",
               "Circulaire"
             ]
+          },
+          {
+            "title": "Nature",
+            "type": "select",
+            "validatorId": "nature",
+            "staticValues": [
+              "Publication au JO",
+              "Publication au BOESR"
+            ]
+          },
+          {
+            "title": "Numéro de document",
+            "type": "text",
+            "validatorId": "documentNumber"
+          },
+          {
+            "title": "Titre",
+            "type": "text",
+            "validatorId": "title"
+          },
+          {
+            "title": "Url",
+            "type": "text",
+            "validatorId": "pageUrl"
+          },
+          {
+            "title": "Date de signature",
+            "type": "date",
+            "validatorId": "signatureDate"
+          },
+          {
+            "title": "Date de départ",
+            "type": "date",
+            "validatorId": "startDate"
+          },
+          {
+            "title": "Date de fin prévisionnnelle",
+            "type": "date",
+            "validatorId": "previsionalEndDate"
+          },
+          {
+            "title": "Date de fin",
+            "type": "date",
+            "validatorId": "endDate"
+          },
+          {
+            "title": "Extrait",
+            "type": "text",
+            "validatorId": "textExtract"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
           }
         ]
       }

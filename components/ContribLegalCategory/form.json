@@ -2,101 +2,58 @@
   {
     "form": [
       {
-        "title": "Informations",
-        "subObject": "infos",
-        "infinite": true,
+        "title": "Général",
+        "subObject": "general",
         "content": [
           {
             "title": "Code Insee",
             "type": "text",
-            "validatorId": "insee"
+            "validatorId": "inseeCode"
           },
           {
-            "title": "Wikidata",
+            "title": "Nom long Fr",
             "type": "text",
-            "validatorId": "wikidata"
+            "validatorId": "longNameFr",
+            "dependency": {
+              "validatorIds": ["shortNameFr", "acronymeFr", "pluralNameFr", "descriptionFr", "otherNames"],
+              "action": "hidden",
+              "rule": "emptiness"
+            }
           },
           {
-            "title": "Document officiel",
-            "type": "text",
-            "validatorId": "officialDocumentId"
-          },
-          {
-            "title": "Secteur public",
-            "type": "radio",
-            "validatorId": "inPublicResearch",
-            "defaultLabel": "Recherche publique",
-            "staticValues": [
-              {
-                "value": true,
-                "labelValue": "Recherche publique"
-              },
-              {
-                "value": false,
-                "labelValue": "Industrie"
-              }
-            ]
-          },
-          {
-            "title": "Personnalité legale",
-            "hint": "personne morale de droit public",
-            "type": "text",
-            "validatorId": "legalPersonality"
-          },
-          {
-            "title": "Secteur",
-            "type": "text",
-            "validatorId": "sector"
-          },
-          {
-            "title": "Nom français",
-            "type": "text",
-            "validatorId": "longNameFr"
-          },
-          {
-            "title": "Nom court français",
+            "title": "Nom court Fr",
             "type": "text",
             "validatorId": "shortNameFr"
           },
           {
-            "title": "Acronyme français",
+            "title": "Acronyme Fr",
             "type": "text",
-            "validatorId": "acronymFr"
+            "validatorId": "acronymeFr"
           },
           {
-            "title": "Nom pluriel français",
+            "title": "Nom pluriel Fr",
             "type": "text",
             "validatorId": "pluralNameFr"
           },
           {
-            "title": "description français",
+            "title": "Description Fr",
             "type": "text",
             "validatorId": "descriptionFr"
           },
           {
-            "title": "Nom anglais",
+            "title": "Nom long En",
             "type": "text",
-            "validatorId": "longNameFr"
+            "validatorId": "longNameEn",
+            "dependency": {
+              "validatorIds": ["shortNameEn"],
+              "action": "hidden",
+              "rule": "emptiness"
+            }
           },
           {
-            "title": "Nom court anglais",
+            "title": "Nom court En",
             "type": "text",
-            "validatorId": "shortNameFr"
-          },
-          {
-            "title": "Acronyme anglais",
-            "type": "text",
-            "validatorId": "acronymEn"
-          },
-          {
-            "title": "Nom pluriel anglais",
-            "type": "text",
-            "validatorId": "pluralNameFr"
-          },
-          {
-            "title": "description anglais",
-            "type": "text",
-            "validatorId": "descriptionFr"
+            "validatorId": "shortNameEn"
           },
           {
             "title": "Autre dénomination",
@@ -105,16 +62,42 @@
             "validatorId": "otherNames"
           },
           {
-            "title": "Site web officiel fr",
-            "type": "text",
-            "hint": "url du site",
-            "validatorId": "websiteFr"
+            "title": "Secteur",
+            "type": "radio",
+            "validatorId": "sector",
+            "defaultLabel": "Recherche publique",
+            "staticValues": [
+              {
+                "value": "public",
+                "labelValue": "Recherche publique"
+              },
+              {
+                "value": "privé",
+                "labelValue": "Industrie"
+              },
+              {
+                "value": "sans objet",
+                "labelValue": "Sans objet"
+              }
+            ]
           },
           {
-            "title": "Site web officiel en",
+            "title": "Document officiel",
             "type": "text",
-            "hint": "url du site",
-            "validatorId": "websiteEn"
+            "validatorId": "officialDocumentId"
+          },
+          {
+            "title": "Personnalité légale",
+            "hint": "personne morale de droit public",
+            "type": "select",
+            "validatorId": "legalPersonality",
+            "staticValues": [
+              "personne morale de droit public",
+              "personne morale de droit privé",
+              "organisation internationale",
+              "autre forme juridique étrangère",
+              "sans personalité juridique"
+            ]
           },
           {
             "title": "Commentaire",
@@ -122,15 +105,37 @@
             "validatorId": "comment"
           },
           {
-            "title": "Date de début",
-            "type": "date",
-            "validatorId": "startDate"
+            "title": "Secteur de la recherche",
+            "type": "radio",
+            "validatorId": "inPublicResearch",
+            "defaultLabel": "Non",
+            "staticValues": [
+              {
+                "value": true,
+                "labelValue": "Oui"
+              },
+              {
+                "value": false,
+                "labelValue": "Non"
+              }
+            ]
           },
           {
-            "title": "Date de fin",
-            "type": "date",
-            "validatorId": "endDate"
+            "title": "Site Fr",
+            "type": "text",
+            "validatorId": "websiteFr"
+          },
+          {
+            "title": "Site En",
+            "type": "text",
+            "validatorId": "websiteEn"
+          },
+          {
+            "title": "Wikidata",
+            "type": "text",
+            "validatorId": "wikidataId"
           }
+
         ]
       }
     ]
