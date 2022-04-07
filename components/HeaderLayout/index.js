@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 
-function HeaderLayout({ highlight, pageTitle, status }) {
+function HeaderLayout({ highlight, pageTitle, status, type }) {
     const {
         statePage: { hasBreadCrumbs },
     } = useContext(AppContext);
@@ -48,15 +48,18 @@ function HeaderLayout({ highlight, pageTitle, status }) {
                                                     {pageTitle}
                                                 </Title>
                                             </Col>
-                                            {status && (
-                                                <Col n="12">
+                                        </Row>
+                                        <Row gutters>
+                                            <Col>
+                                                {type && <Tag>{type}</Tag>}
+                                                {status && (
                                                     <Tag>
                                                         {status === 'draft'
-                                                            ? 'Structure en draft'
-                                                            : 'Structure publiée'}
+                                                            ? 'brouillon'
+                                                            : 'publié'}
                                                     </Tag>
-                                                </Col>
-                                            )}
+                                                )}
+                                            </Col>
                                         </Row>
                                     </Col>
                                 </Row>

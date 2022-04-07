@@ -42,11 +42,3 @@ export default function Person({ fame, children, skeleton }) {
         </PageTheme>
     );
 }
-
-Person.getServerSideProps = () => {
-    return {
-        props: {
-            name: 'Sœur Emmanuelle',
-        },
-    };
-};

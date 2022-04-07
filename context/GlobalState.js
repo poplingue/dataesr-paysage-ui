@@ -27,7 +27,7 @@ export const DataProvider = ({ user, error, children }) => {
             { 'contrib/officialDocument': [] },
         ],
         savingSections: [],
-        currentObject: {},
+        currentFormObject: {},
         dependencies: {},
         fieldsMode: {},
     };
@@ -51,6 +51,7 @@ export const DataProvider = ({ user, error, children }) => {
         },
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
+        currentPageObject: null,
         error: error || null,
         user: user || {},
         userConnected: user && Object.keys(user).length > 0,

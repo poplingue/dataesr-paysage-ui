@@ -94,11 +94,11 @@ const DBService = {
 
         const tx = db.transaction(objectStoreName, 'readwrite');
 
-        const currentObject = await tx.store.get(objValue.uid);
+        const currentFormObject = await tx.store.get(objValue.uid);
 
         if (
-            !currentObject ||
-            (currentObject && !currentObject.unSaved) ||
+            !currentFormObject ||
+            (currentFormObject && !currentFormObject.unSaved) ||
             force
         ) {
             // set the value
@@ -131,11 +131,11 @@ const DBService = {
         const promises = [];
 
         for (let i = 0; i < list.length; i = i + 1) {
-            const currentObject = await tx.store.get(list[i].uid);
+            const currentFormObject = await tx.store.get(list[i].uid);
 
             if (
-                !currentObject ||
-                (currentObject && !currentObject.unSaved) ||
+                !currentFormObject ||
+                (currentFormObject && !currentFormObject.unSaved) ||
                 force
             ) {
                 promises.push(tx.store.put({ ...list[i] }));

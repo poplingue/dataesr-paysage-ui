@@ -2,69 +2,30 @@
   {
     "form": [
       {
-        "title": "Identifiants principaux",
-        "subObject": "identifiers",
+        "title": "Général",
+        "subObject": "general",
         "position": 0,
-        "infinite": true,
+        "infinite": false,
         "content": [
           {
-            "title": "Wikidata",
-            "type": "text",
-            "validatorId": "wikidata"
-          },
-          {
-            "title": "IdRef",
-            "type": "text",
-            "validatorId": "idref"
-          },
-          {
-            "title": "Uai",
-            "type": "text",
-            "validatorId": "uai"
-          },
-          {
-            "title": "Test Checkbox",
-            "type": "checkbox",
-            "validatorId": "satisfaction",
+            "title": "Genre",
+            "type": "radio",
+            "validatorId": "gender",
+            "defaultLabel": "Autre",
             "staticValues": [
-              "satisfied",
-              "not satisfied"
+              {
+                "value": "Femme",
+                "labelValue": "Femme"
+              },
+              {
+                "value": "Autre",
+                "labelValue": "Autre"
+              },
+              {
+                "value": "Homme",
+                "labelValue": "Homme"
+              }
             ]
-          }
-        ]
-      },
-      {
-        "title": "Média Social",
-        "subObject": "socials",
-        "infinite": true,
-        "content": [
-          {
-            "title": "Compte",
-            "type": "text",
-            "validatorId": "account"
-          },
-          {
-            "title": "Type",
-            "type": "select",
-            "validatorId": "media",
-            "staticValues": [
-              "Facebook",
-              "Twitter",
-              "Linkedin"
-            ]
-          }
-        ]
-      },
-      {
-        "title": "Dénomination",
-        "subObject": "names",
-        "infinite": true,
-        "position": 1,
-        "content": [
-          {
-            "title": "Nom",
-            "type": "text",
-            "validatorId": "lastName"
           },
           {
             "title": "Prénom",
@@ -72,20 +33,97 @@
             "validatorId": "firstName"
           },
           {
-            "title": "Autre dénomination",
+            "title": "Nom",
+            "type": "text",
+            "validatorId": "lastName"
+          },
+          {
+            "title": "Autre nom",
             "type": "text",
             "infinite": true,
             "validatorId": "otherNames"
           },
           {
-            "title": "Genre",
-            "type": "select",
-            "validatorId": "gender",
+            "title": "Date de naissance",
+            "type": "date",
+            "validatorId": "birthDate"
+          },
+          {
+            "title": "Date de décès",
+            "type": "date",
+            "validatorId": "deathDate"
+          },
+          {
+            "title": "Activité",
+            "type": "text",
+            "validatorId": "activity"
+          },
+          {
+            "title": "Commentaire",
+            "type": "text",
+            "validatorId": "comment"
+          }
+        ]
+      },
+      {
+        "title": "Identifiants",
+        "subObject": "identifiers",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "text",
+            "validatorId": "type",
+            "dependency": {
+              "validatorIds": [
+                "value"
+              ],
+              "action": "hidden"
+            }
+          },
+          {
+            "title": "Valeur",
+            "type": "text",
+            "validatorId": "value"
+          },
+          {
+            "title": "État",
+            "type": "radio",
+            "validatorId": "active",
+            "defaultLabel": "Actif",
             "staticValues": [
-              "m",
-              "f",
-              "n"
+              {
+                "value": true,
+                "labelValue": "Actif"
+              },
+              {
+                "value": false,
+                "labelValue": "Inactif"
+              }
             ]
+          }
+        ]
+      },
+      {
+        "title": "Réseaux sociaux",
+        "subObject": "socials",
+        "infinite": true,
+        "content": [
+          {
+            "title": "Type",
+            "type": "select",
+            "validatorId": "type",
+            "staticValues": [
+              "Facebook",
+              "Twitter",
+              "Linkedin"
+            ]
+          },
+          {
+            "title": "Compte",
+            "type": "text",
+            "hint": "Identifiant du compte ou url",
+            "validatorId": "account"
           }
         ]
       }

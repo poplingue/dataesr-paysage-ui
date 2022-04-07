@@ -68,7 +68,7 @@ export default function PaysageObject({ data }) {
     const initSkeleton = templateObj[type] ? templateObj[type].skeleton : null;
 
     const {
-        statePage: { accordionSkeleton: skeleton },
+        statePage: { accordionSkeleton: skeleton, currentPageObject },
         dispatchPage: dispatch,
     } = useContext(AppContext);
 
@@ -94,11 +94,24 @@ export default function PaysageObject({ data }) {
         }
     }, [initSkeleton, skeleton, updateSkeleton]);
 
+    useEffect(() => {
+        if (!currentPageObject && data) {
+            const proxy = new Proxy(data, ObjectService.handlerObjectInfo());
+
+            dispatch({ type: 'UPDATE_CURRENT_PAGE_OBJECT', payload: proxy });
+        }
+    }, [currentPageObject, data, dispatch]);
+
     return (
         <Layout>
             <HeaderLayout
-                pageTitle={!!Object.keys(data).length ? `${title}` : ''}
+                pageTitle={
+                    currentPageObject
+                        ? `${currentPageObject.mainTitle}`
+                        : `${title}`
+                }
                 status={data.status}
+                type={title}
             />
             {Component && (
                 <SideNavigation items={skeleton} color={colorClassName}>

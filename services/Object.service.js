@@ -110,6 +110,44 @@ export const objectService = {
         };
     },
 
+    handlerObjectInfo: () => {
+        return {
+            get(target, property) {
+                // case Person
+                if (
+                    property === 'mainTitle' &&
+                    target.firstName &&
+                    target.lastName
+                ) {
+                    return `${target.firstName} ${target.lastName}`;
+                }
+
+                // case Structure
+                if (
+                    property === 'mainTitle' &&
+                    target.currentName &&
+                    target.currentName.officialName
+                ) {
+                    return target.currentName.officialName;
+                }
+
+                return target[property];
+            },
+        };
+    },
+
+    handlerInfoPerson: () => {
+        return {
+            get(target, property) {
+                if (property === 'fullName') {
+                    return `${target.firstName || ''} ${target.lastName || ''}`;
+                }
+
+                return target[property];
+            },
+        };
+    },
+
     handlerMainLocalisation: () => {
         return {
             get(target, property) {

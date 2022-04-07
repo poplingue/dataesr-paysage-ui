@@ -1,8 +1,11 @@
 export const configValidator = {
-    account: {
+    url: {
         required: true,
     },
     type: {
+        required: true,
+    },
+    language: {
         required: true,
     },
 };

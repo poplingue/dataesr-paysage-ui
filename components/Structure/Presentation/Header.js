@@ -10,7 +10,8 @@ import {
 } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import useWorkerObject from '../../../hooks/useWorkerObject';
 import ObjectService from '../../../services/Object.service';
 import Map from '../../Map';
 import ShowMoreList from '../../ShowMoreList';
@@ -28,7 +29,7 @@ export default function Header() {
     } = useRouter();
 
     const router = useRouter();
-    const workerRef = useRef();
+    const { fetchObject, objectData } = useWorkerObject();
 
     useEffect(() => {
         // TODO use Promise.all for subObjects identifiers and localisations
@@ -75,42 +76,30 @@ export default function Header() {
         }
     }, [id, mainLocation, type]);
 
-    // TODO refacto - make a hook
     useEffect(() => {
-        workerRef.current = new Worker('/service-worker.js', {
-            name: 'Get_object',
-            type: 'module',
-        });
-    }, []);
+        if (objectData) {
+            const { currentName } = objectData;
 
-    useEffect(() => {
-        workerRef.current.onmessage = async ({ data }) => {
-            if (data && JSON.parse(data).data) {
-                const { currentName } = JSON.parse(data).data;
-
-                if (!!Object.keys(currentName).length) {
-                    const proxy = new Proxy(
-                        currentName,
-                        ObjectService.handlerMainName()
-                    );
-                    setMainName(proxy);
-                }
+            // check currentName not yet set
+            if (currentName && !!Object.keys(currentName).length) {
+                const proxy = new Proxy(
+                    currentName,
+                    ObjectService.handlerMainName()
+                );
+                setMainName(proxy);
             }
-        };
-    });
+        }
+    }, [objectData]);
 
     useEffect(() => {
         async function fetchStructure() {
-            workerRef.current.postMessage({
-                object: type,
-                id,
-            });
+            fetchObject(type, id);
         }
 
         if (id) {
             fetchStructure();
         }
-    }, [id, type]);
+    }, [fetchObject, id, type]);
 
     const renderIdentifiers = () => {
         return identifiers.map((identifier, i) => {
