@@ -42,6 +42,7 @@ export const DataProvider = ({ user, error, children }) => {
         spinner: false,
         printPage: null,
         accordionSkeleton: [],
+        tableData: [],
         accordionItems: [],
         modalDetail: {
             title: '',

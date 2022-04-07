@@ -29,7 +29,6 @@ export function getVal(key) {
  * @returns {*}
  */
 export function getObjectTypeDetails(id, name) {
-    // TODO handle color for each object
     // TODO refacto param => {}
     const objectTypes = {
         0: {
@@ -39,6 +38,20 @@ export function getObjectTypeDetails(id, name) {
             color: '--yellow-tournesol-main-731',
             colorClassName: 'Yellow',
             dataesrApi: 'structures',
+            tableSchema: [
+                {
+                    title: 'Nom officiel',
+                    field: 'officialName',
+                    editor: 'input',
+                    headerFilter: 'input',
+                },
+                {
+                    title: 'Nom usuel',
+                    field: 'usualName',
+                    editor: 'input',
+                    headerFilter: 'input',
+                },
+            ],
         },
         1: {
             name: 'person',
@@ -47,6 +60,7 @@ export function getObjectTypeDetails(id, name) {
             color: '--pink-tuile-main-556',
             colorClassName: 'Pink',
             dataesrApi: 'persons',
+            tableSchema: [],
         },
         2: {
             name: 'category',
@@ -55,6 +69,7 @@ export function getObjectTypeDetails(id, name) {
             title: 'Catégorie',
             colorClassName: 'Green',
             dataesrApi: 'categories',
+            tableSchema: [],
         },
         3: {
             name: 'officialDocument',
@@ -62,6 +77,7 @@ export function getObjectTypeDetails(id, name) {
             text: 'le document officiel',
             title: 'Document Officiel',
             dataesrApi: 'official-documents',
+            tableSchema: [],
         },
         4: {
             name: 'legalCategory',
@@ -70,6 +86,7 @@ export function getObjectTypeDetails(id, name) {
             title: 'Catégorie Légale',
             colorClassName: 'Brown',
             dataesrApi: 'legal-categories',
+            tableSchema: [],
         },
         5: {
             name: 'price',
@@ -78,6 +95,7 @@ export function getObjectTypeDetails(id, name) {
             title: 'Prix',
             colorClassName: 'Blue',
             dataesrApi: 'prices',
+            tableSchema: [],
         },
         6: {
             name: 'term',
@@ -86,6 +104,7 @@ export function getObjectTypeDetails(id, name) {
             title: 'Terme',
             colorClassName: 'Purple',
             dataesrApi: 'terms',
+            tableSchema: [],
         },
         7: {
             name: 'document',
@@ -94,6 +113,7 @@ export function getObjectTypeDetails(id, name) {
             title: 'Documents',
             colorClassName: 'Archipel',
             dataesrApi: 'documents',
+            tableSchema: [],
         },
     };
 

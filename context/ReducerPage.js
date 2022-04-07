@@ -63,6 +63,17 @@ const actionMap = {
             modalDetail,
         };
     },
+
+    UPDATE_TABLE_DATA: (state, action) => {
+        const tableData = action.payload.map((d, index) => {
+            return { ...d, index };
+        });
+
+        return {
+            ...state,
+            tableData,
+        };
+    },
 };
 
 const reducerPage = (state, action) => {
