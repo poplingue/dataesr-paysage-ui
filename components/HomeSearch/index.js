@@ -10,7 +10,7 @@ import styles from './HomeSearch.module.scss';
 
 export default function HomeSearch({ switchPage, defaultType }) {
     const { Col, Row, Container } = grid();
-    const [typeObject, setTypeObject] = useState(defaultType || '');
+    const [objectType, setObjectType] = useState(defaultType || '');
     const [searchValue, setSearchValue] = useState('');
 
     // TODO refacto
@@ -34,7 +34,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
 
     const onSearch = () => {
         if (!searchValue) {
-            router.push(`/search/${typeObject}`);
+            router.push(`/search/${objectType}`);
         }
     };
 
@@ -42,7 +42,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
         if (switchPage) {
             router.push(`/search/${e.target.value}`);
         } else {
-            setTypeObject(e.target.value);
+            setObjectType(e.target.value);
         }
     };
 
@@ -52,7 +52,7 @@ export default function HomeSearch({ switchPage, defaultType }) {
                 <Col n="12 md-3">
                     <Select
                         onChange={changeType}
-                        selected={typeObject}
+                        selected={objectType}
                         label="Objet recherché"
                         options={[
                             { value: '', label: 'Tout objet', disabled: true },

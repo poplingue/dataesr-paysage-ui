@@ -54,7 +54,7 @@ const NotifService = {
     info(message, type = 'valid', duration = 4000) {
         let stringMessage = message.toString();
 
-        const typeObject = {
+        const objectStatus = {
             error: { background: bgError, icon: iconError },
             valid: { background: bgValid, icon: iconValid },
             neutral: { background: bgNeutral, icon: iconNeutral },
@@ -67,12 +67,12 @@ const NotifService = {
         toast(stringMessage, {
             id: 'toast-info',
             position: 'top-right',
-            icon: typeObject[type].icon,
+            icon: objectStatus[type].icon,
             className: `cy-notif-${type}`,
             duration,
             style: {
                 fontSize: 14,
-                background: typeObject[type].background,
+                background: objectStatus[type].background,
             },
         });
     },
@@ -80,7 +80,7 @@ const NotifService = {
     techInfo(message, type = 'neutral', duration = 4000) {
         let stringMessage = message.toString();
 
-        const typeObject = {
+        const objectStatus = {
             error: { background: bgError, icon: iconError },
             valid: { background: bgValid, icon: iconValid },
             neutral: { background: bgNeutral, icon: iconNeutral },
@@ -89,11 +89,11 @@ const NotifService = {
         toast(stringMessage, {
             position: 'bottom-right',
             className: `cy-notif-${type}`,
-            icon: typeObject[type].icon,
+            icon: objectStatus[type].icon,
             duration,
             style: {
                 fontSize: 14,
-                background: typeObject[type].background,
+                background: objectStatus[type].background,
             },
         });
     },

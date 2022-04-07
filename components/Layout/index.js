@@ -212,8 +212,19 @@ function Layout({ children, headTitle }) {
                                 current={asPath.startsWith('/contrib')}
                             >
                                 <NavSubItem
+                                    current={
+                                        pathname.startsWith('/contrib') &&
+                                        !pathname.endsWith('/import')
+                                    }
                                     title="Ajouter un nouvel objet"
                                     asLink={<NavLink href="/contrib" />}
+                                />
+                                <NavSubItem
+                                    current={pathname.endsWith('/import')}
+                                    title="Ajouter en masse"
+                                    asLink={
+                                        <NavLink href="/contrib/structure/import" />
+                                    }
                                 />
                             </NavItem>
                             <NavItem title="Annuaire">

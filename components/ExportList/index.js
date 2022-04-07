@@ -1,18 +1,10 @@
 import { Toggle } from '@dataesr/react-dsfr';
 import { useContext } from 'react';
-import XLSX from 'xlsx';
 import { AppContext } from '../../context/GlobalState';
 import grid from '../../helpers/imports';
+import { ExcelService } from '../../services/Excel.service';
 import FieldButton from '../FieldButton';
 import List from '../List';
-
-function Workbook() {
-    if (!(this instanceof Workbook)) return new Workbook();
-
-    this.SheetNames = [];
-
-    this.Sheets = {};
-}
 
 export default function ExportList({ children, selection }) {
     const { Col, Row, Container } = grid();
@@ -22,43 +14,8 @@ export default function ExportList({ children, selection }) {
         dispatchList: dispatch,
     } = useContext(AppContext);
 
-    const download = (url, name) => {
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = name;
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-    };
-
-    const s2ab = (s) => {
-        const buf = new ArrayBuffer(s.length);
-
-        const view = new Uint8Array(buf);
-
-        for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-
-        return buf;
-    };
-
-    const exportJson = (filename) => {
-        const wb = new Workbook();
-        const ws = XLSX.utils.json_to_sheet(selection);
-
-        wb.SheetNames.push('shit');
-        wb.Sheets['shit'] = ws;
-
-        const wbout = XLSX.write(wb, {
-            bookType: 'xlsx',
-            bookSST: true,
-            type: 'binary',
-        });
-
-        let url = window.URL.createObjectURL(
-            new Blob([s2ab(wbout)], { type: 'application/octet-stream' })
-        );
-
-        download(url, filename);
+    const exportJsonToXLS = () => {
+        ExcelService.downloadFile('list', selection);
     };
 
     return (
@@ -86,7 +43,7 @@ export default function ExportList({ children, selection }) {
                         </List>
                         <FieldButton
                             title="Exporter le fichier excel"
-                            onClick={() => exportJson('excel.xls')}
+                            onClick={exportJsonToXLS}
                         />
                     </Col>
                 )}

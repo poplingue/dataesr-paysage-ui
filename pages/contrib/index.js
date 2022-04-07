@@ -23,7 +23,7 @@ export default function Contrib() {
     // TODO remove
     const [currentObject, setCurrentObject] = useState('');
     const workerRef = useRef();
-    const [typeObject, setTypeObject] = useState('structure');
+    const [objectType, setObjectType] = useState('structure');
 
     const router = useRouter();
     const { dispatchForm: dispatch } = useContext(AppContext);
@@ -78,9 +78,9 @@ export default function Contrib() {
                     <Col n="6">
                         <Select
                             onChange={(e) => {
-                                setTypeObject(e.target.value);
+                                setObjectType(e.target.value);
                             }}
-                            selected={typeObject}
+                            selected={objectType}
                             label={`Type d'objet`}
                             options={[
                                 ...Array(Object.keys(subObjects).length).keys(),
@@ -99,11 +99,11 @@ export default function Contrib() {
                             </Spinner>
                         ) : (
                             <LinkClick
-                                dataCy={`contrib/${typeObject}`}
-                                href={`/contrib/${typeObject}`}
-                                onClick={(e) => onClick(e, typeObject)}
+                                dataCy={`contrib/${objectType}`}
+                                href={`/contrib/${objectType}`}
+                                onClick={(e) => onClick(e, objectType)}
                                 text={`Créer un nouvel objet « ${
-                                    getObjectTypeDetails('', typeObject).title
+                                    getObjectTypeDetails('', objectType).title
                                 } »`}
                             />
                         )}
