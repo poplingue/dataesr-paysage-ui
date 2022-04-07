@@ -114,7 +114,7 @@ const CreateForm = ({ jsonForm, color }) => {
         workerRef.current.onmessage = async ({ data }) => {
             if (data) {
                 dispatch({
-                    type: 'UPDATE_CURRENT_OBJECT',
+                    type: 'UPDATE_CURRENT_FORM_OBJECT',
                     payload: JSON.parse(data).data,
                 });
 

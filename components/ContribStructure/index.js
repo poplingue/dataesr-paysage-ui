@@ -18,13 +18,13 @@ import ContribStructureForm from './form.json';
 
 export default function ContribStructure({ data, id }) {
     const {
-        stateForm: { departments, storeObjects, currentObject },
+        stateForm: { departments, storeObjects, currentFormObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const { style: yellow } = useCSSProperty('--yellow-tournesol-main-731');
 
     const [published, setPublished] = useState(
-        currentObject.status === 'published'
+        currentFormObject.status === 'published'
     );
 
     const { style: green } = useCSSProperty('--success-main-525');
@@ -37,11 +37,11 @@ export default function ContribStructure({ data, id }) {
     const objCheck = useCallback(
         (keyA, keyB) => {
             return {
-                false: () => currentObject[keyA] || '',
-                true: () => currentObject[keyB] || '',
+                false: () => currentFormObject[keyA] || '',
+                true: () => currentFormObject[keyB] || '',
             };
         },
-        [currentObject]
+        [currentFormObject]
     );
 
     const formName = getFormName(pathname, object);
@@ -74,16 +74,21 @@ export default function ContribStructure({ data, id }) {
     }, [dispatch, formName, id, object, storeObjects]);
 
     const publishObject = () => {
-        dataFormService.publish(currentObject.id, object).then((structure) => {
-            NotifService.info(`Structure validée et publiée`, 'valid');
+        dataFormService
+            .publish(currentFormObject.id, object)
+            .then((structure) => {
+                NotifService.info(`Structure validée et publiée`, 'valid');
 
-            dispatch({ type: 'UPDATE_CURRENT_OBJECT', payload: structure });
-        });
+                dispatch({
+                    type: 'UPDATE_CURRENT_FORM_OBJECT',
+                    payload: structure,
+                });
+            });
     };
 
     useEffect(() => {
-        setPublished(currentObject.status === 'published');
-    }, [currentObject]);
+        setPublished(currentFormObject.status === 'published');
+    }, [currentFormObject]);
 
     useEffect(() => {
         async function init() {
@@ -106,23 +111,23 @@ export default function ContribStructure({ data, id }) {
 
     useEffect(() => {
         const currentEditor = objCheck('createdBy', 'updatedBy')[
-            !currentObject.updatedBy
+            !currentFormObject.updatedBy
         ]();
 
         if (!editor && !!currentEditor.username) {
             setEditor(`par ${currentEditor.username}`);
         }
-    }, [currentObject.updatedBy, editor, objCheck]);
+    }, [currentFormObject.updatedBy, editor, objCheck]);
 
     useEffect(() => {
         const currentDate = objCheck('createdAt', 'updatedAt')[
-            !!currentObject.updatedAt
+            !!currentFormObject.updatedAt
         ]();
 
         if (!!currentDate && !dateInfo) {
             setDateInfo(`Dernière modification le ${currentDate}`);
         }
-    }, [currentObject, currentObject.updatedAt, dateInfo, objCheck]);
+    }, [currentFormObject, currentFormObject.updatedAt, dateInfo, objCheck]);
 
     return (
         <Layout>

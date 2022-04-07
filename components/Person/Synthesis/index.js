@@ -1,20 +1,38 @@
 import { Title } from '@dataesr/react-dsfr';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import grid from '../../../helpers/imports';
 import { sectionUniqueId } from '../../../helpers/utils';
+import useWorkerObject from '../../../hooks/useWorkerObject';
 import Contact from './Contact';
 import Functions from './Functions';
 import News from './News';
 
 const components = {
-    functions: Functions,
     contact: Contact,
+    functions: Functions,
     news: News,
 };
 
 export default function Synthesis({ content }) {
     const { Col, Row, Container } = grid();
 
-    // TODO wrapper dynamic component
+    const {
+        query: { id, type },
+    } = useRouter();
+
+    const { fetchObject, objectData } = useWorkerObject();
+
+    useEffect(() => {
+        async function fetchPerson() {
+            fetchObject(type, id);
+        }
+
+        if (id) {
+            fetchPerson();
+        }
+    }, [fetchObject, id, type]);
+
     return (
         <>
             {content.map((subSection) => {
@@ -34,7 +52,9 @@ export default function Synthesis({ content }) {
                             </Row>
                             <Row spacing="px-2w">
                                 <Col spacing="pb-8w">
-                                    {Component && <Component />}
+                                    {Component && (
+                                        <Component data={objectData} />
+                                    )}
                                 </Col>
                             </Row>
                         </Container>

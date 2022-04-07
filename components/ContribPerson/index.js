@@ -7,8 +7,6 @@ import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
-import FieldButton from '../FieldButton';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import LinkTo from '../LinkTo';
@@ -17,16 +15,14 @@ import ContribPersonForm from './form.json';
 
 export default function ContribPerson({ data, id }) {
     const {
-        stateForm: { departments, storeObjects, currentObject },
+        stateForm: { departments, storeObjects, currentFormObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');
     const [published, setPublished] = useState(
-        currentObject.status === 'published'
+        currentFormObject.status === 'published'
     );
 
-    const { style: green } = useCSSProperty('--success-main-525');
-    const { style: white } = useCSSProperty('--grey-1000');
     const {
         pathname,
         query: { object },
@@ -35,11 +31,11 @@ export default function ContribPerson({ data, id }) {
     const objCheck = useCallback(
         (keyA, keyB) => {
             return {
-                false: () => currentObject[keyA] || '',
-                true: () => currentObject[keyB] || '',
+                false: () => currentFormObject[keyA] || '',
+                true: () => currentFormObject[keyB] || '',
             };
         },
-        [currentObject]
+        [currentFormObject]
     );
 
     const formName = getFormName(pathname, object);
@@ -71,17 +67,9 @@ export default function ContribPerson({ data, id }) {
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
-    const publishObject = () => {
-        dataFormService.publish(currentObject.id, object).then((person) => {
-            NotifService.info(`Personne validée et publiée`, 'valid');
-
-            dispatch({ type: 'UPDATE_CURRENT_OBJECT', payload: person });
-        });
-    };
-
     useEffect(() => {
-        setPublished(currentObject.status === 'published');
-    }, [currentObject]);
+        setPublished(currentFormObject.status === 'published');
+    }, [currentFormObject]);
 
     useEffect(() => {
         async function init() {
@@ -104,50 +92,36 @@ export default function ContribPerson({ data, id }) {
 
     useEffect(() => {
         const currentEditor = objCheck('createdBy', 'updatedBy')[
-            !currentObject.updatedBy
+            !currentFormObject.updatedBy
         ]();
 
         if (!editor && !!currentEditor.username) {
             setEditor(`par ${currentEditor.username}`);
         }
-    }, [currentObject.updatedBy, editor, objCheck]);
+    }, [currentFormObject.updatedBy, editor, objCheck]);
 
     useEffect(() => {
         const currentDate = objCheck('createdAt', 'updatedAt')[
-            !!currentObject.updatedAt
+            !!currentFormObject.updatedAt
         ]();
 
         if (!!currentDate && !dateInfo) {
             setDateInfo(`Dernière modification le ${currentDate}`);
         }
-    }, [currentObject, currentObject.updatedAt, dateInfo, objCheck]);
+    }, [currentFormObject, currentFormObject.updatedAt, dateInfo, objCheck]);
 
     return (
         <Layout>
             <HeaderLayout
                 highlight={`${dateInfo} ${editor}`}
-                pageTitle={
-                    published
-                        ? `Modifier la personne ${id}`
-                        : `Initier une personne ${id}`
-                }
+                pageTitle={`Modifier la personne ${id}`}
             />
             <SideNavigation items={ContribPersonForm[0].form}>
                 <ToolBox accordions>
-                    {!published ? (
-                        <FieldButton
-                            dataTestId="validate-person"
-                            disabled={published}
-                            title="Valider la personne"
-                            onClick={publishObject}
-                            colors={published ? [] : [white, green]}
-                        />
-                    ) : (
-                        <LinkTo
-                            text="voir la fiche"
-                            href={`/object/person/${id}`}
-                        />
-                    )}
+                    <LinkTo
+                        text="voir la fiche"
+                        href={`/object/person/${id}`}
+                    />
                 </ToolBox>
                 <CreateForm
                     jsonForm={ContribPersonForm[0]}

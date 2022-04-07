@@ -74,6 +74,13 @@ const actionMap = {
             tableData,
         };
     },
+
+    UPDATE_CURRENT_PAGE_OBJECT: (state, action) => {
+        return {
+            ...state,
+            currentPageObject: action.payload,
+        };
+    },
 };
 
 const reducerPage = (state, action) => {

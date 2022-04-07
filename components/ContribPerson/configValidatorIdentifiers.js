@@ -1,32 +1,47 @@
 export const configValidator = {
-    wikidata: {
-        required: true,
-        validators: [
-            (value) => ({
-                valid: value.length > 2,
-                errorMsg: '3 caractères minimum',
-            }),
-        ],
-    },
-    idref: {
-        required: true,
-        validators: [
-            (value) => ({
-                valid: value.length > 2 && !!value.match(/^\d+(\.\d{1,2})?$/),
-                errorMsg: '3 caractères minimum, uniquement numériques',
-            }),
-        ],
-    },
-    satisfaction: {
+    value: {
         required: true,
     },
-    uai: {
+    active: {
+        required: true,
+    },
+    type: {
+        required: true,
+    },
+    startDate: {
         required: false,
+    },
+    endDate: {
+        required: false,
+    },
+    startDateDay: {
+        required: false,
+    },
+    startDateMonth: {
+        required: false,
+    },
+    startDateYear: {
         validators: [
             (value) => ({
-                valid: value.length > 2 && !!value.match(/^\d+(\.\d{1,2})?$/),
-                errorMsg: '3 caractères minimum, uniquement numériques',
+                valid: !!value.match(/^\d{4}$/g),
+                errorMsg: 'Format non valide',
             }),
         ],
+        required: false,
+    },
+    endDateDay: {
+        required: false,
+    },
+    endDateMonth: {
+        required: false,
+    },
+    endDateYear: {
+        validators: [
+            (value) => ({
+                valid: !!value.match(/^\d{4}$/g),
+                errorMsg: 'Format non valide',
+            }),
+        ],
+        required: false,
     },
 };

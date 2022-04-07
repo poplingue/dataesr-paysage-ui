@@ -5,8 +5,9 @@ import { configValidator as configValidatorCategoryWeblinks } from '../component
 import { configValidator as configValidatorDocumentInfos } from '../components/ContribDocument/configValidatorInfos';
 import { configValidator as configValidatorLegalCategoryInfos } from '../components/ContribLegalCategory/configValidatorInfos';
 import { configValidator as configValidatorOfficialDocumentId } from '../components/ContribOfficialDocument/configValidatorOfficialDocumentId';
+import { configValidator as configValidatorPerson } from '../components/ContribPerson/configValidator';
 import { configValidator as configValidatorPersonIdentifiers } from '../components/ContribPerson/configValidatorIdentifiers';
-import { configValidator as configValidatorPersonNames } from '../components/ContribPerson/configValidatorNames';
+import { configValidator as configValidatorPersonWebLinks } from '../components/ContribPerson/configValidatorPersonWebLinks';
 import { configValidator as configValidatorPersonSocialmedias } from '../components/ContribPerson/configValidatorSocialmedias';
 
 import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
@@ -50,7 +51,20 @@ const structureSubObjects = [
 ];
 
 const personSubObjects = [
-    { subObject: 'names', initBody: { usualName: '' } },
+    {
+        subObject: 'weblinks',
+        initBody: {
+            type: '',
+            url: '',
+        },
+    },
+    {
+        subObject: 'socials',
+        initBody: {
+            type: '',
+            account: '',
+        },
+    },
     {
         subObject: 'identifiers',
         initBody: {
@@ -139,8 +153,9 @@ export const configValidators = {
     },
     person: {
         identifiers: configValidatorPersonIdentifiers,
-        names: configValidatorPersonNames,
+        weblinks: configValidatorPersonWebLinks,
         socials: configValidatorPersonSocialmedias,
+        general: configValidatorPerson,
     },
     category: {
         identifiers: configValidatorCategoryIdentifiers,

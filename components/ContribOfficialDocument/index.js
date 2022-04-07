@@ -18,12 +18,12 @@ import ContribOfficialDocumentForm from './form.json';
 
 export default function ContribOfficialDocument({ data, id }) {
     const {
-        stateForm: { departments, storeObjects, currentObject },
+        stateForm: { departments, storeObjects, currentFormObject },
         dispatchForm: dispatch,
     } = useContext(AppContext);
 
     const [published, setPublished] = useState(
-        currentObject.status === 'published'
+        currentFormObject.status === 'published'
     );
 
     const { style: green } = useCSSProperty('--success-main-525');
@@ -40,11 +40,11 @@ export default function ContribOfficialDocument({ data, id }) {
     const objCheck = useCallback(
         (keyA, keyB) => {
             return {
-                false: () => currentObject[keyA] || '',
-                true: () => currentObject[keyB] || '',
+                false: () => currentFormObject[keyA] || '',
+                true: () => currentFormObject[keyB] || '',
             };
         },
-        [currentObject]
+        [currentFormObject]
     );
 
     const formName = getFormName(pathname, object);
@@ -77,16 +77,21 @@ export default function ContribOfficialDocument({ data, id }) {
     }, [dispatch, formName, id, object, storeObjects]);
 
     const publishObject = () => {
-        dataFormService.publish(currentObject.id, object).then((category) => {
-            NotifService.info(`Document validé et publié`, 'valid');
+        dataFormService
+            .publish(currentFormObject.id, object)
+            .then((category) => {
+                NotifService.info(`Document validé et publié`, 'valid');
 
-            dispatch({ type: 'UPDATE_CURRENT_OBJECT', payload: category });
-        });
+                dispatch({
+                    type: 'UPDATE_CURRENT_FORM_OBJECT',
+                    payload: category,
+                });
+            });
     };
 
     useEffect(() => {
-        setPublished(currentObject.status === 'published');
-    }, [currentObject]);
+        setPublished(currentFormObject.status === 'published');
+    }, [currentFormObject]);
 
     useEffect(() => {
         async function init() {
@@ -109,23 +114,23 @@ export default function ContribOfficialDocument({ data, id }) {
 
     useEffect(() => {
         const currentEditor = objCheck('createdBy', 'updatedBy')[
-            !currentObject.updatedBy
+            !currentFormObject.updatedBy
         ]();
 
         if (!editor && !!currentEditor.username) {
             setEditor(`par ${currentEditor.username}`);
         }
-    }, [currentObject.updatedBy, editor, objCheck]);
+    }, [currentFormObject.updatedBy, editor, objCheck]);
 
     useEffect(() => {
         const currentDate = objCheck('createdAt', 'updatedAt')[
-            !!currentObject.updatedAt
+            !!currentFormObject.updatedAt
         ]();
 
         if (!!currentDate && !dateInfo) {
             setDateInfo(`Dernière modification le ${currentDate}`);
         }
-    }, [currentObject, currentObject.updatedAt, dateInfo, objCheck]);
+    }, [currentFormObject, currentFormObject.updatedAt, dateInfo, objCheck]);
 
     return (
         <Layout>

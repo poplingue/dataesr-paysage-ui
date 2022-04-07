@@ -1,7 +1,7 @@
 import grid from '../../../helpers/imports';
 import CardLink from '../../CardLink';
 
-export default function Functions() {
+export default function Functions({ data }) {
     const { Col, Row, Container } = grid();
 
     return (

@@ -2,7 +2,7 @@ import { Tag } from '@dataesr/react-dsfr';
 import grid from '../../../helpers/imports';
 import CalloutCustom from '../../CalloutCustom';
 
-export default function Contact() {
+export default function Contact({ data }) {
     const { Col, Row, Container } = grid();
 
     return (

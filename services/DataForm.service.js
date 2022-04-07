@@ -18,6 +18,7 @@ const fieldMapping = {
     endDate: (uid, value) => dataFormService.mapDate(uid, value),
     startDate: (uid, value) => dataFormService.mapDate(uid, value),
     creationDate: (uid, value) => dataFormService.mapDate(uid, value),
+    birthDate: (uid, value) => dataFormService.mapDate(uid, value),
 };
 
 const fields = {
@@ -80,8 +81,9 @@ export const dataFormService = {
     cleanDateFormat: (field) => {
         const subObjectType = matchRegex(`([^\_]+)$`, field.uid);
         const needClean =
-            ['endDate', 'startDate', 'creationDate'].indexOf(subObjectType) >
-            -1;
+            ['endDate', 'startDate', 'creationDate', 'birthDate'].indexOf(
+                subObjectType
+            ) > -1;
 
         if (needClean) {
             // remove empty date values in date format yyyy-mm-dd

@@ -11,8 +11,17 @@ export const configValidator = {
             }),
         ],
     },
-    media: {
+    birthDate: {
         required: true,
+    },
+    deathDate: {
+        required: true,
+    },
+    comment: {
+        required: false,
+    },
+    activity: {
+        required: false,
     },
     lastName: {
         required: true,

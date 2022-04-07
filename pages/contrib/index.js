@@ -21,7 +21,7 @@ export default function Contrib() {
     const { Col, Row, Container } = grid();
     const [spinner, setSpinner] = useState(false);
     // TODO remove
-    const [currentObject, setCurrentObject] = useState('');
+    const [currentFormObject, setCurrentObject] = useState('');
     const workerRef = useRef();
     const [objectType, setObjectType] = useState('structure');
 
@@ -42,15 +42,15 @@ export default function Contrib() {
             ObjectService.newId(data).then((id) => {
                 dispatch({
                     type: 'CLEAR_FORM',
-                    payload: { formName: `contrib/${currentObject}` },
+                    payload: { formName: `contrib/${currentFormObject}` },
                 });
 
                 if (id) {
-                    router.push(`/contrib/${currentObject}/${id}`);
+                    router.push(`/contrib/${currentFormObject}/${id}`);
                 }
             });
         };
-    }, [currentObject, dispatch, router, workerRef]);
+    }, [currentFormObject, dispatch, router, workerRef]);
 
     const onClick = async (e, object) => {
         e.preventDefault();

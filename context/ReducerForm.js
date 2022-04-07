@@ -202,10 +202,10 @@ const actionMap = {
         };
     },
 
-    UPDATE_CURRENT_OBJECT: (state, action) => {
+    UPDATE_CURRENT_FORM_OBJECT: (state, action) => {
         return {
             ...state,
-            currentObject: {
+            currentFormObject: {
                 ...action.payload,
                 updatedAt: niceDate(action.payload.updatedAt),
                 createdAt: niceDate(action.payload.createdAt),
