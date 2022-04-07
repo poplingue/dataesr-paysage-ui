@@ -1,15 +1,14 @@
-import { Button } from '@dataesr/react-dsfr';
-
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import 'react-tabulator/css/tabulator_materialize.min.css';
-import 'react-tabulator/css/semantic-ui/tabulator_semantic-ui.min.css';
-import ImportFile from '../../../../components/ImportFile';
 import { getObjectTypeDetails } from '../../../../config/utils';
 import { AppContext } from '../../../../context/GlobalState';
 import grid from '../../../../helpers/imports';
 
+const Button = dynamic(() =>
+    import('@dataesr/react-dsfr').then((mod) => mod.Button)
+);
+const ImportFile = dynamic(() => import('./../../../../components/ImportFile'));
 const Table = dynamic(() => import('./../../../../components/Table'));
 const Layout = dynamic(() => import('./../../../../components/Layout'));
 const HeaderLayout = dynamic(() =>
