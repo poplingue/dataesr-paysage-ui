@@ -132,7 +132,6 @@ export function getObjectTypeDetails(id, name) {
  * @returns {*}
  */
 export const mapFields = (form) => {
-    // TODO handle nested object like geometry
     const obj = {
         'contrib/person': [
             'firstName',
