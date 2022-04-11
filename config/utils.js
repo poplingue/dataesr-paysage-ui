@@ -64,7 +64,7 @@ export function getObjectTypeDetails(id, name) {
         },
         2: {
             name: 'category',
-            color: '--green-bourgeon-main-640',
+            color: '--green-emeraude-main-632',
             text: 'la catégorie',
             title: 'Catégorie',
             colorClassName: 'Green',
@@ -73,7 +73,7 @@ export function getObjectTypeDetails(id, name) {
         },
         3: {
             name: 'officialDocument',
-            color: '--green-archipel-main-557',
+            color: '--blue-cumulus-main-526',
             text: 'le document officiel',
             title: 'Document Officiel',
             dataesrApi: 'officialdocuments',
