@@ -6,6 +6,7 @@ export function getUrl(key) {
         etat: 'https://jsonplaceholder.typicode.com/todos',
         tutelle: 'https://jsonplaceholder.typicode.com/todos',
         address: 'https://api-adresse.data.gouv.fr/search?limit=10',
+        cityID: 'https://public.opendatasoft.com/api/v2/catalog/datasets/correspondance-code-insee-code-postal//records?rows=10&select=*&pretty=false&timezone=UTC',
         locality:
             'https://public.opendatasoft.com/api/v2/catalog/datasets/georef-france-commune/records?rows=10&select=*&pretty=false&timezone=UTC',
     };
