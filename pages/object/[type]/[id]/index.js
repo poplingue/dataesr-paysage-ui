@@ -112,6 +112,7 @@ export default function PaysageObject({ data }) {
                 }
                 status={data.status}
                 type={title}
+                id={id}
             />
             {Component && (
                 <SideNavigation items={skeleton} color={colorClassName}>

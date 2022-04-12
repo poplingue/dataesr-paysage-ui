@@ -72,7 +72,7 @@
             "type": "text",
             "validatorId": "usualName",
             "dependency": {
-              "validatorIds": ["article"],
+              "validatorIds": ["article", "acronymLocal", "shortName", "brandName", "otherNames"],
               "rule": "validator",
               "action": "hidden"
             }
@@ -155,10 +155,21 @@
         "infinite": true,
         "content": [
           {
+            "title": "Code de la commune",
+            "type": "text",
+            "hint": "Code d'identification de la commune (code INSEE pour la France)",
+            "validatorId": "cityId"
+          },
+          {
             "title": "Adresse",
             "type": "text",
             "suggest": true,
-            "validatorId": "address"
+            "validatorId": "address",
+            "dependency": {
+              "validatorIds": ["postOfficeBoxNumber", "distributionStatement", "place", "country"],
+              "rule": "emptiness",
+              "action": "hidden"
+            }
           },
           {
             "title": "Ville",
@@ -175,6 +186,12 @@
             "title": "Lieu-dit",
             "type": "text",
             "validatorId": "place"
+          },
+          {
+            "title": "Mention de distribution",
+            "type": "text",
+            "hint": "bâtiment, tour, étage",
+            "validatorId": "distributionStatement"
           },
           {
             "title": "Pays",

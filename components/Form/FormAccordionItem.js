@@ -255,8 +255,8 @@ export default function FormAccordionItem({
                 return (
                     <div key={field.title}>
                         <Container>
-                            <Row alignItems="middle" gutters>
-                                <Col spacing="py-2w">
+                            <Row alignItems="middle">
+                                <Col>
                                     <WrapperFieldType
                                         suggest={suggest}
                                         field={field}

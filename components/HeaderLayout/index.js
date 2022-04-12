@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import { AppContext } from '../../context/GlobalState';
 import DynamicBreadcrumb from '../DynamicBreadcrumb';
 
-function HeaderLayout({ highlight, pageTitle, status, type }) {
+function HeaderLayout({ highlight, pageTitle, status, type, id }) {
     const {
         statePage: { hasBreadCrumbs },
     } = useContext(AppContext);
@@ -59,6 +59,7 @@ function HeaderLayout({ highlight, pageTitle, status, type }) {
                                                             : 'publié'}
                                                     </Tag>
                                                 )}
+                                                {id && <Tag>{id}</Tag>}
                                             </Col>
                                         </Row>
                                     </Col>

@@ -39,10 +39,12 @@ export default function HomeSearch({ switchPage, defaultType }) {
     };
 
     const changeType = (e) => {
+        const { value } = e.target;
+
         if (switchPage) {
-            router.push(`/search/${e.target.value}`);
+            router.push(`/search/${value}`);
         } else {
-            setObjectType(e.target.value);
+            setObjectType(value);
         }
     };
 

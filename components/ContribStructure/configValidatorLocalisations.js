@@ -1,9 +1,21 @@
 export const configValidator = {
     country: {
-        required: true,
+        required: false,
+    },
+    cityId: {
+        required: false,
+        validators: [
+            (value) => ({
+                valid: value.length === 5 && !!value.match(/^[0-9]{5}$/),
+                errorMsg: '5 caractères, uniquement des chiffres',
+            }),
+        ],
     },
     locality: {
-        required: true,
+        required: false,
+    },
+    distributionStatement: {
+        required: false,
     },
     telephone: {
         required: false,
@@ -12,7 +24,7 @@ export const configValidator = {
         required: false,
     },
     postalCode: {
-        required: true,
+        required: false,
         validators: [
             (value) => ({
                 valid: value.length === 5 && !!value.match(/^[0-9]{5}$/),
@@ -43,7 +55,7 @@ export const configValidator = {
         required: false,
     },
     address: {
-        required: true,
+        required: false,
     },
     place: {
         required: false,
@@ -83,14 +95,5 @@ export const configValidator = {
             }),
         ],
         required: false,
-    },
-    departments: {
-        required: true,
-        validators: [
-            (value) => ({
-                valid: value.length > 1,
-                errorMsg: 'error msg departments',
-            }),
-        ],
     },
 };

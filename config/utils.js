@@ -6,6 +6,7 @@ export function getUrl(key) {
         etat: 'https://jsonplaceholder.typicode.com/todos',
         tutelle: 'https://jsonplaceholder.typicode.com/todos',
         address: 'https://api-adresse.data.gouv.fr/search?limit=10',
+        cityID: 'https://public.opendatasoft.com/api/v2/catalog/datasets/correspondance-code-insee-code-postal//records?rows=10&select=*&pretty=false&timezone=UTC',
         locality:
             'https://public.opendatasoft.com/api/v2/catalog/datasets/georef-france-commune/records?rows=10&select=*&pretty=false&timezone=UTC',
     };
@@ -64,7 +65,7 @@ export function getObjectTypeDetails(id, name) {
         },
         2: {
             name: 'category',
-            color: '--green-bourgeon-main-640',
+            color: '--green-emeraude-main-632',
             text: 'la catégorie',
             title: 'Catégorie',
             colorClassName: 'Green',
@@ -73,10 +74,10 @@ export function getObjectTypeDetails(id, name) {
         },
         3: {
             name: 'officialDocument',
-            color: '--green-archipel-main-557',
+            color: '--blue-cumulus-main-526',
             text: 'le document officiel',
             title: 'Document Officiel',
-            dataesrApi: 'official-documents',
+            dataesrApi: 'officialdocuments',
             tableSchema: [],
         },
         4: {
@@ -85,7 +86,7 @@ export function getObjectTypeDetails(id, name) {
             text: 'la catégorie légale',
             title: 'Catégorie Légale',
             colorClassName: 'Brown',
-            dataesrApi: 'legal-categories',
+            dataesrApi: 'legalcategories',
             tableSchema: [],
         },
         5: {
@@ -146,6 +147,7 @@ export const mapFields = (form) => {
             'comment',
         ],
         'contrib/document': [],
+        'contrib/legalCategory': [],
         'contrib/price': [],
         'contrib/officialDocument': [],
         'contrib/category': ['type', 'url', 'comment'],

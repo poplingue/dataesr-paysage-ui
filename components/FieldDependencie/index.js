@@ -8,10 +8,12 @@ import {
     useState,
 } from 'react';
 import { AppContext } from '../../context/GlobalState';
+import grid from '../../helpers/imports';
 import { getFieldValue, getFormName, getUniqueId } from '../../helpers/utils';
 import styles from './FieldDependency.module.scss';
 
 export function FieldDependency({ children, subObject, validatorId }) {
+    const { Col } = grid();
     const {
         stateForm: { forms, dependencies, validSections },
     } = useContext(AppContext);
@@ -95,8 +97,16 @@ export function FieldDependency({ children, subObject, validatorId }) {
         validatorId,
     ]);
 
-    return cloneElement(children, {
-        ...children.props,
-        className: classAction[localAction],
-    });
+    return (
+        <Col
+            spacing={
+                classAction[localAction] === styles.IsHidden ? '' : 'py-2w'
+            }
+        >
+            {cloneElement(children, {
+                ...children.props,
+                className: classAction[localAction],
+            })}
+        </Col>
+    );
 }

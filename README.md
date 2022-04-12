@@ -44,7 +44,7 @@ Open [http://localhost:3002](http://localhost:3002)
    "validatorId": "myMajorValidatorId",
    "staticValues": [...],
    "dependency": {
-      "validatorId": "myMinorValidatorId",
+      "validatorIds": ["myMinorValidatorId"],
       "action": "disabled | hidden",
       "rule": "validator | emptiness"
     }
