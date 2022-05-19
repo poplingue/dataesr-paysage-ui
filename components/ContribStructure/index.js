@@ -1,3 +1,4 @@
+import { Button } from '@dataesr/react-dsfr';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
@@ -8,11 +9,8 @@ import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
-import FieldButton from '../FieldButton';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
-import LinkTo from '../LinkTo';
 import ToolBox from '../ToolBox';
 import ContribStructureForm from './form.json';
 
@@ -22,10 +20,7 @@ export default function ContribStructure({ data, id }) {
         dispatchForm: dispatch,
     } = useContext(AppContext);
     const { style: yellow } = useCSSProperty('--yellow-tournesol-main-731');
-
-    const [published, setPublished] = useState(
-        currentFormObject.status === 'published'
-    );
+    const router = useRouter();
 
     const { style: green } = useCSSProperty('--success-main-525');
     const { style: white } = useCSSProperty('--grey-1000');
@@ -73,23 +68,6 @@ export default function ContribStructure({ data, id }) {
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
-    const publishObject = () => {
-        dataFormService
-            .publish(currentFormObject.id, object)
-            .then((structure) => {
-                NotifService.info(`Structure validée et publiée`, 'valid');
-
-                dispatch({
-                    type: 'UPDATE_CURRENT_FORM_OBJECT',
-                    payload: structure,
-                });
-            });
-    };
-
-    useEffect(() => {
-        setPublished(currentFormObject.status === 'published');
-    }, [currentFormObject]);
-
     useEffect(() => {
         async function init() {
             await initDataStructureForm();
@@ -129,35 +107,30 @@ export default function ContribStructure({ data, id }) {
         }
     }, [currentFormObject, currentFormObject.updatedAt, dateInfo, objCheck]);
 
+    const linkTo = () => {
+        router.push(`/object/structure/${id}`);
+    };
+
     return (
         <Layout>
             <HeaderLayout
                 highlight={`${dateInfo} ${editor}`}
-                pageTitle={
-                    published
-                        ? `Modifier la structure ${id}`
-                        : `Initier une structure ${id}`
-                }
+                pageTitle={`Modifier la structure ${id}`}
             />
             <SideNavigation
                 items={ContribStructureForm[0].form}
                 color={getObjectTypeDetails('', object).colorClassName}
             >
                 <ToolBox accordions>
-                    {!published ? (
-                        <FieldButton
-                            dataTestId="validate-structure"
-                            disabled={published}
-                            title="Valider la structure"
-                            onClick={publishObject}
-                            colors={published ? [] : [white, green]}
-                        />
-                    ) : (
-                        <LinkTo
-                            text="voir la fiche"
-                            href={`/object/structure/${id}`}
-                        />
-                    )}
+                    <Button
+                        size="sm"
+                        tertiary
+                        iconPosition="right"
+                        icon="ri-arrow-right-line"
+                        onClick={linkTo}
+                    >
+                        voir la fiche
+                    </Button>
                 </ToolBox>
                 <CreateForm
                     jsonForm={ContribStructureForm[0]}

@@ -36,6 +36,15 @@ export default function Navigation({ items, color }) {
     const ref = useRef(null);
     const sideOpened = sideMode === 'on';
 
+    const sideModeAction = () => {
+        dispatch({
+            type: 'UPDATE_SIDE_NAVIGATION_MODE',
+            payload: {
+                sideMode: sideOpened ? 'off' : 'on',
+            },
+        });
+    };
+
     return (
         <SideMenu ref={ref} buttonLabel="Navigation">
             <li>
@@ -43,14 +52,7 @@ export default function Navigation({ items, color }) {
                     type="checkbox"
                     id="isCollapsed"
                     className="hidden"
-                    onClick={() =>
-                        dispatch({
-                            type: 'UPDATE_SIDE_NAVIGATION_MODE',
-                            payload: {
-                                sideMode: sideOpened ? 'off' : 'on',
-                            },
-                        })
-                    }
+                    onClick={sideModeAction}
                 />
                 <div
                     className={`${styles.SideNav} ${

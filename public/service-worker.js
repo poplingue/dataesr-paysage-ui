@@ -26,7 +26,7 @@ self.addEventListener('message', async (event) => {
             },
             term: { usualNameFr: '' },
             legalCategory: { longNameFr: '' },
-            structure: { [`${object}Status`]: 'active' },
+            structure: { usualName: '' },
             document: { title: '' },
         };
 

@@ -4,10 +4,11 @@
         padding-right: 0;
     }
 
-    .fr-sidemenu__inner {
+    div.fr-sidemenu__inner {
         border-right: none;
         padding: 0;
         box-shadow: none;
+        overflow: inherit;
 
         .fr-collapse {
             padding: 0;

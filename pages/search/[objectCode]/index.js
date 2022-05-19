@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getObjectTypeDetails } from '../../../config/utils';
 import grid from '../../../helpers/imports';
 import useCSSProperty from '../../../hooks/useCSSProperty';
@@ -11,13 +11,28 @@ const TileElement = dynamic(() => import('../../../components/TileElement'));
 const HeaderLayout = dynamic(() => import('../../../components/HeaderLayout'));
 const Layout = dynamic(() => import('../../../components/Layout'));
 
-export default function SearchObject({ data }) {
+export default function SearchObject() {
     const { Col, Row, Container } = grid();
 
     const router = useRouter();
     const { objectCode } = router.query;
     const { color, name, title } = getObjectTypeDetails(objectCode);
     const { style: objectColor } = useCSSProperty(color);
+    const [data, setData] = useState([]);
+    const [init, setInit] = useState(true);
+
+    useEffect(() => {
+        async function getData() {
+            return await ObjectService.getAll(objectCode);
+        }
+
+        if (init && objectCode) {
+            getData().then(({ data }) => {
+                setData(data);
+                setInit(false);
+            });
+        }
+    }, [data, init, objectCode]);
 
     return (
         <Layout>
@@ -32,21 +47,22 @@ export default function SearchObject({ data }) {
                     <Col>
                         <Container>
                             <Row gutters>
-                                {data.map((obj) => {
-                                    const { id } = obj;
+                                {data &&
+                                    data.map((obj) => {
+                                        const { id } = obj;
 
-                                    return (
-                                        <Col n="3" key={id}>
-                                            <TileElement
-                                                title={id}
-                                                body={name || objectCode}
-                                                href={`/object/${name}/${id}`}
-                                                color={objectColor}
-                                                icon="ri-arrow-right-line"
-                                            />
-                                        </Col>
-                                    );
-                                })}
+                                        return (
+                                            <Col n="3" key={id}>
+                                                <TileElement
+                                                    title={id}
+                                                    body={name || objectCode}
+                                                    href={`/object/${name}/${id}`}
+                                                    color={objectColor}
+                                                    icon="ri-arrow-right-line"
+                                                />
+                                            </Col>
+                                        );
+                                    })}
                             </Row>
                         </Container>
                     </Col>
@@ -56,8 +72,9 @@ export default function SearchObject({ data }) {
     );
 }
 
-export async function getServerSideProps({ query }) {
-    const { data } = await ObjectService.getAll(query.objectCode);
-
-    return { props: { data } };
-}
+// export async function getServerSideProps({ query, req }) {
+//
+//     const { data } = await ObjectService.getAll(query.objectCode);
+//
+//     return { props: { data: [] } };
+// }

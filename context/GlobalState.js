@@ -51,7 +51,7 @@ export const DataProvider = ({ user, error, children }) => {
         },
         hasBreadCrumbs: false,
         pageTheme: 'transparent',
-        currentPageObject: null,
+        currentPageObject: {},
         error: error || null,
         user: user || {},
         userConnected: user && Object.keys(user).length > 0,

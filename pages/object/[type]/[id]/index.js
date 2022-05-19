@@ -1,3 +1,4 @@
+import { Button } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect } from 'react';
@@ -14,7 +15,6 @@ import { AppContext } from '../../../../context/GlobalState';
 import ObjectService from '../../../../services/Object.service';
 
 const Structure = dynamic(() => import('../../../../components/Structure'));
-const LinkTo = dynamic(() => import('../../../../components/LinkTo'));
 const LegalCategory = dynamic(() =>
     import('../../../../components/LegalCategory')
 );
@@ -58,11 +58,11 @@ const templateObj = {
     },
 };
 
-export default function PaysageObject({ data }) {
+export default function PaysageObject() {
     const {
         query: { id, type },
     } = useRouter();
-
+    const router = useRouter();
     const { text, title, colorClassName } = getObjectTypeDetails('', type);
     const Component = templateObj[type] ? templateObj[type].component : null;
     const initSkeleton = templateObj[type] ? templateObj[type].skeleton : null;
@@ -89,18 +89,34 @@ export default function PaysageObject({ data }) {
     }, [updateSkeleton]);
 
     useEffect(() => {
-        if (!skeleton.length) {
+        if (skeleton && !skeleton.length) {
             updateSkeleton(initSkeleton);
         }
     }, [initSkeleton, skeleton, updateSkeleton]);
 
     useEffect(() => {
-        if (!currentPageObject && data) {
-            const proxy = new Proxy(data, ObjectService.handlerObjectInfo());
-
-            dispatch({ type: 'UPDATE_CURRENT_PAGE_OBJECT', payload: proxy });
+        async function getData() {
+            return await ObjectService.getOne(type, id);
         }
-    }, [currentPageObject, data, dispatch]);
+
+        if (!Object.keys(currentPageObject).length) {
+            getData().then((data) => {
+                const proxy = new Proxy(
+                    data,
+                    ObjectService.handlerObjectInfo()
+                );
+
+                dispatch({
+                    type: 'UPDATE_CURRENT_PAGE_OBJECT',
+                    payload: proxy,
+                });
+            });
+        }
+    }, [currentPageObject, dispatch, id, type]);
+
+    const linkTo = () => {
+        router.push(`/contrib/${type}/${id}`);
+    };
 
     return (
         <Layout>
@@ -110,7 +126,7 @@ export default function PaysageObject({ data }) {
                         ? `${currentPageObject.mainTitle}`
                         : `${title}`
                 }
-                status={data.status}
+                status={'test'}
                 type={title}
                 id={id}
             />
@@ -118,8 +134,11 @@ export default function PaysageObject({ data }) {
                 <SideNavigation items={skeleton} color={colorClassName}>
                     <Component
                         id={id}
-                        fame={data.fame}
-                        name={!!Object.keys(data).length ? data.id : ''}
+                        name={
+                            !!Object.keys(currentPageObject).length
+                                ? currentPageObject.id
+                                : ''
+                        }
                         skeleton={skeleton}
                     >
                         <ToolBox
@@ -127,20 +146,17 @@ export default function PaysageObject({ data }) {
                             accordions
                             initialSkeleton={initSkeleton}
                         >
-                            <LinkTo
-                                text={`modifier ${text}`}
-                                href={`/contrib/${type}/${id}`}
-                            />
+                            <Button
+                                size="sm"
+                                tertiary
+                                iconPosition="right"
+                                icon="ri-arrow-right-line"
+                                onClick={() => linkTo()}
+                            >{`modifier ${text}`}</Button>
                         </ToolBox>
                     </Component>
                 </SideNavigation>
             )}
         </Layout>
     );
-}
-
-export async function getServerSideProps({ query }) {
-    const data = (await ObjectService.getOne(query.type, query.id)) || {};
-
-    return { props: { data } };
 }

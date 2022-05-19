@@ -32,18 +32,16 @@ export const accountService = {
                     authService.refreshAccessToken(tokenUrl).then(async () => {
                         const resp = await fetch(meUrl, requestOptions);
 
-                        return Promise.resolve(
-                            fetchHelper
-                                .handleResponse(resp)
-                                .then(async ({ data }) => {
-                                    return Promise.resolve({
-                                        user: data,
-                                    });
-                                })
-                                .catch((err) => {
-                                    return Promise.reject(err);
-                                })
-                        );
+                        return fetchHelper
+                            .handleResponse(resp)
+                            .then(async ({ data }) => {
+                                return Promise.resolve({
+                                    user: data,
+                                });
+                            })
+                            .catch((err) => {
+                                return Promise.reject(err);
+                            });
                     });
                 }
             });

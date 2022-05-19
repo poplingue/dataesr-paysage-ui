@@ -52,13 +52,6 @@ function HeaderLayout({ highlight, pageTitle, status, type, id }) {
                                         <Row gutters>
                                             <Col>
                                                 {type && <Tag>{type}</Tag>}
-                                                {status && (
-                                                    <Tag>
-                                                        {status === 'draft'
-                                                            ? 'brouillon'
-                                                            : 'publié'}
-                                                    </Tag>
-                                                )}
                                                 {id && <Tag>{id}</Tag>}
                                             </Col>
                                         </Row>

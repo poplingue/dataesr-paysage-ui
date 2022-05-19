@@ -67,7 +67,7 @@ export const fetchHelper = {
                         }
                     }
 
-                    return Promise.reject(errorMsg);
+                    return Promise.reject(`${errorMsg}`);
                 }
 
                 return Promise.resolve({ response, data });

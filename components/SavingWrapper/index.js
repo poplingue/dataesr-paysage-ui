@@ -11,7 +11,11 @@ function SavingWrapper({ children, unSaved }) {
                             {children}
                         </Col>
                         <Col n="12">
-                            <Badge text="non sauvegardé" small type="warning" />
+                            <Badge
+                                text="non sauvegardé"
+                                isSmall
+                                type="warning"
+                            />
                         </Col>
                     </>
                 ) : (
