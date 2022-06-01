@@ -1,14 +1,16 @@
 import { Title } from '@dataesr/react-dsfr';
 import grid from '../../../helpers/imports';
+
 import { sectionUniqueId } from '../../../helpers/utils';
+
 import PresHeader from './Header';
 import History from './History';
-import Web from './Web';
+import IdentifiersWrapper from './IdentifiersWrapper';
 
 const components = {
     header: PresHeader,
     history: History,
-    web: Web,
+    identifiersWrapper: IdentifiersWrapper,
 };
 
 export default function Presentation({ content, section }) {

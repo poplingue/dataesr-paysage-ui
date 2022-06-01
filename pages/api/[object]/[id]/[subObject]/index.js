@@ -25,7 +25,7 @@ const handler = nc()
                 subObjectInit.initBody,
                 tokens
             );
-
+            console.log(req.body);
             const request = await fetch(url, requestOptions);
             fetchHelper.checkAuthorized(tokens, request, res);
 

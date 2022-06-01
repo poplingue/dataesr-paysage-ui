@@ -81,6 +81,13 @@ const actionMap = {
             currentPageObject: action.payload,
         };
     },
+
+    UPDATE_IDENTIFIERS_OBJECT: (state, action) => {
+        return {
+            ...state,
+            identifiers: action.payload,
+        };
+    },
 };
 
 const reducerPage = (state, action) => {
