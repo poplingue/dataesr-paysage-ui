@@ -13,6 +13,7 @@ import { configValidator as configValidatorPersonSocialmedias } from '../compone
 import { configValidator as configValidatorPriceNames } from '../components/ContribPrice/configValidatorNames';
 
 import { configValidator as configValidatorStructure } from '../components/ContribStructure/configValidator';
+import { configValidator as configValidatorStructureCategories } from '../components/ContribStructure/configValidatorCategories';
 import { configValidator as configValidatorStructureIdentifiers } from '../components/ContribStructure/configValidatorIdentifiers';
 import { configValidator as configValidatorStructureLinks } from '../components/ContribStructure/configValidatorLinks';
 import { configValidator as configValidatorStructureLocalisations } from '../components/ContribStructure/configValidatorLocalisations';
@@ -24,7 +25,6 @@ import { configValidator as configValidatorTermNames } from '../components/Contr
 
 const structureSubObjects = [
     { subObject: 'names', initBody: { usualName: '' } },
-    { subObject: 'links', initBody: { categories: [] } },
     { subObject: 'localisations', initBody: { country: '' } },
     {
         subObject: 'weblinks',
@@ -41,9 +41,15 @@ const structureSubObjects = [
         },
     },
     {
+        subObject: 'categories',
+        initBody: {
+            categoryId: '',
+        },
+    },
+    {
         subObject: 'identifiers',
         initBody: {
-            type: '',
+            type: 'Wikidata',
             value: '',
             active: false,
         },
@@ -132,6 +138,7 @@ export const subObjects = {
 export const configValidators = {
     structure: {
         identifiers: configValidatorStructureIdentifiers,
+        categories: configValidatorStructureCategories,
         names: configValidatorStructureNames,
         links: configValidatorStructureLinks,
         localisations: configValidatorStructureLocalisations,

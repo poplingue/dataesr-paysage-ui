@@ -23,6 +23,7 @@ function CustomRadio({
     hint,
     staticValues = [],
     subObject,
+    infinite,
     validatorId,
     updateValidSection,
 }) {
@@ -57,6 +58,7 @@ function CustomRadio({
             value,
             uid,
             unSaved: true,
+            infinite,
         };
 
         dispatch({
@@ -106,6 +108,7 @@ function CustomRadio({
             false: () => value,
         };
 
+        // param must be boolean
         onRadioChange(
             checkValue[lowValue === 'true' || lowValue === 'false']()
         );

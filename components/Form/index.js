@@ -196,6 +196,7 @@ const CreateForm = ({ jsonForm, color }) => {
                                 sectionTitle={sectionTitle}
                             >
                                 <FormAccordionItem
+                                    infinite={infinite}
                                     suggest={suggest}
                                     content={content}
                                     subObject={subObject}

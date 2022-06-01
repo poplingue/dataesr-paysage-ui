@@ -184,6 +184,7 @@ export const mapFields = (form) => {
             'lastName',
             'acronymLocal',
             'otherNames',
+            'categories',
             'comment',
         ],
     };

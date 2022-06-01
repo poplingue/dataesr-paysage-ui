@@ -99,7 +99,7 @@ export default function PaysageObject() {
             return await ObjectService.getOne(type, id);
         }
 
-        if (!Object.keys(currentPageObject).length) {
+        if (!Object.keys(currentPageObject).length && id && type) {
             getData().then((data) => {
                 const proxy = new Proxy(
                     data,

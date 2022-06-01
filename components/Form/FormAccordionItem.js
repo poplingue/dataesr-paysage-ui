@@ -19,6 +19,7 @@ import WrapperFieldType from '../WrapperFieldType';
 export default function FormAccordionItem({
     content,
     sectionTitle,
+    infinite,
     deletable = false,
     index,
     suggest,
@@ -258,6 +259,7 @@ export default function FormAccordionItem({
                             <Row alignItems="middle">
                                 <Col>
                                     <WrapperFieldType
+                                        infinite={infinite}
                                         suggest={suggest}
                                         field={field}
                                         subObject={subObject}

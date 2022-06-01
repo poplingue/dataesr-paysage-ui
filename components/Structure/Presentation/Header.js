@@ -96,10 +96,12 @@ export default function Header() {
             fetchObject(type, id);
         }
 
-        if (id) {
-            fetchStructure();
+        if (id && init) {
+            fetchStructure().then(() => {
+                setInit(false);
+            });
         }
-    }, [fetchObject, id, type]);
+    }, [fetchObject, id, init, type]);
 
     const renderIdentifiers = () => {
         return identifiers.map((identifier, i) => {
