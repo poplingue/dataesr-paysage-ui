@@ -95,6 +95,13 @@ const actionMap = {
             weblinks: action.payload,
         };
     },
+
+    UPDATE_SOCIALMEDIAS_OBJECT: (state, action) => {
+        return {
+            ...state,
+            socialmedias: action.payload,
+        };
+    },
 };
 
 const reducerPage = (state, action) => {
