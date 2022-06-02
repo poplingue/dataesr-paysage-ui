@@ -15,6 +15,7 @@ export default function WrapperFieldType({
         stateForm: { dependencies },
         dispatchForm: dispatch,
     } = useContext(AppContext);
+
     const {
         type: fieldType,
         suggest,
@@ -45,6 +46,7 @@ export default function WrapperFieldType({
             subObject={subObject}
             section={sectionTitle}
             title={title}
+            infinite={infinite}
             defaultLabel={defaultLabel}
         />
     );

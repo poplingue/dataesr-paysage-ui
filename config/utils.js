@@ -147,6 +147,7 @@ export const mapFields = (form) => {
             'comment',
         ],
         'contrib/document': [],
+        'contrib/term': [],
         'contrib/legalCategory': [],
         'contrib/price': [],
         'contrib/officialDocument': [],
@@ -183,6 +184,7 @@ export const mapFields = (form) => {
             'lastName',
             'acronymLocal',
             'otherNames',
+            'categories',
             'comment',
         ],
     };

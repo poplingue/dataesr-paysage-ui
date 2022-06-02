@@ -63,7 +63,7 @@ export default function ToggleMode({
                                 }
                                 onClick={() => onToggleChange(uid)}
                             >
-                                {'antérieure à 1930'}
+                                {'antérieure à 1970'}
                             </Button>
                         </Icon>
                     </Col>

@@ -9,7 +9,7 @@ export const objectService = {
         const newObject = JSON.parse(message);
 
         if (newObject.status < 400 && newObject.status >= 200) {
-            return newObject.data.object.id;
+            return newObject.data.id;
         } else {
             throw genericErrorMsg;
         }
@@ -26,7 +26,9 @@ export const objectService = {
             .then(({ data }) => {
                 return Promise.resolve(data);
             })
-            .catch((err) => {});
+            .catch((err) => {
+                return Promise.reject(err);
+            });
     },
     getAll: async (objectCode) => {
         const { publicRuntimeConfig } = getConfig();

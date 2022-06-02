@@ -106,7 +106,3 @@ ul {
 .d-block {
     display: block;
 }
-
-.fr-sidemenu.fr-sidemenu--sticky {
-    overflow: hidden;
-}

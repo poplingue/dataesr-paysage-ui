@@ -83,6 +83,7 @@ export default function SwitchField({
                         validatorId={validatorId}
                         staticValues={staticValues}
                         subObject={subObject}
+                        infinite={infinite}
                         defaultLabel={defaultLabel}
                     />
                 );

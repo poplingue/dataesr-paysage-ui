@@ -18,7 +18,7 @@ const components = {
     price: Price,
 };
 
-export default function Person({ fame, children, skeleton }) {
+export default function Person({ children, skeleton }) {
     const { Col, Row } = grid();
 
     const { style: pink } = useCSSProperty('--pink-tuile-main-556');

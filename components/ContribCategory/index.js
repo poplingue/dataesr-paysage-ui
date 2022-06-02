@@ -7,8 +7,6 @@ import { getFormName } from '../../helpers/utils';
 import useCSSProperty from '../../hooks/useCSSProperty';
 import { dataFormService } from '../../services/DataForm.service';
 import DBService from '../../services/DB.service';
-import NotifService from '../../services/Notif.service';
-import FieldButton from '../FieldButton';
 import CreateForm from '../Form';
 import HeaderLayout from '../HeaderLayout';
 import LinkTo from '../LinkTo';
@@ -71,19 +69,6 @@ export default function ContribOfficialDocument({ data, id }) {
             });
     }, [dispatch, formName, id, object, storeObjects]);
 
-    const publishObject = () => {
-        dataFormService
-            .publish(currentFormObject.id, object)
-            .then((category) => {
-                NotifService.info(`Catégorie validée et publiée`, 'valid');
-
-                dispatch({
-                    type: 'UPDATE_CURRENT_FORM_OBJECT',
-                    payload: category,
-                });
-            });
-    };
-
     useEffect(() => {
         setPublished(currentFormObject.status === 'published');
     }, [currentFormObject]);
@@ -139,20 +124,10 @@ export default function ContribOfficialDocument({ data, id }) {
             />
             <SideNavigation items={ContribOfficialDocumentForm[0].form}>
                 <ToolBox accordions>
-                    {!published ? (
-                        <FieldButton
-                            dataTestId="validate-category"
-                            disabled={published}
-                            title="Valider la catégorie"
-                            onClick={publishObject}
-                            colors={published ? [] : [white, green]}
-                        />
-                    ) : (
-                        <LinkTo
-                            text="voir la fiche"
-                            href={`/object/category/${id}`}
-                        />
-                    )}
+                    <LinkTo
+                        text="voir la fiche"
+                        href={`/object/category/${id}`}
+                    />
                 </ToolBox>
                 <CreateForm
                     jsonForm={ContribOfficialDocumentForm[0]}

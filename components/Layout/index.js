@@ -25,6 +25,7 @@ import {
     notConnectedMsg,
 } from '../../helpers/internalMessages';
 import NoSsrWrapper from '../../helpers/no-ssr-wrapper';
+import useViewport from '../../hooks/useViewport';
 import accountService from '../../services/Account.service';
 import authService from '../../services/Auth.service';
 import NotifService from '../../services/Notif.service';
@@ -57,6 +58,7 @@ const FooterBottom = dynamic(() =>
 function Layout({ children, headTitle }) {
     const { pathname, asPath } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
+    const { mobile } = useViewport();
     //TODO manage error boundaries https://blog.openreplay.com/catching-errors-in-react-with-error-boundaries
 
     const {
@@ -264,7 +266,7 @@ function Layout({ children, headTitle }) {
                 </HeaderNav>
             </Header>
             <SwitchTheme isOpen={isOpen} setIsOpen={setIsOpen} />
-            <Container fluid spacing="mb-10w">
+            <Container fluid={!mobile} spacing="mb-10w">
                 <Row>
                     <Col>{children}</Col>
                 </Row>

@@ -32,7 +32,9 @@ export default function CustomDate({
     const validator = cleanString(validatorId);
     const days = range(1, 31, true);
     const months = range(1, 12, true);
-    const years = range(1930, 2030, true);
+    const now = new Date();
+    const yearNow = now.getFullYear();
+    const years = range(1970, yearNow + 10, true);
     const [newValueCheck, setNewValueCheck] = useState(false);
     const [anteriorYear, setAnteriorYear] = useState(false);
     const { style: grey } = useCSSProperty('--grey-1000-50');

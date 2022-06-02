@@ -203,6 +203,7 @@ export default function InfiniteAccordion({
                                                 sectionTitle={sectionTitle}
                                             >
                                                 <FormAccordionItem
+                                                    infinite
                                                     suggest={suggest}
                                                     subObject={`${subObjectType}#${id}`}
                                                     content={content}

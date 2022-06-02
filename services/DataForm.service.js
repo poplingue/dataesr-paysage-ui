@@ -412,8 +412,7 @@ export const dataFormService = {
                 bodyObject[field] = currentObj[field];
             } else {
                 const field = matchRegex(`([^\_]+)$`, uid);
-                // TODO shitty null
-                bodyObject[field] = value || null;
+                bodyObject[field] = value;
             }
         }
 
@@ -432,21 +431,6 @@ export const dataFormService = {
         return fetchHelper
             .handleResponse(response)
             .then(({ response }) => response)
-            .catch((err) => {
-                return Promise.reject(err);
-            });
-    },
-
-    publish: async (id, type) => {
-        const requestOptions = fetchHelper.requestOptions('PUT', {
-            status: 'published',
-        });
-
-        const response = await fetch(`/api/${type}/${id}`, requestOptions);
-
-        return fetchHelper
-            .handleResponse(response)
-            .then(({ data }) => data)
             .catch((err) => {
                 return Promise.reject(err);
             });
