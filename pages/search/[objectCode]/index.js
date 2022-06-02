@@ -71,10 +71,3 @@ export default function SearchObject() {
         </Layout>
     );
 }
-
-// export async function getServerSideProps({ query, req }) {
-//
-//     const { data } = await ObjectService.getAll(query.objectCode);
-//
-//     return { props: { data: [] } };
-// }
