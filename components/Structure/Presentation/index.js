@@ -6,11 +6,13 @@ import { sectionUniqueId } from '../../../helpers/utils';
 import PresHeader from './Header';
 import History from './History';
 import IdentifiersWrapper from './IdentifiersWrapper';
+import WeblinksWrapper from './WeblinksWrapper';
 
 const components = {
     header: PresHeader,
     history: History,
     identifiersWrapper: IdentifiersWrapper,
+    web: WeblinksWrapper,
 };
 
 export default function Presentation({ content, section }) {

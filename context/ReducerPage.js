@@ -88,6 +88,13 @@ const actionMap = {
             identifiers: action.payload,
         };
     },
+
+    UPDATE_WEBLINKS_OBJECT: (state, action) => {
+        return {
+            ...state,
+            weblinks: action.payload,
+        };
+    },
 };
 
 const reducerPage = (state, action) => {

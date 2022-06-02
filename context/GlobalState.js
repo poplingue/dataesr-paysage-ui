@@ -56,6 +56,7 @@ export const DataProvider = ({ user, error, children }) => {
         user: user || {},
         userConnected: user && Object.keys(user).length > 0,
         identifiers: [],
+        weblinks: [],
     };
 
     const [stateForm, dispatchForm] = useReducer(reducerForm, initialStateForm);
