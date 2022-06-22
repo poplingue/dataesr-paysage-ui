@@ -22,10 +22,10 @@ const handler = nc()
 
             const requestOptions = fetchHelper.requestOptions(
                 'POST',
-                subObjectInit.initBody,
+                req.body || subObjectInit.initBody,
                 tokens
             );
-
+            console.log(req.body);
             const request = await fetch(url, requestOptions);
             fetchHelper.checkAuthorized(tokens, request, res);
 

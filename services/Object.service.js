@@ -14,6 +14,25 @@ export const objectService = {
             throw genericErrorMsg;
         }
     },
+    get: async ({ type, id, subObject = null, subObjectId = null }) => {
+        const { publicRuntimeConfig } = getConfig();
+        const requestOptions = fetchHelper.requestOptions('GET');
+        let url = `${publicRuntimeConfig.baseApiUrl}/${type}/${id}`;
+
+        if (subObject) {
+            url += `/${subObject}`;
+            if (subObjectId) url += `/${subObjectId}`;
+        }
+
+        const response = await fetch(url, requestOptions);
+
+        return fetchHelper
+            .handleResponse(response)
+            .then(({ data }) => {
+                return Promise.resolve(data);
+            })
+            .catch((err) => {});
+    },
     getOne: async (objectType, objectId) => {
         const { publicRuntimeConfig } = getConfig();
         const url = `${publicRuntimeConfig.baseApiUrl}/${objectType}/${objectId}`;

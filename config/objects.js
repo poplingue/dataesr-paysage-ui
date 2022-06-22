@@ -271,8 +271,8 @@ export const StructurePageSkeleton = [
             { title: 'Général', component: 'header' },
             { title: 'Historique et dates', component: 'history' },
             { title: 'Identifiants', component: 'identifiersWrapper' },
-            { title: 'Liens web', component: 'web' },
-            { title: 'Réseaux sociaux', component: 'socials' },
+            { title: 'Liens web', component: 'weblinksWrapper' },
+            { title: 'Réseaux sociaux', component: 'socialmediasWrapper' },
             { title: 'Textes officiels', component: 'officialTexts' },
             { title: 'Documents', component: 'documents' },
 
