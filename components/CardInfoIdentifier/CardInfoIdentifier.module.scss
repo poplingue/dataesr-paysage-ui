@@ -1,0 +1,13 @@
+.DeductedFields {
+    .Title {
+        color: var(--text-mention-grey);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        line-height: 1.25rem;
+        display: inline-block;
+        width: 25%;
+    }
+    .Value {
+        font-weight: bold;
+    }
+}

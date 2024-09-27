@@ -1,0 +1,7 @@
+POST https://api.paysage.staging.dataesr.ovh/auth/signin HTTP/1.1
+content-type: application/json
+
+{
+  "password": "cerise03!",
+  "account": "jeremy.peglion@gmail.com"
+}

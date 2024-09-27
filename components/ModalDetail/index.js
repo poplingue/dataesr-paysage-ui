@@ -10,7 +10,7 @@ import { AppContext } from '../../context/GlobalState';
 export default function ModalDetail() {
     const {
         statePage: {
-            modalDetail: { title, open, content, footer },
+            modalDetail: { title, open, content, footer, size },
         },
         dispatchPage: dispatch,
     } = useContext(AppContext);
@@ -25,6 +25,7 @@ export default function ModalDetail() {
                 });
             }}
             title={title}
+            size={size}
         >
             <ModalTitle>{title || 'No Title'}</ModalTitle>
             <ModalContent>{content || 'No content'}</ModalContent>

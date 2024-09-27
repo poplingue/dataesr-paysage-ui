@@ -6,7 +6,6 @@ import {
     Col,
     Container,
     Row,
-    Text,
 } from '@dataesr/react-dsfr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -14,14 +13,13 @@ import { useEffect, useState } from 'react';
 import useWorkerObject from '../../../hooks/useWorkerObject';
 import ObjectService from '../../../services/Object.service';
 import Map from '../../Map';
-import ShowMoreList from '../../ShowMoreList';
 
 const CardInfo = dynamic(() => import('./../../../components/CardInfo'));
 
 export default function Header() {
     const [mainLocation, setMainLocation] = useState({});
     const [mainName, setMainName] = useState({});
-    const [identifiers, setIdentifiers] = useState([]);
+    // const [identifiers, setIdentifiers] = useState([]);
     const [init, setInit] = useState(true);
 
     const {
@@ -30,26 +28,6 @@ export default function Header() {
 
     const router = useRouter();
     const { fetchObject, objectData } = useWorkerObject();
-
-    useEffect(() => {
-        // TODO use Promise.all for subObjects identifiers and localisations
-        async function getData() {
-            return (
-                (await ObjectService.getSubObjectData(
-                    type,
-                    id,
-                    'identifiers'
-                )) || []
-            );
-        }
-
-        if (!Object.keys(identifiers).length && init) {
-            getData().then(({ data }) => {
-                setIdentifiers(data);
-                setInit(false);
-            });
-        }
-    }, [id, identifiers, init, mainLocation, mainLocation.length, type]);
 
     useEffect(() => {
         async function getData() {
@@ -102,32 +80,6 @@ export default function Header() {
             });
         }
     }, [fetchObject, id, init, type]);
-
-    const renderIdentifiers = () => {
-        return identifiers.map((identifier, i) => {
-            const { length } = identifiers;
-            const { type, value, id: identifierId } = identifier;
-
-            return (
-                <Col
-                    key={identifierId}
-                    n={length > 3 ? '4' : '6'}
-                    spacing={i === length - 1 ? 'pb-8w' : ''}
-                >
-                    <CardInfo
-                        onClick={() => {
-                            router.push(
-                                `/contrib/structure/${id}/${identifierId}`
-                            );
-                        }}
-                        supInfo={type}
-                        title={value}
-                        actionLabel="Modifier"
-                    />
-                </Col>
-            );
-        });
-    };
 
     const renderMap = () => {
         if (!mainLocation || !mainLocation.coordinates) {
@@ -199,18 +151,6 @@ export default function Header() {
                                     title={mainName.startDate}
                                     actionLabel="Modifier"
                                 />
-                            </Col>
-                            <Col n="12">
-                                <Row gutters>
-                                    <Col>
-                                        <Text size="lg">Identifiants</Text>
-                                        <ShowMoreList
-                                            display={identifiers.length}
-                                        >
-                                            {renderIdentifiers()}
-                                        </ShowMoreList>
-                                    </Col>
-                                </Row>
                             </Col>
                         </Row>
                         <Row>
